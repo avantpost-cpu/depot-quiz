@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Infractions sexuelles - Présentation</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: url('fond.jpg') repeat;
+    background-size: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20px;
+    margin: 0;
+  }
+
+  .container {
+    text-align: center;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  .title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 50px;
+  }
+
+  .wheel {
+    display: grid;
+    grid-template-columns: repeat(4, 180px);
+    grid-template-rows: repeat(2, 180px);
+    justify-content: center;
+    align-items: center;
+    gap: 40px 50px;
+    margin-bottom: 20px;
+  }
+
+  .circle {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    padding: 10px;
+    line-height: 1.1;
+    white-space: normal;
+    word-break: break-word;
+    z-index: 15;
+    font-size: 14px;
+  }
+
+  .circle:hover { transform: scale(1.05); }
+
+  .color1 { background: #e06666; }
+  .color2 { background: #f6b26b; }
+  .color3 { background: #93c47d; }
+  .color4 { background: #6fa8dc; }
+  .color5 { background: #8e7cc3; }
+  .color6 { background: #ff8c00; }
+  .color7 { background: #ff69b4; }
+
+  .center {
+    position: relative;
+    padding: 20px;
+    min-height: 350px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 14px;
+    border-radius: 12px;
+    z-index: 1;
+    background: transparent; /* pas de cartouche blanc */
+  }
+
+  .center-bg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: none;
+    opacity: 0;
+    transition: background 0.5s, opacity 0.5s;
+    z-index: 0;
+  }
+
+  .center-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .circle-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .details { 
+    font-size: 14px;
+    line-height: 1.4;
+    color: #000;
+  }
+
+  .details div { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="title">Infractions sexuelles dans le sport</div>
+  <div class="subtitle">Survolez un cercle pour voir les détails.</div>
+
+  <div class="wheel" id="wheel">
+    <div class="circle color1" data-key="prop_sex">Propositions sexuelles à un mineur</div>
+    <div class="circle color2" data-key="extorsion">Extorsion d’images pédopornographiques</div>
+    <div class="circle color3" data-key="sextorsion">Sextorsion</div>
+    <div class="circle color4" data-key="photo">Prise de photo pornographique d’un mineur</div>
+    <div class="circle color5" data-key="dispo_photo">Rendre disponible une photo pornographique</div>
+    <div class="circle color6" data-key="detention">Consultation, acquisition ou détention d’images d’abus sexuels</div>
+    <div class="circle color7" data-key="incitation">Incitation d’un mineur à commettre un acte sexuel</div>
+  </div>
+
+  <div class="center" id="centerText">
+    <div class="center-bg" id="centerBg" style="opacity: 0;"></div>
+    <div class="center-content" id="centerContent"></div>
+  </div>
+</div>
+
+<script>
+const centerContent = document.getElementById("centerContent");
+const centerBg = document.getElementById("centerBg");
+const circles = document.querySelectorAll(".circle");
+
+const dataContent = {
+  prop_sex: `<div class="circle-title">Propositions sexuelles à un mineur</div>
+  <div class="details">
+    <div><strong>Description:</strong> Propositions sexuelles à un mineur de 15 ans ou à une personne se présentant comme telle via un moyen de communication électronique.</div>
+    <div><strong>Article:</strong> 227-22-1</div>
+    <div><strong>Peine:</strong> 2 ans et 30 000 € sans circonstance aggravante, 5 ans et 75 000 € avec circonstance aggravante</div>
+  </div>`,
+
+  extorsion: `<div class="circle-title">Extorsion d’images pédopornographiques</div>
+  <div class="details">
+    <div><strong>Description:</strong> Solliciter la diffusion ou transmission d'images, vidéos ou représentations à caractère pornographique d’un mineur.</div>
+    <div><strong>Article:</strong> 227-23-1</div>
+    <div><strong>Peine:</strong> Victime de moins de 15 ans : 10 ans et 150 000 €</div>
+  </div>`,
+
+  sextorsion: `<div class="circle-title">Sextorsion</div>
+  <div class="details">
+    <div><strong>Description:</strong> Chantage pour obtenir contenus sexuels ou argent via menaces de diffusion d’images déjà obtenues.</div>
+    <div><strong>Article:</strong> 312-10</div>
+    <div><strong>Peine:</strong> 5 ans et 75 000 € ; Service en ligne : 7 ans et 100 000 €</div>
+  </div>`,
+
+  photo: `<div class="circle-title">Prise de photo pornographique d’un mineur</div>
+  <div class="details">
+    <div><strong>Description:</strong> Fixer, enregistrer, transmettre ou diffuser l'image d’un mineur à caractère pornographique.</div>
+    <div><strong>Article:</strong> 227-23</div>
+    <div><strong>Peine:</strong> 5 ans et 75 000 € ; avec réseau : 7 ans et 100 000 €</div>
+  </div>`,
+
+  dispo_photo: `<div class="circle-title">Rendre disponible une photo pornographique</div>
+  <div class="details">
+    <div><strong>Description:</strong> Offrir, rendre disponible ou diffuser une image pornographique d’un mineur, importer ou exporter l’image.</div>
+    <div><strong>Article:</strong> 227-23</div>
+    <div><strong>Peine:</strong> Même peine que la prise de photo pornographique</div>
+  </div>`,
+
+  detention: `<div class="circle-title">Consultation, acquisition ou détention d’images d’abus sexuels</div>
+  <div class="details">
+    <div><strong>Description:</strong> Consulter, acquérir ou détenir des images d’abus sexuels de mineurs.</div>
+    <div><strong>Article:</strong> 227-23</div>
+    <div><strong>Peine:</strong> 5 ans et 75 000 €</div>
+  </div>`,
+
+  incitation: `<div class="circle-title">Incitation d’un mineur à commettre un acte sexuel</div>
+  <div class="details">
+    <div><strong>Description:</strong> Inciter un mineur par un moyen de communication électronique à commettre un acte sexuel, même sans effet.</div>
+    <div><strong>Article:</strong> 222-22-2</div>
+    <div><strong>Peine:</strong> 7 ans et 100 000 € ; moins de 15 ans : 10 ans et 150 000 €</div>
+  </div>`
+};
+
+circles.forEach(circle => {
+  circle.addEventListener("mouseenter", () => {
+    const key = circle.dataset.key;
+    centerContent.innerHTML = dataContent[key];
+    centerBg.style.background = `radial-gradient(circle, ${circle.style.background}cc 0%, transparent 70%)`;
+    centerBg.style.opacity = 0.8;
+
+    circles.forEach(c => { if(c !== circle) c.style.background = "#e6e6e6"; });
+  });
+
+  circle.addEventListener("mouseleave", () => {
+    centerContent.innerHTML = "";
+    circles.forEach(c => c.style.background = c.classList.contains("color1") ? "#e06666" :
+                                      c.classList.contains("color2") ? "#f6b26b" :
+                                      c.classList.contains("color3") ? "#93c47d" :
+                                      c.classList.contains("color4") ? "#6fa8dc" :
+                                      c.classList.contains("color5") ? "#8e7cc3" :
+                                      c.classList.contains("color6") ? "#ff8c00" :
+                                      "#ff69b4");
+    centerBg.style.opacity = 0;
+  });
+});
+</script>
+
+</body>
+</html>

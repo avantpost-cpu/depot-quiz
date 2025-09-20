@@ -30,20 +30,22 @@
   .subtitle {
     font-size: 14px;
     color: #333;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
   }
 
   .wheel {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 120px); /* deux colonnes */
+    grid-template-rows: repeat(2, 120px); /* deux lignes */
     justify-content: center;
-    gap: 20px;
-    position: relative;
+    align-items: center;
+    gap: 30px 40px; /* vertical 30px, horizontal 40px */
     margin-bottom: 20px;
   }
 
   .circle {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     color: white !important;
     display: flex;

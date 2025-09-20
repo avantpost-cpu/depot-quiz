@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Infractions - Disposition circulaire</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: url('fond.jpg') repeat;
+    background-size: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  .wheel {
+    position: relative;
+    width: 700px;
+    height: 700px;
+  }
+
+  .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px;
+    min-height: 200px;
+    color: black;
+    text-align: center;
+    font-size: 18px;
+    z-index: 10;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+  }
+
+  .center-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .center-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 550px;
+    height: 550px;
+    border-radius: 50%;
+    background: none;
+    opacity: 0;
+    transition: background 0.5s, opacity 0.5s;
+    z-index: 5;
+  }
+
+  .center-underline {
+    width: 0;
+    height: 2px;
+    background: black;
+    margin-top: 5px;
+    transition: width 0.3s;
+  }
+
+  .circle {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    padding: 10px;
+    line-height: 1.2;
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .circle:hover { transform: scale(1.1); }
+
+  .color1 { background: #4f918d; }
+  .color2 { background: #73a37a; }
+  .color3 { background: #97b568; }
+  .color4 { background: #bbc656; }
+  .color5 { background: #dfd344; }
+  .color6 { background: #eab400; }
+
+  .details { font-size: 14px; text-align: left; font-weight: normal; color: #000; margin-top: 10px; }
+  .details div { margin-bottom: 6px; }
+  .circle-title { font-size: 16px; font-weight: bold; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<div class="wheel" id="wheel">
+  <div class="center-bg" id="centerBg"></div>
+  <div class="center" id="centerText">
+    <div class="center-content">
+      Présentation des infractions majeures<br>
+      liées aux violences morales et sexuelles
+    </div>
+    <div class="center-underline" id="centerUnderline"></div>
+  </div>
+</div>
+
+<script>
+const center = document.getElementById("centerText");
+const centerContent = center.querySelector(".center-content");
+const centerUnderline = document.getElementById("centerUnderline");
+const centerBg = document.getElementById("centerBg");
+const wheel = document.getElementById("wheel");
+
+// Données cercles
+const circlesData = [
+  { color: "#4f918d", label: "Viol", key: "viol" },
+  { color: "#73a37a", label: "Agression\nsexuelle", key: "agression" },
+  { color: "#97b568", label: "Atteintes\nsexuelles", key: "atteintes" },
+  { color: "#bbc656", label: "Harcèlement\nsexuel", key: "harcelement" },
+  { color: "#dfd344", label: "Exhibition\nsexuelle", key: "exhibition" },
+  { color: "#eab400", label: "Corruption\nde mineurs", key: "corruption" }
+];
+
+// Contenu central
+const dataContent = {
+  viol: `<div class="center-content"><div class="circle-title">Viol</div><div class="details"><div><strong>Article:</strong> 222-23</div><div><strong>Qualification:</strong> Crime</div><div><strong>Définition:</strong> Acte de pénétration sexuelle commis avec violence, contrainte ou menace.</div><div><strong>Peine:</strong> 15 ans, 20 ans si aggravation</div></div></div>`,
+  agression: `<div class="center-content"><div class="circle-title">Agression sexuelle</div><div class="details"><div><strong>Article:</strong> 222-22</div><div><strong>Qualification:</strong> Délit</div><div><strong>Définition:</strong> Atteinte sexuelle avec violence ou contrainte sans pénétration.</div><div><strong>Peine:</strong> 5 ans, 10 ans si victime <15 ans</div></div></div>`,
+  atteintes: `<div class="center-content"><div class="circle-title">Atteintes sexuelles</div><div class="details"><div><strong>Article:</strong> 227-25 / 227-27</div><div><strong>Qualification:</strong> Délit</div><div><strong>Définition:</strong> Acte sexuel entre un majeur et un mineur protégé.</div><div><strong>Peine:</strong> 10 ans si mineur <15 ans, 5 ans si >15 ans</div></div></div>`,
+  harcelement: `<div class="center-content"><div class="circle-title">Harcèlement sexuel</div><div class="details"><div><strong>Article:</strong> 222-33</div><div><strong>Qualification:</strong> Délit</div><div><strong>Définition:</strong> Propos ou comportements sexuels répétés portant atteinte à la dignité.</div><div><strong>Peine:</strong> 3 ans et 45 000 € avec aggravation</div></div></div>`,
+  exhibition: `<div class="center-content"><div class="circle-title">Exhibition sexuelle</div><div class="details"><div><strong>Article:</strong> 222-32</div><div><strong>Qualification:</strong> Délit</div><div><strong>Définition:</strong> Exposer ses parties sexuelles ou actes sexuels simulés en public.</div><div><strong>Peine:</strong> 2 ans et 30 000 € si victime <15 ans</div></div></div>`,
+  corruption: `<div class="center-content"><div class="circle-title">Corruption de mineurs</div><div class="details"><div><strong>Article:</strong> —</div><div><strong>Qualification:</strong> —</div><div><strong>Définition:</strong> —</div><div><strong>Peine:</strong> —</div></div></div>`
+};
+
+// Création automatique des cercles sur un cercle
+const radius = 275;
+const cx = 350;
+const cy = 350;
+const circles = [];
+
+circlesData.forEach((c, i) => {
+  const angle = (i / circlesData.length) * 2 * Math.PI - Math.PI / 2;
+  const circle = document.createElement("div");
+  circle.classList.add("circle");
+  circle.style.background = c.color;
+  circle.innerHTML = c.label.replace(/\n/g, "<br>");
+  circle.dataset.key = c.key;
+
+  const x = cx + radius * Math.cos(angle) - 75;
+  const y = cy + radius * Math.sin(angle) - 75;
+  circle.style.left = `${x}px`;
+  circle.style.top = `${y}px`;
+
+  wheel.appendChild(circle);
+  circles.push(circle);
+
+  circle.addEventListener("mouseenter", () => {
+    center.innerHTML = dataContent[c.key];
+    centerBg.style.background = `radial-gradient(circle, ${c.color}cc 0%, transparent 70%)`;
+    centerBg.style.opacity = 0.8;
+
+    // Ajouter le filet sous le titre
+    const title = center.querySelector(".circle-title");
+    if(title){
+      centerUnderline.style.width = title.offsetWidth + "px";
+    }
+    
+    circles.forEach(other => { if(other !== circle) other.style.background = "#e6e6e6"; });
+  });
+
+  circle.addEventListener("mouseleave", () => {
+    center.innerHTML = `<div class="center-content">Présentation des infractions majeures<br>liées aux violences morales et sexuelles</div>`;
+    centerBg.style.opacity = 0;
+    centerUnderline.style.width = "0";
+
+    circles.forEach((other, j) => { other.style.background = circlesData[j].color; });
+  });
+});
+</script>
+
+</body>
+</html>

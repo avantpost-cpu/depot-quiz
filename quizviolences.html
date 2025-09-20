@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz sur le stress post-traumatique</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background-image: url('fond.jpg'); /* image de fond répétée */
+      background-repeat: repeat;
+      background-size: auto;
+    }
+
+    h2 { text-align: center; }
+
+    #instructions { margin-bottom: 20px; font-size: 16px; line-height: 1.5; }
+
+    .question {
+      margin-bottom: 25px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.9);
+    }
+
+    button {
+      display: block;
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button:hover { background: #f0f0f0; }
+
+    #startBtn {
+      background-color: #4f918d; 
+      color: white;              
+      font-weight: bold;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      display: block;
+      margin: 20px auto;
+      width: 200px;
+      text-align: center;
+    }
+
+    #startBtn:hover { background-color: #3e736b; }
+
+    .correct { color: green; font-weight: bold; }
+    .wrong { color: red; font-weight: bold; }
+
+    #score { font-size: 18px; font-weight: bold; text-align: center; margin-top: 20px; }
+    #timerBarContainer { width: 100%; height: 20px; background: #eee; border-radius: 10px; margin: 15px 0; overflow: hidden; }
+    #timerBar { height: 100%; width: 100%; background: linear-gradient(to right, #4f918d, #eab400); transition: width 1s linear; }
+    #progress { text-align: center; margin-bottom: 10px; font-weight: bold; }
+
+    #quiz, #timerBarContainer, #progress, #score { display: none; }
+
+    .result-img { max-width: 50%; height: auto; display: block; margin: 20px auto 0 auto; }
+  </style>
+</head>
+<body>
+  <h2>Quiz sur le stress post-traumatique</h2>
+
+  <p id="instructions">
+    Testez vos connaissances sur les conséquences psychologiques et physiques des violences dans le milieu sportif. 
+    Vous avez 15 secondes pour chaque question. La barre verte/orange indique le temps restant.
+  </p>
+
+  <button id="startBtn">Commencer le quiz</button>
+
+  <div id="progress"></div>
+  <div id="timerBarContainer">
+    <div id="timerBar"></div>
+  </div>
+  <div id="quiz"></div>
+  <button id="validateBtn" style="display:none;">Valider la réponse</button>
+  <div id="score"></div>
+  <div id="resultImage"></div>
+
+  <script>
+    var questions = [
+      { 
+        text: "Quels symptômes peuvent révéler un stress post-traumatique ?", 
+        answers: [
+          { text: "Hypervigilance", correct: true },
+          { text: "Sur-habillement", correct: true },
+          { text: "Dormir profondément", correct: false },
+          { text: "Sauter le déjeuner", correct: false }
+        ],
+        multiple: true
+      },
+      { 
+        text: "Quel comportement montre une conduite d’évitement ?", 
+        answers: [
+          { text: "Absence aux entraînements", correct: true },
+          { text: "Prendre plus de photos", correct: false },
+          { text: "Augmenter les réseaux sociaux", correct: false }
+        ],
+        multiple: false
+      },
+      { 
+        text: "Quel trouble inclut des pensées répétitives et compulsions ?", 
+        answers: [
+          { text: "TOC", correct: true },
+          { text: "Dépression", correct: false },
+          { text: "Sidération", correct: false }
+        ],
+        multiple: false
+      },
+      { 
+        text: "Quels signes physiques peuvent apparaître chez une victime ?", 
+        answers: [
+          { text: "Blessures inexpliquées", correct: true },
+          { text: "Cicatrices de naissance", correct: false },
+          { text: "Mauvais goût alimentaire", correct: false }
+        ],
+        multiple: false
+      },
+      { 
+        text: "Qu’est-ce que la dissociation ?", 
+        answers: [
+          { text: "Se sentir détaché de soi-même", correct: true },
+          { text: "Sauter de joie", correct: false },
+          { text: "Manger plus", correct: false }
+        ],
+        multiple: false
+      },
+      { 
+        text: "Quels comportements inhabituels peuvent être des signes de traumatisme ?", 
+        answers: [
+          { text: "Isolement social", correct: true },
+          { text: "Hypervigilance", correct: true },
+          { text: "Regarder la télé", correct: false }
+        ],
+        multiple: true
+      },
+      { 
+        text: "Pourquoi l’activité physique peut-elle être utilisée après un traumatisme ?", 
+        answers: [
+          { text: "Pour reconstruire l’estime de soi et le rapport au corps", correct: true },
+          { text: "Pour perdre du poids", correct: false },
+          { text: "Pour punir l’agresseur", correct: false }
+        ],
+        multiple: false
+      }
+    ];
+
+    var currentQuestion = 0;
+    var score = 0;
+    var timeLeft = 15;
+    var timer;
+
+    var quizContainer = document.getElementById("quiz");
+    var scoreContainer = document.getElementById("score");
+    var timerBar = document.getElementById("timerBar");
+    var progressContainer = document.getElementById("progress");
+    var startBtn = document.getElementById("startBtn");
+    var resultImage = document.getElementById("resultImage");
+    var validateBtn = document.getElementById("validateBtn");
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function showQuestion() {
+      if(currentQuestion >= questions.length) { endQuiz(); return; }
+
+      var q = questions[currentQuestion];
+      progressContainer.textContent = "Question " + (currentQuestion + 1) + " / " + questions.length;
+
+      var html = '<div class="question"><p><strong>' + q.text + '</strong></p>';
+      q.answers.forEach((ans, index) => {
+        if(q.multiple){
+          html += `<label><input type="checkbox" value="${index}"> ${ans.text}</label><br>`;
+        } else {
+          html += `<button onclick="checkAnswerSingle(${index})">${ans.text}</button>`;
+        }
+      });
+      html += '<p id="feedback"></p></div>';
+      quizContainer.innerHTML = html;
+
+      if(q.multiple) validateBtn.style.display = "block";
+      else validateBtn.style.display = "none";
+
+      timeLeft = 15;
+      timerBar.style.width = "100%";
+      clearInterval(timer);
+      timer = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      timeLeft--;
+      timerBar.style.width = (timeLeft / 15 * 100) + "%";
+      if(timeLeft <= 0) {
+        clearInterval(timer);
+        var feedback = document.getElementById("feedback");
+        feedback.textContent = "⏰ Temps écoulé !";
+        feedback.className = "wrong";
+        setTimeout(function() {
+          currentQuestion++;
+          showQuestion();
+        }, 1000);
+      }
+    }
+
+    function checkAnswerSingle(choiceIndex) {
+      clearInterval(timer);
+      var q = questions[currentQuestion];
+      var ans = q.answers[choiceIndex];
+      var feedback = document.getElementById("feedback");
+
+      if(ans.correct){
+        feedback.textContent = "✅ Bonne réponse !";
+        feedback.className = "correct";
+        score++;
+      } else {
+        feedback.textContent = "❌ Mauvaise réponse.";
+        feedback.className = "wrong";
+      }
+      setTimeout(function() {
+        currentQuestion++;
+        showQuestion();
+      }, 1000);
+    }
+
+    validateBtn.onclick = function(){
+      var q = questions[currentQuestion];
+      var checkboxes = quizContainer.querySelectorAll('input[type="checkbox"]');
+      var correct = true;
+
+      checkboxes.forEach(cb => {
+        var ans = q.answers[cb.value];
+        if(cb.checked !== ans.correct) correct = false;
+      });
+
+      var feedback = document.getElementById("feedback");
+      if(correct){
+        feedback.textContent = "✅ Bonne réponse !";
+        feedback.className = "correct";
+        score++;
+      } else {
+        feedback.textContent = "❌ Mauvaise réponse.";
+        feedback.className = "wrong";
+      }
+
+      clearInterval(timer);
+      setTimeout(() => {
+        currentQuestion++;
+        showQuestion();
+      }, 1000);
+    };
+
+    function endQuiz() {
+      quizContainer.innerHTML = "";
+      validateBtn.style.display = "none";
+      timerBar.style.width = "0%";
+      progressContainer.textContent = "";
+      scoreContainer.textContent = "Résultat final : " + score + " / " + questions.length;
+
+      resultImage.innerHTML = "";
+      if(score >= 5){
+        resultImage.innerHTML = '<img src="bravo.png" alt="Bravo !" class="result-img">';
+      } else {
+        resultImage.innerHTML = '<img src="progres.png" alt="Progrès !" class="result-img">';
+      }
+    }
+
+    startBtn.addEventListener("click", function() {
+      startBtn.style.display = "none";
+      quizContainer.style.display = "block";
+      timerBar.parentElement.style.display = "block";
+      progressContainer.style.display = "block";
+      scoreContainer.style.display = "block";
+      showQuestion();
+    });
+  </script>
+</body>
+</html>

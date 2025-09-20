@@ -22,24 +22,30 @@
   }
 
   .title {
-    font-size: 32px;
+    font-size: 28px; /* légèrement réduit */
     font-weight: bold;
     margin-bottom: 10px;
   }
 
   .subtitle {
-    font-size: 18px;
+    font-size: 16px; /* légèrement réduit */
     color: #333;
     margin-bottom: 50px;
   }
 
-  /* Modification pour mettre les cercles à la ligne */
+  /* Layout pour les lignes de cercles */
   .wheel {
     display: flex;
-    flex-direction: column; /* chaque cercle sur une ligne */
-    align-items: center;    /* centre horizontalement */
-    gap: 20px;              /* espace vertical entre les cercles */
+    flex-direction: column; /* empile les lignes */
+    gap: 30px;              /* espace entre les lignes */
+    align-items: center;    /* centre les lignes horizontalement */
     margin-bottom: 20px;
+  }
+
+  .row {
+    display: flex;
+    gap: 40px;              /* espace entre les cercles dans la ligne */
+    justify-content: center;
   }
 
   .circle {
@@ -59,7 +65,7 @@
     white-space: normal;
     word-break: break-word;
     z-index: 15;
-    font-size: 14px;
+    font-size: 12px; /* réduit */
   }
 
   .circle:hover { transform: scale(1.05); }
@@ -79,7 +85,7 @@
     max-width: 800px;
     margin: 0 auto;
     text-align: left;
-    font-size: 14px;
+    font-size: 12px; /* réduit */
     border-radius: 12px;
     z-index: 1;
     background: transparent; /* pas de cartouche blanc */
@@ -105,14 +111,14 @@
   }
 
   .circle-title {
-    font-size: 16px;
+    font-size: 14px; /* réduit */
     font-weight: bold;
     margin-bottom: 5px;
   }
 
   .details { 
-    font-size: 14px;
-    line-height: 1.4;
+    font-size: 12px; /* réduit */
+    line-height: 1.3; /* légèrement plus compact */
     color: #000;
   }
 
@@ -125,14 +131,18 @@
   <div class="title">Infractions sexuelles dans le sport</div>
   <div class="subtitle">Survolez un cercle pour voir les détails.</div>
 
-  <div class="wheel" id="wheel">
-    <div class="circle color1" data-key="prop_sex">Propositions sexuelles à un mineur</div>
-    <div class="circle color2" data-key="extorsion">Extorsion d’images pédopornographiques</div>
-    <div class="circle color3" data-key="sextorsion">Sextorsion</div>
-    <div class="circle color4" data-key="photo">Prise de photo pornographique d’un mineur</div>
-    <div class="circle color5" data-key="dispo_photo">Rendre disponible une photo pornographique</div>
-    <div class="circle color6" data-key="detention">Consultation, acquisition ou détention d’images d’abus sexuels</div>
-    <div class="circle color7" data-key="incitation">Incitation d’un mineur à commettre un acte sexuel</div>
+  <div class="wheel">
+    <div class="row">
+      <div class="circle color1" data-key="prop_sex">Propositions sexuelles à un mineur</div>
+      <div class="circle color2" data-key="extorsion">Extorsion d’images pédopornographiques</div>
+      <div class="circle color3" data-key="sextorsion">Sextorsion</div>
+      <div class="circle color4" data-key="photo">Prise de photo pornographique d’un mineur</div>
+    </div>
+    <div class="row">
+      <div class="circle color5" data-key="dispo_photo">Rendre disponible une photo pornographique</div>
+      <div class="circle color6" data-key="detention">Consultation, acquisition ou détention d’images d’abus sexuels</div>
+      <div class="circle color7" data-key="incitation">Incitation d’un mineur à commettre un acte sexuel</div>
+    </div>
   </div>
 
   <div class="center" id="centerText">

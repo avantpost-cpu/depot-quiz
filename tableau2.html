@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Infractions - Présentation</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: url('fond.jpg') repeat;
+    background-size: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 50px;
+    margin: 0;
+  }
+
+  .container {
+    text-align: center;
+    max-width: 1000px;
+    width: 100%;
+  }
+
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 40px;
+  }
+
+  .wheel {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    position: relative;
+    margin-bottom: 40px;
+  }
+
+  .circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    padding: 10px;
+    line-height: 1.2;
+    white-space: normal;
+    word-break: break-word;
+    z-index: 15;
+  }
+
+  .circle:hover { transform: scale(1.1); }
+
+  .color1 { background: #4f918d; }
+  .color2 { background: #73a37a; }
+  .color3 { background: #97b568; }
+  .color4 { background: #bbc656; }
+
+  .center {
+    position: relative;
+    padding: 20px;
+    min-height: 220px;
+    max-width: 600px; /* largeur réduite pour meilleure lecture */
+    margin: 0 auto;   /* centrer */
+    text-align: left;
+    font-size: 16px;
+    border-radius: 15px;
+    z-index: 1;
+  }
+
+  .center-bg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    background: none;
+    opacity: 0;
+    transition: background 0.5s, opacity 0.5s;
+    z-index: 0;
+  }
+
+  .center-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .circle-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .details { font-size: 14px; line-height: 1.4; color: #000; }
+  .details div { margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="title">Présentation des infractions majeures<br>dans le sport</div>
+  <div class="subtitle">Survolez un cercle pour voir les détails.</div>
+
+  <div class="wheel" id="wheel">
+    <div class="circle color1" data-key="violences">Violences<br>physiques et psychologiques</div>
+    <div class="circle color2" data-key="harcelement">Harcèlement<br>moral</div>
+    <div class="circle color3" data-key="bizutage">Bizutage</div>
+    <div class="circle color4" data-key="autres">Autres<br>infractions</div>
+  </div>
+
+  <div class="center" id="centerText">
+    <div class="center-bg" id="centerBg"></div>
+    <div class="center-content" id="centerContent">
+      <!-- Texte remplacé par survol -->
+    </div>
+  </div>
+</div>
+
+<script>
+const centerContent = document.getElementById("centerContent");
+const centerBg = document.getElementById("centerBg");
+const circles = document.querySelectorAll(".circle");
+
+const dataContent = {
+  violences: `<div class="circle-title">Violences physiques et psychologiques</div>
+  <div class="details">
+    <div><strong>Articles:</strong> 222-7 à 222-16-3 CP, R.625-1 CP</div>
+    <div><strong>Définition:</strong> Violences entraînant la mort, mutilation, infirmité ou incapacité de travail.</div>
+    <div><strong>Peines principales:</strong> 3 à 20 ans de réclusion criminelle, 15 000 € à 150 000 € d’amende. Circonstances aggravantes pour mineurs &lt;15 ans.</div>
+  </div>`,
+
+  harcelement: `<div class="circle-title">Harcèlement moral</div>
+  <div class="details">
+    <div><strong>Article:</strong> 222-33-2-2 CP</div>
+    <div><strong>Définition:</strong> Propos ou comportements répétés portant atteinte à la santé physique ou mentale.</div>
+    <div><strong>Peines:</strong> 1 an de prison et 15 000 € d’amende. Victime mineure: 2 ans et 30 000 €. Circonstances aggravantes: 3 ans et 45 000 €.</div>
+    <div><strong>Exemples:</strong> Pierre Ettel (2023), Vincent Pateau (2023), Stefano Vukov (2025)</div>
+  </div>`,
+
+  bizutage: `<div class="circle-title">Bizutage</div>
+  <div class="details">
+    <div><strong>Articles:</strong> 225-16-1, R625-8-3, 222-33-1-1</div>
+    <div><strong>Définition:</strong> Actes de bizutage interdits depuis 2017 (manger des insectes, lécher terre, épilation forcée, outrages sexistes/sexuels).</div>
+    <div><strong>Peines:</strong> 6 mois de prison et 7 500 € d’amende. Amendes jusqu’à 3 750 € si circonstance aggravante. Exemples: commentaires sexistes et propositions sexuelles inappropriées.</div>
+  </div>`,
+
+  autres: `<div class="circle-title">Autres infractions</div>
+  <div class="details">
+    <div><strong>Informations complémentaires:</strong> Possibilité d'ajouter d'autres types d'infractions selon le code pénal ou situations particulières dans le sport.</div>
+  </div>`
+};
+
+circles.forEach(circle => {
+  circle.addEventListener("mouseenter", () => {
+    const key = circle.dataset.key;
+    centerContent.innerHTML = dataContent[key];
+    centerBg.style.background = `radial-gradient(circle, ${circle.style.background}cc 0%, transparent 70%)`;
+    centerBg.style.opacity = 0.8;
+
+    circles.forEach(c => { if(c !== circle) c.style.background = "#e6e6e6"; });
+  });
+
+  circle.addEventListener("mouseleave", () => {
+    centerContent.innerHTML = "";
+    centerBg.style.opacity = 0;
+    circles.forEach(c => c.style.background = c.classList.contains("color1") ? "#4f918d" :
+                                      c.classList.contains("color2") ? "#73a37a" :
+                                      c.classList.contains("color3") ? "#97b568" :
+                                      "#bbc656");
+  });
+});
+</script>
+
+</body>
+</html>

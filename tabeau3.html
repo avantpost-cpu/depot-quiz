@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Infractions - Présentation</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: url('fond.jpg') repeat;
+    background-size: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 20px;
+    margin: 0;
+  }
+
+  .container {
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  .title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 30px; /* espace au-dessus des cercles */
+  }
+
+  .wheel {
+    display: grid;
+    grid-template-columns: repeat(2, 160px);
+    grid-template-rows: repeat(2, 160px);
+    justify-content: center;
+    align-items: center;
+    gap: 20px 40px;
+    margin-bottom: 2px; /* réduit l’espace entre cercles et texte */
+  }
+
+  .circle {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    color: white !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    padding: 10px;
+    line-height: 1.1;
+    white-space: normal;
+    word-break: break-word;
+    z-index: 15;
+    font-size: 16px;
+  }
+
+  .circle:hover { transform: scale(1.05); }
+
+  .color1 { background: #4f918d; }
+  .color2 { background: #73a37a; }
+
+  .center {
+    position: relative;
+    padding: 5px; /* réduit le padding pour rapprocher le texte */
+    min-height: 160px; /* réduit */
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 16px;
+    border-radius: 12px;
+    z-index: 1;
+  }
+
+  .center-bg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: none;
+    opacity: 0;
+    transition: background 0.5s, opacity 0.5s;
+    z-index: 0;
+  }
+
+  .center-content {
+    position: relative;
+    z-index: 2;
+    color: #000;
+    margin-top: 0; /* aucun espace au-dessus du texte */
+  }
+
+  .circle-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  .details { 
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .details div { margin-bottom: 1px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="title">Infractions - Obligation de dénonciation</div>
+  <div class="subtitle">Survolez un cercle pour voir les détails.</div>
+
+  <div class="wheel" id="wheel">
+    <div class="circle color1" data-key="citoyen">Non-dénonciation par un citoyen</div>
+    <div class="circle color2" data-key="professionnel">Non-dénonciation par un professionnel</div>
+  </div>
+
+  <div class="center" id="centerText">
+    <div class="center-bg" id="centerBg" style="opacity: 0;"></div>
+    <div class="center-content" id="centerContent"></div>
+  </div>
+</div>
+
+<script>
+const centerContent = document.getElementById("centerContent");
+const centerBg = document.getElementById("centerBg");
+const circles = document.querySelectorAll(".circle");
+
+const dataContent = {
+  citoyen: `<div class="circle-title">Non-dénonciation par un citoyen</div>
+  <div class="details">
+    <div><strong>Article du Code:</strong> 434-3 CP</div>
+    <div><strong>Obligation:</strong> Informer les autorités judiciaires ou administratives en cas de mauvais traitements, privations ou atteintes sexuelles sur un mineur de moins de 15 ans</div>
+    <div><strong>Peine:</strong> 3 ans d’emprisonnement et 45 000 € d’amende</div>
+  </div>`,
+
+  professionnel: `<div class="circle-title">Non-dénonciation par un professionnel</div>
+  <div class="details">
+    <div><strong>Article du Code:</strong> 40 CPP</div>
+    <div><strong>Obligation:</strong> Signalement au Procureur dès qu’un crime ou un délit est connu dans l’exercice des fonctions</div>
+    <div><strong>Peine:</strong> Aucune spécifique, mais protection pénale en cas de signalement de bonne foi</div>
+  </div>`
+};
+
+circles.forEach(circle => {
+  circle.addEventListener("mouseenter", () => {
+    const key = circle.dataset.key;
+    centerContent.innerHTML = dataContent[key];
+    centerBg.style.background = `radial-gradient(circle, ${circle.style.background}cc 0%, transparent 70%)`;
+    centerBg.style.opacity = 0.8;
+
+    circles.forEach(c => { if(c !== circle) c.style.background = "#e6e6e6"; });
+  });
+
+  circle.addEventListener("mouseleave", () => {
+    centerContent.innerHTML = "";
+    circles.forEach(c => c.style.background = c.classList.contains("color1") ? "#4f918d" :
+                                      c.classList.contains("color2") ? "#73a37a" : "#97b568");
+    centerBg.style.opacity = 0;
+  });
+});
+</script>
+
+</body>
+</html>

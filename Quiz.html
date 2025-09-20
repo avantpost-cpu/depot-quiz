@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Devinez les raisons du silence</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+      background-image: url('fond.jpg'); /* image de fond répétée */
+      background-repeat: repeat;
+      background-size: auto;
+    }
+
+    h2 { text-align: center; }
+
+    #instructions { margin-bottom: 20px; font-size: 16px; line-height: 1.5; }
+
+    .question {
+      margin-bottom: 25px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.9);
+    }
+
+    button {
+      display: block;
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+      cursor: pointer;
+      border-radius: 5px;
+      border: none;
+    }
+
+    button:hover { background: #f0f0f0; }
+
+    #startBtn {
+      background-color: #4f918d; /* couleur du bouton */
+      color: white;              /* texte en blanc */
+      font-weight: bold;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      display: block;
+      margin: 20px auto;
+      width: 200px;
+      text-align: center;
+    }
+
+    #startBtn:hover {
+      background-color: #3e736b; /* couleur légèrement plus foncée au survol */
+    }
+
+    .correct { color: green; font-weight: bold; }
+    .wrong { color: red; font-weight: bold; }
+
+    #score { font-size: 18px; font-weight: bold; text-align: center; margin-top: 20px; }
+    #timerBarContainer { width: 100%; height: 20px; background: #eee; border-radius: 10px; margin: 15px 0; overflow: hidden; }
+    #timerBar { height: 100%; width: 100%; background: linear-gradient(to right, #4f918d, #eab400); transition: width 1s linear; }
+    #progress { text-align: center; margin-bottom: 10px; font-weight: bold; }
+
+    #quiz, #timerBarContainer, #progress, #score { display: none; }
+
+    .result-img { max-width: 50%; height: auto; display: block; margin: 20px auto 0 auto; }
+  </style>
+</head>
+<body>
+  <h2>Devinez les raisons du silence</h2>
+
+  <p id="instructions">
+    Ce quiz vous invite à deviner les raisons pour lesquelles certaines victimes gardent le silence dans le milieu sportif. 
+    Vous avez 15 secondes pour chaque question. La barre verte/orange indique le temps restant. Bonne chance !
+  </p>
+
+  <button id="startBtn">Commencer le quiz</button>
+
+  <div id="progress"></div>
+  <div id="timerBarContainer">
+    <div id="timerBar"></div>
+  </div>
+  <div id="quiz"></div>
+  <div id="score"></div>
+  <div id="resultImage"></div>
+
+  <script>
+    var questions = [
+      { text: "Pression sur la carrière : pourquoi le silence ?", answers: ["L’agresseur menace la carrière","Trop d’entraînements","Préférence pour la discrétion"], correct: 0 },
+      { text: "Loyauté à l’équipe : effet sur le silence ?", answers: ["Craint de nuire au club","Veut devenir capitaine","Pense que personne n’écoute"], correct: 0 },
+      { text: "Menaces physiques : exemple ?", answers: ["Ne pas intervenir en cas de blessure","Entraînements supplémentaires","Récompenses"], correct: 0 },
+      { text: "Pression familiale : effet sur le silence ?", answers: ["Peur de décevoir ou ne pas être cru","Famille encourage à parler","Famille indifférente"], correct: 0 },
+      { text: "Culture de l’effort : effet sur le silence ?", answers: ["Violences perçues comme rite","Blessures toujours soignées","Douleur ignorée par coach"], correct: 0 },
+      { text: "Culte de la virilité : effet sur le silence ?", answers: ["Honte de montrer vulnérabilité","Veut prouver sa force","Personne ne remarquera"], correct: 0 },
+      { text: "Méfiance envers institutions : pourquoi ?", answers: ["Plaintes mal traitées","Préfère amis","Cherche conseils sportifs"], correct: 0 }
+    ];
+
+    var currentQuestion = 0;
+    var score = 0;
+    var timeLeft = 15;
+    var timer;
+
+    var quizContainer = document.getElementById("quiz");
+    var scoreContainer = document.getElementById("score");
+    var timerBar = document.getElementById("timerBar");
+    var progressContainer = document.getElementById("progress");
+    var startBtn = document.getElementById("startBtn");
+    var resultImage = document.getElementById("resultImage");
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    function showQuestion() {
+      if (currentQuestion >= questions.length) {
+        quizContainer.innerHTML = "";
+        timerBar.style.width = "0%";
+        progressContainer.textContent = "";
+        scoreContainer.textContent = "Résultat final : " + score + " / " + questions.length;
+
+        resultImage.innerHTML = "";
+        if (score >= 5) {
+          resultImage.innerHTML = '<img src="bravo.png" alt="Bravo !" class="result-img">';
+        } else {
+          resultImage.innerHTML = '<img src="progres.png" alt="Progrès !" class="result-img">';
+        }
+        return;
+      }
+
+      var q = questions[currentQuestion];
+      var answers = q.answers.map((ans, index) => ({text: ans, isCorrect: index === q.correct}));
+      shuffleArray(answers);
+
+      progressContainer.textContent = "Question " + (currentQuestion + 1) + " / " + questions.length;
+
+      var html = '<div class="question"><p><strong>' + q.text + '</strong></p>';
+      for (var i = 0; i < answers.length; i++) {
+        html += '<button onclick="checkAnswer(' + i + ', ' + answers[i].isCorrect + ')">' + answers[i].text + '</button>';
+      }
+      html += '<p id="feedback"></p></div>';
+      quizContainer.innerHTML = html;
+
+      timeLeft = 15;
+      timerBar.style.width = "100%";
+      clearInterval(timer);
+      timer = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      timeLeft--;
+      timerBar.style.width = (timeLeft / 15 * 100) + "%";
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        document.getElementById("feedback").textContent = "⏰ Temps écoulé !";
+        document.getElementById("feedback").className = "wrong";
+        setTimeout(function() {
+          currentQuestion++;
+          showQuestion();
+        }, 1000);
+      }
+    }
+
+    function checkAnswer(choiceIndex, isCorrect) {
+      clearInterval(timer);
+      var feedback = document.getElementById("feedback");
+      if (isCorrect) {
+        feedback.textContent = "✅ Bonne réponse !";
+        feedback.className = "correct";
+        score++;
+      } else {
+        feedback.textContent = "❌ Mauvaise réponse.";
+        feedback.className = "wrong";
+      }
+      setTimeout(function() {
+        currentQuestion++;
+        showQuestion();
+      }, 1000);
+    }
+
+    startBtn.addEventListener("click", function() {
+      startBtn.style.display = "none";
+      quizContainer.style.display = "block";
+      timerBar.parentElement.style.display = "block";
+      progressContainer.style.display = "block";
+      scoreContainer.style.display = "block";
+      showQuestion();
+    });
+  </script>
+</body>
+</html>

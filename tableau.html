@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0058)file:///Users/user/Desktop/Rebond/quiz/depot/tableau2.html -->
+<html lang="fr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <title>Infractions - Disposition circulaire</title>
 <style>
   body {
@@ -28,16 +28,13 @@
     transform: translate(-50%, -50%);
     width: 380px;
     min-height: 200px;
-    color: black;
     text-align: center;
-    font-size: 18px;
     z-index: 10;
     padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    position: relative;
   }
 
   .center-content {
@@ -45,6 +42,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-size: 28px;
+    text-align: center;
+  }
+
+  .center-title {
+    font-weight: bold;
+    margin-bottom: 5px; /* espace entre le titre et le filet */
   }
 
   .center-bg {
@@ -65,8 +69,8 @@
     width: 0;
     height: 2px;
     background: black;
-    margin-top: 5px;
     transition: width 0.3s;
+    margin-bottom: 10px;
   }
 
   .circle {
@@ -105,19 +109,20 @@
 <body>
 
 <div class="wheel" id="wheel">
-  <div class="center-bg" id="centerBg"></div>
+  <div class="center-bg" id="centerBg" style="background: radial-gradient(circle, rgba(79, 145, 141, 0.8) 0%, transparent 70%); opacity: 0;"></div>
   <div class="center" id="centerText">
-    <div class="center-content">
-      Présentation des infractions majeures<br>
-      liées aux violences morales et sexuelles
-    </div>
-    <div class="center-underline" id="centerUnderline"></div>
+    <div class="center-content" id="centerContent"><div class="center-content">
+      <div class="center-title">Présentation</div>
+      des infractions majeures<br>
+      liées aux violences morales<br>
+      et sexuelles
+    </div></div>
+    <div class="center-underline" id="centerUnderline" style="width: 0px;"></div>
   </div>
-</div>
+<div class="circle" data-key="viol" style="background: rgb(79, 145, 141); left: 275px; top: 0px;">Viol</div><div class="circle" data-key="agression" style="background: rgb(115, 163, 122); left: 513.157px; top: 137.5px;">Agression<br>sexuelle</div><div class="circle" data-key="atteintes" style="background: rgb(151, 181, 104); left: 513.157px; top: 412.5px;">Atteintes<br>sexuelles</div><div class="circle" data-key="harcelement" style="background: rgb(187, 198, 86); left: 275px; top: 550px;">Harcèlement<br>sexuel</div><div class="circle" data-key="exhibition" style="background: rgb(223, 211, 68); left: 36.843px; top: 412.5px;">Exhibition<br>sexuelle</div><div class="circle" data-key="corruption" style="background: rgb(234, 180, 0); left: 36.843px; top: 137.5px;">Corruption<br>de mineurs</div></div>
 
 <script>
-const center = document.getElementById("centerText");
-const centerContent = center.querySelector(".center-content");
+const centerContent = document.getElementById("centerContent");
 const centerUnderline = document.getElementById("centerUnderline");
 const centerBg = document.getElementById("centerBg");
 const wheel = document.getElementById("wheel");
@@ -165,21 +170,25 @@ circlesData.forEach((c, i) => {
   circles.push(circle);
 
   circle.addEventListener("mouseenter", () => {
-    center.innerHTML = dataContent[c.key];
+    centerContent.innerHTML = dataContent[c.key];
     centerBg.style.background = `radial-gradient(circle, ${c.color}cc 0%, transparent 70%)`;
     centerBg.style.opacity = 0.8;
 
-    // Ajouter le filet sous le titre
-    const title = center.querySelector(".circle-title");
+    const title = centerContent.querySelector(".circle-title");
     if(title){
       centerUnderline.style.width = title.offsetWidth + "px";
     }
-    
+
     circles.forEach(other => { if(other !== circle) other.style.background = "#e6e6e6"; });
   });
 
   circle.addEventListener("mouseleave", () => {
-    center.innerHTML = `<div class="center-content">Présentation des infractions majeures<br>liées aux violences morales et sexuelles</div>`;
+    centerContent.innerHTML = `<div class="center-content">
+      <div class="center-title">Présentation</div>
+      des infractions majeures<br>
+      liées aux violences morales<br>
+      et sexuelles
+    </div>`;
     centerBg.style.opacity = 0;
     centerUnderline.style.width = "0";
 
@@ -188,5 +197,6 @@ circlesData.forEach((c, i) => {
 });
 </script>
 
-</body>
-</html>
+
+
+</body></html>

@@ -33,13 +33,12 @@
     margin-bottom: 50px;
   }
 
+  /* Modification pour mettre les cercles à la ligne */
   .wheel {
-    display: grid;
-    grid-template-columns: repeat(4, 180px);
-    grid-template-rows: repeat(2, 180px);
-    justify-content: center;
-    align-items: center;
-    gap: 40px 50px;
+    display: flex;
+    flex-direction: column; /* chaque cercle sur une ligne */
+    align-items: center;    /* centre horizontalement */
+    gap: 20px;              /* espace vertical entre les cercles */
     margin-bottom: 20px;
   }
 

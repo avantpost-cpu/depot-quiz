@@ -16,7 +16,7 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    background: #ffffff; /* Fond blanc corrigé */
+    background: #ffffff; /* Fond blanc */
     margin: 0;
     padding: 10px;
     box-sizing: border-box;
@@ -24,7 +24,7 @@
 
   .container {
     display: flex;
-    flex-wrap: wrap; /* Passe en colonne si pas assez de place */
+    flex-wrap: wrap;
     align-items: flex-start;
     justify-content: center;
     gap: 20px;
@@ -33,8 +33,8 @@
 
   svg {
     width: 100%;
-    max-width: 400px; /* Taille max identique à l'ancien */
-    height: auto;      /* garde proportions */
+    max-width: 400px;
+    height: auto;
     flex: 1 1 300px;
   }
 
@@ -74,7 +74,6 @@
     padding-left: 20px;
   }
 
-  /* Responsivité pour petits écrans */
   @media (max-width: 700px) {
     .container {
       flex-direction: column;
@@ -113,23 +112,42 @@
   <div class="details-container">
     <div id="details1" class="details">
       <ul>
+        <li>Mentales</li>
         <li>Troubles anxieux et dépressifs chroniques</li>
         <li>Faible estime de soi</li>
-        <li>Manque de confiance en soi...</li>
+        <li>Manque de confiance en soi et en les autres, notamment institutions sportives</li>
+        <li>Troubles psychiatriques</li>
+        <li>Maladies organiques diverses (cardio-vasculaire, inflammatoire, obésité…)</li>
+        <li>Conduites à risque, addictions</li>
+        <li>Idées et conduites suicidaires</li>
+        <li>Etat de stress post-traumatique (flash-back, cauchemars, dissociation)</li>
+        <li>Risque de reproduction de la violence : parent ou futur entraineur à risque de violences envers autrui</li>
+        <li>Baisse de la qualité de vie dans son ensemble</li>
       </ul>
     </div>
+
     <div id="details2" class="details">
       <ul>
         <li>Etat de stress post-traumatique</li>
         <li>Douleurs chroniques</li>
-        <li>Maladies organiques...</li>
+        <li>Maladies organiques notamment inflammatoires, métaboliques, cardio-vasculaires</li>
+        <li>Maladies psycho-somatiques chroniques (syndrome du colon irritable, fibromyalgie…)</li>
+        <li>Cancers</li>
+        <li>Troubles neurologiques irréversibles</li>
+        <li>Troubles neurovégétatifs persistants</li>
+        <li>Retard de développement</li>
       </ul>
     </div>
+
     <div id="details3" class="details">
       <ul>
         <li>Etat de stress post-traumatique</li>
         <li>Retrait social</li>
-        <li>Conduites à risque...</li>
+        <li>Conduites à risque, addictions, hypersexualité</li>
+        <li>Délinquance, troubles judiciaires</li>
+        <li>Invalidité, chômage, précarité, errance</li>
+        <li>Absence de soins médicaux ou soins médicaux excessifs</li>
+        <li>Risque de répétition sur autrui des violences</li>
       </ul>
     </div>
   </div>

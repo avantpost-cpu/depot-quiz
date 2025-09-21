@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Untitled</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Pages du livre</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #ffffff;
+    text-align: center;
+  }
+
+  .pages-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    position: relative;
+    gap: 0; /* images collées */
+  }
+
+  .pages-container img {
+    width: 600px; 
+    height: auto;
+    cursor: pointer;
+    display: block;
+  }
+
+  /* Texte court terme positionné sur page2 */
+  .column-court, .column-long {
+    position: absolute;
+    text-align: justify;
+    color: #000;
+    opacity: 0;
+    pointer-events: none; 
+    transition: opacity 0.3s ease;
+    background: none;
+  }
+
+  /* Colonne court terme sur page2 */
+  .column-court {
+    top: 10px;
+    left: 660px; 
+    width: 420px;
+  }
+
+  /* Colonne long terme sur page1 */
+  .column-long {
+    top: 200px;
+    left: 80px;  /* alignée sur page1 */
+    width: 420px;
+  }
+
+  .column-court .phrase,
+  .column-long .phrase {
+    margin-bottom: 10px;
+  }
+
+  .column-court .italic,
+  .column-long .italic {
+    font-style: italic;
+    display: block;
+  }
+
+  .separator {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .show {
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+
+<div class="pages-container">
+  <img id="page1" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1.png" alt="Page 1">
+  <img id="page2" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2.png" alt="Page 2">
+
+  <!-- Texte court terme sur page2 -->
+  <div id="columnCourt" class="column-court">
+    <div class="phrase">
+      Chute des notes :<br>
+      <span class="italic">« Côté école, ce n’est pas glorieux, mes notes sont en chute libre »</span>
+    </div>
+    <div class="separator">*</div>
+
+    <div class="phrase">
+      Sommeil perturbé/cauchemars :<br>
+      <span class="italic">« Depuis quelques semaines, je fais des cauchemars toutes les nuits »</span>
+    </div>
+    <div class="separator">*</div>
+
+    <div class="phrase">
+      Changements de comportements :<br>
+      <span class="italic">« Sur le court, je hurle sans arrêt, je pleure très souvent, je triche, je m’embrouille avec les adversaires »</span>
+    </div>
+    <div class="separator">*</div>
+
+    <div class="phrase">
+      Corps qui parle :<br>
+      <span class="italic">« La fin d’année au collège est un supplice, je saigne du nez chaque jour, je vomis souvent. Je pleure tout le temps quand je suis seule »</span>
+    </div>
+    <div class="separator">*</div>
+
+    <div class="phrase">
+      Baisse de moral :<br>
+      <span class="italic">« Depuis quelques semaines je sais que je sombre, la vie est moins belle, moins vive. Je ne vois plus les couleurs de la même façon, je n’entends plus aussi nettement, rien n’a la même saveur. »</span>
+    </div>
+  </div>
+
+  <!-- Texte long terme sur page1 -->
+  <div id="columnLong" class="column-long">
+    <div class="phrase">
+      <span class="italic">« Je n'oublie jamais rien. J’aurais préféré oublier. Les odeurs, les goûts, les visions, les sons, les touchers, mes cinq sens sont marqués. Ces souvenirs s’immiscent sans arrêt dans ma vie depuis vingt ans. »</span>
+    </div>
+    <div class="separator">*</div>
+
+    <div class="phrase">
+      <span class="italic">« Aujourd’hui encore je dors à gauche, comme si j’étais conditionnée depuis cette époque. Je dors mal, je me réveille très souvent, j’ai une boule au ventre »</span>
+    </div>
+    <div class="separator">*</div>
+
+    <div class="phrase">
+      <span class="italic">« J’ai des reviviscences, des cauchemars, un besoin de contrôle et une perte totale de contrôle par moments. Des conduites d'évitement, TOC, un sentiment de culpabilité envers les autres victimes, envers ma famille, une phobie des oiseaux. »</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const page1 = document.getElementById('page1');
+  const page2 = document.getElementById('page2');
+  const columnCourt = document.getElementById('columnCourt');
+  const columnLong = document.getElementById('columnLong');
+
+  // Survol page1 : page2 change + texte court terme
+  page1.addEventListener('mouseenter', () => {
+    page2.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2a.png';
+    columnCourt.classList.add('show');
+  });
+  page1.addEventListener('mouseleave', () => {
+    page2.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2.png';
+    columnCourt.classList.remove('show');
+  });
+
+  // Survol page2 : page1 change + texte long terme
+  page2.addEventListener('mouseenter', () => {
+    page1.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1a.png';
+    columnLong.classList.add('show');
+  });
+  page2.addEventListener('mouseleave', () => {
+    page1.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1.png';
+    columnLong.classList.remove('show');
+  });
+</script>
+
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>

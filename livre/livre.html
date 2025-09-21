@@ -23,23 +23,33 @@
     background-repeat: repeat;
     background-size: auto;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column; /* empile verticalement les éléments */
+    align-items: center;
     padding: 2vw;
-    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 0 auto;
+    width: 100%;
+    max-width: 1200px;
   }
 
   .pages-container {
     display: flex;
-    flex-wrap: nowrap; /* côte à côte sur desktop */
+    flex-wrap: nowrap; /* toujours côte à côte */
     justify-content: center;
+    gap: 0vw;
     width: 100%;
-    max-width: 100%; /* occupe toute la largeur */
+    max-width: 100%;
   }
 
   .page-wrapper {
-    flex: 1 1 50%; /* s’adapte automatiquement */
-    max-width: 50%; /* pour garder les deux images collées sur desktop */
+    flex: 1 1 0;
+    max-width: 48%; /* légèrement moins de 50% pour tenir sur tous les écrans */
   }
 
   .page-wrapper img {
@@ -48,33 +58,45 @@
     display: block;
     cursor: pointer;
     transition: all 0.3s ease;
-    border-radius: 0; /* sans arrondi */
-    filter: none; /* pas d'effet */
   }
 
-  /* Responsive mobile */
+  /* Couverture en bas, centrée et responsive */
+  .cover {
+    width: 40%;
+    max-width: 400px;
+    margin-top: 2vw;
+    display: block;
+  }
+
+  /* Responsive mobile : pages toujours côte à côte mais plus petites */
   @media (max-width: 900px) {
-    .pages-container { flex-wrap: wrap; }
     .page-wrapper {
-      max-width: 100%;
-      flex: 1 1 100%;
-      margin-bottom: 2vw;
+      max-width: 48%;
+    }
+    .cover {
+      width: 60%;
+      max-width: 250px;
     }
   }
 </style>
 </head>
 <body>
 
-<div class="pages-container">
-  <!-- Page 1 -->
-  <div class="page-wrapper">
-    <img id="page1" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1.png" alt="Page 1">
+<div class="content-wrapper">
+  <div class="pages-container">
+    <!-- Page 1 -->
+    <div class="page-wrapper">
+      <img id="page1" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1.png" alt="Page 1">
+    </div>
+
+    <!-- Page 2 -->
+    <div class="page-wrapper">
+      <img id="page2" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2.png" alt="Page 2">
+    </div>
   </div>
 
-  <!-- Page 2 -->
-  <div class="page-wrapper">
-    <img id="page2" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2.png" alt="Page 2">
-  </div>
+  <!-- Image de couverture sous les pages -->
+  <img class="cover" src="https://avantpost-cpu.github.io/depot-quiz/livre/couverture.png" alt="Couverture du livre">
 </div>
 
 <script>

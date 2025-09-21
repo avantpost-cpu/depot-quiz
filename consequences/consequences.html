@@ -12,142 +12,139 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Puzzle interactif</title>
+<title>Conséquences des violences</title>
 <style>
   body {
     font-family: Arial, sans-serif;
-    background: #f5f5f5;
-    margin: 200;
+    background: white; /* fond parfaitement blanc */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2vh 2vw;
+    margin: 0;
+    box-sizing: border-box;
   }
 
   .container {
     display: flex;
-    align-items: flex-start;
-  }
-
-  svg {
-    width: 400px;
-    height: 400px;
-    display: block; /* pour que le SVG commence vraiment à gauche */
+    flex-wrap: wrap;
+    gap: 2vw;
+    justify-content: center;
+    width: 100%;
+    max-width: 1000px; /* limite max pour grand écran */
   }
 
   .piece {
+    color: white;
+    flex: 1 1 200px; /* largeur minimale 200px mais peut s’agrandir */
+    max-width: 220px;
+    aspect-ratio: 1 / 1; /* garde la forme carrée */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    position: relative;
+    transition: all 0.3s;
+    z-index: 1;
+    font-size: 1em;
   }
 
-  .piece text.title {
-    fill: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    pointer-events: none;
+  .piece:hover {
+    transform: scale(1.05);
+    z-index: 10;
   }
 
-  .details-container {
-    max-width: 350px;
-    margin-left: 30px; /* espace entre le puzzle et le texte */
+  /* Couleurs et formes */
+  .carre { 
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    background: #4f918d;
+  }
+  .cercle { 
+    clip-path: circle(50% at 50% 50%);
+    background: #7f9b7b;
+  }
+  .hexagone { 
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    background: #aea65c;
+  }
+  .triangle { 
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    background: #e9b300;
   }
 
-  .details {
+  .texte {
     display: none;
-    font-size: 18px;
-    line-height: 1.4em;
-    color: #000;
+    position: absolute;
+    width: min(60vw, 300px);
+    max-height: 50vh;
+    background: white;
+    color: black;
+    padding: 1em;
+    overflow-y: auto;
+    border-radius: 10px;
+    text-align: left;
+    font-size: 0.9em;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 100;
   }
 
-  .active-details {
-    display: block;
-  }
-
-  .hidden {
-    opacity: 0.1;
+  /* Responsive : petits écrans */
+  @media (max-width: 600px) {
+    .piece {
+      flex: 1 1 45%; /* 2 pièces par ligne */
+      font-size: 0.9em;
+    }
+    .texte {
+      width: 80vw;
+      left: 10vw !important; /* centré */
+    }
   }
 </style>
 </head>
 <body>
 
 <div class="container">
-  <svg viewBox="0 0 337.82 337.82">
-    <!-- Pièce 1 : Mentales -->
-    <g id="piece1" class="piece">
-      <path d="M55.6,156.95c7.83-.78,16.48,2.02,20.57,6.67,2.15,2.44,2.97,5.33,2.32,8.13-1.68,7.29-5.67,13.64-11.14,20.93-2.1,2.8-2.53,9.51.44,15.46,1.96,3.93,5.98,8.61,13.98,8.61,6.87,0,12.05-2.4,15.38-7.13,2.85-4.04,3.61-8.75,3.61-10.9,0-3.42-4.62-9.22-7.99-13.46-.99-1.25-1.95-2.45-2.79-3.58-2.9-3.86-3.46-9.47-1.44-14.28,2.4-5.71,7.96-9.55,15.26-10.54,6.54-.88,34.45,1.91,62.35,5.13,1.28-11.64,3.92-35.47,5-43.64.77-5.86.52-11.3-.71-15.32-1.37-4.46-3.8-6.94-7.44-7.57-3.18-.55-4.74.82-7.97,3.99-3.87,3.79-9.17,8.98-20.14,8.98s-23.6-9.39-23.6-24.55,12.99-25.51,25.03-25.51c7.37,0,14.31,5.4,19.89,9.74,2.3,1.79,5.77,4.49,6.94,4.61,5.47,0,7.71-9.77,7.95-18.14.34-11.45-3.8-39.79-6.11-54.58H6.87C3.08,0,0,3.08,0,6.87v157.8c13.42-1.96,47.79-6.94,55.6-7.72Z" fill="#0a9396"/>
-      <text x="70" y="80" class="title" text-anchor="middle" dominant-baseline="middle">Mentales</text>
-    </g>
-
-    <!-- Pièce 2 : Physiques -->
-    <g id="piece2" class="piece">
-      <path d="M178.1,54.79c-.17,5.85-1.76,24.93-14.98,24.93-3.38,0-6.83-2.69-11.2-6.09-4.73-3.68-10.63-8.27-15.59-8.27-8.67,0-18.03,7.08-18.03,18.51s9.9,17.55,16.6,17.55c8.11,0,11.58-3.39,15.24-6.98,3.39-3.32,7.23-7.07,14.07-5.89,10.83,1.88,16.15,13.65,13.89,30.7-1.07,8.12-3.71,31.93-4.99,43.53,27.41,3.23,53.05,6.62,56.31,7.06,2.49.03,9.03-.51,11.99-3.4,1-.98,1.47-2.13,1.47-3.63,0-6.92-3.6-10.35-7.4-14-1.27-1.22-2.59-2.48-3.74-3.86-4.08-4.88-4.65-13.15-1.39-20.11,3.98-8.51,12.61-13.38,23.7-13.38,13.56,0,19.86,5.77,22.77,10.61,3.93,6.54,3.28,13.99.89,18.46-1.03,1.94-2.25,3.93-3.54,6.03-3.31,5.41-7.05,11.54-7.05,16.24,0,1.29.47,2.33,1.49,3.29,3.13,2.94,10.66,4.34,20.15,3.74,9.71-.61,33.47-4.2,49.08-6.68V6.87c0-3.79-3.08-6.87-6.87-6.87h-158.87c2.38,15.26,6.36,42.94,6.02,54.79Z" fill="#909f70"/>
-      <text x="240" y="80" class="title" text-anchor="middle" dominant-baseline="middle">Physiques</text>
-    </g>
-
-    <!-- Pièce 3 : Comportementales -->
-    <g id="piece3" class="piece">
-      <path d="M289.18,176.84c-8.3.52-19.43-.04-25.38-5.63-2.42-2.27-3.7-5.17-3.7-8.39,0-6.67,4.29-13.7,8.08-19.89,1.23-2.02,2.4-3.92,3.33-5.68,1.45-2.73,1.67-7.57-.72-11.56-2.83-4.72-8.63-7.21-16.77-7.21-11.3,0-15.72,5.86-17.35,9.35-2.37,5.06-1.55,10.3.42,12.66.9,1.08,2.02,2.15,3.21,3.29,4.26,4.07,9.57,9.15,9.57,19.05,0,3.37-1.24,6.36-3.6,8.65-5.69,5.53-16.05,5.41-17.22,5.37l-.36-.03c-30.88-4.11-113.34-14.46-123.95-13.03-4.85.65-8.31,2.89-9.74,6.3-1.06,2.53-.82,5.5.59,7.38.81,1.08,1.73,2.23,2.67,3.42,4.46,5.6,9.51,11.96,9.51,17.82,0,6.96-4.67,25.03-25.99,25.03-8.9,0-16.28-4.55-20.25-12.48-3.91-7.82-3.82-17.4.22-22.79,5.92-7.89,8.7-13.02,9.92-18.3.05-.21.2-.85-.76-1.93-2.25-2.56-8.48-4.94-14.62-4.33-7.75.78-43.76,6-56.29,7.83v159.21c0,3.79,3.08,6.87,6.87,6.87h324.08c3.79,0,6.87-3.08,6.87-6.87v-160.68c-15.71,2.48-38.78,5.96-48.65,6.57Z" fill="#eab400"/>
-      <text x="170" y="260" class="title" text-anchor="middle" dominant-baseline="middle">Comportementales et sociales</text>
-    </g>
-  </svg>
-
-  <div class="details-container">
-    <div id="details1" class="details">
-      <ul>
-        <li>Troubles anxieux et dépressifs chroniques</li>
-        <li>Faible estime de soi</li>
-        <li>Manque de confiance en soi et en les autres, notamment institutions sportives</li>
-        <li>Troubles psychiatriques</li>
-        <li>Maladies organiques diverses (cardio-vasculaire, inflammatoire, obésité…)</li>
-        <li>Conduites à risque, addictions</li>
-        <li>Idées et conduites suicidaires</li>
-        <li>Etat de stress post-traumatique (flash-back, cauchemars, dissociation)</li>
-        <li>Risque de reproduction de la violence : parent ou futur entraîneur à risque</li>
-        <li>Baisse de la qualité de vie dans son ensemble</li>
-      </ul>
-    </div>
-   <div id="details2" class="details">
-  <ul>
-    <li>Etat de stress post-traumatique</li>
-    <li>Douleurs chroniques</li>
-    <li>Maladies organiques notamment inflammatoires, métaboliques, cardio-vasculaires</li>
-    <li>Maladies psycho-somatiques chroniques (syndrome du colon irritable, fibromyalgie…)</li>
-    <li>Cancers</li>
-    <li>Troubles neurologiques irréversibles</li>
-    <li>Troubles neurovégétatifs persistants</li>
-    <li>Retard de développement</li>
-  </ul>
-</div>
-
-   <div id="details3" class="details">
-  <ul>
-    <li>Etat de stress post-traumatique</li>
-    <li>Retrait social</li>
-    <li>Conduites à risque, addictions, hypersexualité</li>
-    <li>Délinquance, troubles judiciaires</li>
-    <li>Invalidité, chômage, précarité, errance</li>
-    <li>Absence de soins médicaux ou soins médicaux excessifs</li>
-    <li>Risque de répétition sur autrui des violences</li>
-  </ul>
-</div>
-
+  <div class="piece carre" 
+       data-text="<ul><li>Jeux sexuels inappropriés pour l’âge</li><li>Régression</li><li>Changement d’habitudes alimentaires</li><li>Enurésie/encoprésie</li><li>Masturbation excessive</li><li>Peurs intenses</li></ul>">
+    Petite enfance
+  </div>
+  <div class="piece cercle" 
+       data-text="<ul><li>Migraines / douleurs abdominales / crampes</li><li>Échec scolaire</li><li>Phobie scolaire</li><li>Difficulté à s’intégrer</li><li>Conduites hyper sexualisées</li></ul>">
+    Âges scolaires / primaire
+  </div>
+  <div class="piece hexagone" 
+       data-text="<ul><li>Migraines / douleurs abdominales / crampes</li><li>Troubles du comportement alimentaire</li><li>Conduite antisociale</li><li>Mensonges</li><li>Absentéisme, fugues</li><li>Addictions : alcool, drogue, sexe</li><li>MST, grossesses non désirées</li><li>Automutilation, tentatives de suicide</li></ul>">
+    Adolescence
+  </div>
+  <div class="piece triangle" 
+       data-text="<ul><li>État de stress post-traumatique</li><li>Douleurs chroniques</li><li>Troubles sexuels (vaginisme, hypersexualité, rejet de la sexualité…)</li><li>Troubles du comportement alimentaires</li><li>Troubles anxio-dépressifs chroniques</li><li>Difficultés relationnelles durables</li><li>Risque de reproduction de violences sur autrui</li><li>Idées suicidaires, automutilation, suicide</li></ul>">
+    Âge adulte
   </div>
 </div>
 
+<div id="texteAffiche" class="texte"></div>
+
 <script>
-const pieces = document.querySelectorAll(".piece");
-const details = {
-  piece1: document.getElementById("details1"),
-  piece2: document.getElementById("details2"),
-  piece3: document.getElementById("details3")
-};
+const pieces = document.querySelectorAll('.piece');
+const texteDiv = document.getElementById('texteAffiche');
 
 pieces.forEach(piece => {
-  piece.addEventListener("mouseenter", () => {
-    pieces.forEach(p => { if(p!==piece) p.classList.add("hidden"); });
-    Object.values(details).forEach(d => d.classList.remove("active-details"));
-    details[piece.id].classList.add("active-details");
+  piece.addEventListener('mouseenter', () => {
+    pieces.forEach(p => { if(p!==piece) p.style.opacity = '0'; });
+    texteDiv.innerHTML = piece.getAttribute('data-text');
+    const rect = piece.getBoundingClientRect();
+
+    // Par défaut, texte centré sous la pièce
+    texteDiv.style.left = (rect.left + window.scrollX) + 'px';
+    texteDiv.style.top = (rect.bottom + 10 + window.scrollY) + 'px';
+
+    texteDiv.style.display = 'block';
   });
 
-  piece.addEventListener("mouseleave", () => {
-    pieces.forEach(p => p.classList.remove("hidden"));
-    Object.values(details).forEach(d => d.classList.remove("active-details"));
+  piece.addEventListener('mouseleave', () => {
+    pieces.forEach(p => p.style.opacity = '1');
+    texteDiv.style.display = 'none';
   });
 });
 </script>

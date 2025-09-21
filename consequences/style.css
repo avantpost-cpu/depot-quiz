@@ -2,20 +2,23 @@ body {
     font-family: Arial, sans-serif;
     background: #f5f5f5;
     margin: 0;
+    padding-top: 50px; /* décale le puzzle depuis le haut */
 }
 
 .container {
     display: flex;
+    flex-wrap: wrap;          /* pour plusieurs lignes */
     align-items: flex-start;
-    margin-top: 50px; /* <-- décale le puzzle depuis le haut */
+    gap: 40px;
+    max-width: 460px;
+    position: relative;
+    transform: translateX(200px); /* décale tout le bloc vers la droite */
 }
-
 
 .container svg {
     width: 400px;
     height: 400px;
     display: block;
-    margin-left: 250px; /* <-- ici le décalage depuis le bord gauche */
 }
 
 .piece {
@@ -49,15 +52,16 @@ body {
 .hidden {
     opacity: 0.1;
 }
+
 .details ul {
-  list-style: none; /* Supprime les puces par défaut */
-  padding-left: 20px; /* espace pour les nouvelles puces */
+    list-style: none; /* supprime les puces par défaut */
+    padding-left: 20px; /* espace pour les nouvelles puces */
 }
 
 .details ul li::before {
-  content: "*"; /* symbole de puce */
-  color: #0a9396;    /* couleur de la puce */
-  display: inline-block;
-  width: 1em;    /* espace avant le texte */
- font-size: 20px
+    content: "*";       /* symbole de puce */
+    color: #0a9396;     /* couleur de la puce */
+    display: inline-block;
+    width: 1em;         /* espace avant le texte */
+    font-size: 20px;
 }

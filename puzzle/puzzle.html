@@ -16,9 +16,10 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    background: #fffff;
+    background: #ffffff; /* Fond blanc corrigé */
     margin: 0;
     padding: 10px;
+    box-sizing: border-box;
   }
 
   .container {
@@ -27,13 +28,13 @@
     align-items: flex-start;
     justify-content: center;
     gap: 20px;
-    max-width: 100%;
+    width: 100%;
   }
 
   svg {
     width: 100%;
-    max-width: 400px; /* Taille max */
-    height: auto;
+    max-width: 400px; /* Taille max identique à l'ancien */
+    height: auto;      /* garde proportions */
     flex: 1 1 300px;
   }
 
@@ -44,7 +45,7 @@
 
   .piece text.title {
     fill: #fff;
-    font-size: clamp(12px, 2vw, 16px); /* texte adaptatif */
+    font-size: clamp(12px, 2vw, 16px);
     font-weight: bold;
     pointer-events: none;
   }
@@ -71,6 +72,18 @@
 
   ul {
     padding-left: 20px;
+  }
+
+  /* Responsivité pour petits écrans */
+  @media (max-width: 700px) {
+    .container {
+      flex-direction: column;
+      align-items: center;
+    }
+    svg, .details-container {
+      max-width: 90%;
+      flex: 1 1 auto;
+    }
   }
 </style>
 </head>

@@ -15,15 +15,13 @@
 <title>Pages du livre</title>
 <style>
   /* Reset */
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  * { box-sizing: border-box; margin:0; padding:0; }
 
   body {
     font-family: Arial, sans-serif;
-    background: #ffffff;
+    background-image: url('https://avantpost-cpu.github.io/depot-quiz/livre/fond.jpg');
+    background-repeat: repeat;
+    background-size: auto;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -33,86 +31,34 @@
 
   .pages-container {
     display: flex;
-    flex-wrap: wrap; /* passe en colonne sur petits écrans */
+    flex-wrap: nowrap; /* côte à côte sur desktop */
     justify-content: center;
-    align-items: flex-start;
-    position: relative;
-    gap: 0; 
     width: 100%;
-    max-width: 1200px; /* limite la largeur pour grands écrans */
+    max-width: 100%; /* occupe toute la largeur */
   }
 
-  .pages-container img {
-    width: 48%; /* deux pages côte à côte */
-    max-width: 600px;
+  .page-wrapper {
+    flex: 1 1 50%; /* s’adapte automatiquement */
+    max-width: 50%; /* pour garder les deux images collées sur desktop */
+  }
+
+  .page-wrapper img {
+    width: 100%;
     height: auto;
+    display: block;
     cursor: pointer;
-    display: block;
     transition: all 0.3s ease;
+    border-radius: 0; /* sans arrondi */
+    filter: none; /* pas d'effet */
   }
 
-  /* Texte superposé */
-  .column-court, .column-long {
-    position: absolute;
-    text-align: justify;
-    color: #000;
-    opacity: 0;
-    pointer-events: none; 
-    transition: opacity 0.3s ease;
-    background: rgba(255,255,255,0.8);
-    padding: 1vw;
-    border-radius: 5px;
-  }
-
-  /* Colonne court terme sur page2 */
-  .column-court {
-    top: 5%;
-    left: 50%; 
-    width: 45%;
-  }
-
-  /* Colonne long terme sur page1 */
-  .column-long {
-    top: 20%;
-    left: 2%;  
-    width: 45%;
-  }
-
-  .column-court .phrase,
-  .column-long .phrase {
-    margin-bottom: 1vw;
-    font-size: 1vw;
-  }
-
-  .column-court .italic,
-  .column-long .italic {
-    font-style: italic;
-    display: block;
-  }
-
-  .separator {
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 1vw;
-  }
-
-  .show {
-    opacity: 1;
-  }
-
-  /* Media Queries pour petits écrans */
+  /* Responsive mobile */
   @media (max-width: 900px) {
-    .pages-container img {
-      width: 90%;
+    .pages-container { flex-wrap: wrap; }
+    .page-wrapper {
+      max-width: 100%;
+      flex: 1 1 100%;
       margin-bottom: 2vw;
-    }
-    .column-court, .column-long {
-      position: relative;
-      left: 0;
-      top: 0;
-      width: 90%;
-      font-size: 3vw;
-      margin-top: 1vw;
     }
   }
 </style>
@@ -120,83 +66,34 @@
 <body>
 
 <div class="pages-container">
-  <img id="page1" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1.png" alt="Page 1">
-  <img id="page2" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2.png" alt="Page 2">
-
-  <!-- Texte court terme sur page2 -->
-  <div id="columnCourt" class="column-court">
-    <div class="phrase">
-      Chute des notes :<br>
-      <span class="italic">« Côté école, ce n’est pas glorieux, mes notes sont en chute libre »</span>
-    </div>
-    <div class="separator">*</div>
-
-    <div class="phrase">
-      Sommeil perturbé/cauchemars :<br>
-      <span class="italic">« Depuis quelques semaines, je fais des cauchemars toutes les nuits »</span>
-    </div>
-    <div class="separator">*</div>
-
-    <div class="phrase">
-      Changements de comportements :<br>
-      <span class="italic">« Sur le court, je hurle sans arrêt, je pleure très souvent, je triche, je m’embrouille avec les adversaires »</span>
-    </div>
-    <div class="separator">*</div>
-
-    <div class="phrase">
-      Corps qui parle :<br>
-      <span class="italic">« La fin d’année au collège est un supplice, je saigne du nez chaque jour, je vomis souvent. Je pleure tout le temps quand je suis seule »</span>
-    </div>
-    <div class="separator">*</div>
-
-    <div class="phrase">
-      Baisse de moral :<br>
-      <span class="italic">« Depuis quelques semaines je sais que je sombre, la vie est moins belle, moins vive. Je ne vois plus les couleurs de la même façon, je n’entends plus aussi nettement, rien n’a la même saveur. »</span>
-    </div>
+  <!-- Page 1 -->
+  <div class="page-wrapper">
+    <img id="page1" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1.png" alt="Page 1">
   </div>
 
-  <!-- Texte long terme sur page1 -->
-  <div id="columnLong" class="column-long">
-    <div class="phrase">
-      <span class="italic">« Je n'oublie jamais rien. J’aurais préféré oublier. Les odeurs, les goûts, les visions, les sons, les touchers, mes cinq sens sont marqués. Ces souvenirs s’immiscent sans arrêt dans ma vie depuis vingt ans. »</span>
-    </div>
-    <div class="separator">*</div>
-
-    <div class="phrase">
-      <span class="italic">« Aujourd’hui encore je dors à gauche, comme si j’étais conditionnée depuis cette époque. Je dors mal, je me réveille très souvent, j’ai une boule au ventre »</span>
-    </div>
-    <div class="separator">*</div>
-
-    <div class="phrase">
-      <span class="italic">« J’ai des reviviscences, des cauchemars, un besoin de contrôle et une perte totale de contrôle par moments. Des conduites d'évitement, TOC, un sentiment de culpabilité envers les autres victimes, envers ma famille, une phobie des oiseaux. »</span>
-    </div>
+  <!-- Page 2 -->
+  <div class="page-wrapper">
+    <img id="page2" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2.png" alt="Page 2">
   </div>
 </div>
 
 <script>
   const page1 = document.getElementById('page1');
   const page2 = document.getElementById('page2');
-  const columnCourt = document.getElementById('columnCourt');
-  const columnLong = document.getElementById('columnLong');
 
-  // Survol page1 : page2 change + texte court terme
+  // Hover pour changer les images
   page1.addEventListener('mouseenter', () => {
     page2.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2a.png';
-    columnCourt.classList.add('show');
   });
   page1.addEventListener('mouseleave', () => {
     page2.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2.png';
-    columnCourt.classList.remove('show');
   });
 
-  // Survol page2 : page1 change + texte long terme
   page2.addEventListener('mouseenter', () => {
     page1.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1a.png';
-    columnLong.classList.add('show');
   });
   page2.addEventListener('mouseleave', () => {
     page1.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1.png';
-    columnLong.classList.remove('show');
   });
 </script>
 

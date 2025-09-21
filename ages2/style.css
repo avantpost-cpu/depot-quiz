@@ -12,7 +12,7 @@ body {
     gap: 40px;
     max-width: 460px;
     position: relative;
-    transform: translateX(180px); /* décale tout le bloc vers la droite */
+    transform: translateX(200px); /* décale tout le bloc vers la droite */
 }
 
 .container svg {

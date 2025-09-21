@@ -6,28 +6,29 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    background: #f0f0f0;
+    background: white; /* fond parfaitement blanc */
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: flex-start;
-    padding: 60px;
+    padding: 2vh 2vw;
     margin: 0;
-    position: relative;
+    box-sizing: border-box;
   }
 
   .container {
     display: flex;
     flex-wrap: wrap;
-    gap: 40px;
-    max-width: 460px; /* 2 pièces par ligne */
-    position: relative;
-    margin-left: 50px; /* décale le bloc vers la droite */
+    gap: 2vw;
+    justify-content: center;
+    width: 100%;
+    max-width: 1000px; /* limite max pour grand écran */
   }
 
   .piece {
     color: white;
-    width: 200px;
-    height: 200px;
+    flex: 1 1 200px; /* largeur minimale 200px mais peut s’agrandir */
+    max-width: 220px;
+    aspect-ratio: 1 / 1; /* garde la forme carrée */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,6 +37,7 @@
     position: relative;
     transition: all 0.3s;
     z-index: 1;
+    font-size: 1em;
   }
 
   .piece:hover {
@@ -64,17 +66,29 @@
   .texte {
     display: none;
     position: absolute;
-    width: 300px;
-    max-height: 220px;
+    width: min(60vw, 300px);
+    max-height: 50vh;
     background: white;
     color: black;
-    padding: 10px;
+    padding: 1em;
     overflow-y: auto;
     border-radius: 10px;
     text-align: left;
-    font-size: 14px;
+    font-size: 0.9em;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     z-index: 100;
+  }
+
+  /* Responsive : petits écrans */
+  @media (max-width: 600px) {
+    .piece {
+      flex: 1 1 45%; /* 2 pièces par ligne */
+      font-size: 0.9em;
+    }
+    .texte {
+      width: 80vw;
+      left: 10vw !important; /* centré */
+    }
   }
 </style>
 </head>
@@ -111,14 +125,10 @@ pieces.forEach(piece => {
     texteDiv.innerHTML = piece.getAttribute('data-text');
     const rect = piece.getBoundingClientRect();
 
-    // Texte à droite uniquement pour Petite enfance et Adolescence
-    if(piece.textContent.trim() === "Petite enfance" || piece.textContent.trim() === "Adolescence") {
-      texteDiv.style.left = (rect.right + 10) + 'px';
-    } else {
-      texteDiv.style.left = (rect.left - 320) + 'px';
-    }
+    // Par défaut, texte centré sous la pièce
+    texteDiv.style.left = (rect.left + window.scrollX) + 'px';
+    texteDiv.style.top = (rect.bottom + 10 + window.scrollY) + 'px';
 
-    texteDiv.style.top = rect.top + 'px';
     texteDiv.style.display = 'block';
   });
 

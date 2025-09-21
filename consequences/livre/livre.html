@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Untitled</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Pages du livre</title>
+<style>
+  /* Reset */
+  * { box-sizing: border-box; margin:0; padding:0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    background-image: url('https://avantpost-cpu.github.io/depot-quiz/livre/fond.jpg');
+    background-repeat: repeat;
+    background-size: auto;
+    display: flex;
+    flex-direction: column; /* empile verticalement les éléments */
+    align-items: center;
+    padding: 2vw;
+    min-height: 100vh;
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 0 auto;
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .pages-container {
+    display: flex;
+    flex-wrap: nowrap; /* toujours côte à côte */
+    justify-content: center;
+    gap: 0vw;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .page-wrapper {
+    flex: 1 1 0;
+    max-width: 48%; /* légèrement moins de 50% pour tenir sur tous les écrans */
+  }
+
+  .page-wrapper img {
+    width: 100%;
+    height: auto;
+    display: block;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  /* Couverture en bas, centrée et responsive */
+  .cover {
+    width: 40%;
+    max-width: 400px;
+    margin-top: 2vw;
+    display: block;
+  }
+
+  /* Responsive mobile : pages toujours côte à côte mais plus petites */
+  @media (max-width: 900px) {
+    .page-wrapper {
+      max-width: 48%;
+    }
+    .cover {
+      width: 60%;
+      max-width: 250px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="content-wrapper">
+  <div class="pages-container">
+    <!-- Page 1 -->
+    <div class="page-wrapper">
+      <img id="page1" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1.png" alt="Page 1">
+    </div>
+
+    <!-- Page 2 -->
+    <div class="page-wrapper">
+      <img id="page2" src="https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2.png" alt="Page 2">
+    </div>
+  </div>
+
+  <!-- Image de couverture sous les pages -->
+  <img class="cover" src="https://avantpost-cpu.github.io/depot-quiz/livre/couverture.png" alt="Couverture du livre">
+</div>
+
+<script>
+  const page1 = document.getElementById('page1');
+  const page2 = document.getElementById('page2');
+
+  // Hover pour changer les images
+  page1.addEventListener('mouseenter', () => {
+    page2.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2a.png';
+  });
+  page1.addEventListener('mouseleave', () => {
+    page2.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre2.png';
+  });
+
+  page2.addEventListener('mouseenter', () => {
+    page1.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1a.png';
+  });
+  page2.addEventListener('mouseleave', () => {
+    page1.src = 'https://avantpost-cpu.github.io/depot-quiz/livre/pageslivre1.png';
+  });
+</script>
+
+</body>
+</html>
+<!-- partial -->
+  
+</body>
+</html>

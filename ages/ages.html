@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Conséquences des violences</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 20px;
+    margin: 0;
+    position: relative;
+  }
+
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    max-width: 460px; /* 2 pièces par ligne */
+    position: relative;
+    margin-left: 50px; /* décale le bloc vers la droite */
+  }
+
+  .piece {
+    color: white;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s;
+    z-index: 1;
+  }
+
+  .piece:hover {
+    transform: scale(1.05);
+    z-index: 10;
+  }
+
+  /* Couleurs et formes */
+  .carre { 
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    background: #4f918d;
+  }
+  .cercle { 
+    clip-path: circle(50% at 50% 50%);
+    background: #7f9b7b;
+  }
+  .hexagone { 
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    background: #aea65c;
+  }
+  .triangle { 
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    background: #e9b300;
+  }
+
+  .texte {
+    display: none;
+    position: absolute;
+    width: 300px;
+    max-height: 220px;
+    background: white;
+    color: black;
+    padding: 10px;
+    overflow-y: auto;
+    border-radius: 10px;
+    text-align: left;
+    font-size: 14px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 100;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="piece carre" 
+       data-text="<ul><li>Jeux sexuels inappropriés pour l’âge</li><li>Régression</li><li>Changement d’habitudes alimentaires</li><li>Enurésie/encoprésie</li><li>Masturbation excessive</li><li>Peurs intenses</li></ul>">
+    Petite enfance
+  </div>
+  <div class="piece cercle" 
+       data-text="<ul><li>Migraines / douleurs abdominales / crampes</li><li>Échec scolaire</li><li>Phobie scolaire</li><li>Difficulté à s’intégrer</li><li>Conduites hyper sexualisées</li></ul>">
+    Âges scolaires / primaire
+  </div>
+  <div class="piece hexagone" 
+       data-text="<ul><li>Migraines / douleurs abdominales / crampes</li><li>Troubles du comportement alimentaire</li><li>Conduite antisociale</li><li>Mensonges</li><li>Absentéisme, fugues</li><li>Addictions : alcool, drogue, sexe</li><li>MST, grossesses non désirées</li><li>Automutilation, tentatives de suicide</li></ul>">
+    Adolescence
+  </div>
+  <div class="piece triangle" 
+       data-text="<ul><li>État de stress post-traumatique</li><li>Douleurs chroniques</li><li>Troubles sexuels (vaginisme, hypersexualité, rejet de la sexualité…)</li><li>Troubles du comportement alimentaires</li><li>Troubles anxio-dépressifs chroniques</li><li>Difficultés relationnelles durables</li><li>Risque de reproduction de violences sur autrui</li><li>Idées suicidaires, automutilation, suicide</li></ul>">
+    Âge adulte
+  </div>
+</div>
+
+<div id="texteAffiche" class="texte"></div>
+
+<script>
+const pieces = document.querySelectorAll('.piece');
+const texteDiv = document.getElementById('texteAffiche');
+
+pieces.forEach(piece => {
+  piece.addEventListener('mouseenter', () => {
+    pieces.forEach(p => { if(p!==piece) p.style.opacity = '0'; });
+    texteDiv.innerHTML = piece.getAttribute('data-text');
+    const rect = piece.getBoundingClientRect();
+
+    // Texte à droite uniquement pour Petite enfance et Adolescence
+    if(piece.textContent.trim() === "Petite enfance" || piece.textContent.trim() === "Adolescence") {
+      texteDiv.style.left = (rect.right + 10) + 'px';
+    } else {
+      texteDiv.style.left = (rect.left - 320) + 'px';
+    }
+
+    texteDiv.style.top = rect.top + 'px';
+    texteDiv.style.display = 'block';
+  });
+
+  piece.addEventListener('mouseleave', () => {
+    pieces.forEach(p => p.style.opacity = '1');
+    texteDiv.style.display = 'none';
+  });
+});
+</script>
+
+</body>
+</html>

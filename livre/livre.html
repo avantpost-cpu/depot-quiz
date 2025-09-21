@@ -14,30 +14,44 @@
 <meta charset="UTF-8">
 <title>Pages du livre</title>
 <style>
+  /* Reset */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
   body {
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
     background: #ffffff;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2vw;
+    overflow-x: hidden;
   }
 
   .pages-container {
     display: flex;
+    flex-wrap: wrap; /* passe en colonne sur petits écrans */
     justify-content: center;
     align-items: flex-start;
     position: relative;
-    gap: 0; /* images collées */
+    gap: 0; 
+    width: 100%;
+    max-width: 1200px; /* limite la largeur pour grands écrans */
   }
 
   .pages-container img {
-    width: 600px; 
+    width: 48%; /* deux pages côte à côte */
+    max-width: 600px;
     height: auto;
     cursor: pointer;
     display: block;
+    transition: all 0.3s ease;
   }
 
-  /* Texte court terme positionné sur page2 */
+  /* Texte superposé */
   .column-court, .column-long {
     position: absolute;
     text-align: justify;
@@ -45,26 +59,29 @@
     opacity: 0;
     pointer-events: none; 
     transition: opacity 0.3s ease;
-    background: none;
+    background: rgba(255,255,255,0.8);
+    padding: 1vw;
+    border-radius: 5px;
   }
 
   /* Colonne court terme sur page2 */
   .column-court {
-    top: 10px;
-    left: 660px; 
-    width: 420px;
+    top: 5%;
+    left: 50%; 
+    width: 45%;
   }
 
   /* Colonne long terme sur page1 */
   .column-long {
-    top: 200px;
-    left: 80px;  /* alignée sur page1 */
-    width: 420px;
+    top: 20%;
+    left: 2%;  
+    width: 45%;
   }
 
   .column-court .phrase,
   .column-long .phrase {
-    margin-bottom: 10px;
+    margin-bottom: 1vw;
+    font-size: 1vw;
   }
 
   .column-court .italic,
@@ -76,11 +93,27 @@
   .separator {
     text-align: center;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 1vw;
   }
 
   .show {
     opacity: 1;
+  }
+
+  /* Media Queries pour petits écrans */
+  @media (max-width: 900px) {
+    .pages-container img {
+      width: 90%;
+      margin-bottom: 2vw;
+    }
+    .column-court, .column-long {
+      position: relative;
+      left: 0;
+      top: 0;
+      width: 90%;
+      font-size: 3vw;
+      margin-top: 1vw;
+    }
   }
 </style>
 </head>

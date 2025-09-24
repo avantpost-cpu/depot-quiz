@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Untitled</title>
+  
+
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Question</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('https://avantpost-cpu.github.io/depot-quiz/livre/fond.jpg');
+    background-repeat: repeat;
+    background-size: auto;
+  }
+
+  #animation {
+    max-width: 90vw;     
+    max-height: 80vh;    
+    cursor: pointer;
+  }
+
+  #revealedText {
+    display: none;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: clamp(1rem, 2vw, 1.5em); 
+    line-height: 1.6;
+    padding: 2vw;
+    color: #000;
+    max-width: 90vw;     
+    cursor: pointer;
+    word-wrap: break-word;
+  }
+
+  #revealedText p {
+    display: none;
+    font-style: italic;
+    margin: 1em 0;
+  }
+
+  #revealedText p.title {
+    font-weight: bold;
+    font-style: normal;
+    display: block; /* le titre est toujours visible */
+  }
+
+  #revealedText.allShown {
+    font-size: clamp(0.9rem, 1.5vw, 1.2em); 
+    max-width: 60vw;    
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  #revealedText.allShown p:not(:last-child)::after {
+    content: "*";
+    display: block;
+    margin-top: 0.5em;
+    text-align: center;
+  }
+
+</style>
+</head>
+<body>
+
+<video id="animation" muted preload="auto">
+  <source src="https://avantpost-cpu.github.io/depot-quiz/question/question1.mp4" type="video/mp4">
+  Votre navigateur ne supporte pas la vidéo.
+</video>
+
+<div id="revealedText">
+  <!-- Section 1 : Questions suggérant un lien -->
+  <div class="section">
+    <p class="title">Questions suggérant un lien :</p>
+    <p>« Parfois, ce type de (plaintes/symptômes/comportements) peut être lié à du stress, des tensions, de la violence… »</p>
+    <p>« J’ai déjà vu des enfants avec les mêmes symptômes que les tiens, qui subissaient des violences. »</p>
+    <p>« J’ai l’impression qu’il y a quelque chose qui est arrivé et qui te perturbe, est-ce que tu veux m’en parler ? »</p>
+  </div>
+
+  <!-- Section 2 : Questions ouvertes -->
+  <div class="section">
+    <p class="title">Questions ouvertes :</p>
+    <p>« Qu’est ce qui te rend triste ? »</p>
+    <p>« Pourquoi tu ne veux plus aller à l’entrainement ? »</p>
+    <p>« Comment sont apparues ces blessures ? »</p>
+  </div>
+</div>
+
+<script>
+  const animation = document.getElementById('animation');
+  const revealedText = document.getElementById('revealedText');
+  const sections = document.querySelectorAll("#revealedText .section");
+
+  let allShown = false;
+  let sectionIndex = 0;
+  let phraseIndex = 0;
+
+  const currentSection = () => sections[sectionIndex];
+  const currentPhrases = () => currentSection().querySelectorAll("p:not(.title)");
+
+  animation.addEventListener('mouseenter', () => {
+    if (animation.paused) {
+      animation.play().catch(() => {
+        console.log("Lecture bloquée, interaction utilisateur requise.");
+      });
+    }
+  });
+
+  animation.addEventListener('ended', () => {
+    animation.style.display = 'none';
+    revealedText.style.display = 'block';
+    currentPhrases()[phraseIndex].style.display = 'block';
+  });
+
+  revealedText.addEventListener('click', () => {
+    if (allShown) return;
+
+    const phrases = currentPhrases();
+    phrases[phraseIndex].style.display = 'none';
+    phraseIndex++;
+
+    if (phraseIndex < phrases.length) {
+      phrases[phraseIndex].style.display = 'block';
+    } else {
+      sectionIndex++;
+      if (sectionIndex < sections.length) {
+        // passer à la première phrase de la section suivante
+        phraseIndex = 0;
+        currentPhrases()[phraseIndex].style.display = 'block';
+      } else {
+        // dernière phrase : tout afficher
+        sections.forEach(sec => {
+          sec.querySelectorAll("p:not(.title)").forEach(p => p.style.display = 'block');
+        });
+        revealedText.classList.add("allShown");
+        allShown = true;
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
+  <script  src="./script.js"></script>
+
+</body>
+</html>

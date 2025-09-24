@@ -13,47 +13,118 @@
 <meta charset="UTF-8">
 <title>Question</title>
 <style>
-  body {
+  html, body {
     margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: #fff;
+    background-image: url('https://avantpost-cpu.github.io/depot-quiz/livre/fond.jpg');
+    background-repeat: repeat;
+    background-size: auto;
   }
-  #animation, #revealedImage {
-    max-width: 100%;
-    max-height: 100%;
+
+  #animation {
+    max-width: 90vw;     /* s’adapte à la largeur de l’écran */
+    max-height: 80vh;    /* s’adapte à la hauteur de l’écran */
+    cursor: pointer;
   }
-  #revealedImage {
-    display: none; /* cachée au départ */
+
+  #revealedText {
+    display: none;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: clamp(1rem, 2vw, 1.5em); /* taille flexible */
+    line-height: 1.6;
+    padding: 2vw;
+    color: #000;
+    max-width: 90vw;     /* responsive */
+    cursor: pointer;
+    word-wrap: break-word;
   }
+
+  #revealedText p {
+    display: none;
+    font-style: italic;
+    margin: 1em 0;
+  }
+
+  /* Style pour la vue finale en colonne */
+  #revealedText.allShown {
+    font-size: clamp(0.9rem, 1.5vw, 1.2em); /* plus petite pour la colonne */
+    max-width: 60vw;    /* colonne étroite mais responsive */
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  #revealedText.allShown p:not(:last-child)::after {
+    content: "*";
+    display: block;
+    margin-top: 0.5em;
+    text-align: center;
+  }
+
 </style>
 </head>
 <body>
 
-<!-- Vidéo automatique, muette pour autoplay -->
-<video id="animation" autoplay muted>
+<video id="animation" muted preload="auto">
   <source src="https://avantpost-cpu.github.io/depot-quiz/question/question.mp4" type="video/mp4">
   Votre navigateur ne supporte pas la vidéo.
 </video>
 
-<!-- Image à révéler après la vidéo -->
-<img id="revealedImage" src="image.jpg" alt="Image révélée">
+<div id="revealedText">
+  <p>« Les enfants qui subissent des violences dans le contexte du sport sont nombreux, c’est pour cela que je te pose cette question... »</p>
+  <p>« Est-ce que quelqu’un t’a fait du mal ? »</p>
+  <p>« Est-ce que quelqu’un t’a fait souffrir ? »</p>
+  <p>« Est-ce que tu as été victime de violences ? »</p>
+  <p>« Est-ce qu’on t’a déjà fait ou fait faire des choses qui t’ont mis mal à l’aise ? »</p>
+  <p>« Comment cela se passe au club de sport ? »</p>
+  <p>« Pratiquer un sport à haut niveau augmente la probabilité de subir des violences, en as-tu déjà subi ? »</p>
+</div>
 
 <script>
   const animation = document.getElementById('animation');
-  const revealedImage = document.getElementById('revealedImage');
+  const revealedText = document.getElementById('revealedText');
+  const phrases = revealedText.querySelectorAll("p");
+  let currentIndex = 0;
+  let allShown = false;
 
-  // Essai de lecture automatique avec son (optionnel)
-  animation.play().catch(() => {
-    console.log("Autoplay bloqué, l'utilisateur devra cliquer pour lancer la vidéo.");
+  // Lecture au survol
+  animation.addEventListener('mouseenter', () => {
+    if (animation.paused) {
+      animation.play().catch(() => {
+        console.log("Lecture bloquée, interaction utilisateur requise.");
+      });
+    }
   });
 
-  // Quand la vidéo se termine
+  // Quand la vidéo se termine → afficher la 1ère phrase
   animation.addEventListener('ended', () => {
-    animation.style.display = 'none';       // cache la vidéo
-    revealedImage.style.display = 'block';  // montre l'image
+    animation.style.display = 'none';
+    revealedText.style.display = 'block';
+    phrases[currentIndex].style.display = 'block';
+  });
+
+  // Clic pour passer à la phrase suivante
+  revealedText.addEventListener('click', () => {
+    if (!allShown) {
+      phrases[currentIndex].style.display = 'none';
+      currentIndex++;
+      if (currentIndex < phrases.length) {
+        phrases[currentIndex].style.display = 'block';
+      } else {
+        // Quand on clique après la dernière → tout apparaît en colonne
+        phrases.forEach(p => p.style.display = 'block');
+        revealedText.classList.add("allShown");
+        allShown = true;
+      }
+    }
   });
 </script>
 

@@ -32,8 +32,8 @@
 </head>
 <body>
 
-<!-- Vidéo qui se lance automatiquement -->
-<video id="animation" autoplay>
+<!-- Vidéo automatique, muette pour autoplay -->
+<video id="animation" autoplay muted>
   <source src="https://avantpost-cpu.github.io/depot-quiz/question/question.mp4" type="video/mp4">
   Votre navigateur ne supporte pas la vidéo.
 </video>
@@ -45,6 +45,12 @@
   const animation = document.getElementById('animation');
   const revealedImage = document.getElementById('revealedImage');
 
+  // Essai de lecture automatique avec son (optionnel)
+  animation.play().catch(() => {
+    console.log("Autoplay bloqué, l'utilisateur devra cliquer pour lancer la vidéo.");
+  });
+
+  // Quand la vidéo se termine
   animation.addEventListener('ended', () => {
     animation.style.display = 'none';       // cache la vidéo
     revealedImage.style.display = 'block';  // montre l'image

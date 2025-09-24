@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Untitled</title>
+  
+
+</head>
+<body>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Question</title>
+<style>
+  body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #fff;
+  }
+  #animation, #revealedImage {
+    max-width: 100%;
+    max-height: 100%;
+  }
+  #revealedImage {
+    display: none; /* cachée au départ */
+  }
+</style>
+</head>
+<body>
+
+<!-- Vidéo qui se lance automatiquement -->
+<video id="animation" autoplay>
+  <source src="https://avantpost-cpu.github.io/depot-quiz/question/question.mp4" type="video/mp4">
+  Votre navigateur ne supporte pas la vidéo.
+</video>
+
+<!-- Image à révéler après la vidéo -->
+<img id="revealedImage" src="image.jpg" alt="Image révélée">
+
+<script>
+  const animation = document.getElementById('animation');
+  const revealedImage = document.getElementById('revealedImage');
+
+  animation.addEventListener('ended', () => {
+    animation.style.display = 'none';       // cache la vidéo
+    revealedImage.style.display = 'block';  // montre l'image
+  });
+</script>
+
+</body>
+</html>
+  <script  src="./script.js"></script>
+
+</body>
+</html>

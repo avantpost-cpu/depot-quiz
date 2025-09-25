@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Deux vidéos + interactions complètes</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .video-row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .video-container {
+      width: 300px;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 8px;
+      transition: filter 0.3s ease;
+    }
+
+    .grayscale {
+      filter: grayscale(100%);
+    }
+
+    .image-sequence-container {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 300px;
+      margin-top: 10px;
+    }
+
+    .image-sequence-container img {
+      width: 60%;
+      border-radius: 8px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+      cursor: pointer;
+      align-self: center;
+    }
+
+    .image-sequence-container img:hover {
+      transform: scale(1.8) rotate(-5deg);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div class="video-row">
+    <!-- Vidéo majeur -->
+    <div class="video-container">
+      <video id="videoMajeur" muted autoplay playsinline>
+        <source src="https://avantpost-cpu.github.io/depot-quiz/phrases/majeur.mp4" type="video/mp4">
+      </video>
+      <div class="image-sequence-container" id="imagesA">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pA1.jpg" alt="pA1">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pA2.jpg" alt="pA2">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pA3.jpg" alt="pA3">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pA4.jpg" alt="pA4">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pA5.jpg" alt="pA5">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pA6.jpg" alt="pA6">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pA7.jpg" alt="pA7">
+      </div>
+    </div>
+
+    <!-- Vidéo mineur -->
+    <div class="video-container">
+      <video id="videoMineur" muted autoplay playsinline>
+        <source src="https://avantpost-cpu.github.io/depot-quiz/phrases/mineur.mp4" type="video/mp4">
+      </video>
+      <div class="image-sequence-container" id="imagesB">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pB1.jpg" alt="pB1">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pB2.jpg" alt="pB2">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pB3.jpg" alt="pB3">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pB4.jpg" alt="pB4">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pB5.jpg" alt="pB5">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pB6.jpg" alt="pB6">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pB7.jpg" alt="pB7">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/phrases/pB8.jpg" alt="pB8">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const videoMajeur = document.getElementById('videoMajeur');
+    const videoMineur = document.getElementById('videoMineur');
+    const imagesA = document.querySelectorAll('#imagesA img');
+    const imagesB = document.querySelectorAll('#imagesB img');
+
+    // Fixer les vidéos à la fin
+    videoMajeur.addEventListener('ended', () => videoMajeur.pause());
+    videoMineur.addEventListener('ended', () => videoMineur.pause());
+
+    // Survol de vidéos → griser l'autre vidéo
+    videoMajeur.addEventListener('mouseenter', () => videoMineur.classList.add('grayscale'));
+    videoMajeur.addEventListener('mouseleave', () => videoMineur.classList.remove('grayscale'));
+
+    videoMineur.addEventListener('mouseenter', () => videoMajeur.classList.add('grayscale'));
+    videoMineur.addEventListener('mouseleave', () => videoMajeur.classList.remove('grayscale'));
+
+    // Survol d'une image B → griser toutes les images A + vidéo majeur
+    imagesB.forEach(imgB => {
+      imgB.addEventListener('mouseenter', () => {
+        imagesA.forEach(imgA => imgA.classList.add('grayscale'));
+        videoMajeur.classList.add('grayscale');
+      });
+      imgB.addEventListener('mouseleave', () => {
+        imagesA.forEach(imgA => imgA.classList.remove('grayscale'));
+        videoMajeur.classList.remove('grayscale');
+      });
+    });
+
+    // Survol d'une image A → griser toutes les images B + vidéo mineur
+    imagesA.forEach(imgA => {
+      imgA.addEventListener('mouseenter', () => {
+        imagesB.forEach(imgB => imgB.classList.add('grayscale'));
+        videoMineur.classList.add('grayscale');
+      });
+      imgA.addEventListener('mouseleave', () => {
+        imagesB.forEach(imgB => imgB.classList.remove('grayscale'));
+        videoMineur.classList.remove('grayscale');
+      });
+    });
+  </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

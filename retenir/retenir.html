@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Module e-learning</title>
+<style>
+  body {
+    margin: 0;
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .video-wrapper {
+    width: 80%;
+    max-width: 900px;
+    aspect-ratio: 16/9; /* fixe le ratio */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  #finalImage {
+    position: absolute; /* superpose l'image sur le bloc sans bouger le reste */
+    bottom: -20px; /* un petit décalage si nécessaire */
+    display: none;
+    max-width: 30%;
+    height: auto;
+    border-radius: 0;
+    background: #ffffff;
+  }
+
+  /* Optionnel : espace réservé pour éviter que le bloc ne change */
+  .image-placeholder {
+    height: 0; /* taille initiale 0, mais peut être ajustée si nécessaire */
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="video-wrapper">
+    <video id="video" autoplay muted playsinline preload="auto">
+      <source src="https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.mp4" type="video/mp4">
+      Votre navigateur ne supporte pas la lecture vidéo.
+    </video>
+    <img id="finalImage" src="https://avantpost-cpu.github.io/depot-quiz/retenir/ilest.jpg" alt="Image finale">
+  </div>
+</div>
+
+<script>
+  const vid = document.getElementById('video');
+  const img = document.getElementById('finalImage');
+
+  vid.addEventListener('ended', () => {
+    vid.pause(); // figer sur la dernière image
+    img.style.display = 'block'; // afficher l'image superposée
+  });
+</script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

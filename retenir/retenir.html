@@ -26,7 +26,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
     min-height: 100vh;
     font-family: Arial, sans-serif;
   }
@@ -40,6 +39,12 @@
     align-items: center;
     overflow: hidden;
     margin-top: 20px;
+    transition: width 0.5s ease, max-width 0.5s ease;
+  }
+
+  .video-wrapper.shrink {
+    width: 60%;       /* réduire la largeur */
+    max-width: 600px; /* ajustement du max-width */
   }
 
   video {
@@ -51,15 +56,16 @@
   .image-placeholder {
     width: 50%;
     max-width: 600px;
-    margin-top: -120px; /* réduit l’espace entre vidéo et image */
+    margin-top: -90px;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   #finalImage {
     display: none;
     width: 100%;
-    height: auto; /* hauteur automatique pour garder les proportions */
+    height: auto;
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
 
@@ -69,6 +75,37 @@
     opacity: 1;
   }
 
+  .text-block {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+    align-items: center;
+  }
+
+  .text-block div {
+    padding: 10px 15px;
+    margin: 5px 0;
+    border-radius: 8px;
+    transition: transform 0.3s ease, opacity 0.5s ease, box-shadow 0.3s ease, background 0.3s ease, color 0.3s ease;
+    cursor: default;
+    text-align: center;
+    opacity: 0;
+    background: transparent;
+    color: #000000;
+  }
+
+  .text-block div.show {
+    opacity: 1;
+  }
+
+  .text-block div:hover {
+    transform: scale(1.1) rotate(-5deg);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    background: #e9b300;
+    color: #ffffff;
+  }
+
   @media (max-width: 600px) {
     .video-wrapper, .image-placeholder {
       width: 100%;
@@ -76,28 +113,54 @@
     #finalImage.show {
       transform: scale(1);
     }
+    .text-block div {
+      font-size: 14px;
+    }
   }
 </style>
 </head>
 <body>
 
-  <div class="video-wrapper">
-    <video id="video" autoplay muted playsinline preload="auto">
-      <source src="https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.mp4" type="video/mp4">
-      Votre navigateur ne supporte pas la lecture vidéo.
-    </video>
-  </div>
+<div class="video-wrapper" id="videoWrapper">
+  <video id="video" autoplay muted playsinline preload="auto">
+    <source src="https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.mp4" type="video/mp4">
+    Votre navigateur ne supporte pas la lecture vidéo.
+  </video>
+</div>
 
-  <div class="image-placeholder">
-    <img id="finalImage" src="https://avantpost-cpu.github.io/depot-quiz/retenir/ilest.jpg" alt="Image finale">
+<div class="image-placeholder">
+  <img id="finalImage" src="https://avantpost-cpu.github.io/depot-quiz/retenir/ilest.jpg" alt="Image finale">
+  
+  <div id="textBlock" class="text-block">
+    <div>Croire la victime et lui assurer qu’il n’est pas coupable</div>
+    <div>Lui apporter son soutien et compassion</div>
+    <div>Maitriser ses émotions</div>
+    <div>Ne pas dramatiser ni minimiser la situation</div>
+    <div>Ne Jamais mettre en doute la parole de la victime</div>
+    <div>Remercier la victime de sa confiance</div>
+    <div>Féliciter la victime pour ses révélations et son courage</div>
   </div>
+</div>
 
 <script>
   const vid = document.getElementById('video');
   const img = document.getElementById('finalImage');
+  const textDivs = document.querySelectorAll('.text-block div');
+  const videoWrapper = document.getElementById('videoWrapper');
 
   vid.addEventListener('ended', () => {
+    // Réduire la taille de la vidéo
+    videoWrapper.classList.add('shrink');
+
+    // Afficher image et texte
     img.classList.add('show');
+
+    // Apparition en cascade des phrases
+    textDivs.forEach((div, index) => {
+      setTimeout(() => {
+        div.classList.add('show');
+      }, index * 300);
+    });
   });
 </script>
 

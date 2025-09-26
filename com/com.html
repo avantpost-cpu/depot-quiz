@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Deux vidéos + interactions complètes</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .video-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+
+    .video-container {
+      flex: 1 1 300px;
+      max-width: 45%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    video {
+      width: 100%;
+      border-radius: 8px;
+      transition: filter 0.3s ease;
+    }
+
+    .grayscale {
+      filter: grayscale(100%);
+    }
+
+    .image-sequence-container {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      width: 100%;
+      margin-top: 10px;
+      align-items: center;
+    }
+
+    .image-sequence-container img {
+      width: 60%;
+      max-width: 200px;
+      border-radius: 8px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+      cursor: pointer;
+    }
+
+    .image-sequence-container img:hover {
+      transform: scale(1.8) rotate(-5deg);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+      z-index: 10;
+    }
+
+    @media (max-width: 800px) {
+      .video-container {
+        max-width: 90%;
+      }
+      .image-sequence-container img {
+        width: 50%;
+        max-width: 150px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .image-sequence-container img {
+        width: 70%;
+        max-width: 120px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="video-row">
+    <!-- Vidéo verbale -->
+    <div class="video-container">
+      <video id="videoMajeur" muted autoplay playsinline>
+        <source src="https://avantpost-cpu.github.io/depot-quiz/com/verbale.mp4" type="video/mp4">
+      </video>
+      <div class="image-sequence-container" id="imagesA">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte1.jpg" alt="texte1">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte2.jpg" alt="texte2">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg" alt="texte3">
+      </div>
+    </div>
+
+    <!-- Vidéo non verbale -->
+    <div class="video-container">
+      <video id="videoMineur" muted autoplay playsinline>
+        <source src="https://avantpost-cpu.github.io/depot-quiz/com/nonverbale.mp4" type="video/mp4">
+      </video>
+      <div class="image-sequence-container" id="imagesB">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB1.jpg" alt="texteB1">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB2.jpg" alt="texteB2">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg" alt="texteB3">
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const videoMajeur = document.getElementById('videoMajeur');
+    const videoMineur = document.getElementById('videoMineur');
+    const imagesA = document.querySelectorAll('#imagesA img');
+    const imagesB = document.querySelectorAll('#imagesB img');
+
+    // Fixer les vidéos à la fin
+    videoMajeur.addEventListener('ended', () => videoMajeur.pause());
+    videoMineur.addEventListener('ended', () => videoMineur.pause());
+
+    // --- Survol vidéo majeur ---
+    videoMajeur.addEventListener('mouseenter', () => {
+      videoMineur.classList.add('grayscale');
+      imagesB.forEach(imgB => imgB.classList.add('grayscale'));
+    });
+    videoMajeur.addEventListener('mouseleave', () => {
+      videoMineur.classList.remove('grayscale');
+      imagesB.forEach(imgB => imgB.classList.remove('grayscale'));
+    });
+
+    // --- Survol vidéo mineur ---
+    videoMineur.addEventListener('mouseenter', () => {
+      videoMajeur.classList.add('grayscale');
+      imagesA.forEach(imgA => imgA.classList.add('grayscale'));
+    });
+    videoMineur.addEventListener('mouseleave', () => {
+      videoMajeur.classList.remove('grayscale');
+      imagesA.forEach(imgA => imgA.classList.remove('grayscale'));
+    });
+
+    // --- Survol images A ---
+    imagesA.forEach(imgA => {
+      imgA.addEventListener('mouseenter', () => {
+        videoMineur.classList.add('grayscale');
+        imagesB.forEach(imgB => imgB.classList.add('grayscale'));
+      });
+      imgA.addEventListener('mouseleave', () => {
+        videoMineur.classList.remove('grayscale');
+        imagesB.forEach(imgB => imgB.classList.remove('grayscale'));
+      });
+    });
+
+    // --- Survol images B ---
+    imagesB.forEach(imgB => {
+      imgB.addEventListener('mouseenter', () => {
+        videoMajeur.classList.add('grayscale');
+        imagesA.forEach(imgA => imgA.classList.add('grayscale'));
+      });
+      imgB.addEventListener('mouseleave', () => {
+        videoMajeur.classList.remove('grayscale');
+        imagesA.forEach(imgA => imgA.classList.remove('grayscale'));
+      });
+    });
+  </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

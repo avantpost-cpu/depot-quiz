@@ -15,30 +15,31 @@
 <meta charset="UTF-8">
 <title>Module e-learning</title>
 <style>
-  body {
-    margin: 0;
-    background: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  * {
+    box-sizing: border-box;
   }
 
-  .container {
+  body {
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
   }
 
   .video-wrapper {
-    width: 80%;
+    width: 90%;
     max-width: 900px;
-    aspect-ratio: 16/9; /* fixe le ratio */
+    aspect-ratio: 16/9;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    position: relative;
+    margin-top: 20px;
   }
 
   video {
@@ -47,42 +48,59 @@
     object-fit: contain;
   }
 
-  #finalImage {
-    position: absolute; /* superpose l'image sur le bloc sans bouger le reste */
-    bottom: -20px; /* un petit décalage si nécessaire */
-    display: none;
-    max-width: 30%;
-    height: auto;
-    border-radius: 0;
-    background: #ffffff;
+  .image-placeholder {
+    width: 90%;
+    max-width: 800px;
+    margin-top: -120px; /* réduit l’espace entre vidéo et image */
+    display: flex;
+    justify-content: center;
   }
 
-  /* Optionnel : espace réservé pour éviter que le bloc ne change */
-  .image-placeholder {
-    height: 0; /* taille initiale 0, mais peut être ajustée si nécessaire */
+  #finalImage {
+    display: none;
+    width: 100%;
+    height: auto; /* hauteur automatique pour garder les proportions */
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  #finalImage.show {
+    display: block;
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  @media (max-width: 600px) {
+    .video-wrapper, .image-placeholder {
+      width: 100%;
+    }
+    #finalImage.show {
+      transform: scale(1);
+    }
   }
 </style>
 </head>
 <body>
-<div class="container">
+
   <div class="video-wrapper">
     <video id="video" autoplay muted playsinline preload="auto">
       <source src="https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.mp4" type="video/mp4">
       Votre navigateur ne supporte pas la lecture vidéo.
     </video>
+  </div>
+
+  <div class="image-placeholder">
     <img id="finalImage" src="https://avantpost-cpu.github.io/depot-quiz/retenir/ilest.jpg" alt="Image finale">
   </div>
-</div>
 
 <script>
   const vid = document.getElementById('video');
   const img = document.getElementById('finalImage');
 
   vid.addEventListener('ended', () => {
-    vid.pause(); // figer sur la dernière image
-    img.style.display = 'block'; // afficher l'image superposée
+    img.classList.add('show');
   });
 </script>
+
 </body>
 </html>
     

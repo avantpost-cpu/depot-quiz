@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Animation Urgences</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #ffffff;
+      cursor: none;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    #title-image {
+      max-width: 300px;
+      margin-bottom: 30px;
+      width: 100%;
+      height: auto;
+    }
+
+    .scroll-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 10px;
+    }
+
+    .container {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin: 0 auto;
+      flex-wrap: nowrap;
+      min-width: max-content; /* important pour centrer et scroll */
+    }
+
+    .scroll-wrapper::-webkit-scrollbar { display: none; }
+    .scroll-wrapper { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .block {
+      flex: 0 0 180px;
+      max-width: 180px;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .block img {
+      width: 100%;
+      display: block;
+      border-radius: 12px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .block:hover img {
+      transform: scale(1.05);
+      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    }
+
+    #cursor {
+      position: fixed;
+      width: 64px;
+      height: auto;
+      pointer-events: none;
+      z-index: 10000;
+      transform: translate(-50%, -50%);
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+
+    .cursor-small {
+      transform: translate(-50%, -50%) scale(0.7);
+      opacity: 0.7;
+    }
+
+    @media (max-width: 480px) {
+      .block { flex: 0 0 120px; max-width: 120px; }
+    }
+  </style>
+</head>
+<body>
+
+  <img id="title-image" src="https://avantpost-cpu.github.io/depot-quiz/urgence/danger.png" alt="En cas de danger">
+
+  <div class="scroll-wrapper">
+    <div class="container">
+      <div class="block">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/17.png" 
+             data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/17b.png" 
+             alt="17">
+      </div>
+      <div class="block">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/114.png" 
+             data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/114b.png" 
+             alt="114">
+      </div>
+      <div class="block">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/112.png" 
+             data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/112b.png" 
+             alt="112">
+      </div>
+      <div class="block">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/PNAV.png" 
+             data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/PNAVb.png" 
+             alt="PNAV">
+      </div>
+    </div>
+  </div>
+
+  <img id="cursor" src="https://avantpost-cpu.github.io/depot-quiz/urgence/ange.png" alt="curseur">
+
+  <script>
+    const cursor = document.getElementById("cursor");
+    const blocks = document.querySelectorAll(".block img");
+
+    document.addEventListener("mousemove", e => {
+      cursor.style.left = e.clientX + "px";
+      cursor.style.top = e.clientY + "px";
+    });
+
+    blocks.forEach(img => {
+      const original = img.src;
+      const hoverSrc = img.dataset.hover;
+
+      img.parentElement.addEventListener("mouseenter", () => {
+        cursor.classList.add("cursor-small");
+        img.src = hoverSrc;
+      });
+
+      img.parentElement.addEventListener("mouseleave", () => {
+        cursor.classList.remove("cursor-small");
+        img.src = original;
+      });
+    });
+  </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

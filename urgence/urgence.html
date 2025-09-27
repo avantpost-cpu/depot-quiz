@@ -12,145 +12,200 @@
   <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Animation Urgences</title>
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: #ffffff;
-      cursor: none;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
-    }
+<meta charset="UTF-8">
+<title>Animation Urgences</title>
+<style>
+/* Global box-sizing */
+* {
+  box-sizing: border-box;
+}
 
-    #title-image {
-      max-width: 300px;
-      margin-bottom: 30px;
-      width: 100%;
-      height: auto;
-    }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #fff;
+  cursor: none;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
 
-    .scroll-wrapper {
-      width: 100%;
-      overflow-x: auto;
-      padding-bottom: 10px;
-    }
+/* Titre */
+#title-image {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 30px;
+}
 
-    .container {
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      margin: 0 auto;
-      flex-wrap: nowrap;
-      min-width: max-content; /* important pour centrer et scroll */
-    }
+/* Container général */
+.container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px;
+}
 
-    .scroll-wrapper::-webkit-scrollbar { display: none; }
-    .scroll-wrapper { -ms-overflow-style: none; scrollbar-width: none; }
+/* Rangée des blocs */
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  width: 100%;
+}
 
-    .block {
-      flex: 0 0 180px;
-      max-width: 180px;
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+/* Bloc image */
+.block {
+  flex: 1 1 180px;
+  max-width: 180px;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
 
-    .block img {
-      width: 100%;
-      display: block;
-      border-radius: 12px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
+.block img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
 
-    .block:hover img {
-      transform: scale(1.05);
-      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
-    }
+.block:hover img {
+  transform: scale(1.05);
+}
 
-    #cursor {
-      position: fixed;
-      width: 64px;
-      height: auto;
-      pointer-events: none;
-      z-index: 10000;
-      transform: translate(-50%, -50%);
-      transition: transform 0.2s ease, opacity 0.2s ease;
-    }
+/* Hover-images centrées sous la rangée */
+.hover-image {
+  position: absolute;
+  top: 100%; /* juste en dessous de la rangée */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 500px;
+  max-height: 60vh; /* ne dépasse jamais la hauteur de l'écran */
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+  z-index: 100;
+}
 
-    .cursor-small {
-      transform: translate(-50%, -50%) scale(0.7);
-      opacity: 0.7;
-    }
+.hover-image.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(10px);
+}
 
-    @media (max-width: 480px) {
-      .block { flex: 0 0 120px; max-width: 120px; }
-    }
-  </style>
+/* Curseur personnalisé */
+#cursor {
+  position: fixed;
+  width: 64px;
+  max-width: 10vw;
+  height: auto;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.cursor-small {
+  transform: translate(-50%, -50%) scale(0.6);
+  opacity: 0.7;
+}
+
+/* Media queries pour mobiles */
+@media (max-width: 768px) {
+  .block { flex: 1 1 140px; max-width: 140px; }
+  .hover-image { width: 85%; max-width: 400px; }
+  #cursor { width: 48px; }
+}
+
+@media (max-width: 480px) {
+  .block { flex: 1 1 100px; max-width: 100px; }
+  .hover-image { width: 80%; max-width: 300px; }
+  #cursor { width: 36px; }
+}
+</style>
 </head>
 <body>
 
-  <img id="title-image" src="https://avantpost-cpu.github.io/depot-quiz/urgence/danger.png" alt="En cas de danger">
+<img id="title-image" src="https://avantpost-cpu.github.io/depot-quiz/urgence/danger.png" alt="En cas de danger">
 
-  <div class="scroll-wrapper">
-    <div class="container">
-      <div class="block">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/17.png" 
-             data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/17b.png" 
-             alt="17">
-      </div>
-      <div class="block">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/114.png" 
-             data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/114b.png" 
-             alt="114">
-      </div>
-      <div class="block">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/112.png" 
-             data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/112b.png" 
-             alt="112">
-      </div>
-      <div class="block">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/PNAV.png" 
-             data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/PNAVb.png" 
-             alt="PNAV">
-      </div>
+<div class="container">
+  <div class="row">
+    <div class="block" id="block-17">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/17.png" 
+           data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/17b.png" alt="17">
+    </div>
+    <div class="block" id="block-114">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/114.png" 
+           data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/114b.png" alt="114">
+    </div>
+    <div class="block" id="block-112">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/112.png" 
+           data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/112b.png" alt="112">
+    </div>
+    <div class="block" id="block-PNAV">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/urgence/PNAV.png" 
+           data-hover="https://avantpost-cpu.github.io/depot-quiz/urgence/PNAVb.png" alt="PNAV">
     </div>
   </div>
 
-  <img id="cursor" src="https://avantpost-cpu.github.io/depot-quiz/urgence/ange.png" alt="curseur">
+  <!-- Hover-images -->
+  <img id="hover-17" class="hover-image" src="https://avantpost-cpu.github.io/depot-quiz/urgence/17c.jpg" alt="info 17">
+  <img id="hover-112" class="hover-image" src="https://avantpost-cpu.github.io/depot-quiz/urgence/112c.png" alt="info 112">
+  <img id="hover-114" class="hover-image" src="https://avantpost-cpu.github.io/depot-quiz/urgence/114c.png" alt="info 114">
+  <img id="hover-PNAV" class="hover-image" src="https://avantpost-cpu.github.io/depot-quiz/urgence/PNAVc.png" alt="info PNAV">
+</div>
 
-  <script>
-    const cursor = document.getElementById("cursor");
-    const blocks = document.querySelectorAll(".block img");
+<img id="cursor" src="https://avantpost-cpu.github.io/depot-quiz/urgence/ange.png" alt="curseur">
 
-    document.addEventListener("mousemove", e => {
-      cursor.style.left = e.clientX + "px";
-      cursor.style.top = e.clientY + "px";
-    });
+<script>
+const cursor = document.getElementById("cursor");
+const blocks = document.querySelectorAll(".block img");
+const hover17 = document.getElementById("hover-17");
+const hover112 = document.getElementById("hover-112");
+const hover114 = document.getElementById("hover-114");
+const hoverPNAV = document.getElementById("hover-PNAV");
 
-    blocks.forEach(img => {
-      const original = img.src;
-      const hoverSrc = img.dataset.hover;
+document.addEventListener("mousemove", e => {
+  cursor.style.left = e.clientX + "px";
+  cursor.style.top = e.clientY + "px";
+});
 
-      img.parentElement.addEventListener("mouseenter", () => {
-        cursor.classList.add("cursor-small");
-        img.src = hoverSrc;
-      });
+blocks.forEach(img => {
+  const original = img.src;
+  const hoverSrc = img.dataset.hover;
 
-      img.parentElement.addEventListener("mouseleave", () => {
-        cursor.classList.remove("cursor-small");
-        img.src = original;
-      });
-    });
-  </script>
+  img.parentElement.addEventListener("mouseenter", () => {
+    cursor.classList.add("cursor-small");
+    if(hoverSrc) img.src = hoverSrc;
+
+    if(img.parentElement.id === "block-17") hover17.classList.add("show");
+    if(img.parentElement.id === "block-112") hover112.classList.add("show");
+    if(img.parentElement.id === "block-114") hover114.classList.add("show");
+    if(img.parentElement.id === "block-PNAV") hoverPNAV.classList.add("show");
+  });
+
+  img.parentElement.addEventListener("mouseleave", () => {
+    cursor.classList.remove("cursor-small");
+    img.src = original;
+
+    hover17.classList.remove("show");
+    hover112.classList.remove("show");
+    hover114.classList.remove("show");
+    hoverPNAV.classList.remove("show");
+  });
+});
+</script>
 </body>
 </html>
     

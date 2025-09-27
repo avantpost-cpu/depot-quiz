@@ -29,6 +29,7 @@ body {
   max-width: 400px;
 }
 
+/* Lignes flex */
 .row {
   display: flex;
   margin: 0;
@@ -38,33 +39,39 @@ body {
 
 .row img, .row video {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
   user-select: none;
   -webkit-user-drag: none;
+  object-fit: cover;
+  height: 100%;
 }
 
 /* Ligne 1 */
-.row-1 { height: 200px; }
-.row-1 img { width: 100%; height: 100%; }
+.row-1 { height: 240px; }
+.row-1 img { width: 120%; }
 
 /* Ligne 2 : vidéo + 2 images */
-.row-2 { height: 120px; }
-.row-2 video, .row-2 img { width: 33.333%; height: 100%; }
+.row-2 { height: 124px; }
+.row-2 video, .row-2 .highlight {
+  flex:  1 2 8;
+  width: 80.333%;
+}
 
 /* Ligne 3 : 2 images */
-.row-3 { height: 120px; }
-.row-3 img { width: 60%; height: 80%; }
+.row-3 { height: 90px; }
+.row-3 .highlight {
+  flex: 0 0 45%;   /* chaque image prend exactement 50% de la ligne */
+  max-height: 100%; 
+  object-fit: cover;
+}
 
 /* Ligne 4 : 1 image */
-.row-4 { height:90px; }
-.row-4 img { width: 100%; height: 80%; }
+.row-4 { height: 100px; }
+.row-4 .highlight { flex: 1; }
 
 /* Hover / active effects */
 .highlight {
   cursor: pointer;
-  position: relative; /* permet de superposer et éviter le décalage */
+  position: relative;
   transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
 }
 
@@ -75,7 +82,7 @@ body {
 
 .highlight-group.dim .highlight.active {
   transform: scale(1.05);
-  z-index: 10; /* au-dessus des autres */
+  z-index: 10;
   filter: grayscale(0%);
   opacity: 1;
   transform-origin: center center;

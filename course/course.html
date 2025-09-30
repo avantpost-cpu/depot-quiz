@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Ludique : Protection des enfants</title>
+<style>
+body { 
+  font-family: Arial, sans-serif; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+  margin: 0;
+  padding: 10px;
+  background-image: url('https://avantpost-cpu.github.io/depot-quiz/livre/fond.jpg');
+  background-repeat: repeat;   
+  background-size: auto;
+}
+
+#intro {
+  text-align:center; 
+  font-size:1.2em; 
+  font-weight:bold; 
+  margin-bottom:10px; 
+  color:#2c3e50;
+}
+
+.question { 
+  margin-bottom: 20px; 
+  text-align: left; 
+  width: 100%;
+  max-width: 600px; 
+  font-size: 18px;
+  line-height: 1.4;
+}
+.question p { font-weight: bold; }
+
+#game {
+  position: relative;
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 10px;
+}
+
+#game img.decor {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+#player {
+  position: absolute;
+  bottom: 5%;
+  left: 0;
+  z-index: 10;
+  height: 20%;
+  width: auto;
+  min-height: 90px;
+  max-height: 180px;
+  transition: left 0.5s ease, bottom 0.2s ease;
+}
+
+#track {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+#track img {
+  width: 10vw;
+  max-width: 70px;
+  height: auto;
+  visibility: hidden; 
+}
+#track img.active {
+  visibility: visible; 
+}
+
+.correct { color: green; font-weight: bold; }
+.wrong { color: red; font-weight: bold; }
+
+#result { 
+  margin-top: 20px; 
+  font-weight: bold; 
+  text-align: center;
+  font-size: 1.2em;
+}
+
+input[type=radio] {
+  transform: scale(1.2);
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
+<div id="intro">
+
+ 
+</div>
+
+<div id="game">
+  <img class="decor" src="https://avantpost-cpu.github.io/depot-quiz/course/decor.jpg" alt="Décor">
+  <img id="player" src="https://avantpost-cpu.github.io/depot-quiz/course/ange1.png" alt="Personnage">
+</div>
+
+<div id="track">
+  <img id="step1" src="https://avantpost-cpu.github.io/depot-quiz/course/1.png">
+  <img id="step2" src="https://avantpost-cpu.github.io/depot-quiz/course/2.png">
+  <img id="step3" src="https://avantpost-cpu.github.io/depot-quiz/course/3.png">
+  <img id="step4" src="https://avantpost-cpu.github.io/depot-quiz/course/4.png">
+  <img id="step5" src="https://avantpost-cpu.github.io/depot-quiz/course/5.png">
+  <img id="step6" src="https://avantpost-cpu.github.io/depot-quiz/course/6.png">
+  <img id="step7" src="https://avantpost-cpu.github.io/depot-quiz/course/7.png">
+</div>
+
+<div id="quizContainer"></div>
+<div id="result"></div>
+
+<script>
+// Quiz data
+const quiz = [
+  {question:"Pourquoi est-il essentiel de signaler des faits de violences dont vous avez connaissance ?", options:{A:"Pour protéger les victimes et prévenir d’autres agressions", B:"Pour éviter des sanctions disciplinaires", C:"Pour protéger uniquement la réputation de la structure"}, answer:"A"},
+  {question:"En cas de danger immédiat pour une victime (mineure ou majeure), que devez-vous faire ?", options:{A:"Envoyer un courriel à signal-sports@sports.gouv.fr", B:"Contacter le 17 (police/gendarmerie)", C:"Informer uniquement son supérieur hiérarchique"}, answer:"B"},
+  {question:"Quelle est la différence entre une information préoccupante (IP) et un signalement ?", options:{A:"L’IP est adressée à la CRIP lorsqu’une aide semble nécessaire à l’enfant", B:"Le signalement est adressé au procureur en cas d’urgence", C:"L’IP concerne uniquement les adultes", D:"Il n’y a pas de différence"}, answer:"A"},
+  {question:"Si l’auteur des violences est salarié de la structure sportive, que doit faire l’encadrant·e ?", options:{A:"Le signaler par écrit à la direction", B:"Attendre la fin de la saison", C:"En parler seulement à la victime"}, answer:"A"},
+  {question:"Quelles sanctions encourt une personne qui continue à encadrer alors qu’elle est frappée d’une interdiction d’exercer ?", options:{A:"Un simple avertissement", B:"1 an d’emprisonnement et 15 000 € d’amende", C:"Une suspension temporaire sans suite pénale"}, answer:"B"},
+  {question:"Quelles sont les obligations légales d’un agent public qui a connaissance d’une infraction ?", options:{A:"Prévenir le procureur de la République (article 40 CPP)", B:"Garder le silence par respect du secret professionnel", C:"Informer uniquement sa hiérarchie"}, answer:"A"}
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+// Resize player proportionally to decor
+function resizePlayer() {
+  const decor = document.querySelector('#game img.decor');
+  const player = document.getElementById('player');
+  if(decor && player) {
+    const decorHeight = decor.clientHeight;
+    player.style.height = (decorHeight * 0.2) + 'px';
+  }
+}
+
+window.addEventListener('resize', resizePlayer);
+window.addEventListener('load', resizePlayer);
+
+// Display a question
+function showQuestion() {
+  resizePlayer();
+  const container = document.getElementById('quizContainer');
+  container.innerHTML = "";
+  const q = quiz[currentQuestion];
+
+  const stepImg = document.getElementById("step"+(currentQuestion+1));
+  if(stepImg) stepImg.classList.add("active");
+
+  let html = `<div class="question"><p>${q.question}</p>`;
+  for (let key in q.options) {
+    html += `<label><input type="radio" name="option" value="${key}" onchange="submitAnswer(this, '${key}')"> ${q.options[key]}</label>`;
+  }
+  html += `</div>`;
+  container.innerHTML = html;
+}
+
+// Handle answer selection
+function submitAnswer(input, choice) {
+  const q = quiz[currentQuestion];
+  const player = document.getElementById('player');
+  const radios = document.querySelectorAll('input[name=option]');
+  radios.forEach(r => r.disabled = true);
+
+  const stepImg = document.getElementById("step"+(currentQuestion+1));
+
+  if(choice === q.answer) {
+    score++;
+    input.parentElement.classList.add("correct");
+    player.src = "https://avantpost-cpu.github.io/depot-quiz/course/ange1.png";
+    if(stepImg) stepImg.src = `https://avantpost-cpu.github.io/depot-quiz/course/${currentQuestion+1}a.png`;
+    movePlayer();
+  } else {
+    input.parentElement.classList.add("wrong");
+    player.src = "https://avantpost-cpu.github.io/depot-quiz/course/ange2.png";
+    if(stepImg) stepImg.src = `https://avantpost-cpu.github.io/depot-quiz/course/${currentQuestion+1}b.png`;
+  }
+
+  currentQuestion++;
+  if(currentQuestion < quiz.length) {
+    setTimeout(showQuestion, 1000);
+  } else {
+    setTimeout(() => {
+      document.getElementById('quizContainer').innerHTML = "";
+      document.getElementById('result').innerHTML = `Quiz terminé ! Score : ${score} / ${quiz.length}`;
+
+      const decor = document.querySelector('#game img.decor');
+      if(score === quiz.length) {
+        player.src = "https://avantpost-cpu.github.io/depot-quiz/course/ange3.png";
+        if(decor) decor.src = 'https://avantpost-cpu.github.io/depot-quiz/course/decor1.jpg';
+      } else {
+        player.src = "https://avantpost-cpu.github.io/depot-quiz/course/ange2.png";
+      }
+    }, 1000);
+  }
+}
+
+// Move player proportionally
+function movePlayer() {
+  const player = document.getElementById('player');
+  const gameWidth = document.getElementById('game').clientWidth; 
+  const step = (gameWidth - player.clientWidth) / quiz.length;
+  const decor = document.querySelector('#game img.decor');
+  const bottomOffset = decor ? decor.clientHeight * 0.05 : 10;
+  player.style.bottom = `${bottomOffset}px`;
+  setTimeout(() => {
+    player.style.left = `${step * score}px`;
+    player.style.bottom = `${bottomOffset}px`;
+  }, 200);
+}
+
+// Start the quiz
+showQuestion();
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

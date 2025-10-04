@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Images tribunal - apparition progressive stable</title>
+<style>
+body {
+  background: #fff;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+#container {
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Image 1 toujours visible */
+.img1 {
+  width: 100%;
+  display: block;
+  margin: 5px auto;
+}
+
+/* Autres images invisibles au départ */
+#container img:not(.img1) {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  display: block;
+  width: 100%;
+  margin: 5px auto;
+  height: auto;
+}
+
+/* Ligne 3/4/5 avec flex */
+.row345 {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  max-width: 800px;
+  margin: 10px auto;
+}
+
+.row345 img {
+  flex: 1; /* toutes les images ont la même largeur */
+  max-width: calc((100% - 20px)/3); /* 3 images + gap */
+  height: auto;
+}
+
+/* Responsive mobile */
+@media(max-width: 768px){
+  .row345 img {
+    max-width: 30%;
+  }
+}
+</style>
+</head>
+<body>
+
+<div id="container">
+  <img src="https://avantpost-cpu.github.io/depot-quiz/tribunal/1.jpg" class="img1">
+  <img src="https://avantpost-cpu.github.io/depot-quiz/tribunal/2.jpg" class="img2">
+  
+  <div class="row345">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/tribunal/3.jpg" class="img3">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/tribunal/4.jpg" class="img4">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/tribunal/5.jpg" class="img5">
+  </div>
+
+  <img src="https://avantpost-cpu.github.io/depot-quiz/tribunal/6.jpg" class="img6">
+  <img src="https://avantpost-cpu.github.io/depot-quiz/tribunal/7.jpg" class="img7">
+  <img src="https://avantpost-cpu.github.io/depot-quiz/tribunal/8.jpg" class="img8">
+</div>
+
+<script>
+// Apparition progressive
+const elements = [
+  document.querySelector('.img2'),
+  document.querySelector('.img3'),
+  document.querySelector('.img4'),
+  document.querySelector('.img5'),
+  document.querySelector('.img6'),
+  document.querySelector('.img7'),
+  document.querySelector('.img8')
+];
+
+elements.forEach((el,index)=>{
+  setTimeout(()=>{el.style.opacity=1}, 2000*(index+1));
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A2 + Flèche + Images A-F</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.conteneur-global {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* Colonne gauche : image (A2, B2…) + flèche */
+.col-gauche {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  height: 600px;
+  position: relative;
+}
+
+#imgLeft {
+  height: 600px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  visibility: hidden; /* invisible par défaut */
+  z-index: 0;         /* derrière la flèche */
+}
+
+.col-gauche img.fleche {
+  height: 600px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  z-index: 1;         /* au-dessus de l'image gauche */
+}
+
+/* Colonne droite : images A-F */
+.col-droite {
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+  width: 160px;
+}
+
+.ligne {
+  flex: 1;
+  position: relative;
+}
+
+.ligne img.base,
+.ligne img.hover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ligne img.hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 10;
+}
+
+.ligne:hover img.hover {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<div class="conteneur-global">
+
+  <!-- Colonne gauche : image gauche + flèche -->
+  <div class="col-gauche">
+    <img src="" id="imgLeft" alt="Image gauche">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/hono/fleche.jpg" class="fleche" alt="Flèche">
+  </div>
+
+  <!-- Colonne droite : images A-F -->
+  <div class="col-droite">
+    <div class="ligne" data-img="https://avantpost-cpu.github.io/depot-quiz/hono/A2.jpg">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/A.jpg" class="base">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/A1.jpg" class="hover">
+    </div>
+    <div class="ligne" data-img="https://avantpost-cpu.github.io/depot-quiz/hono/B2.jpg">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/B.jpg" class="base">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/B1.jpg" class="hover">
+    </div>
+    <div class="ligne" data-img="https://avantpost-cpu.github.io/depot-quiz/hono/C2.jpg">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/C.jpg" class="base">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/C1.jpg" class="hover">
+    </div>
+    <div class="ligne" data-img="https://avantpost-cpu.github.io/depot-quiz/hono/D2.jpg">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/D.jpg" class="base">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/D1.jpg" class="hover">
+    </div>
+    <div class="ligne" data-img="https://avantpost-cpu.github.io/depot-quiz/hono/E2.jpg">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/E.jpg" class="base">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/E1.jpg" class="hover">
+    </div>
+    <div class="ligne" data-img="https://avantpost-cpu.github.io/depot-quiz/hono/F2.jpg">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/F.jpg" class="base">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/hono/F1.jpg" class="hover">
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Sélection de l'image gauche
+const imgLeft = document.getElementById('imgLeft');
+
+// Pour chaque ligne, on change l'image gauche au survol
+const lignes = document.querySelectorAll('.ligne');
+
+lignes.forEach(ligne => {
+  ligne.addEventListener('mouseenter', () => {
+    const src = ligne.getAttribute('data-img');
+    imgLeft.src = src;
+    imgLeft.style.visibility = 'visible';
+  });
+  ligne.addEventListener('mouseleave', () => {
+    imgLeft.style.visibility = 'hidden';
+  });
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

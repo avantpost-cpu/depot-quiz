@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Miroir Intime – Coin bleu calé</title>
+<title>Miroir intime – version complète et responsive</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playwrite+IT+Moderna:wght@400;600&display=swap" rel="stylesheet">
 
@@ -14,113 +14,73 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{
-  height:100%;
+  min-height:100%;
   font-family:'Inter', system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif;
   background:url('https://avantpost-cpu.github.io/depot-quiz/consequences/livre/fond.jpg') repeat;
   background-size:auto;
-  display:flex; align-items:center; justify-content:center;
-  color:var(--ink);
-  overflow:hidden;
-}
-
-.app{width:100%;max-width:760px;text-align:center;}
-
-/* Duo miroir + jauge */
-.header-duo{
   display:flex;align-items:center;justify-content:center;
-  gap:2rem;margin-bottom:1rem;flex-wrap:wrap;
+  color:var(--ink);
 }
-.header-img{max-width:340px;width:70%;height:auto;border:none;box-shadow:none;}
+.app{width:100%;max-width:760px;text-align:center;padding:1rem;}
 
-/* Jauge */
-.jauge{ position:relative;width:260px;aspect-ratio:2/1; }
-.jauge .layer{ position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity .4s ease;pointer-events:none; }
-.jauge .layer.green{opacity:1;} .jauge .layer.yellow{opacity:0;} .jauge .layer.red{opacity:0;}
-.needle{ position:absolute;bottom:0;left:50%;height:95%;transform-origin:50% 100%;transform:translateX(-50%) rotate(-90deg);transition:transform .6s ease;pointer-events:none; }
+/* Haut : miroir + jauge */
+.header-duo{display:flex;align-items:center;justify-content:center;gap:2rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.header-img{max-width:340px;width:100%;height:auto}
+.jauge{position:relative;width:100%;max-width:260px;aspect-ratio:2/1;margin:auto}
+.jauge .layer{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:opacity .35s ease}
+.needle{position:absolute;bottom:0;left:50%;height:95%;transform-origin:50% 100%;transform:translateX(-50%) rotate(-90deg);transition:transform .5s ease}
 
 /* Intro */
-.intro{ display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.2rem;padding:1rem 1.5rem;position:relative;top:-1.5vh; }
-.intro p{ font-family:'Playwrite IT Moderna',cursive;font-size:1.3rem;line-height:1.6;color:#14786c;max-width:560px; }
-.cta{ display:flex;justify-content:center;align-items:center;gap:1rem; }
-.start-img{ width:220px;height:auto;cursor:pointer;transition:transform .25s ease,filter .25s ease; }
-.start-img:hover{ transform:scale(1.05);filter:brightness(1.1); }
-.footer-note{ font-size:.8rem;color:#6b7f92; }
+.intro{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.2rem;padding:1rem 1.2rem}
+.intro p{font-family:'Playwrite IT Moderna',cursive;font-size:clamp(1.1rem,2.4vw,1.4rem);line-height:1.6;color:#14786c;max-width:560px}
+.start-img{width:clamp(160px,40vw,220px);height:auto;cursor:pointer;transition:transform .25s ease,filter .25s ease}
+.start-img:hover{transform:scale(1.05);filter:brightness(1.1)}
+.footer-note{font-size:.8rem;color:#6b7f92}
 
 /* Cartes */
-.card{
-  background:rgba(255,255,255,0.95);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  opacity:0; transform:translateY(10px);
-  transition:opacity .5s ease,transform .5s ease;
-  position:relative; overflow:hidden;
-}
-.card.show{ opacity:1; transform:translateY(0); }
+.card{background:rgba(255,255,255,0.95);border-radius:var(--radius);box-shadow:var(--shadow);
+  opacity:0;transform:translateY(10px);transition:opacity .35s ease,transform .35s ease;
+  position:relative;overflow:hidden;}
+.card.show{opacity:1;transform:translateY(0)}
+.stage{display:none}
+.card-body{padding:clamp(1rem,3vw,2rem);margin-bottom:1rem}
 
-/* Stage (contenu) */
-.stage{ display:none; }
-.card-body{
-  padding:1.5rem 2rem;
-  min-height:55vh;
-  margin-bottom:1rem;
-}
-.situation{ display:flex;flex-direction:column; }
+/* Badge */
+.badge{position:absolute;top:0;left:0;background:#14475d;color:#fff;
+  font-family:'Playwrite IT Moderna',cursive;font-weight:600;font-size:clamp(0.9rem,2vw,1rem);
+  padding:.55rem 1rem .55rem 1.2rem;clip-path:polygon(0 0, 100% 0, 75% 100%, 0 100%);
+  border-top-left-radius:22px;border-bottom-right-radius:6px;box-shadow:0 2px 6px rgba(0,0,0,.15)}
 
-/* ✅ Badge : calé sur le coin de .card (pas .s-head) */
-.badge{
-  position:absolute;
-  top:0; left:0; /* aligné sur le coin du cartouche */
-  background:#14475d; color:#fff;
-  font-family:'Playwrite IT Moderna',cursive; font-weight:600; font-size:1rem;
-  padding:0.55rem 1rem 0.55rem 1.2rem;
-  clip-path:polygon(0 0, 100% 0, 75% 100%, 0 100%);
-  border-top-left-radius:22px; /* même rayon que .card */
-  border-bottom-right-radius:6px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.15);
-  z-index:2;
-}
+/* Textes */
+.s-title{font-family:'Playwrite IT Moderna',cursive;font-size:clamp(1.4rem,2.5vw,1.8rem);
+  text-align:left;margin-bottom:.6rem;color:var(--ink);}
+.s-text{color:var(--muted);line-height:1.7;font-size:clamp(1rem,2.4vw,1.3rem);
+  text-align:left;margin:auto;margin-bottom:1rem;}
+.s-question{font-family:'Playwrite IT Moderna',cursive;font-weight:500;color:#14786c;
+  font-size:clamp(1.2rem,2.6vw,1.6rem);margin:1.2rem auto;text-align:center;max-width:95%;}
 
-/* En-tête */
-.s-head{ position:relative; margin-bottom:1.2rem; padding-top:0.4rem; }
+/* Choix */
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1rem;width:100%}
+.choice{background:transparent;border:none;padding:0;border-radius:14px;overflow:hidden}
+.choice-img{width:100%;border-radius:14px;box-shadow:var(--shadow);transition:transform .25s ease}
+.choice:hover .choice-img{transform:scale(1.03)}
+.choice.active .choice-img{outline:4px solid rgba(106,166,216,.55);transform:scale(1.05)}
 
-/* Décalage du contenu pour ne pas “taper” le coin bleu */
-.card-body .s-title,
-.card-body .s-text,
-.card-body .s-question{
-  margin-left:0.8rem;
-}
+/* Slides */
+#situation{position:relative;min-height:200px}
+.s-slide{opacity:0;transform:translateX(40px);
+  transition:opacity .45s ease, transform .45s ease;position:relative}
+.s-slide.show{opacity:1;transform:translateX(0)}
 
-.s-title{
-  font-family:'Playwrite IT Moderna',cursive;
-  font-size:clamp(1.4rem,2vw,1.8rem);
-  text-align:left; margin-bottom:.6rem; color:var(--ink);
-}
-.s-text{
-  color:var(--muted); line-height:1.8; white-space:pre-wrap;
-  font-size:clamp(1.1rem,2.4vw,1.4rem);
-  text-align:left; max-width:95%; margin:auto; margin-left:0.8rem;
-}
-.s-question{
-  font-family:'Playwrite IT Moderna',cursive; font-weight:500; color:#14786c;
-  font-size:clamp(1.3rem,2.4vw,1.6rem);
-  margin:1.2rem auto 1rem; text-align:center; max-width:90%;
-}
-
-/* Choix (images) */
-.choices{ display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.8rem; }
-.choice{ background:transparent;border:none;padding:0;border-radius:14px;overflow:hidden;transition:transform .2s ease; }
-.choice-img{ width:100%;display:block;border-radius:14px;box-shadow:var(--shadow);transition:transform .25s ease; }
-.choice:hover .choice-img{ transform:scale(1.03); }
-.choice.active .choice-img{ outline:4px solid rgba(106,166,216,.55); transform:scale(1.05); }
-
-.endcard{ display:none;padding:1.5rem;font-family:'Playwrite IT Moderna',cursive; }
+/* Fin */
+.endcard{display:none;padding:1.5rem;font-family:'Playwrite IT Moderna',cursive}
+.endcard h2{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:.8rem}
+.endcard p{font-size:clamp(1rem,2vw,1.2rem);line-height:1.6}
 
 @media(max-width:580px){
-  .header-duo{ flex-direction:column;gap:1rem; }
-  .header-img{ max-width:280px; }
-  .jauge{ width:220px; }
-  .start-img{ width:180px; }
-  .badge{ font-size:.95rem; padding:.5rem .9rem .5rem 1.05rem; }
+  .header-duo{flex-direction:column;gap:1rem}
+  .card-body{padding:1rem}
+  .choices{grid-template-columns:repeat(2,1fr)}
 }
 </style>
 </head>
@@ -137,7 +97,6 @@ html,body{
     </div>
   </div>
 
-  <!-- Intro -->
   <section class="intro" id="intro">
     <p>Lis chaque situation. Choisis ce qui te ressemble le plus. La <strong>jauge</strong> évolue selon tes réponses (plus de jaune si “Parfois”, plus de rouge si “Non”). À la fin, une synthèse bienveillante t’accompagne.</p>
     <div class="cta">
@@ -146,36 +105,13 @@ html,body{
     <p class="footer-note">Tes réponses restent sur ton appareil (localStorage).</p>
   </section>
 
-  <!-- Quiz -->
   <section class="card stage" id="stage">
-    <!-- ✅ Badge placé directement dans .card -->
     <span class="badge" id="sid">1</span>
-
     <div class="card-body">
-      <div class="situation" id="situation">
-        <div class="s-head">
-          <h2 class="s-title" id="sTitle"></h2>
-        </div>
-
-        <p class="s-text" id="sText"></p>
-        <p class="s-question" id="sQuestion"></p>
-
-        <div class="choices">
-          <button class="choice" data-val="2">
-            <img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonA.png" alt="Oui" class="choice-img">
-          </button>
-          <button class="choice" data-val="1">
-            <img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonC.png" alt="Parfois" class="choice-img">
-          </button>
-          <button class="choice" data-val="0">
-            <img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonB.png" alt="Non" class="choice-img">
-          </button>
-        </div>
-      </div>
+      <div id="situation"></div>
     </div>
   </section>
 
-  <!-- Fin -->
   <section class="card endcard" id="endcard">
     <h2>Merci ✨</h2>
     <p>Merci d’avoir pris ce temps pour toi. Si certaines réponses t’ont fait réfléchir, parle-en à une <strong>personne de confiance</strong>. En cas de danger immédiat : <strong>112</strong>.</p>
@@ -184,181 +120,82 @@ html,body{
 </div>
 
 <script>
+/* ========== Les 20 situations complètes ========== */
 const situations = [
-  { id:1, title:"Je me sens encouragé·e dans mes efforts",
-    text:`À l’entraînement, on reconnaît ce que tu fais. Ton entraîneur·e t’explique avec calme, même quand tu te trompes, et t’aide à comprendre pour progresser. On ne te crie pas dessus ni ne te rabaisse. Dans le groupe, on travaille sérieusement, on rigole aussi, et tu sens que tu peux apprendre à ton rythme et être fier·e de tes efforts.`,
-    question:"Est-ce que tu te sens encouragé·e de cette manière ?" },
-
-  { id:2, title:"Les règles, les personnes et l’environnement sont respectés",
-    text:`Tu connais et tu appliques les règles du sport : tu respectes l’arbitrage, tes camarades, les éducateurs et les bénévoles. Tu fais attention aux lieux (vestiaires, gymnase, transports) et à la nature quand tu pratiques dehors, ainsi qu’aux animaux partenaires si c’est le cas. Quand chacun·e fait sa part, cela crée un cadre sûr et juste pour s’entraîner.`,
-    question:"Est-ce que ton environnement sportif est respectueux et bienveillant ?" },
-
-  { id:3, title:"Tu peux demander des explications librement",
-    text:`Si une consigne, un geste ou un règlement n’est pas clair, tu peux demander qu’on t’explique sans être jugé·e. Quand une parole te blesse (sexiste, homophobe ou discriminatoire), tu as le droit d’en parler et d’être écouté·e. Poser des questions et dire ce qui te gêne fait partie du respect et de la progression.`,
-    question:"Est-ce que tu peux parler librement quand quelque chose te gêne ?" },
-
-  { id:4, title:"Tu peux demander les adaptations dont tu as besoin",
-    text:`Tu peux dire ce qui t’aide à pratiquer dans de bonnes conditions : un lieu accessible, des informations expliquées autrement, des aménagements liés à ta santé ou à un handicap. On prend tes besoins au sérieux et on cherche des solutions pour que tu participes pleinement et sereinement.`,
-    question:"Est-ce que tes besoins sont entendus et pris en compte ?" },
-
-  { id:5, title:"Ton corps t’appartient : on demande ton accord pour te toucher",
-    text:`Pour un geste technique, une parade ou une correction, on t’explique ce qu’on va faire et on te demande ton accord. Tu peux dire oui, non, ou proposer une autre manière de t’aider. Tu as le droit d’apprendre sans contact non désiré, et de rappeler que ton corps t’appartient.`,
-    question:"Est-ce qu’on te demande ton accord avant tout contact ?" },
-
-  { id:6, title:"Ton intimité est respectée (vestiaires, douche, aide)",
-    text:`Tu choisis comment te changer et qui peut t’aider. Si tu as besoin d’une aide, elle se fait avec ton accord et dans le respect de ta pudeur. Personne ne doit entrer dans ton espace sans prévenir ni s’imposer quand tu n’es pas à l’aise. Tu peux le dire et demander un cadre plus protecteur.`,
-    question:"Est-ce que ton intimité est respectée, y compris quand on t’aide ?" },
-
-  { id:7, title:"Ton identité de genre et ton orientation sont respectées",
-    text:`Tu peux vivre ton identité sans moqueries ni exclusions : prénom et pronoms respectés, accès à des vestiaires adaptés, cadre bienveillant avec le groupe et l’encadrement. Tu as le droit d’être toi-même et de pratiquer en sécurité, sans pression ni honte.`,
-    question:"Est-ce que ton identité est respectée et prise en compte dans ta pratique ?" },
-
-  { id:8, title:"Paroles, gestes, regards qui te mettent mal à l’aise",
-    text:`Parfois tu ressens une gêne sans savoir pourquoi : ambiance lourde, regards insistants, surnoms que tu n’aimes pas. Il peut y avoir des paroles méchantes, moqueuses, sexistes ou homophobes, ou au contraire trop centrées sur ton corps. Tu as le droit de dire stop et d’en parler à quelqu’un de confiance.`,
-    question:"Est-ce que tu vis parfois ce malaise dans ton environnement sportif ?" },
-
-  { id:9, title:"On t’oblige à être en sous-vêtements à la vue des autres",
-    text:`Tu peux préférer te changer à l’abri des regards et c’est ton droit. Même si une pesée ou un soin est nécessaire, cela doit se faire dans le respect de ta pudeur, par des professionnel·les, et sans public.`,
-    question:"T’est-il déjà arrivé qu’on t’impose d’être dévêtu·e devant d’autres alors que tu n’étais pas à l’aise ?" },
-
-  { id:10, title:"Entrées dans les vestiaires sans prévenir",
-    text:`Les vestiaires sont des lieux d’intimité. Si des personnes entrent sans prévenir pendant que tu te changes ou te douches, tu peux te sentir exposé·e. Il peut y avoir de bonnes raisons, mais le respect de ta pudeur prime.`,
-    question:"Est-ce que des entrées sans prévenir t’ont déjà mis mal à l’aise ?" },
-
-  { id:11, title:"On t’aide à t’habiller sans te demander ton accord",
-    text:`Parfois quelqu’un t’aide à te changer sans te demander si tu es d’accord. Tu peux refuser, choisir qui t’aide et comment, et demander que cela se fasse dans le respect de ta pudeur et de ton rythme.`,
-    question:"Est-ce qu’on t’aide parfois sans te demander clairement ton accord ?" },
-
-  { id:12, title:"Pressions et messages intrusifs sur les réseaux",
-    text:`En ligne, tu peux recevoir des messages insistants, intrusifs ou à caractère intime. Même si cela vient d’un·e encadrant·e, d’un·e camarade ou d’un sponsor, tu as le droit de poser des limites et d’en parler si tu n’es pas respecté·e.`,
-    question:"Est-ce que tu vis parfois des pressions ou messages intrusifs sur les réseaux ?" },
-
-  { id:13, title:"On te demande de rester seul·e après l’entraînement",
-    text:`Quelqu’un te demande de rester une fois que tout le monde est parti et cela te met mal à l’aise. Tu as le droit de dire non. Si tu as peur ou te sens obligé·e, parle-en à une personne de confiance.`,
-    question:"T’est-il déjà arrivé de te sentir obligé·e de rester seul·e avec quelqu’un ?" },
-
-  { id:14, title:"Isolement, harcèlement, bizutage",
-    text:`Tu es mis·e à l’écart, moqué·e, menacé·e, ou on te fait faire des choses humiliantes “pour rire”. Le harcèlement et le bizutage ne sont jamais acceptables.`,
-    question:"As-tu déjà été isolé·e ou harcelé·e dans ton cadre sportif ?" },
-
-  { id:15, title:"Haine en ligne, chantage, harcèlement numérique",
-    text:`Des messages haineux, humiliants ou à caractère sexuel peuvent t’atteindre en ligne. On peut aussi te mettre la pression pour des performances, des vues, ou te menacer de retirer un soutien.`,
-    question:"As-tu déjà subi de la haine ou du chantage en ligne lié à ta pratique ?" },
-
-  { id:16, title:"Photos intimes prises ou diffusées sans ton accord",
-    text:`Des personnes prennent des photos quand tu te changes ou te poussent à partager des images intimes. C’est humiliant et interdit par la loi.`,
-    question:"As-tu déjà été pris·e en photo ou poussé·e à partager des images intimes sans accord ?" },
-
-  { id:17, title:"On te prive de matériel, de soins, de boire ou de manger",
-    text:`On te retire ce dont tu as besoin (soins, eau, nourriture, matériel) pour te “tester” ou t’humilier. C’est dangereux et contraire à ta dignité.`,
-    question:"As-tu déjà été privé·e de soin, de matériel, d’eau ou de nourriture pendant ta pratique ?" },
-
-  { id:18, title:"Attouchements, caresses, baisers sur des parties intimes",
-    text:`Une personne te touche, te caresse ou t’embrasse sur des parties intimes, commente ton corps de façon déplacée, te demande des photos dénudées et exige le secret. Ce sont des agressions sexuelles, punies par la loi. Ce n’est jamais de ta faute.`,
-    question:"T’est-il déjà arrivé de subir des gestes ou demandes sexuelles non désirés ?" },
-
-  { id:19, title:"On te demande de toucher quelqu’un ou d’avoir un geste sexuel",
-    text:`On te pousse à caresser ou embrasser quelqu’un en banalisant ou en te menaçant si tu refuses. Cela peut se produire en bizutage, en déplacement, ou en ligne. C’est interdit et grave.`,
-    question:"As-tu déjà été poussé·e à poser un geste sexuel sur quelqu’un ?" },
-
-  { id:20, title:"Chantage au secret : “ça reste entre nous”",
-    text:`On te dit que vos gestes, messages ou photos doivent rester secrets, que personne ne comprendrait, ou on te menace si tu parles. C’est du chantage, interdit par la loi. Tu as le droit d’être protégé·e et entendu·e.`,
-    question:"As-tu déjà subi un chantage au secret à propos de gestes, messages ou images ?" },
+  { id:1, title:"Je me sens encouragé·e dans mes efforts", text:`À l’entraînement, on reconnaît ce que tu fais. Ton entraîneur·e t’explique avec calme, même quand tu te trompes, et t’aide à comprendre pour progresser. On ne te crie pas dessus ni ne te rabaisse. Dans le groupe, on travaille sérieusement, on rigole aussi, et tu sens que tu peux apprendre à ton rythme et être fier·e de tes efforts.`, question:"Est-ce que tu te sens encouragé·e de cette manière ?" },
+  { id:2, title:"Les règles, les personnes et l’environnement sont respectés", text:`Tu connais et tu appliques les règles du sport : tu respectes l’arbitrage, tes camarades, les éducateurs et les bénévoles. Tu fais attention aux lieux (vestiaires, gymnase, transports) et à la nature quand tu pratiques dehors, ainsi qu’aux animaux partenaires si c’est le cas. Quand chacun·e fait sa part, cela crée un cadre sûr et juste pour s’entraîner.`, question:"Est-ce que ton environnement sportif est respectueux et bienveillant ?" },
+  { id:3, title:"Tu peux demander des explications librement", text:`Si une consigne, un geste ou un règlement n’est pas clair, tu peux demander qu’on t’explique sans être jugé·e. Quand une parole te blesse (sexiste, homophobe ou discriminatoire), tu as le droit d’en parler et d’être écouté·e. Poser des questions et dire ce qui te gêne fait partie du respect et de la progression.`, question:"Est-ce que tu peux parler librement quand quelque chose te gêne ?" },
+  { id:4, title:"Tu peux demander les adaptations dont tu as besoin", text:`Tu peux dire ce qui t’aide à pratiquer dans de bonnes conditions : un lieu accessible, des informations expliquées autrement, des aménagements liés à ta santé ou à un handicap. On prend tes besoins au sérieux et on cherche des solutions pour que tu participes pleinement et sereinement.`, question:"Est-ce que tes besoins sont entendus et pris en compte ?" },
+  { id:5, title:"Ton corps t’appartient : on demande ton accord pour te toucher", text:`Pour un geste technique, une parade ou une correction, on t’explique ce qu’on va faire et on te demande ton accord. Tu peux dire oui, non, ou proposer une autre manière de t’aider. Tu as le droit d’apprendre sans contact non désiré, et de rappeler que ton corps t’appartient.`, question:"Est-ce qu’on te demande ton accord avant tout contact ?" },
+  { id:6, title:"Ton intimité est respectée (vestiaires, douche, aide)", text:`Tu choisis comment te changer et qui peut t’aider. Si tu as besoin d’une aide, elle se fait avec ton accord et dans le respect de ta pudeur. Personne ne doit entrer dans ton espace sans prévenir ni s’imposer quand tu n’es pas à l’aise. Tu peux le dire et demander un cadre plus protecteur.`, question:"Est-ce que ton intimité est respectée, y compris quand on t’aide ?" },
+  { id:7, title:"Ton identité de genre et ton orientation sont respectées", text:`Tu peux vivre ton identité sans moqueries ni exclusions : prénom et pronoms respectés, accès à des vestiaires adaptés, cadre bienveillant avec le groupe et l’encadrement. Tu as le droit d’être toi-même et de pratiquer en sécurité, sans pression ni honte.`, question:"Est-ce que ton identité est respectée et prise en compte dans ta pratique ?" },
+  { id:8, title:"Paroles, gestes, regards qui te mettent mal à l’aise", text:`Parfois tu ressens une gêne sans savoir pourquoi : ambiance lourde, regards insistants, surnoms que tu n’aimes pas. Il peut y avoir des paroles méchantes, moqueuses, sexistes ou homophobes, ou au contraire trop centrées sur ton corps. Tu as le droit de dire stop et d’en parler à quelqu’un de confiance.`, question:"Est-ce que tu vis parfois ce malaise dans ton environnement sportif ?" },
+  { id:9, title:"On t’oblige à être en sous-vêtements à la vue des autres", text:`Tu peux préférer te changer à l’abri des regards et c’est ton droit. Même si une pesée ou un soin est nécessaire, cela doit se faire dans le respect de ta pudeur, par des professionnel·les, et sans public.`, question:"T’est-il déjà arrivé qu’on t’impose d’être dévêtu·e devant d’autres alors que tu n’étais pas à l’aise ?" },
+  { id:10, title:"Entrées dans les vestiaires sans prévenir", text:`Les vestiaires sont des lieux d’intimité. Si des personnes entrent sans prévenir pendant que tu te changes ou te douches, tu peux te sentir exposé·e. Il peut y avoir de bonnes raisons, mais le respect de ta pudeur prime.`, question:"Est-ce que des entrées sans prévenir t’ont déjà mis mal à l’aise ?" },
+  { id:11, title:"On t’aide à t’habiller sans te demander ton accord", text:`Parfois quelqu’un t’aide à te changer sans te demander si tu es d’accord. Tu peux refuser, choisir qui t’aide et comment, et demander que cela se fasse dans le respect de ta pudeur et de ton rythme.`, question:"Est-ce qu’on t’aide parfois sans te demander clairement ton accord ?" },
+  { id:12, title:"Pressions et messages intrusifs sur les réseaux", text:`En ligne, tu peux recevoir des messages insistants, intrusifs ou à caractère intime. Même si cela vient d’un·e encadrant·e, d’un·e camarade ou d’un sponsor, tu as le droit de poser des limites et d’en parler si tu n’es pas respecté·e.`, question:"Est-ce que tu vis parfois des pressions ou messages intrusifs sur les réseaux ?" },
+  { id:13, title:"On te demande de rester seul·e après l’entraînement", text:`Quelqu’un te demande de rester une fois que tout le monde est parti et cela te met mal à l’aise. Tu as le droit de dire non. Si tu as peur ou te sens obligé·e, parle-en à une personne de confiance.`, question:"T’est-il déjà arrivé de te sentir obligé·e de rester seul·e avec quelqu’un ?" },
+  { id:14, title:"Isolement, harcèlement, bizutage", text:`Tu es mis·e à l’écart, moqué·e, menacé·e, ou on te fait faire des choses humiliantes “pour rire”. Le harcèlement et le bizutage ne sont jamais acceptables.`, question:"As-tu déjà été isolé·e ou harcelé·e dans ton cadre sportif ?" },
+  { id:15, title:"Haine en ligne, chantage, harcèlement numérique", text:`Des messages haineux, humiliants ou à caractère sexuel peuvent t’atteindre en ligne. On peut aussi te mettre la pression pour des performances, des vues, ou te menacer de retirer un soutien.`, question:"As-tu déjà subi de la haine ou du chantage en ligne lié à ta pratique ?" },
+  { id:16, title:"Photos intimes prises ou diffusées sans ton accord", text:`Des personnes prennent des photos quand tu te changes ou te poussent à partager des images intimes. C’est humiliant et interdit par la loi.`, question:"As-tu déjà été pris·e en photo ou poussé·e à partager des images intimes sans accord ?" },
+  { id:17, title:"On te prive de matériel, de soins, de boire ou de manger", text:`On te retire ce dont tu as besoin (soins, eau, nourriture, matériel) pour te “tester” ou t’humilier. C’est dangereux et contraire à ta dignité.`, question:"As-tu déjà été privé·e de soin, de matériel, d’eau ou de nourriture pendant ta pratique ?" },
+  { id:18, title:"Attouchements, caresses, baisers sur des parties intimes", text:`Une personne te touche, te caresse ou t’embrasse sur des parties intimes, commente ton corps de façon déplacée, te demande des photos dénudées et exige le secret. Ce sont des agressions sexuelles, punies par la loi. Ce n’est jamais de ta faute.`, question:"T’est-il déjà arrivé de subir des gestes ou demandes sexuelles non désirés ?" },
+  { id:19, title:"On te demande de toucher quelqu’un ou d’avoir un geste sexuel", text:`On te pousse à caresser ou embrasser quelqu’un en banalisant ou en te menaçant si tu refuses. Cela peut se produire en bizutage, en déplacement, ou en ligne. C’est interdit et grave.`, question:"As-tu déjà été poussé·e à poser un geste sexuel sur quelqu’un ?" },
+  { id:20, title:"Chantage au secret : “ça reste entre nous”", text:`On te dit que vos gestes, messages ou photos doivent rester secrets, que personne ne comprendrait, ou on te menace si tu parles. C’est du chantage, interdit par la loi. Tu as le droit d’être protégé·e et entendu·e.`, question:"As-tu déjà subi un chantage au secret à propos de gestes, messages ou images ?" }
 ];
 
+/* ========== Script ========== */
+let state={index:0,answers:Array(situations.length).fill(null)},anim=false;
+const intro=document.getElementById('intro'),stage=document.getElementById('stage'),
+endcard=document.getElementById('endcard'),sid=document.getElementById('sid'),
+situationDiv=document.getElementById('situation'),needle=document.getElementById('needle'),
+layerGreen=document.getElementById('layerGreen'),layerYellow=document.getElementById('layerYellow'),
+layerRed=document.getElementById('layerRed');
 
-let state={index:0,answers:Array(situations.length).fill(null)};
-const intro=document.getElementById('intro'),
-      stage=document.getElementById('stage'),
-      endcard=document.getElementById('endcard'),
-      sid=document.getElementById('sid'),
-      sTitle=document.getElementById('sTitle'),
-      sText=document.getElementById('sText'),
-      sQuestion=document.getElementById('sQuestion'),
-      choices=[...document.querySelectorAll('.choice')],
-      needle=document.getElementById('needle'),
-      layerYellow=document.getElementById('layerYellow'),
-      layerRed=document.getElementById('layerRed');
+function updateGauge(){const a=state.answers.filter(v=>v!==null),n=a.length;
+  if(!n){layerGreen.style.opacity=1;layerYellow.style.opacity=0;layerRed.style.opacity=0;
+    needle.style.transform='translateX(-50%) rotate(-90deg)';return;}
+  const oui=a.filter(v=>v===2).length,par=a.filter(v=>v===1).length,non=a.filter(v=>v===0).length;
+  const rN=non/n,rP=par/n;
+  layerGreen.style.opacity=Math.max(0,1-(rP+rN*1.2));
+  layerYellow.style.opacity=Math.min(1,rP+rN*0.3);
+  layerRed.style.opacity=Math.min(1,rN*1.5);
+  needle.style.transform=`translateX(-50%) rotate(${-90+(180*(n/situations.length))}deg)`;}
 
-function updateGauge() {
-  const layerGreen = document.getElementById('layerGreen');
-  const layerYellow = document.getElementById('layerYellow');
-  const layerRed = document.getElementById('layerRed');
-  const needle = document.getElementById('needle');
+function makeSlide(i){const s=situations[i],slide=document.createElement('div');
+  slide.className='s-slide show';
+  slide.innerHTML=`<div class="s-head"><h2 class="s-title">${s.title}</h2></div>
+  <p class="s-text">${s.text}</p><p class="s-question">${s.question}</p>
+  <div class="choices">
+    <button class="choice" data-val="2"><img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonA.png" class="choice-img"></button>
+    <button class="choice" data-val="1"><img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonC.png" class="choice-img"></button>
+    <button class="choice" data-val="0"><img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonB.png" class="choice-img"></button>
+  </div>`;
+  slide.querySelectorAll('.choice').forEach(btn=>{
+    btn.addEventListener('click',()=>{if(anim)return;
+      const val=+btn.dataset.val;state.answers[state.index]=val;
+      slide.querySelectorAll('.choice').forEach(c=>c.classList.remove('active'));
+      btn.classList.add('active');updateGauge();
+      if(state.index<situations.length-1)goTo(state.index+1);
+      else{stage.style.display='none';endcard.classList.add('show');}});});
+  return slide;}
 
-  const answered = state.answers.filter(v => v !== null);
-  const total = state.answers.length;
-  const answeredCount = answered.length;
-
-  if (answeredCount === 0) {
-    layerGreen.style.opacity = 1;
-    layerYellow.style.opacity = 0;
-    layerRed.style.opacity = 0;
-    needle.style.transform = 'translateX(-50%) rotate(-90deg)';
-    return;
-  }
-
-  // calcul des moyennes globales (sur toutes les réponses données)
-  const countOui = answered.filter(v => v === 2).length;
-  const countParfois = answered.filter(v => v === 1).length;
-  const countNon = answered.filter(v => v === 0).length;
-  const totalAnswered = countOui + countParfois + countNon;
-
-  const ratioOui = countOui / totalAnswered;
-  const ratioParfois = countParfois / totalAnswered;
-  const ratioNon = countNon / totalAnswered;
-
-  // ✅ opacités équilibrées
-  layerGreen.style.opacity = Math.max(0, 1 - (ratioParfois + ratioNon * 1.2));
-  layerYellow.style.opacity = Math.min(1, ratioParfois + ratioNon * 0.3);
-  layerRed.style.opacity = Math.min(1, ratioNon * 1.5);
-
-  // ✅ angle de l’aiguille en fonction du nombre de questions répondues
-  const angle = -90 + (180 * (answeredCount / total));
-  needle.style.transform = `translateX(-50%) rotate(${angle}deg)`;
-}
-
-
-
-function showCard(card){ document.querySelectorAll('.card').forEach(c=>c.classList.remove('show')); card.classList.add('show'); }
-
-function showSituation(i){
-  const s=situations[i];
-  sid.textContent = s.id;              // ✅ badge mis à jour
-  sTitle.textContent = s.title;
-  sText.textContent = s.text;
-  sQuestion.textContent = s.question;
-  choices.forEach(c=>c.classList.remove('active'));
-  const val=state.answers[i];
-  if(val!==null){ choices.find(c=>+c.dataset.val===val)?.classList.add('active'); }
-  updateGauge();
-}
-
-choices.forEach(btn=>btn.addEventListener('click',()=>{
-  const val=+btn.dataset.val;
-  state.answers[state.index]=val;
-  choices.forEach(c=>c.classList.remove('active'));
-  btn.classList.add('active');
-  updateGauge();
-
-  setTimeout(()=>{
-    if(state.index < situations.length-1){
-      state.index++;
-      showSituation(state.index);
-    } else {
-      stage.style.display='none';
-      showCard(endcard);
-    }
-  },700);
-}));
+function goTo(next){if(anim)return;anim=true;
+  const old=situationDiv.querySelector('.s-slide'),neu=makeSlide(next);
+  neu.style.position='absolute';neu.style.left='0';neu.style.top='0';neu.style.width='100%';
+  neu.style.opacity='0';neu.style.transform='translateX(40px)';situationDiv.appendChild(neu);
+  const h=neu.offsetHeight;situationDiv.style.height=situationDiv.offsetHeight+'px';
+  situationDiv.style.transition='height .45s ease';
+  requestAnimationFrame(()=>{neu.style.opacity='1';neu.style.transform='translateX(0)';
+    if(old)old.style.opacity='0';situationDiv.style.height=h+'px';});
+  setTimeout(()=>{if(old)old.remove();situationDiv.style.transition='';situationDiv.style.height='auto';
+    neu.style.position='relative';state.index=next;sid.textContent=situations[next].id;
+    updateGauge();anim=false;},500);}
 
 document.getElementById('startImg').addEventListener('click',()=>{
-  intro.style.display='none';
-  stage.style.display='block';
-  showCard(stage);
-  showSituation(0);
-  updateGauge();
-});
+  intro.style.display='none';stage.style.display='block';stage.classList.add('show');
+  situationDiv.innerHTML='';situationDiv.appendChild(makeSlide(0));
+  sid.textContent=situations[0].id;updateGauge();});
 </script>
 </body>
 </html>

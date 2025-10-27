@@ -14,7 +14,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Baromètre du Climat Éthique — 8 situations</title>
+<title>Baromètre du Climat Éthique — version critique</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playwrite+IT+Moderna:wght@400;600&display=swap" rel="stylesheet">
 
@@ -45,7 +45,7 @@ html,body{
 
 /* Intro */
 .intro{display:flex;flex-direction:column;align-items:center;text-align:center;gap:1.1rem;padding:1rem 1.2rem;}
-.intro p{font-family:'Playwrite IT Moderna',cursive;font-size:clamp(1.05rem,2.4vw,1.4rem);line-height:1.55;color:#14786c;max-width:620px;}
+.intro p{font-family:'Playwrite IT Moderna',cursive;font-size:clamp(1.05rem,2.4vw,1.4rem);line-height:1.55;color:#14786c;max-width:640px;}
 .start-img{width:clamp(160px,40vw,220px);height:auto;cursor:pointer;transition:transform .25s ease,filter .25s ease;}
 .start-img:hover{transform:scale(1.05);filter:brightness(1.1);}
 .footer-note{font-size:.85rem;color:#6b7f92;}
@@ -77,58 +77,48 @@ html,body{
 }
 
 /* Textes */
-.s-title{
-  font-family:'Playwrite IT Moderna',cursive;
-  font-size:clamp(1.35rem,2.5vw,1.8rem);
-  text-align:left; margin-bottom:.6rem; color:var(--ink);
-}
-.s-text{
-  color:var(--muted); line-height:1.75;
-  font-size:clamp(1rem,2.2vw,1.25rem);
-  text-align:left; margin:auto; margin-bottom:1rem;
-}
-.s-question{
-  font-family:'Playwrite IT Moderna',cursive; font-weight:500; color:#14786c;
-  font-size:clamp(1.15rem,2.4vw,1.5rem);
-  margin:1rem auto 1rem; text-align:center; max-width:95%;
-}
+.s-title{font-family:'Playwrite IT Moderna',cursive;font-size:clamp(1.35rem,2.5vw,1.8rem);text-align:left;margin-bottom:.6rem;color:var(--ink);}
+.s-text{color:var(--muted);line-height:1.75;font-size:clamp(1rem,2.2vw,1.25rem);text-align:left;margin:auto;margin-bottom:1rem;}
+.s-question{font-family:'Playwrite IT Moderna',cursive;font-weight:500;color:#14786c;font-size:clamp(1.15rem,2.4vw,1.5rem);margin:1rem auto 1rem;text-align:center;max-width:95%;}
 
 /* Choix */
-.choices{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-  gap:1rem; width:100%;
-}
-.choice{ background:transparent; border:none; padding:0; border-radius:14px; overflow:hidden; }
-.choice-img{ width:100%; display:block; border-radius:14px; box-shadow:var(--shadow); transition:transform .25s ease; }
-.choice:hover .choice-img{ transform:scale(1.03); }
-.choice.active .choice-img{ outline:4px solid rgba(106,166,216,.55); transform:scale(1.05); }
+.choices{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem;width:100%;}
+.choice{background:transparent;border:none;padding:0;border-radius:14px;overflow:hidden;}
+.choice-img{width:100%;display:block;border-radius:14px;box-shadow:var(--shadow);transition:transform .25s ease;}
+.choice:hover .choice-img{transform:scale(1.03);}
+.choice.active .choice-img{outline:4px solid rgba(106,166,216,.55);transform:scale(1.05);}
 
 /* Slides */
-#situation{ position:relative; }
-.s-slide{ opacity:0; transform:translateX(36px); transition:opacity .35s ease, transform .35s ease; position:relative; }
-.s-slide.show{ opacity:1; transform:translateX(0); }
+#situation{position:relative;}
+.s-slide{opacity:0;transform:translateX(36px);transition:opacity .35s ease,transform .35s ease;position:relative;}
+.s-slide.show{opacity:1;transform:translateX(0);}
 
-/* Fin */
-.endcard{ display:none; padding:1.4rem 1.6rem 1.8rem; font-family:'Playwrite IT Moderna',cursive; border-radius:var(--radius); }
-.endcard h2{ font-size:clamp(1.5rem,3vw,2rem); margin-bottom:.8rem; }
-.endcard p{ font-size:clamp(1rem,2vw,1.2rem); line-height:1.6; }
-.summary{ margin-top:0.6rem; font-size:.95rem; color:#31495b; }
+/* Fin + alerte */
+.endcard{display:none;padding:1.4rem 1.6rem 1.8rem;font-family:'Playwrite IT Moderna',cursive;border-radius:var(--radius);}
+.endcard h2{font-size:clamp(1.5rem,3vw,2rem);margin-bottom:.8rem;}
+.endcard p{font-size:clamp(1rem,2vw,1.2rem);line-height:1.6;}
+.alert-red{background:#fcd6d6 !important;border-left:8px solid #c71d1d;}
+.alert-red h2{color:#a4161a;}
+.alert-red p{color:#1a1a1a;}
+.alert-red a{color:#14475d;text-decoration:underline;}
+.restart-btn{margin-top:1.2rem;padding:.7rem 1.4rem;background:#14475d;color:#fff;border:none;border-radius:10px;font-size:1rem;cursor:pointer;}
+.restart-btn:hover{background:#1b5f7b;}
 
-/* Responsive portrait */
+/* Responsive */
 @media(max-width:700px) and (orientation:portrait){
-  html, body { min-height:100%; align-items:flex-start; justify-content:flex-start; }
-  .app{ padding:1rem; }
-  .header-duo{ flex-direction:column; gap:.6rem; margin-bottom:.6rem; }
-  .header-img{ max-width:220px; }
-  .jauge{ max-width:160px; }
-  .needle{ height:80%; }
-  .card-body{ padding:1rem; }
-  .s-title{ font-size:clamp(1.2rem,4.2vw,1.55rem); }
-  .s-text{ font-size:clamp(.97rem,3.4vw,1.15rem); line-height:1.6; }
-  .s-question{ font-size:clamp(1.05rem,4vw,1.35rem); margin:0.8rem auto; }
-  .choices{ grid-template-columns:repeat(2,1fr); gap:1.2rem; margin-top:.6rem; }
-  .choice{ transform:scale(1.22); transform-origin:center; }
-  body{ overflow-y:auto; }
+  html,body{min-height:100%;align-items:flex-start;justify-content:flex-start;}
+  .app{padding:1rem;}
+  .header-duo{flex-direction:column;gap:.6rem;margin-bottom:.6rem;}
+  .header-img{max-width:220px;}
+  .jauge{max-width:160px;}
+  .needle{height:80%;}
+  .card-body{padding:1rem;}
+  .s-title{font-size:clamp(1.2rem,4.2vw,1.55rem);}
+  .s-text{font-size:clamp(.97rem,3.4vw,1.15rem);line-height:1.6;}
+  .s-question{font-size:clamp(1.05rem,4vw,1.35rem);margin:.8rem auto;}
+  .choices{grid-template-columns:repeat(2,1fr);gap:1.2rem;margin-top:.6rem;}
+  .choice{transform:scale(1.22);transform-origin:center;}
+  body{overflow-y:auto;}
 }
 </style>
 </head>
@@ -148,7 +138,7 @@ html,body{
 
   <!-- Intro -->
   <section class="intro" id="intro">
-    <p>Ce baromètre propose 8 situations issues du terrain. Il vous aide à évaluer la qualité du <strong>climat éthique</strong> dans votre pratique sportive ou éducative. Répondez avec sincérité : l’objectif est de rester <strong>dans le vert</strong>.</p>
+    <p>Ce baromètre propose <strong>20 situations</strong> issues du terrain. Il vous aide à évaluer la qualité du <strong>climat éthique</strong> dans votre pratique sportive ou éducative.<br>Répondez avec sincérité : l’objectif est de rester <strong>dans le vert</strong> (🟢 Oui / 🟡 Parfois / 🔴 Non).<br>En cas de réponse <strong>« Non » à une question critique</strong>, le test s’interrompt pour afficher une alerte prioritaire.</p>
     <img src="https://avantpost-cpu.github.io/depot-quiz/outil/start.png" alt="Commencer" class="start-img" id="startImg">
     <p class="footer-note">Confidentiel — vos réponses restent locales à votre navigateur.</p>
   </section>
@@ -161,103 +151,59 @@ html,body{
     </div>
   </section>
 
-  <!-- Fin -->
-  <section class="card endcard" id="endcard" aria-live="polite">
-    <h2 id="endTitle">Merci ✨</h2>
-    <p id="endMsg">Ce baromètre vous aide à repérer vos forces et vos zones de vigilance. Utilisez ces éléments pour nourrir votre plan d’action ou un temps d’échange collectif.</p>
-    <p class="summary" id="endSummary"></p>
+  <!-- Alerte -->
+  <section class="card endcard alert-red" id="alertCard">
+    <h2>🔴 Alerte prioritaire – Risque majeur détecté</h2>
+    <p>Votre réponse indique une situation <strong>à risque grave</strong> concernant la sécurité ou l’intégrité d’une personne.</p>
+    <p>Ce type de situation nécessite une <strong>réaction immédiate</strong> :</p>
+    <ul style="text-align:left;max-width:600px;margin:0 auto 1rem;line-height:1.6;">
+      <li>👉 Si un danger est présent <strong>immédiatement</strong>, appelez le <strong>112</strong>.</li>
+      <li>👉 Si vous êtes témoin ou concerné·e, contactez votre <strong>référent·e protection</strong>, la <strong>CRIP</strong> (Cellule de Recueil des Informations Préoccupantes) ou le <strong>Procureur</strong>.</li>
+      <li>👉 Ne restez pas seul·e avec ce doute : <strong>parlez-en, signalez, agissez.</strong></li>
+    </ul>
+    <p>🔗 Ressources complémentaires sur <a href="https://assorebond.com/signalement" target="_blank">assorebond.com/signalement</a></p>
+    <button class="restart-btn" id="restartBtn">Recommencer le test</button>
   </section>
 
 </div>
 
 <script>
-/* ===== Données : 8 situations (version "vous") ===== */
 const situations = [
-  {
-    id:1,
-    title:"Encourager sans pression",
-    text:`Dans votre rôle d’encadrant·e, vous valorisez les efforts avant les résultats. Vous expliquez les erreurs avec calme et bienveillance, sans humilier ni mettre en difficulté.`,
-    question:"Vous maintenez un climat d’encouragement sans créer de pression inutile."
-  },
-  {
-    id:2,
-    title:"Respect du cadre et des personnes",
-    text:`Vous veillez à ce que le respect soit réciproque entre collègues, jeunes, familles et bénévoles. Vous agissez pour que les règles et les valeurs du sport s’appliquent à toutes et tous, sans exception.`,
-    question:"Vous contribuez à un environnement juste et respectueux."
-  },
-  {
-    id:3,
-    title:"Consentement et contact",
-    text:`Avant tout contact physique (correction, aide, démonstration), vous expliquez le geste et demandez l’accord explicite de la personne. Vous restez attentif·ve à son confort et à ses limites.`,
-    question:"Vous demandez systématiquement le consentement avant tout contact."
-  },
-  {
-    id:4,
-    title:"Communication et écoute",
-    text:`Vous encouragez une communication ouverte et bienveillante, où chacun·e peut poser des questions ou exprimer un désaccord sans crainte.`,
-    question:"Vous créez un climat d’écoute et de dialogue constructif."
-  },
-  {
-    id:5,
-    title:"Gestion des émotions et du stress",
-    text:`Vous savez réguler vos émotions pour ne pas transmettre de stress au groupe et restez cohérent·e en cas de désaccord.`,
-    question:"Vous parvenez à gérer vos réactions pour préserver un climat apaisé."
-  },
-  {
-    id:6,
-    title:"Inclusion et égalité",
-    text:`Vous veillez à ce que chaque personne trouve sa place, quelles que soient ses différences, et vous agissez concrètement pour un cadre non discriminant.`,
-    question:"Vous contribuez activement à un environnement égalitaire et inclusif."
-  },
-  {
-    id:7,
-    title:"Usage du numérique et des réseaux",
-    text:`Vous utilisez les outils numériques avec discernement et conservez une distance professionnelle ; vous ne partagez jamais de contenu personnel ou sensible.`,
-    question:"Vous adoptez un usage éthique et responsable du numérique."
-  },
-  {
-    id:8,
-    title:"Protection et signalement",
-    text:`Vous connaissez les démarches à suivre en cas de situation à risque ou de suspicion de violence et vous n’hésitez pas à demander conseil pour protéger les personnes concernées.`,
-    question:"Vous agissez concrètement pour la prévention et la protection dans votre environnement."
-  }
+  {id:1,severity:"normal",title:"Encourager sans pression",text:"Dans votre rôle d’encadrant·e, vous valorisez les efforts avant les résultats et refusez toute forme d’humiliation.",question:"Vous maintenez un climat d’encouragement sans créer de pression inutile."},
+  {id:2,severity:"normal",title:"Respect du cadre et des personnes",text:"Vous veillez à un respect réciproque entre collègues, jeunes, familles, arbitres et bénévoles.",question:"Vous contribuez à un environnement juste et respectueux."},
+  {id:3,severity:"normal",title:"Communication et écoute",text:"Vous favorisez une parole libre et respectueuse. Chacun·e peut poser des questions ou exprimer un désaccord sans crainte de jugement.",question:"Vous créez un climat d’écoute et de dialogue constructif."},
+  {id:4,severity:"normal",title:"Gestion des émotions et du stress",text:"Vous régulez vos émotions pour ne pas transmettre de tension au groupe.",question:"Vous parvenez à gérer vos réactions pour préserver un climat apaisé."},
+  {id:5,severity:"normal",title:"Inclusion et égalité",text:"Vous veillez à ce que chaque personne trouve sa place, quelles que soient ses différences.",question:"Vous agissez concrètement pour un cadre inclusif et non discriminant."},
+  {id:6,severity:"critical",title:"Consentement et contact (critique)",text:"Avant tout contact physique (correction, aide, démonstration), vous expliquez le geste et demandez l’accord explicite.",question:"Vous demandez systématiquement le consentement avant tout contact."},
+  {id:7,severity:"critical",title:"Respect de l’intimité (critique)",text:"Vous respectez les espaces privés (vestiaires, douche, soins).",question:"Vous préservez toujours la pudeur et l’intimité des personnes encadrées."},
+  {id:8,severity:"normal",title:"Langage et attitudes",text:"Vous bannissez tout propos ou geste dévalorisant, sexiste, homophobe, raciste ou humiliant.",question:"Vous adoptez une communication respectueuse en toutes circonstances."},
+  {id:9,severity:"normal",title:"Posture d’autorité",text:"Vous utilisez votre autorité pour encadrer et protéger, pas pour dominer.",question:"Votre autorité reste au service du développement, jamais du contrôle."},
+  {id:10,severity:"normal",title:"Exemplarité et confiance",text:"Vous incarnez les valeurs que vous transmettez et tenez vos engagements.",question:"Vous êtes perçu·e comme une personne de confiance et de référence."},
+  {id:11,severity:"normal",title:"Équilibre engagement / limites",text:"Vous respectez vos limites et celles des autres.",question:"Vous maintenez un rapport sain entre engagement et disponibilité."},
+  {id:12,severity:"normal",title:"Gestion des conflits",text:"Vous traitez les tensions de manière posée et équitable.",question:"Vous contribuez à apaiser les conflits plutôt qu’à les amplifier."},
+  {id:13,severity:"normal",title:"Transparence et collaboration",text:"Vous partagez l’information utile avec les personnes concernées.",question:"Vous pratiquez une communication claire, loyale et proportionnée."},
+  {id:14,severity:"normal",title:"Formation continue",text:"Vous vous tenez informé·e des bonnes pratiques et obligations légales.",question:"Vous actualisez vos connaissances pour garantir un cadre sûr."},
+  {id:15,severity:"normal",title:"Usage du numérique et des réseaux",text:"Vous gardez une distance professionnelle en ligne.",question:"Vous adoptez un usage éthique et responsable des outils numériques."},
+  {id:16,severity:"normal",title:"Repérage du mal-être",text:"Vous restez attentif·ve aux signaux faibles de souffrance ou d’isolement.",question:"Vous savez repérer et accompagner l’expression d’un mal-être."},
+  {id:17,severity:"critical",title:"Situations à huis clos et isolement (critique)",text:"Vous évitez de vous retrouver seul·e avec une personne encadrée sans raison valable.",question:"Vous prévenez les situations d’isolement à risque et les huis clos injustifiés."},
+  {id:18,severity:"critical",title:"Images et données personnelles (critique)",text:"Vous ne prenez ni ne diffusez de photos/vidéos sans autorisation formelle.",question:"Vous respectez strictement le droit à l’image et la confidentialité."},
+  {id:19,severity:"critical",title:"Pressions, chantage et comportements inappropriés (critique)",text:"Vous refusez toute pression, chantage ou contrepartie implicite.",question:"Vous identifiez et endiguez les pressions ou comportements inappropriés."},
+  {id:20,severity:"critical",title:"Signalement et protection (critique)",text:"Vous connaissez vos interlocuteurs et les procédures à suivre en cas de situation préoccupante.",question:"Vous savez comment agir et à qui signaler pour protéger efficacement."}
 ];
 
-/* ===== État + refs ===== */
-let state={index:0,answers:Array(situations.length).fill(null)}, anim=false;
-
-const intro=document.getElementById('intro'),
-      stage=document.getElementById('stage'),
-      endcard=document.getElementById('endcard'),
-      sid=document.getElementById('sid'),
-      situationDiv=document.getElementById('situation');
-
-const needle=document.getElementById('needle'),
-      layerGreen=document.getElementById('layerGreen'),
-      layerYellow=document.getElementById('layerYellow'),
-      layerRed=document.getElementById('layerRed');
+let state={index:0,answers:Array(situations.length).fill(null)},anim=false;
+const intro=document.getElementById('intro'),stage=document.getElementById('stage'),alertCard=document.getElementById('alertCard'),sid=document.getElementById('sid'),situationDiv=document.getElementById('situation');
+const needle=document.getElementById('needle'),layerGreen=document.getElementById('layerGreen'),layerYellow=document.getElementById('layerYellow'),layerRed=document.getElementById('layerRed');
 
 /* ===== Jauge ===== */
 function updateGauge(){
   const answered=state.answers.filter(v=>v!==null);
   const n=answered.length;
-  if(!n){
-    layerGreen.style.opacity=1; layerYellow.style.opacity=0; layerRed.style.opacity=0;
-    needle.style.transform='translateX(-50%) rotate(-90deg)';
-    return;
-  }
-  const yes=answered.filter(v=>v===2).length;
-  const mid=answered.filter(v=>v===1).length;
-  const no =answered.filter(v=>v===0).length;
-
-  const rN = no/n, rP = mid/n;
-  layerGreen.style.opacity = Math.max(0, 1 - (rP + rN*1.2));
-  layerYellow.style.opacity = Math.min(1, rP + rN*0.3);
-  layerRed.style.opacity    = Math.min(1, rN*1.5);
-
-  // Aiguille progresse avec le nombre de questions répondues
-  const angle=-90 + 180*(n/situations.length);
-  needle.style.transform=`translateX(-50%) rotate(${angle}deg)`;
+  if(!n){layerGreen.style.opacity=1;layerYellow.style.opacity=0;layerRed.style.opacity=0;needle.style.transform='translateX(-50%) rotate(-90deg)';return;}
+  const yes=answered.filter(v=>v===2).length;const mid=answered.filter(v=>v===1).length;const no=answered.filter(v=>v===0).length;
+  const rN=no/n,rP=mid/n;
+  layerGreen.style.opacity=Math.max(0,1-(rP+rN*1.2));layerYellow.style.opacity=Math.min(1,rP+rN*0.3);layerRed.style.opacity=Math.min(1,rN*1.5);
+  const angle=-90+180*(n/situations.length);needle.style.transform=`translateX(-50%) rotate(${angle}deg)`;
 }
 
 /* ===== Slides ===== */
@@ -270,107 +216,65 @@ function buildSlide(i){
     <p class="s-text">${s.text}</p>
     <p class="s-question">${s.question}</p>
     <div class="choices">
-      <button class="choice" data-val="2" aria-label="Oui">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonA.png" class="choice-img" alt="Oui">
-      </button>
-      <button class="choice" data-val="1" aria-label="Parfois">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonC.png" class="choice-img" alt="Parfois">
-      </button>
-      <button class="choice" data-val="0" aria-label="Non">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonB.png" class="choice-img" alt="Non">
-      </button>
-    </div>
-  `;
+      <button class="choice" data-val="2"><img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonA.png" class="choice-img" alt="Oui"></button>
+      <button class="choice" data-val="1"><img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonC.png" class="choice-img" alt="Parfois"></button>
+      <button class="choice" data-val="0"><img src="https://avantpost-cpu.github.io/depot-quiz/outil/boutonB.png" class="choice-img" alt="Non"></button>
+    </div>`;
   slide.querySelectorAll('.choice').forEach(btn=>{
     btn.addEventListener('click',()=>{
-      if(anim) return;
+      if(anim)return;
       const val=+btn.dataset.val;
       state.answers[state.index]=val;
       slide.querySelectorAll('.choice').forEach(c=>c.classList.remove('active'));
       btn.classList.add('active');
       updateGauge();
 
-      if(state.index < situations.length-1){
-        goTo(state.index+1);
-      } else {
-        showSummary();
+      // STOP si critique et réponse = Non
+      if(s.severity==="critical" && val===0){
+        showAlert(s);
+        return;
       }
+
+      if(state.index<situations.length-1){goTo(state.index+1);}else{showAlert(null);} 
     });
   });
   return slide;
 }
 
+/* ===== Navigation ===== */
 function goTo(next){
-  if(anim) return; anim=true;
+  if(anim)return;anim=true;
   const old=situationDiv.querySelector('.s-slide');
   const neu=buildSlide(next);
-  neu.style.position='absolute'; neu.style.left='0'; neu.style.top='0'; neu.style.width='100%';
-  neu.style.opacity='0'; neu.style.transform='translateX(36px)';
+  neu.style.position='absolute';neu.style.left='0';neu.style.top='0';neu.style.width='100%';neu.style.opacity='0';neu.style.transform='translateX(36px)';
   situationDiv.appendChild(neu);
-
-  requestAnimationFrame(()=>{
-    neu.style.opacity='1'; neu.style.transform='translateX(0)';
-    if(old) old.style.opacity='0';
-  });
-
-  setTimeout(()=>{
-    if(old) old.remove();
-    neu.style.position='relative';
-    state.index=next; sid.textContent=situations[next].id;
-    updateGauge(); anim=false;
-  }, 380);
+  requestAnimationFrame(()=>{neu.style.opacity='1';neu.style.transform='translateX(0)';if(old)old.style.opacity='0';});
+  setTimeout(()=>{if(old)old.remove();neu.style.position='relative';state.index=next;sid.textContent=situations[next].id;updateGauge();anim=false;},380);
 }
 
-/* ===== Synthèse finale conditionnelle ===== */
-function showSummary(){
+/* ===== Alerte ===== */
+function showAlert(situation){
   stage.style.display='none';
-
-  const answered=state.answers.filter(v=>v!==null);
-  const yes=answered.filter(v=>v===2).length;
-  const mid=answered.filter(v=>v===1).length;
-  const no =answered.filter(v=>v===0).length;
-
-  // Déterminer la dominante
-  let dominant = 'green', title='Bravo ! 🟢', msg='Votre posture traduit un engagement fort pour un cadre éthique et protecteur. Continuez à être un repère positif dans votre environnement.';
-  let bg = '#c7e8d4'; // vert doux
-  if(mid >= yes && mid >= no){
-    dominant = 'yellow';
-    title='Points de vigilance 🟡';
-    msg='Vous manifestez une réelle attention à l’éthique, avec quelques zones de vigilance. Identifiez 2–3 actions prioritaires pour renforcer votre posture.';
-    bg = '#fff4cc';
-  }
-  if(no > yes && no >= mid){
-    dominant = 'red';
-    title='À corriger rapidement 🔴';
-    msg='Plusieurs réponses indiquent des risques. Il est essentiel d’en parler ou de vous faire accompagner pour rétablir un cadre sécurisant et conforme aux valeurs de protection.';
-    bg = '#fcd6d6';
-  }
-
-  const endTitle = document.getElementById('endTitle');
-  const endMsg   = document.getElementById('endMsg');
-  const endSum   = document.getElementById('endSummary');
-
-  endTitle.textContent = title;
-  endMsg.textContent   = msg;
-  endSum.textContent   = `Résumé : ${yes}× Oui (vert) • ${mid}× Parfois (jaune) • ${no}× Non (rouge) sur ${situations.length} questions.`;
-
-  endcard.style.background = bg;
-  endcard.style.display = 'block';
-  endcard.classList.add('show');
-
-  // Mettre la jauge au complet (aiguille plein parcours)
-  needle.style.transform='translateX(-50%) rotate(90deg)';
+  alertCard.style.display='block';
+  alertCard.classList.add('show');
+  if(situation){console.warn("ALERTE CRITIQUE :",situation.title);}
 }
+
+/* ===== Recommencer ===== */
+document.getElementById('restartBtn').addEventListener('click',()=>{
+  alertCard.style.display='none';
+  intro.style.display='block';
+  state={index:0,answers:Array(situations.length).fill(null)};
+  updateGauge();
+});
 
 /* ===== Démarrage ===== */
 document.getElementById('startImg').addEventListener('click',()=>{
   intro.style.display='none';
   stage.style.display='block';
   stage.classList.add('show');
-
   situationDiv.innerHTML='';
   situationDiv.appendChild(buildSlide(0));
-
   sid.textContent=situations[0].id;
   updateGauge();
 });

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mosaïque Chiffres — Ajustement 4/5 équilibré</title>
+<style>
+  html,body{
+    margin:0; padding:0; width:100%; height:100%; overflow:hidden;
+    background:url("https://avantpost-cpu.github.io/depot-quiz/consequences/livre/fond.jpg") center/cover no-repeat;
+    display:flex; justify-content:center; align-items:center;
+  }
+
+  .wrapper{ transform-origin:center center; transition:transform .3s ease; }
+
+  .mosaic{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    width:1200px;
+    gap:0;
+  }
+
+  .row{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    width:100%;
+    gap:0;
+  }
+
+  .hoverable{
+    position:relative;
+    flex:1;
+  }
+
+  .hoverable img{
+    display:block;
+    width:100%;
+    height:auto;
+    margin:0;
+    padding:0;
+  }
+
+  /* --- ligne 4 + 5 équilibrée --- */
+  .row:last-child .img4{ flex:0.78; } /* réduit légèrement */
+  .row:last-child .img5{ flex:1.2; } /* agrandit légèrement */
+
+  /* --- b.png visibles par défaut --- */
+  .hoverable::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-size:100% auto;
+    background-repeat:no-repeat;
+    background-position:center top;
+    opacity:1;
+    transition:opacity .3s ease;
+  }
+  .hoverable:hover::before{ opacity:0; }
+
+  /* mapping des images b */
+  .img1::before{background-image:url("https://avantpost-cpu.github.io/depot-quiz/chiffres/1b.png")}
+  .img2::before{background-image:url("https://avantpost-cpu.github.io/depot-quiz/chiffres/2b.png")}
+  .img3::before{background-image:url("https://avantpost-cpu.github.io/depot-quiz/chiffres/3b.png")}
+  .img4::before{background-image:url("https://avantpost-cpu.github.io/depot-quiz/chiffres/4b.png")}
+  .img5::before{background-image:url("https://avantpost-cpu.github.io/depot-quiz/chiffres/5b.png")}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="mosaic">
+
+    <!-- 1, 2, 3 empilées -->
+    <div class="row"><div class="hoverable img1"><img src="https://avantpost-cpu.github.io/depot-quiz/chiffres/1.png" alt="1"></div></div>
+    <div class="row"><div class="hoverable img2"><img src="https://avantpost-cpu.github.io/depot-quiz/chiffres/2.png" alt="2"></div></div>
+    <div class="row"><div class="hoverable img3"><img src="https://avantpost-cpu.github.io/depot-quiz/chiffres/3.png" alt="3"></div></div>
+
+    <!-- 4 + 5 côte à côte -->
+    <div class="row">
+      <div class="hoverable img4"><img src="https://avantpost-cpu.github.io/depot-quiz/chiffres/4.png" alt="4"></div>
+      <div class="hoverable img5"><img src="https://avantpost-cpu.github.io/depot-quiz/chiffres/5.png" alt="5"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* Auto-scale Digiforma */
+function adjustScale(){
+  const wrapper = document.querySelector('.wrapper');
+  const mosaic  = document.querySelector('.mosaic');
+  const scaleW  = window.innerWidth  / mosaic.offsetWidth;
+  const scaleH  = window.innerHeight / mosaic.offsetHeight;
+  const scale   = Math.min(scaleW, scaleH) * 0.95;
+  wrapper.style.transform = `scale(${scale})`;
+}
+window.addEventListener('resize', adjustScale);
+window.addEventListener('load', adjustScale);
+</script>
+
+</body>
+</html>

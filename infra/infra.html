@@ -1,18 +1,36 @@
 <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Mosaïque Infra — Grand + Scale conservé</title>
+<title>Mosaïque Infra — Auto-scale plein écran Digiforma</title>
 <style>
   html,body{
     margin:0;
     padding:0;
-    min-height:100vh;
-    background:url("https://avantpost-cpu.github.io/depot-quiz/consequences/livre/fond.jpg") center/cover no-repeat fixed;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:url("https://avantpost-cpu.github.io/depot-quiz/consequences/livre/fond.jpg") center/cover no-repeat;
     display:flex;
     justify-content:center;
-    align-items:flex-start;
+    align-items:center;
+  }
+
+  .wrapper{
+    transform-origin:center center;
+    transition:transform .3s ease;
   }
 
   .mosaic{
@@ -21,11 +39,8 @@
     align-items:flex-start;
     flex-wrap:nowrap;
     gap:0;
-    width:100%;            /* ← plus large qu’avant */
-    max-width:1800px;      /* ← augmente la taille réelle */
-    margin:3vh auto;
-    transform:scale(0.9);  /* ← garde ton ratio visuel préféré */
-    transform-origin:center top;
+    width:1600px; /* taille de référence avant auto-scale */
+    height:auto;
   }
 
   .col{
@@ -39,11 +54,8 @@
     display:block;
     width:100%;
     height:auto;
-    margin:0;
-    padding:0;
   }
 
-  /* --- zones survolables --- */
   .hoverable{
     position:relative;
     cursor:pointer;
@@ -58,7 +70,6 @@
     opacity:0;
     transition:opacity .3s ease;
   }
-
   .hoverable:hover::after{opacity:1;}
 
   /* versions b */
@@ -75,7 +86,6 @@
   .img12::after {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/12b.png")}
   .img13::after {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/13b.png")}
 
-  /* --- zone centrale --- */
   .center{position:relative;}
   .img0{position:relative;}
   .img0::after{
@@ -88,7 +98,7 @@
     transition:opacity .3s ease;
   }
 
-  /* --- Liaisons hover → image 0 --- */
+  /* hover -> image 0 */
   .mosaic:has(.img1:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/1c.png");opacity:1;}
   .mosaic:has(.img2:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/2c.png");opacity:1;}
   .mosaic:has(.img3:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/3c.png");opacity:1;}
@@ -101,45 +111,55 @@
   .mosaic:has(.img11:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/11c.png");opacity:1;}
   .mosaic:has(.img12:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/12c.png");opacity:1;}
   .mosaic:has(.img13:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/13c.png");opacity:1;}
-
-  /* --- Responsive : garde 3 colonnes et réduit doucement --- */
-  @media(max-width:1200px){.mosaic{transform:scale(0.8);}}
-  @media(max-width:900px){.mosaic{transform:scale(0.7);}}
-  @media(max-width:700px){.mosaic{transform:scale(0.6);}}
-  @media(max-width:550px){.mosaic{transform:scale(0.5);}}
 </style>
 </head>
 <body>
 
-<div class="mosaic">
-  <!-- Colonne 1 -->
-  <div class="col">
-    <div class="hoverable img1"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/1.png" alt="1"></div>
-    <div class="hoverable img2"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/2.png" alt="2"></div>
-    <div class="hoverable img3"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/3.png" alt="3"></div>
-    <div class="hoverable img4"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/4.png" alt="4"></div>
-    <div class="hoverable img5"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/5.png" alt="5"></div>
-  </div>
-
-  <!-- Colonne 2 -->
-  <div class="col center">
-    <img src="https://avantpost-cpu.github.io/depot-quiz/infra/6.png" alt="6">
-    <div class="img0">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/infra/0.png" alt="0">
+<div class="wrapper">
+  <div class="mosaic">
+    <div class="col">
+      <div class="hoverable img1"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/1.png" alt="1"></div>
+      <div class="hoverable img2"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/2.png" alt="2"></div>
+      <div class="hoverable img3"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/3.png" alt="3"></div>
+      <div class="hoverable img4"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/4.png" alt="4"></div>
+      <div class="hoverable img5"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/5.png" alt="5"></div>
     </div>
-  </div>
 
-  <!-- Colonne 3 -->
-  <div class="col">
-    <div class="hoverable img7"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/7.png" alt="7"></div>
-    <div class="hoverable img8"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/8.png" alt="8"></div>
-    <div class="hoverable img9"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/9.png" alt="9"></div>
-    <div class="hoverable img10"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/10.png" alt="10"></div>
-    <div class="hoverable img11"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/11.png" alt="11"></div>
-    <div class="hoverable img12"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/12.png" alt="12"></div>
-    <div class="hoverable img13"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/13.png" alt="13"></div>
+    <div class="col center">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/infra/6.png" alt="6">
+      <div class="img0">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/infra/0.png" alt="0">
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="hoverable img7"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/7.png" alt="7"></div>
+      <div class="hoverable img8"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/8.png" alt="8"></div>
+      <div class="hoverable img9"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/9.png" alt="9"></div>
+      <div class="hoverable img10"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/10.png" alt="10"></div>
+      <div class="hoverable img11"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/11.png" alt="11"></div>
+      <div class="hoverable img12"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/12.png" alt="12"></div>
+      <div class="hoverable img13"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/13.png" alt="13"></div>
+    </div>
   </div>
 </div>
 
+<script>
+function adjustScale(){
+  const wrapper = document.querySelector('.wrapper');
+  const mosaic = document.querySelector('.mosaic');
+  const scaleW = window.innerWidth / mosaic.offsetWidth;
+  const scaleH = window.innerHeight / mosaic.offsetHeight;
+  const scale = Math.min(scaleW, scaleH) * 0.95; // petite marge
+  wrapper.style.transform = `scale(${scale})`;
+}
+window.addEventListener('resize', adjustScale);
+window.addEventListener('load', adjustScale);
+</script>
+
 </body>
+</html>
+    
+  </body>
+  
 </html>

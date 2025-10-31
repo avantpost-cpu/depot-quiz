@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Mosaïque Infra — Grand format responsive hover</title>
+<title>Mosaïque Infra — Grand + Scale conservé</title>
 <style>
   html,body{
     margin:0;
@@ -21,10 +21,10 @@
     align-items:flex-start;
     flex-wrap:nowrap;
     gap:0;
-    width:98vw;
-    max-width:1600px; /* ← plus large qu’avant */
+    width:100%;            /* ← plus large qu’avant */
+    max-width:1800px;      /* ← augmente la taille réelle */
     margin:3vh auto;
-    transform:scale(1.1);          /* ← agrandissement global */
+    transform:scale(0.9);  /* ← garde ton ratio visuel préféré */
     transform-origin:center top;
   }
 
@@ -77,9 +77,7 @@
 
   /* --- zone centrale --- */
   .center{position:relative;}
-  .img0{
-    position:relative;
-  }
+  .img0{position:relative;}
   .img0::after{
     content:"";
     position:absolute;
@@ -90,7 +88,7 @@
     transition:opacity .3s ease;
   }
 
-  /* --- Liaisons via :has() --- */
+  /* --- Liaisons hover → image 0 --- */
   .mosaic:has(.img1:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/1c.png");opacity:1;}
   .mosaic:has(.img2:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/2c.png");opacity:1;}
   .mosaic:has(.img3:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/3c.png");opacity:1;}
@@ -104,19 +102,11 @@
   .mosaic:has(.img12:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/12c.png");opacity:1;}
   .mosaic:has(.img13:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/13c.png");opacity:1;}
 
-  /* --- Responsive fluide --- */
-  @media(max-width:1100px){
-    .mosaic{transform:scale(1.0);}
-  }
-  @media(max-width:900px){
-    .mosaic{transform:scale(0.9);}
-  }
-  @media(max-width:700px){
-    .mosaic{transform:scale(0.8);}
-  }
-  @media(max-width:550px){
-    .mosaic{transform:scale(0.7);}
-  }
+  /* --- Responsive : garde 3 colonnes et réduit doucement --- */
+  @media(max-width:1200px){.mosaic{transform:scale(0.8);}}
+  @media(max-width:900px){.mosaic{transform:scale(0.7);}}
+  @media(max-width:700px){.mosaic{transform:scale(0.6);}}
+  @media(max-width:550px){.mosaic{transform:scale(0.5);}}
 </style>
 </head>
 <body>

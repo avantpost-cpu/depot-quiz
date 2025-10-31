@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Mosaïque Chiffres — Ajustement 4/5 équilibré</title>
+<title>Mosaïque Chiffres — 4/5 équilibré + clic mobile</title>
 <style>
   html,body{
     margin:0; padding:0; width:100%; height:100%; overflow:hidden;
@@ -33,6 +33,7 @@
   .hoverable{
     position:relative;
     flex:1;
+    cursor:pointer;
   }
 
   .hoverable img{
@@ -44,8 +45,8 @@
   }
 
   /* --- ligne 4 + 5 équilibrée --- */
-  .row:last-child .img4{ flex:0.78; } /* réduit légèrement */
-  .row:last-child .img5{ flex:1.2; } /* agrandit légèrement */
+  .row:last-child .img4{ flex:0.78; }
+  .row:last-child .img5{ flex:1.2; }
 
   /* --- b.png visibles par défaut --- */
   .hoverable::before{
@@ -58,7 +59,12 @@
     opacity:1;
     transition:opacity .3s ease;
   }
-  .hoverable:hover::before{ opacity:0; }
+
+  /* effet hover + tactile (classe .active) */
+  .hoverable:hover::before,
+  .hoverable.active::before{
+    opacity:0;
+  }
 
   /* mapping des images b */
   .img1::before{background-image:url("https://avantpost-cpu.github.io/depot-quiz/chiffres/1b.png")}
@@ -99,6 +105,15 @@ function adjustScale(){
 }
 window.addEventListener('resize', adjustScale);
 window.addEventListener('load', adjustScale);
+
+/* Clic tactile pour mobile */
+window.addEventListener('load', () => {
+  document.querySelectorAll('.hoverable').forEach(el => {
+    el.addEventListener('click', () => {
+      el.classList.toggle('active');
+    });
+  });
+});
 </script>
 
 </body>

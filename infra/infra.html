@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mosaïque Infra — Hover instantané compact</title>
+<style>
+  html,body{
+    margin:0;
+    padding:0;
+    min-height:100vh;
+    background:url("https://avantpost-cpu.github.io/depot-quiz/consequences/livre/fond.jpg") center/cover no-repeat fixed;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+  }
+
+  .mosaic{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    flex-wrap:nowrap;
+    gap:0;
+    width:95vw;
+    max-width:1400px;
+    margin:4vh auto;
+  }
+
+  .col{
+    display:flex;
+    flex-direction:column;
+    flex:1 1 auto;
+    gap:0;
+  }
+
+  .col img{
+    display:block;
+    width:100%;
+    height:auto;
+    margin:0;
+    padding:0;
+  }
+
+  /* --- zones survolables --- */
+  .hoverable{
+    position:relative;
+    cursor:pointer;
+  }
+
+  .hoverable::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center;
+    opacity:0;
+    transition:opacity .3s ease;
+  }
+
+  /* effet local (b) au survol */
+  .hoverable:hover::after{opacity:1;}
+
+  /* versions b */
+  .img1::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/1b.png")}
+  .img2::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/2b.png")}
+  .img3::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/3b.png")}
+  .img4::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/4b.png")}
+  .img5::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/5b.png")}
+  .img7::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/7b.png")}
+  .img8::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/8b.png")}
+  .img9::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/9b.png")}
+  .img10::after {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/10b.png")}
+  .img11::after {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/11b.png")}
+  .img12::after {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/12b.png")}
+  .img13::after {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/13b.png")}
+
+  /* --- zone centrale --- */
+  .center{position:relative;}
+  .img0{
+    position:relative;
+  }
+  .img0::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center;
+    opacity:0;
+    transition:opacity .3s ease;
+  }
+
+  /* --- Liaisons via :has() --- */
+  .mosaic:has(.img1:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/1c.png");opacity:1;}
+  .mosaic:has(.img2:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/2c.png");opacity:1;}
+  .mosaic:has(.img3:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/3c.png");opacity:1;}
+  .mosaic:has(.img4:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/4c.png");opacity:1;}
+  .mosaic:has(.img5:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/5c.png");opacity:1;}
+  .mosaic:has(.img7:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/7c.png");opacity:1;}
+  .mosaic:has(.img8:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/8c.png");opacity:1;}
+  .mosaic:has(.img9:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/9c.png");opacity:1;}
+  .mosaic:has(.img10:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/10c.png");opacity:1;}
+  .mosaic:has(.img11:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/11c.png");opacity:1;}
+  .mosaic:has(.img12:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/12c.png");opacity:1;}
+  .mosaic:has(.img13:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/13c.png");opacity:1;}
+
+  /* --- Responsive : réduit l’échelle mais garde 3 colonnes --- */
+  @media(max-width:1100px){
+    .mosaic{transform:scale(0.9);}
+  }
+  @media(max-width:900px){
+    .mosaic{transform:scale(0.8);}
+  }
+  @media(max-width:700px){
+    .mosaic{transform:scale(0.7);}
+  }
+  @media(max-width:550px){
+    .mosaic{transform:scale(0.6);}
+  }
+</style>
+</head>
+<body>
+
+<div class="mosaic">
+  <!-- Colonne 1 -->
+  <div class="col">
+    <div class="hoverable img1"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/1.png" alt="1"></div>
+    <div class="hoverable img2"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/2.png" alt="2"></div>
+    <div class="hoverable img3"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/3.png" alt="3"></div>
+    <div class="hoverable img4"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/4.png" alt="4"></div>
+    <div class="hoverable img5"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/5.png" alt="5"></div>
+  </div>
+
+  <!-- Colonne 2 -->
+  <div class="col center">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/infra/6.png" alt="6">
+    <div class="img0">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/infra/0.png" alt="0">
+    </div>
+  </div>
+
+  <!-- Colonne 3 -->
+  <div class="col">
+    <div class="hoverable img7"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/7.png" alt="7"></div>
+    <div class="hoverable img8"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/8.png" alt="8"></div>
+    <div class="hoverable img9"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/9.png" alt="9"></div>
+    <div class="hoverable img10"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/10.png" alt="10"></div>
+    <div class="hoverable img11"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/11.png" alt="11"></div>
+    <div class="hoverable img12"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/12.png" alt="12"></div>
+    <div class="hoverable img13"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/13.png" alt="13"></div>
+  </div>
+</div>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

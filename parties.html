@@ -17,12 +17,10 @@
 <title>Parties — Vidéo avec caches latéraux</title>
 <style>
   :root{
-    /* 🔧 Réglages des caches — mets une valeur en px (ex: 120px) ou en % (ex: 6%) */
+    /* 🔧 Réglages personnalisables */
     --mask-left: 160px;   /* largeur du cache gauche */
-    --mask-right: 160px;   /* largeur du cache droit  */
-    /* Si tu veux aussi cacher bande haut/bas, dé-commente ces lignes : */
-    /* --mask-top:   0px; */
-    /* --mask-bottom:0px; */
+    --mask-right: 160px;  /* largeur du cache droit  */
+    --global-scale: 1.36; /* ✅ homothétie globale (1 = normal, >1 = plus grand) */
   }
 
   html,body{
@@ -31,7 +29,7 @@
     width:100%;
     height:100%;
     overflow:hidden;
-    background:#fff; /* fond blanc */
+    background:#fff;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -44,7 +42,6 @@
     background:#fff;
   }
 
-  /* Vidéo : visible en entier (pas de crop), centrée */
   video{
     display:block;
     width:1600px; /* taille de référence avant auto-scale */
@@ -54,22 +51,15 @@
     background:#fff;
   }
 
-  /* Caches (rideaux) blancs par-dessus la vidéo */
   .mask{
     position:absolute;
-    pointer-events:none;     /* clics passent à travers */
-    background:#fff;         /* couleur du cache (blanc) */
+    pointer-events:none;
+    background:#fff;
     z-index:5;
   }
 
-  /* Côtés */
   .mask-left{  left:0;  top:0; bottom:0; width:var(--mask-left);  }
   .mask-right{ right:0; top:0; bottom:0; width:var(--mask-right); }
-
-  /* Si besoin des caches haut/bas, dé-commente ces classes + variables plus haut
-  .mask-top{    top:0;    left:0; right:0; height:var(--mask-top);    }
-  .mask-bottom{ bottom:0; left:0; right:0; height:var(--mask-bottom); }
-  */
 
 </style>
 </head>
@@ -81,29 +71,25 @@
     Votre navigateur ne prend pas en charge la lecture vidéo.
   </video>
 
-  <!-- Caches latéraux -->
   <div class="mask mask-left"></div>
   <div class="mask mask-right"></div>
-
-  <!-- Si tu veux aussi des caches haut/bas, dé-commente :
-  <div class="mask mask-top"></div>
-  <div class="mask mask-bottom"></div>
-  -->
 </div>
 
 <script>
-/* --- Auto-scale comme d’hab --- */
+/* --- Auto-scale avec homothétie globale --- */
 function adjustScale(){
   const stage = document.getElementById('stage');
   const vid   = document.getElementById('film');
+  const globalScale = parseFloat(getComputedStyle(document.documentElement)
+                                 .getPropertyValue('--global-scale')) || 1;
 
-  // sécurité si les métadonnées ne sont pas encore dispo
   if (!vid.videoWidth || !vid.videoHeight) return;
 
   const scaleW = window.innerWidth  / vid.videoWidth;
   const scaleH = window.innerHeight / vid.videoHeight;
-  const scale  = Math.min(scaleW, scaleH) * 0.95; // petite marge
-  stage.style.transform = `scale(${scale})`;
+  const baseScale  = Math.min(scaleW, scaleH) * 0.95;
+  const finalScale = baseScale * globalScale; // ✅ homothétie appliquée
+  stage.style.transform = `scale(${finalScale})`;
 }
 
 const vid = document.getElementById('film');
@@ -111,13 +97,11 @@ vid.addEventListener('loadedmetadata', adjustScale);
 vid.addEventListener('resize', adjustScale);
 window.addEventListener('resize', adjustScale);
 
-/* --- Figer sur la dernière image --- */
 vid.addEventListener('ended', () => {
   vid.pause();
   vid.currentTime = vid.duration;
 });
 
-/* --- Ajuste après le chargement --- */
 window.addEventListener('load', () => {
   if (vid.readyState >= 1) adjustScale();
 });

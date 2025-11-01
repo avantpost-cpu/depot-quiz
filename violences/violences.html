@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mosaïque Violences — finale mobile fluide</title>
+<style>
+html,body{
+  margin:0;padding:0;width:100%;height:100%;overflow:hidden;
+  background:none;
+  display:flex;justify-content:center;align-items:center;
+}
+
+/* wrapper responsive auto-scale */
+.wrapper{transform-origin:center center;transition:transform .3s ease;}
+.mosaic{
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  width:1200px;gap:0;
+}
+.row{
+  display:flex;justify-content:center;align-items:flex-start;width:100%;gap:0;
+}
+
+/* conteneurs d'image */
+.hoverable{
+  position:relative;
+  flex:1;
+  cursor:pointer;
+  transition:transform 0.1s ease-out;
+  touch-action:manipulation; /* évite les double-taps zoom sur mobile */
+}
+
+/* image 1 reste statique */
+.img1{transition:none !important;}
+
+/* images de fond */
+.hoverable img{
+  display:block;
+  width:100%;
+  height:auto;
+  margin:0;
+  padding:0;
+}
+
+/* couches désaturées b */
+.img2::before,.img3::before,.img4::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-size:100% auto;
+  background-repeat:no-repeat;
+  background-position:center top;
+  opacity:1;
+  transition:opacity 0.4s ease-in-out;
+}
+
+/* survol ou clic : montre la version normale */
+.img2:hover::before,.img3:hover::before,.img4:hover::before,
+.img2.active::before,.img3.active::before,.img4.active::before{
+  opacity:0;
+}
+
+/* mapping images b */
+.img2::before{background-image:url("https://avantpost-cpu.github.io/depot-quiz/violences/2a.png")}
+.img3::before{background-image:url("https://avantpost-cpu.github.io/depot-quiz/violences/3b.png")}
+.img4::before{background-image:url("https://avantpost-cpu.github.io/depot-quiz/violences/4b.png")}
+
+/* ajustements de proportions */
+.row:last-child .img2 { flex:1.03; }
+.row:last-child .img3 { flex:0.99; }
+.row:last-child .img4 { flex:1.05; }
+
+@media (max-width:768px){
+  /* sur mobile, on adapte légèrement la taille globale */
+  .mosaic{width:95vw;}
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="mosaic">
+
+    <!-- Ligne 1 -->
+    <div class="row">
+      <div class="hoverable img1">
+        <img id="img1" src="https://avantpost-cpu.github.io/depot-quiz/violences/1.png" alt="1">
+      </div>
+    </div>
+
+    <!-- Ligne 2 -->
+    <div class="row">
+      <div class="hoverable img2" data-hover="1a">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/violences/2.png" alt="2">
+      </div>
+      <div class="hoverable img3" data-hover="1b">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/violences/3.png" alt="3">
+      </div>
+      <div class="hoverable img4" data-hover="1c">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/violences/4.png" alt="4">
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* auto-scale Digiforma */
+function adjustScale(){
+  const wrapper=document.querySelector('.wrapper');
+  const mosaic=document.querySelector('.mosaic');
+  const scaleW=window.innerWidth/mosaic.offsetWidth;
+  const scaleH=window.innerHeight/mosaic.offsetHeight;
+  const scale=Math.min(scaleW,scaleH)*0.95;
+  wrapper.style.transform=`scale(${scale})`;
+}
+window.addEventListener('resize',adjustScale);
+window.addEventListener('load',adjustScale);
+
+/* interactions desktop + mobile */
+window.addEventListener('load',()=>{
+  const img1=document.getElementById('img1');
+  const base1="https://avantpost-cpu.github.io/depot-quiz/violences/1.png";
+
+  document.querySelectorAll('.hoverable').forEach(el=>{
+    const variant=el.dataset.hover;
+    if(!variant) return;
+    const alt=`https://avantpost-cpu.github.io/depot-quiz/violences/${variant}.png`;
+
+    const triggerZoom = ()=>{
+      img1.src=alt;
+      el.style.transform='scale(1.02)';
+      clearTimeout(el.scaleTimer);
+      el.scaleTimer=setTimeout(()=>{
+        // force recalcul du style pour transition fluide
+        el.getBoundingClientRect();
+        el.style.transform='scale(1)';
+      },250);
+    };
+
+    const resetZoom = ()=>{
+      img1.src=base1;
+      clearTimeout(el.scaleTimer);
+      el.style.transform='scale(1)';
+    };
+
+    /* survol desktop */
+    el.addEventListener('mouseenter',triggerZoom);
+    el.addEventListener('mouseleave',resetZoom);
+
+    /* toucher mobile */
+    el.addEventListener('touchstart',e=>{
+      e.preventDefault(); // évite clic fantôme
+      triggerZoom();
+    });
+    el.addEventListener('touchend',resetZoom);
+  });
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

@@ -95,7 +95,8 @@
     background-size:cover;
     background-position:center;
     opacity:0;
-    transition:opacity .3s ease;
+    transition:opacity .3s ease, transform .3s ease;
+    transform-origin: bottom center;
   }
 
   /* hover -> image 0 */
@@ -111,6 +112,37 @@
   .mosaic:has(.img11:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/11c.png");opacity:1;}
   .mosaic:has(.img12:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/12c.png");opacity:1;}
   .mosaic:has(.img13:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/13c.png");opacity:1;}
+
+  /* --- Réglages personnalisables --- */
+  :root {
+    --hover-scale: 1.0;   /* 🔧 Ajuste la taille globale des images “c” */
+    --hover-shift: 10px;   /* 🔧 Décale vers le bas */
+    --base-scale: 1.07;    /* 🔧 Taille fixe pour l’image 0 */
+    --base-shift: 7px;     /* 🔧 Position fixe de l’image 0 */
+  }
+
+  /* --- Application sur les images "c" alignées --- */
+  .mosaic:has(.img4:hover)  .img0::after,
+  .mosaic:has(.img5:hover)  .img0::after,
+  .mosaic:has(.img8:hover)  .img0::after,
+  .mosaic:has(.img9:hover)  .img0::after,
+  .mosaic:has(.img10:hover) .img0::after,
+  .mosaic:has(.img11:hover) .img0::after,
+  .mosaic:has(.img12:hover) .img0::after,
+  .mosaic:has(.img2:hover)  .img0::after {
+    transform: translateY(var(--hover-shift)) scale(var(--hover-scale));
+  }
+
+  /* --- Réglage permanent pour l’image 0 (quand aucun hover) --- */
+  .img0 img {
+    display:block;
+    width:100%;
+    height:auto;
+    transform: translateY(var(--base-shift)) scale(var(--base-scale));
+    transform-origin: bottom center;
+    transition:transform .3s ease;
+  }
+
 </style>
 </head>
 <body>

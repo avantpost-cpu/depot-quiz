@@ -14,179 +14,113 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Mosaïque Infra — Auto-scale plein écran Digiforma</title>
+<title>Parties — Vidéo avec caches latéraux</title>
 <style>
+  :root{
+    /* 🔧 Réglages des caches — mets une valeur en px (ex: 120px) ou en % (ex: 6%) */
+    --mask-left: 160px;   /* largeur du cache gauche */
+    --mask-right: 160px;   /* largeur du cache droit  */
+    /* Si tu veux aussi cacher bande haut/bas, dé-commente ces lignes : */
+    /* --mask-top:   0px; */
+    /* --mask-bottom:0px; */
+  }
+
   html,body{
     margin:0;
     padding:0;
     width:100%;
     height:100%;
     overflow:hidden;
-    background:url("https://avantpost-cpu.github.io/depot-quiz/consequences/livre/fon.jpg") center/cover no-repeat;
+    background:#fff; /* fond blanc */
     display:flex;
     justify-content:center;
     align-items:center;
   }
 
-  .wrapper{
+  .stage{
+    position:relative;
     transform-origin:center center;
     transition:transform .3s ease;
+    background:#fff;
   }
 
-  .mosaic{
-    display:flex;
-    justify-content:center;
-    align-items:flex-start;
-    flex-wrap:nowrap;
-    gap:0;
+  /* Vidéo : visible en entier (pas de crop), centrée */
+  video{
+    display:block;
     width:1600px; /* taille de référence avant auto-scale */
     height:auto;
+    object-fit:contain;
+    object-position:center;
+    background:#fff;
   }
 
-  .col{
-    display:flex;
-    flex-direction:column;
-    flex:1 1 auto;
-    gap:0;
-  }
-
-  .col img{
-    display:block;
-    width:100%;
-    height:auto;
-  }
-
-  .hoverable{
-    position:relative;
-    cursor:pointer;
-  }
-
-  .hoverable::after{
-    content:"";
+  /* Caches (rideaux) blancs par-dessus la vidéo */
+  .mask{
     position:absolute;
-    inset:0;
-    background-size:cover;
-    background-position:center;
-    opacity:0;
-    transition:opacity .3s ease;
-  }
-  .hoverable:hover::after{opacity:1;}
-
-  /* versions b */
-  .img1::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/1b.png")}
-  .img2::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/2b.png")}
-  .img3::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/3b.png")}
-  .img4::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/4b.png")}
-  .img5::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/5b.png")}
-  .img7::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/7b.png")}
-  .img8::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/8b.png")}
-  .img9::after  {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/9b.png")}
-  .img10::after {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/10b.png")}
-  .img11::after {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/11b.png")}
-  .img12::after {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/12b.png")}
-  .img13::after {background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/13b.png")}
-
-  .center{position:relative;}
-  .img0{position:relative;}
-  .img0::after{
-    content:"";
-    position:absolute;
-    inset:0;
-    background-size:cover;
-    background-position:center;
-    opacity:0;
-    transition:opacity .3s ease, transform .3s ease;
-    transform-origin: bottom center;
+    pointer-events:none;     /* clics passent à travers */
+    background:#fff;         /* couleur du cache (blanc) */
+    z-index:5;
   }
 
-  /* hover -> image 0 */
-  .mosaic:has(.img1:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/1c.png");opacity:1;}
-  .mosaic:has(.img2:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/2c.png");opacity:1;}
-  .mosaic:has(.img3:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/3c.png");opacity:1;}
-  .mosaic:has(.img4:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/4c.png");opacity:1;}
-  .mosaic:has(.img5:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/5c.png");opacity:1;}
-  .mosaic:has(.img7:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/7c.png");opacity:1;}
-  .mosaic:has(.img8:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/8c.png");opacity:1;}
-  .mosaic:has(.img9:hover)  .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/9c.png");opacity:1;}
-  .mosaic:has(.img10:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/10c.png");opacity:1;}
-  .mosaic:has(.img11:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/11c.png");opacity:1;}
-  .mosaic:has(.img12:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/12c.png");opacity:1;}
-  .mosaic:has(.img13:hover) .img0::after{background-image:url("https://avantpost-cpu.github.io/depot-quiz/infra/13c.png");opacity:1;}
+  /* Côtés */
+  .mask-left{  left:0;  top:0; bottom:0; width:var(--mask-left);  }
+  .mask-right{ right:0; top:0; bottom:0; width:var(--mask-right); }
 
-  /* --- Réglages personnalisables --- */
-  :root {
-    --hover-scale: 1.0;   /* 🔧 Ajuste la taille globale des images “c” */
-    --hover-shift: 10px;   /* 🔧 Décale vers le bas */
-    --base-scale: 1.07;    /* 🔧 Taille fixe pour l’image 0 */
-    --base-shift: 7px;     /* 🔧 Position fixe de l’image 0 */
-  }
-
-  /* --- Application sur les images "c" alignées --- */
-  .mosaic:has(.img4:hover)  .img0::after,
-  .mosaic:has(.img5:hover)  .img0::after,
-  .mosaic:has(.img8:hover)  .img0::after,
-  .mosaic:has(.img9:hover)  .img0::after,
-  .mosaic:has(.img10:hover) .img0::after,
-  .mosaic:has(.img11:hover) .img0::after,
-  .mosaic:has(.img12:hover) .img0::after,
-  .mosaic:has(.img2:hover)  .img0::after {
-    transform: translateY(var(--hover-shift)) scale(var(--hover-scale));
-  }
-
-  /* --- Réglage permanent pour l’image 0 (quand aucun hover) --- */
-  .img0 img {
-    display:block;
-    width:100%;
-    height:auto;
-    transform: translateY(var(--base-shift)) scale(var(--base-scale));
-    transform-origin: bottom center;
-    transition:transform .3s ease;
-  }
+  /* Si besoin des caches haut/bas, dé-commente ces classes + variables plus haut
+  .mask-top{    top:0;    left:0; right:0; height:var(--mask-top);    }
+  .mask-bottom{ bottom:0; left:0; right:0; height:var(--mask-bottom); }
+  */
 
 </style>
 </head>
 <body>
 
-<div class="wrapper">
-  <div class="mosaic">
-    <div class="col">
-      <div class="hoverable img1"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/1.png" alt="1"></div>
-      <div class="hoverable img2"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/2.png" alt="2"></div>
-      <div class="hoverable img3"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/3.png" alt="3"></div>
-      <div class="hoverable img4"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/4.png" alt="4"></div>
-      <div class="hoverable img5"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/5.png" alt="5"></div>
-    </div>
+<div class="stage" id="stage">
+  <video id="film" playsinline autoplay muted>
+    <source src="https://avantpost-cpu.github.io/depot-quiz/parties.mp4" type="video/mp4">
+    Votre navigateur ne prend pas en charge la lecture vidéo.
+  </video>
 
-    <div class="col center">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/infra/6.png" alt="6">
-      <div class="img0">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/infra/0.png" alt="0">
-      </div>
-    </div>
+  <!-- Caches latéraux -->
+  <div class="mask mask-left"></div>
+  <div class="mask mask-right"></div>
 
-    <div class="col">
-      <div class="hoverable img7"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/7.png" alt="7"></div>
-      <div class="hoverable img8"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/8.png" alt="8"></div>
-      <div class="hoverable img9"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/9.png" alt="9"></div>
-      <div class="hoverable img10"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/10.png" alt="10"></div>
-      <div class="hoverable img11"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/11.png" alt="11"></div>
-      <div class="hoverable img12"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/12.png" alt="12"></div>
-      <div class="hoverable img13"><img src="https://avantpost-cpu.github.io/depot-quiz/infra/13.png" alt="13"></div>
-    </div>
-  </div>
+  <!-- Si tu veux aussi des caches haut/bas, dé-commente :
+  <div class="mask mask-top"></div>
+  <div class="mask mask-bottom"></div>
+  -->
 </div>
 
 <script>
+/* --- Auto-scale comme d’hab --- */
 function adjustScale(){
-  const wrapper = document.querySelector('.wrapper');
-  const mosaic = document.querySelector('.mosaic');
-  const scaleW = window.innerWidth / mosaic.offsetWidth;
-  const scaleH = window.innerHeight / mosaic.offsetHeight;
-  const scale = Math.min(scaleW, scaleH) * 0.95; // petite marge
-  wrapper.style.transform = `scale(${scale})`;
+  const stage = document.getElementById('stage');
+  const vid   = document.getElementById('film');
+
+  // sécurité si les métadonnées ne sont pas encore dispo
+  if (!vid.videoWidth || !vid.videoHeight) return;
+
+  const scaleW = window.innerWidth  / vid.videoWidth;
+  const scaleH = window.innerHeight / vid.videoHeight;
+  const scale  = Math.min(scaleW, scaleH) * 0.95; // petite marge
+  stage.style.transform = `scale(${scale})`;
 }
+
+const vid = document.getElementById('film');
+vid.addEventListener('loadedmetadata', adjustScale);
+vid.addEventListener('resize', adjustScale);
 window.addEventListener('resize', adjustScale);
-window.addEventListener('load', adjustScale);
+
+/* --- Figer sur la dernière image --- */
+vid.addEventListener('ended', () => {
+  vid.pause();
+  vid.currentTime = vid.duration;
+});
+
+/* --- Ajuste après le chargement --- */
+window.addEventListener('load', () => {
+  if (vid.readyState >= 1) adjustScale();
+});
 </script>
 
 </body>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mosaïque âges – interactions croisées corrigées</title>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* conteneur principal */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: center center;
+  transition: transform .3s ease;
+  line-height: 0;
+}
+
+/* bloc supérieur (a/c à gauche, b à droite) */
+.top {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+/* colonne gauche (a + c) */
+.left {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+/* ligne inférieure (d + e) */
+.bottom {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+/* images collées sans espace */
+img {
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: none;
+  vertical-align: top;
+  user-select: none;
+  line-height: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* conteneurs interactifs */
+.hoverable {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  overflow: hidden;
+}
+
+/* calque coloré par-dessus */
+.hoverable::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+/* effet hover ou clic */
+.hoverable:hover::before,
+.hoverable.active::before {
+  opacity: 1;
+}
+
+/* mapping des versions colorées */
+.b::before { background-image: url("https://avantpost-cpu.github.io/depot-quiz/ages/b1.jpg"); }
+.c::before { background-image: url("https://avantpost-cpu.github.io/depot-quiz/ages/c1.jpg"); }
+.d::before { background-image: url("https://avantpost-cpu.github.io/depot-quiz/ages/d1.jpg"); }
+.e::before { background-image: url("https://avantpost-cpu.github.io/depot-quiz/ages/e1.jpg"); }
+
+/* auto-resize Digiforma */
+@media (max-width: 900px) {
+  .wrapper { transform: scale(0.9); }
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <!-- Bloc haut -->
+  <div class="top">
+    <div class="left">
+      <!-- a est fixe -->
+      <div class="a">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/ages/a.jpg" alt="a">
+      </div>
+      <!-- c est interactive -->
+      <div class="hoverable c">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/ages/c.jpg" alt="c">
+      </div>
+    </div>
+    <!-- b est interactive -->
+    <div class="hoverable b">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/ages/b.jpg" alt="b">
+    </div>
+  </div>
+
+  <!-- Bloc bas -->
+  <div class="bottom">
+    <div class="hoverable d">
+      <img id="img-d" src="https://avantpost-cpu.github.io/depot-quiz/ages/d.jpg" alt="d">
+    </div>
+    <div class="hoverable e">
+      <img id="img-e" src="https://avantpost-cpu.github.io/depot-quiz/ages/e.jpg" alt="e">
+    </div>
+  </div>
+</div>
+
+<script>
+/* Auto-scale global */
+function adjustScale(){
+  const wrapper = document.querySelector('.wrapper');
+  const scaleW = window.innerWidth / wrapper.scrollWidth;
+  const scaleH = window.innerHeight / wrapper.scrollHeight;
+  const scale = Math.min(scaleW, scaleH) * 0.98;
+  wrapper.style.transform = `scale(${scale})`;
+}
+window.addEventListener('resize', adjustScale);
+window.addEventListener('load', adjustScale);
+
+/* clic tactile mobile */
+window.addEventListener('load', () => {
+  document.querySelectorAll('.hoverable').forEach(el => {
+    el.addEventListener('click', () => {
+      el.classList.toggle('active');
+    });
+  });
+});
+
+/* --- Interactions croisées (avec fondu fluide) --- */
+const imgD = document.getElementById('img-d');
+const imgE = document.getElementById('img-e');
+
+const srcBase = {
+  d: "https://avantpost-cpu.github.io/depot-quiz/ages/d.jpg",
+  e: "https://avantpost-cpu.github.io/depot-quiz/ages/e.jpg"
+};
+
+const srcAlt = {
+  b: "https://avantpost-cpu.github.io/depot-quiz/ages/d2.jpg",
+  c: "https://avantpost-cpu.github.io/depot-quiz/ages/d4.jpg",
+  e: "https://avantpost-cpu.github.io/depot-quiz/ages/d3.jpg", /* ✅ corrigé ici */
+  d: "https://avantpost-cpu.github.io/depot-quiz/ages/e2.jpg"
+};
+
+/* fonction de remplacement doux */
+function fadeSwap(img, newSrc) {
+  img.style.opacity = 0;
+  setTimeout(() => {
+    img.src = newSrc;
+    img.onload = () => img.style.opacity = 1;
+  }, 200);
+}
+
+/* reset automatique */
+function resetImages() {
+  fadeSwap(imgD, srcBase.d);
+  fadeSwap(imgE, srcBase.e);
+}
+
+/* comportement au survol */
+document.querySelectorAll('.hoverable').forEach(el => {
+  const key = el.classList[1];
+  
+  el.addEventListener('mouseenter', () => {
+    if (key === 'b') fadeSwap(imgD, srcAlt.b);
+    if (key === 'c') fadeSwap(imgD, srcAlt.c);
+    if (key === 'e') fadeSwap(imgD, srcAlt.e); /* ✅ remplace maintenant par d3.jpg */
+    if (key === 'd') fadeSwap(imgE, srcAlt.d);
+  });
+
+  el.addEventListener('mouseleave', resetImages);
+
+  /* support tactile (mobile) */
+  el.addEventListener('click', () => {
+    resetImages();
+    if (key === 'b') fadeSwap(imgD, srcAlt.b);
+    if (key === 'c') fadeSwap(imgD, srcAlt.c);
+    if (key === 'e') fadeSwap(imgD, srcAlt.e);
+    if (key === 'd') fadeSwap(imgE, srcAlt.d);
+  });
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

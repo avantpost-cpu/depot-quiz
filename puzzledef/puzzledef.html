@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Puzzle Déf – 3 zones interactives invisibles</title>
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* conteneur global */
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform-origin: center center;
+  transition: transform .3s ease;
+  line-height: 0;
+}
+
+/* mosaïque verticale */
+.mosaic {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  line-height: 0;
+}
+.mosaic img { display:block; width:100%; height:auto; }
+
+/* --- Bloc inférieur : image b + overlays + hotspots --- */
+.board { position: relative; width: 100%; line-height: 0; overflow: hidden; }
+.board .base { display:block; width:100%; height:auto; }
+
+/* Overlays PNG */
+.overlay{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; transition:opacity .25s ease; pointer-events:none;
+}
+
+/* état par défaut */
+.b1 { opacity:1; z-index:40; }
+.b2 { opacity:0; z-index:41; }
+.b3 { opacity:1; z-index:40; }
+.b4 { opacity:0; z-index:42; } /* ← ajoutée, au-dessus pour être bien visible */
+.b5 { opacity:1; z-index:30; }
+.b6 { opacity:0; z-index:41; }
+
+/* États pilotés par classe sur .board */
+.board.state-1 .b1 { opacity:0; }  /* Zone 1 : b2 seul */
+.board.state-1 .b2 { opacity:1; }
+.board.state-1 .b3 { opacity:0; }
+.board.state-1 .b4 { opacity:0; }
+.board.state-1 .b5 { opacity:0; }
+.board.state-1 .b6 { opacity:0; }
+
+.board.state-2 .b1 { opacity:0; }  /* Zone 2 : b6 seul */
+.board.state-2 .b2 { opacity:0; }
+.board.state-2 .b3 { opacity:0; }
+.board.state-2 .b4 { opacity:0; }
+.board.state-2 .b5 { opacity:0; }
+.board.state-2 .b6 { opacity:1; }
+
+.board.state-3 .b1 { opacity:0; }  /* Zone 3 : b4 seul (b3 remplacé par b4) */
+.board.state-3 .b2 { opacity:0; }
+.board.state-3 .b3 { opacity:0; }
+.board.state-3 .b4 { opacity:1; }  /* ← on affiche b4 */
+.board.state-3 .b5 { opacity:0; }
+.board.state-3 .b6 { opacity:0; }
+
+/* Hotspots invisibles (zones actives) */
+.hotspot{
+  position:absolute; display:block; cursor:pointer; z-index:100;
+  background:rgba(0,0,0,0); border-radius:50%;
+}
+
+/* Positionnement des 3 zones (ajuste au besoin) */
+#z1{ left:6%;  top:7%;  width:42%; height:42%; }
+#z2{ right:6%; top:7%;  width:42%; height:42%; }
+#z3{ left:15%; bottom:6%; width:70%; height:36%; }
+
+/* Auto-scale Digiforma */
+@media (max-width:900px){ .wrapper{ transform:scale(0.9); } }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="mosaic">
+    <!-- Image du haut -->
+    <img src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/a.jpg" alt="a">
+
+    <!-- Image du bas + overlays + hotspots -->
+    <div class="board" id="board">
+      <img class="base" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b.jpg" alt="b">
+
+      <!-- overlays -->
+      <img class="overlay b1" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b1.png" alt="b1">
+      <img class="overlay b2" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b2.png" alt="b2">
+      <img class="overlay b3" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b3.png" alt="b3">
+      <img class="overlay b4" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b4.png" alt="b4"><!-- ← ajout -->
+      <img class="overlay b5" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b5.png" alt="b5">
+      <img class="overlay b6" src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/b6.png" alt="b6">
+
+      <!-- hotspots invisibles -->
+      <a id="z1" class="hotspot" aria-label="Zone 1"></a>
+      <a id="z2" class="hotspot" aria-label="Zone 2"></a>
+      <a id="z3" class="hotspot" aria-label="Zone 3"></a>
+    </div>
+  </div>
+</div>
+
+<script>
+/* Auto-scale */
+function adjustScale(){
+  const wrapper = document.querySelector('.wrapper');
+  const mosaic  = document.querySelector('.mosaic');
+  const scaleW  = window.innerWidth  / mosaic.offsetWidth;
+  const scaleH  = window.innerHeight / mosaic.offsetHeight;
+  const scale   = Math.min(scaleW, scaleH) * 0.98;
+  wrapper.style.transform = `scale(${scale})`;
+}
+window.addEventListener('resize', adjustScale);
+window.addEventListener('load', () => {
+  // préchargements pour transitions sans flash
+  ["b2.png","b4.png","b6.png"].forEach(n => new Image().src = `https://avantpost-cpu.github.io/depot-quiz/puzzledef/${n}`);
+  adjustScale();
+
+  const board = document.getElementById('board');
+  const z1 = document.getElementById('z1');
+  const z2 = document.getElementById('z2');
+  const z3 = document.getElementById('z3');
+
+  const setState = s => {
+    board.classList.remove('state-1','state-2','state-3');
+    if (s) board.classList.add(s);
+  };
+
+  /* Desktop : hover */
+  z1.addEventListener('mouseenter', () => setState('state-1'));
+  z2.addEventListener('mouseenter', () => setState('state-2'));
+  z3.addEventListener('mouseenter', () => setState('state-3'));
+  board.addEventListener('mouseleave', () => setState(null));
+
+  /* Mobile : tap (temporaire) + clic fallback */
+  [z1,z2,z3].forEach((z,i)=>{
+    const state = `state-${i+1}`;
+    z.addEventListener('touchstart', e => { e.preventDefault(); setState(state); }, {passive:false});
+    z.addEventListener('touchend',   () => setTimeout(() => setState(null), 220));
+    z.addEventListener('click', e => { e.preventDefault(); setState(board.classList.contains(state)? null : state); });
+  });
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

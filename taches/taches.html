@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <div class="scene">
+  <div id="billes-container"></div>
+</div>
+
+<style>
+  .scene {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    margin: 0 auto;
+    background: url("https://avantpost-cpu.github.io/depot-quiz/taches/fond.jpg") center center / contain no-repeat;
+    background-color: #fff;
+    overflow: hidden;
+  }
+
+  #billes-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  #billes-container img {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    cursor: pointer;
+    z-index: 2;
+    will-change: transform, left, top, filter;
+    transition: transform 0.4s cubic-bezier(0.25, 1.5, 0.5, 1),
+                filter 0.6s ease;
+  }
+
+  /* 💙 Zoom + transformation du noir vers #25657b, préservant le blanc */
+  #billes-container img:hover {
+    transform: scale(3.5) !important;
+    /* filtre ciblé : foncés → bleu #25657b, blancs préservés */
+    filter: invert(18%) sepia(16%) saturate(2272%) hue-rotate(166deg) brightness(96%) contrast(95%);
+    z-index: 6;
+  }
+
+  @media (max-width: 768px) {
+    .scene {
+      height: 100vh;
+      max-width: 100vw;
+    }
+    #billes-container img {
+      width: 55px;
+      height: 55px;
+    }
+  }
+</style>
+
+<script>
+  const dossier = "https://avantpost-cpu.github.io/depot-quiz/taches/";
+  const images = [
+    "a.png", "b.png", "c.png", "d.png",
+    "e.png", "f.png", "g.png", "h.png",
+    "i.png", "j.png"
+  ];
+
+  const container = document.getElementById("billes-container");
+  const billes = [];
+  const vitesseMax = 1.5;
+  const ratioFond = 2480 / 3508;
+
+  function getZoneFond() {
+    const w = container.clientWidth;
+    const h = container.clientHeight;
+    const ratioEcran = w / h;
+    let zone = {};
+
+    if (ratioEcran > ratioFond) {
+      const visibleW = h * ratioFond;
+      const offsetX = (w - visibleW) / 2;
+      zone = { x: offsetX, y: 0, width: visibleW, height: h };
+    } else {
+      const visibleH = w / ratioFond;
+      const offsetY = (h - visibleH) / 2;
+      zone = { x: 0, y: offsetY, width: w, height: visibleH };
+    }
+    return zone;
+  }
+
+  function initBilles() {
+    const zone = getZoneFond();
+
+    images.forEach(src => {
+      const img = document.createElement("img");
+      img.src = dossier + src;
+      container.appendChild(img);
+
+      const bille = {
+        el: img,
+        x: zone.x + Math.random() * (zone.width - 100),
+        y: zone.y + Math.random() * (zone.height - 100),
+        vx: (Math.random() - 0.5) * 3,
+        vy: (Math.random() - 0.5) * 3
+      };
+      billes.push(bille);
+      respirer(bille);
+    });
+  }
+
+  // respiration douce aléatoire
+  function respirer(bille) {
+    const newScale = 0.8 + Math.random() * 0.6;
+    const duration = 2000 + Math.random() * 2000;
+
+    bille.el.style.transition = `transform ${duration}ms ease-in-out`;
+    bille.el.style.transform = `scale(${newScale})`;
+
+    setTimeout(() => respirer(bille), duration);
+  }
+
+  // mouvement rebondissant
+  function animer() {
+    const zone = getZoneFond();
+
+    billes.forEach(bille => {
+      bille.x += bille.vx;
+const speedFactor = 1.2; // accélération globale
+bille.x += bille.vx * speedFactor;
+bille.y += bille.vy * speedFactor;
+
+      if (bille.x <= zone.x || bille.x >= zone.x + zone.width - 100) bille.vx *= -1;
+      if (bille.y <= zone.y || bille.y >= zone.y + zone.height - 100) bille.vy *= -1;
+
+      bille.el.style.left = bille.x + "px";
+      bille.el.style.top = bille.y + "px";
+    });
+
+    requestAnimationFrame(animer);
+  }
+
+  window.addEventListener("resize", () => {
+    billes.length = 0;
+    container.innerHTML = "";
+    initBilles();
+  });
+
+  initBilles();
+  animer();
+</script>
+    
+  </body>
+  
+</html>

@@ -26,9 +26,7 @@
     position: relative;
     width: 100%;
     height: 100vh;
-    background: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png")
-                center center / contain no-repeat;
-    background-color: #fff;
+    background: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -36,16 +34,18 @@
 
   .zone-fond {
     position: relative;
-    width: 60%;
-    height: 95%;
+    width: 44%;
+    aspect-ratio: 9 / 16;
+    background: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png")
+                center center / contain no-repeat;
   }
 
   .icone {
     position: absolute;
-    left: 30%;
-    width: 160px;
-    height: auto;
+    left: 18%;
+    width: 25%; /* 🔥 taille RELATIVE, plus 160px */
     opacity: 0.40;
+    height: auto;
     transition: 
       transform .60s ease,
       filter .60s ease,
@@ -59,25 +59,28 @@
     z-index: 20;
   }
 
-  .icone:nth-child(1) { top: 30%; }
-  .icone:nth-child(2) { top: 42%; }
-  .icone:nth-child(3) { top: 50%; }
+  .icone:nth-child(1) { top: 38%; }
+  .icone:nth-child(2) { top: 45%; }
+  .icone:nth-child(3) { top: 53%; }
   .icone:nth-child(4) { top: 64%; }
-  .icone:nth-child(5) { top: 78%; }
+  .icone:nth-child(5) { top: 72%; }
 
   @media (max-width: 768px) {
-    .zone-fond { width: 100%; }
-    .icone { width: 60px; }
+    .zone-fond { width: 90%; }
+    .icone { width: 30%; }
   }
 </style>
 
 <script>
-  // ajouter les sons au survol
-  document.querySelectorAll('.icone').forEach(img => {
-    img.addEventListener('mouseenter', () => {
+  window.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.icone').forEach(img => {
       const fichier = img.getAttribute('data-son');
       const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + fichier);
-      audio.play();
+
+      img.addEventListener('mouseenter', () => {
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      });
     });
   });
 </script>

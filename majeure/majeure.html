@@ -9,81 +9,225 @@
   </head>
     
   <body>
-  <div class="scene-adulte">
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Majeure</title>
+</head>
+
+<body>
+
+<div class="scene-adulte">
 
   <div class="zone-fond">
+
+    <!-- 🔊 BARRE SON + CURSEUR -->
+    <div class="volume-container">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/mineure/son.png" class="volume-bar">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/mineure/volume.png" class="volume-cursor">
+    </div>
+
+    <!-- 🔈 ICÔNES 1 → 5 -->
     <img class="icone" data-son="s1.wav" src="https://avantpost-cpu.github.io/depot-quiz/majeure/1.png">
     <img class="icone" data-son="s2.wav" src="https://avantpost-cpu.github.io/depot-quiz/majeure/2.png">
     <img class="icone" data-son="s3.wav" src="https://avantpost-cpu.github.io/depot-quiz/majeure/3.png">
     <img class="icone" data-son="s4.wav" src="https://avantpost-cpu.github.io/depot-quiz/majeure/4.png">
     <img class="icone" data-son="s5.wav" src="https://avantpost-cpu.github.io/depot-quiz/majeure/5.png">
+
   </div>
 
 </div>
 
 <style>
-  .scene-adulte {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    background: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+/* ---------------------------------------------------
+   SCÈNE PRINCIPALE
+--------------------------------------------------- */
+.scene-adulte {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .zone-fond {
-    position: relative;
-    width: 44%;
-    aspect-ratio: 9 / 16;
-    background: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png")
-                center center / contain no-repeat;
-  }
+/* ---------------------------------------------------
+   ZONE FOND 9/16
+--------------------------------------------------- */
+.zone-fond {
+  position: relative;
+  width: 44%;
+  aspect-ratio: 9 / 16;
+  background: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png")
+              center center / contain no-repeat;
+}
 
-  .icone {
-    position: absolute;
-    left: 18%;
-    width: 25%; /* 🔥 taille RELATIVE, plus 160px */
-    opacity: 0.40;
-    height: auto;
-    transition: 
-      transform .60s ease,
-      filter .60s ease,
-      opacity .40s ease;
-  }
+/* ---------------------------------------------------
+   CORRECTION DIGIFORMA
+   Empêche l'étirement des images son + curseur
+--------------------------------------------------- */
+.volume-bar,
+.volume-cursor {
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+}
 
-  .icone:hover {
-    transform: scale(1.8) rotate(-3deg);
-    filter: brightness(1.12);
-    opacity: 1;
-    z-index: 20;
-  }
+/* ---------------------------------------------------
+   BARRE + CURSEUR DE VOLUME
+--------------------------------------------------- */
+.volume-container {
+  position: absolute;
+  width: 24%;        /* même pour mineure */
+  left: 37%;         /* alignement parfait */
+  top: 30%;
+  pointer-events: none;
+}
 
-  .icone:nth-child(1) { top: 38%; }
-  .icone:nth-child(2) { top: 45%; }
-  .icone:nth-child(3) { top: 53%; }
-  .icone:nth-child(4) { top: 64%; }
-  .icone:nth-child(5) { top: 72%; }
+.volume-bar {
+  width: 100% !important;  /* garanti correct */
+}
 
-  @media (max-width: 768px) {
-    .zone-fond { width: 90%; }
-    .icone { width: 30%; }
-  }
+.volume-cursor {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 8% !important;
+  transform: translateY(-50%);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform .2s ease;
+}
+
+.volume-cursor:active {
+  transform: translateY(-50%) scale(1.2);
+}
+
+/* ---------------------------------------------------
+   ICÔNES
+--------------------------------------------------- */
+.icone {
+  position: absolute;
+  left: 18%;
+  width: 25%;
+  opacity: 0.40;
+  height: auto;
+  cursor: pointer;
+  transition:
+    transform .60s ease,
+    filter .60s ease,
+    opacity .40s ease;
+}
+
+.icone:hover {
+  transform: scale(1.8) rotate(-3deg);
+  filter: brightness(1.12);
+  opacity: 1;
+  z-index: 20;
+}
+
+/* Positions exactes */
+.icone:nth-child(2) { top: 38%; }
+.icone:nth-child(3) { top: 45%; }
+.icone:nth-child(4) { top: 53%; }
+.icone:nth-child(5) { top: 64%; }
+.icone:nth-child(6) { top: 72%; }
+
+@media (max-width: 768px) {
+  .zone-fond { width: 90%; }
+  .icone { width: 30%; }
+  .volume-container { width: 90%; left: 5%; top: 12%; }
+  .volume-cursor { width: 12% !important; }
+}
 </style>
 
 <script>
-  window.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.icone').forEach(img => {
-      const fichier = img.getAttribute('data-son');
-      const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + fichier);
+/* ---------------------------------------------------
+   CURSEUR DE VOLUME
+--------------------------------------------------- */
+let globalVolume = 0.5;
 
-      img.addEventListener('mouseenter', () => {
-        audio.currentTime = 0;
-        audio.play().catch(() => {});
-      });
-    });
+const cursor = document.querySelector('.volume-cursor');
+const bar = document.querySelector('.volume-bar');
+let dragging = false;
+
+/* Limitation du déplacement → max 80% */
+const minX = 0.00;
+const maxX = 0.80;
+
+/* SOURIS */
+cursor.addEventListener('mousedown', e => {
+  dragging = true;
+  e.preventDefault();
+});
+document.addEventListener('mouseup', () => dragging = false);
+
+document.addEventListener('mousemove', e => {
+  if (!dragging) return;
+
+  const rect = bar.getBoundingClientRect();
+  let x = (e.clientX - rect.left) / rect.width;
+
+  x = Math.min(Math.max(x, minX), maxX);
+
+  cursor.style.left = (x * 100) + "%";
+
+  globalVolume = (x - minX) / (maxX - minX);
+});
+
+/* MOBILE */
+cursor.addEventListener('touchstart', e => {
+  dragging = true;
+  e.preventDefault();
+});
+document.addEventListener('touchend', () => dragging = false);
+
+document.addEventListener('touchmove', e => {
+  if (!dragging) return;
+
+  const touch = e.touches[0];
+  const rect = bar.getBoundingClientRect();
+  let x = (touch.clientX - rect.left) / rect.width;
+
+  x = Math.min(Math.max(x, minX), maxX);
+
+  cursor.style.left = (x * 100) + "%";
+
+  globalVolume = (x - minX) / (maxX - minX);
+});
+
+/* ---------------------------------------------------
+   LECTURE DES SONS AU CLIC (et non plus au hover)
+--------------------------------------------------- */
+document.querySelectorAll('.icone').forEach(img => {
+  const fichier = img.getAttribute('data-son');
+  const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + fichier);
+
+  let playing = false;
+
+  img.addEventListener('click', () => {
+    if (!playing) {
+      playing = true;
+      audio.currentTime = 0;
+      audio.volume = globalVolume;
+      audio.play();
+      audio.onended = () => playing = false;
+    }
   });
+
+  img.addEventListener('touchstart', () => {
+    audio.currentTime = 0;
+    audio.volume = globalVolume;
+    audio.play();
+  });
+});
 </script>
+
+</body>
+</html>
     
   </body>
   

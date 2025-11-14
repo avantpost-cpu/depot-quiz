@@ -14,100 +14,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Deux vidéos + interactions — Version Digiforma</title>
+<title>Deux vidéos – Version verticale Digiforma</title>
 
 <style>
   body {
     margin: 0;
     padding: 20px;
-    background: white;
     font-family: Arial, sans-serif;
+    background: white;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
   }
 
-  .video-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+  /* --- MODULE EN MODE VERTICAL --- */
+  .block {
     width: 100%;
-    max-width: 1100px;     /* empêche le débordement Digiforma */
-  }
-
-  /* Chaque vidéo + texte */
-  .video-container {
-    flex: 1 1 200px;        /* resp. mais jamais trop petit */
-    max-width: 40%;         /* ne déborde plus jamais */
+    max-width: 700px; /* Digiforma-friendly */
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 40px;
   }
 
-  /* --- IMPORTANT POUR DIGIFORMA --- */
   .video-wrapper {
-    width: 100%;
-    aspect-ratio: 16/9;     /* ratio parfait */
-    background: #000;
-    border-radius: 8px;
+    width: 45%;
+    aspect-ratio: 16/9;
+    border-radius: 10px;
     overflow: hidden;
+    background: #000;
   }
 
   video {
     width: 100%;
     height: 100%;
-    object-fit: cover;      /* ne dépasse plus */
-    border-radius: 8px;
+    object-fit: cover;
     display: block;
   }
 
-  /* images texte */
   .image-sequence-container {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    width: 100%;
-    margin-top: 10px;
+    gap: 10px;
+    width: 80%;
     align-items: center;
+    margin-top: 15px;
   }
 
   .image-sequence-container img {
-    width: 60%;
-    max-width: 200px;
+    width: 100%;
+    max-width: 260px;
     border-radius: 8px;
     transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
     cursor: pointer;
-    position: relative;
-    z-index: 0;
   }
 
-  /* pour éviter que le zoom dépasse du cadre Digiforma */
   .image-sequence-container img:hover {
-    transform: scale(1.4) rotate(-5deg);
+    transform: scale(1.2) rotate(-3deg);
     box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    z-index: 5;
+    z-index: 10;
   }
 
-  /* responsive tablette */
-  @media (max-width: 800px) {
-    .video-container {
-      max-width: 100%;
-    }
-    .image-sequence-container img {
-      width: 50%;
-      max-width: 160px;
-    }
-  }
-
-  /* responsive mobile */
   @media (max-width: 500px) {
-    .image-sequence-container img {
-      width: 70%;
-      max-width: 120px;
+    .image-sequence-container {
+      width: 100%;
     }
     .image-sequence-container img:hover {
-      transform: scale(1.2) rotate(-3deg); /* safe sur mobile */
+      transform: scale(1.1);
     }
   }
 </style>
@@ -115,44 +88,46 @@
 
 <body>
 
-<div class="video-row">
+<!-- --- BLOC 1 --- -->
+<div class="block">
 
-  <!-- Vidéo verbale -->
-  <div class="video-container">
-    <div class="video-wrapper">
-      <video id="videoMajeur" muted autoplay="autoplay" playsinline preload="auto">
-        <source src="https://avantpost-cpu.github.io/depot-quiz/com/verbale.mp4" type="video/mp4">
-      </video>
-    </div>
-
-    <div class="image-sequence-container" id="imagesA">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte1.jpg">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte2.jpg">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg">
-    </div>
+  <div class="video-wrapper">
+    <video id="videoMajeur" muted autoplay="autoplay" playsinline preload="auto">
+      <source src="https://avantpost-cpu.github.io/depot-quiz/com/verbale.mp4" type="video/mp4">
+    </video>
   </div>
 
-  <!-- Vidéo non verbale -->
-  <div class="video-container">
-    <div class="video-wrapper">
-      <video id="videoMineur" muted autoplay="autoplay" playsinline preload="auto">
-        <source src="https://avantpost-cpu.github.io/depot-quiz/com/nonverbale.mp4" type="video/mp4">
-      </video>
-    </div>
+  <div class="image-sequence-container" id="imagesA">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte1.jpg">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte2.jpg">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg">
+  </div>
 
-    <div class="image-sequence-container" id="imagesB">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB1.jpg">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB2.jpg">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg">
-    </div>
+</div>
+
+<!-- --- BLOC 2 --- -->
+<div class="block">
+
+  <div class="video-wrapper">
+    <video id="videoMineur" muted autoplay="autoplay" playsinline preload="auto">
+      <source src="https://avantpost-cpu.github.io/depot-quiz/com/nonverbale.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <div class="image-sequence-container" id="imagesB">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB1.jpg">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB2.jpg">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg">
   </div>
 
 </div>
 
 <script>
+/* vidéos */
 const videoMajeur = document.getElementById('videoMajeur');
 const videoMineur = document.getElementById('videoMineur');
 
+/* images */
 const imagesA = document.querySelectorAll('#imagesA img');
 const imagesB = document.querySelectorAll('#imagesB img');
 
@@ -168,61 +143,32 @@ window.addEventListener("load", () => {
   }, 180);
 });
 
-/* figer les vidéos à la fin */
-videoMajeur.addEventListener('ended', () => videoMajeur.pause());
-videoMineur.addEventListener('ended', () => videoMineur.pause());
-
-/* interactions survol */
-function activateGray(active, targets) {
+/* --- Interactions --- */
+function gray(targets) {
   targets.forEach(t => t.classList.add('grayscale'));
-  active.classList.remove('grayscale');
 }
-function resetGray(all) {
-  all.forEach(t => t.classList.remove('grayscale'));
+function ungray(targets) {
+  targets.forEach(t => t.classList.remove('grayscale'));
 }
 
-/* survol majeur */
-videoMajeur.addEventListener('mouseenter', () => {
-  videoMineur.classList.add('grayscale');
-  imagesB.forEach(i => i.classList.add('grayscale'));
-});
-videoMajeur.addEventListener('mouseleave', () => {
-  videoMineur.classList.remove('grayscale');
-  imagesB.forEach(i => i.classList.remove('grayscale'));
-});
+/* SURVOL VIDEO MAJEUR */
+videoMajeur.addEventListener('mouseenter', () => gray([...imagesB, videoMineur]));
+videoMajeur.addEventListener('mouseleave', () => ungray([...imagesB, videoMineur]));
 
-/* survol mineur */
-videoMineur.addEventListener('mouseenter', () => {
-  videoMajeur.classList.add('grayscale');
-  imagesA.forEach(i => i.classList.add('grayscale'));
-});
-videoMineur.addEventListener('mouseleave', () => {
-  videoMajeur.classList.remove('grayscale');
-  imagesA.forEach(i => i.classList.remove('grayscale'));
-});
+/* SURVOL VIDEO MINEUR */
+videoMineur.addEventListener('mouseenter', () => gray([...imagesA, videoMajeur]));
+videoMineur.addEventListener('mouseleave', () => ungray([...imagesA, videoMajeur]));
 
-/* survol images A */
+/* SURVOL IMAGES A */
 imagesA.forEach(imgA => {
-  imgA.addEventListener('mouseenter', () => {
-    videoMineur.classList.add('grayscale');
-    imagesB.forEach(i => i.classList.add('grayscale'));
-  });
-  imgA.addEventListener('mouseleave', () => {
-    videoMineur.classList.remove('grayscale');
-    imagesB.forEach(i => i.classList.remove('grayscale'));
-  });
+  imgA.addEventListener('mouseenter', () => gray([...imagesB, videoMineur]));
+  imgA.addEventListener('mouseleave', () => ungray([...imagesB, videoMineur]));
 });
 
-/* survol images B */
+/* SURVOL IMAGES B */
 imagesB.forEach(imgB => {
-  imgB.addEventListener('mouseenter', () => {
-    videoMajeur.classList.add('grayscale');
-    imagesA.forEach(i => i.classList.add('grayscale'));
-  });
-  imgB.addEventListener('mouseleave', () => {
-    videoMajeur.classList.remove('grayscale');
-    imagesA.forEach(i => i.classList.remove('grayscale'));
-  });
+  imgB.addEventListener('mouseenter', () => gray([...imagesA, videoMajeur]));
+  imgB.addEventListener('mouseleave', () => ungray([...imagesA, videoMajeur]));
 });
 </script>
 

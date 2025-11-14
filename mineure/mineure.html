@@ -9,7 +9,16 @@
   </head>
     
   <body>
-  <div class="scene-mineure">
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mineure</title>
+</head>
+
+<body>
+
+<div class="scene-mineure">
 
   <div class="zone-fond-mineure">
 
@@ -40,11 +49,12 @@
          src="https://avantpost-cpu.github.io/depot-quiz/mineure/h.png">
 
   </div>
+
 </div>
 
 <style>
 /* ---------------------------------------------------
-   CONTENEUR PRINCIPAL
+   SCÈNE PRINCIPALE
 --------------------------------------------------- */
 .scene-mineure {
   position: relative;
@@ -68,7 +78,18 @@
 }
 
 /* ---------------------------------------------------
-   CONTROLE DE VOLUME
+   CORRECTION DIGIFORMA : empêcher l'étirement des images
+--------------------------------------------------- */
+.volume-bar,
+.volume-cursor {
+  width: auto !important;
+  height: auto !important;
+  max-width: none !important;
+  max-height: none !important;
+}
+
+/* ---------------------------------------------------
+   BARRE AUDIO + CURSEUR
 --------------------------------------------------- */
 .volume-container {
   position: absolute;
@@ -79,15 +100,14 @@
 }
 
 .volume-bar {
-  width: 100%;
-  height: auto;
+  width: 100% !important;   /* taille correcte */
 }
 
 .volume-cursor {
   position: absolute;
   top: 50%;
-  left: 0%;     
-  width: 8%;
+  left: 0%;
+  width: 10% !important;    /* taille curseur */
   transform: translateY(-50%);
   cursor: pointer;
   pointer-events: auto;
@@ -107,10 +127,7 @@
   opacity: 0.40;
   height: auto;
   cursor: pointer;
-  transition:
-    transform 0.60s ease,
-    filter 0.60s ease,
-    opacity 0.40s ease;
+  transition: transform .60s ease, filter .60s ease, opacity .40s ease;
 }
 
 .icone:hover {
@@ -135,13 +152,13 @@
   .zone-fond-mineure { width: 90%; }
   .icone { width: 30%; }
   .volume-container { width: 90%; left: 5%; top: 12%; }
-  .volume-cursor { width: 10%; }
+  .volume-cursor { width: 12% !important; }
 }
 </style>
 
 <script>
 /* ---------------------------------------------------
-   VOLUME GLOBAL (dépend de la position du curseur)
+   CURSEUR DE VOLUME (position → volume)
 --------------------------------------------------- */
 let globalVolume = 0.5;
 
@@ -150,16 +167,15 @@ const bar = document.querySelector('.volume-bar');
 
 let dragging = false;
 
-/* 🔥 LIMITE : le curseur ne doit pas dépasser 80% */
+/* Limite du curseur : ne pas dépasser 80% */
 const minX = 0.00;
 const maxX = 0.80;
 
-/* ---------------- MOUSE ---------------- */
+/* ---------------- SOURIS ---------------- */
 cursor.addEventListener('mousedown', e => {
   dragging = true;
   e.preventDefault();
 });
-
 document.addEventListener('mouseup', () => dragging = false);
 
 document.addEventListener('mousemove', e => {
@@ -171,15 +187,15 @@ document.addEventListener('mousemove', e => {
   x = Math.min(Math.max(x, minX), maxX);
 
   cursor.style.left = (x * 100) + "%";
+
   globalVolume = (x - minX) / (maxX - minX);
 });
 
-/* ---------------- TOUCH (mobile) ---------------- */
+/* ---------------- MOBILE ---------------- */
 cursor.addEventListener('touchstart', e => {
   dragging = true;
   e.preventDefault();
 });
-
 document.addEventListener('touchend', () => dragging = false);
 
 document.addEventListener('touchmove', e => {
@@ -196,7 +212,7 @@ document.addEventListener('touchmove', e => {
 });
 
 /* ---------------------------------------------------
-   SONS a.wav → h.wav (clic uniquement)
+   LECTURE DES SONS AU CLIC
 --------------------------------------------------- */
 document.querySelectorAll('.icone').forEach(img => {
   const fichier = img.getAttribute('data-son');
@@ -208,10 +224,7 @@ document.querySelectorAll('.icone').forEach(img => {
     if (!playing) {
       playing = true;
       audio.currentTime = 0;
-
-      /* Volume dépend du curseur */
       audio.volume = globalVolume;
-
       audio.play();
       audio.onended = () => playing = false;
     }
@@ -224,6 +237,9 @@ document.querySelectorAll('.icone').forEach(img => {
   });
 });
 </script>
+
+</body>
+</html>
     
   </body>
   

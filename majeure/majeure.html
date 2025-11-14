@@ -11,56 +11,56 @@
   <body>
   <!DOCTYPE html>
 <html lang="fr">
-
 <head>
 <meta charset="UTF-8">
 <title>Majeure</title>
 
 <style>
+/* RESET SIMPLE */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  font-family: Arial, sans-serif;
+}
 
-/* ------------------------------------------
-   SCÈNE PRINCIPALE
-------------------------------------------- */
-.scene-adulte {
+/* CONTENEUR GLOBAL CENTRÉ */
+.majeure-wrapper {
+  width: 100%;
+  max-width: 900px;      /* largeur max confortable */
+  margin: 0 auto;
+  padding: 10px 0;
+}
+
+/* ZONE FOND AVEC RATIO FIXE
+   -> padding-top ~142% ≈ A4 vertical
+*/
+.fond {
   position: relative;
   width: 100%;
-  height: 100vh;
-  background: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding-top: 142%;     /* hauteur = 1.42 * largeur */
+  background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   overflow: hidden;
 }
 
-/* ------------------------------------------
-   ZONE FOND
-------------------------------------------- */
-.zone-fond {
-  position: relative;
-  width: 44%;
-  aspect-ratio: 9 / 16;
-  background: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png")
-              center / contain no-repeat;
-}
-
-/* ------------------------------------------
-   BARRE + CURSEUR : en div (ANTI-DIGIFORMA)
-------------------------------------------- */
+/* ---------------------------------------------------
+   BARRE + CURSEUR VOLUME
+--------------------------------------------------- */
 .volume-container {
   position: absolute;
-  width: 24%;
-  left: 37%;
-  top: 30%;
-  height: 40px;
+  width: 28%;            /* largeur de la barre */
+  left: 37%;             /* calage horizontal */
+  top: 29%;              /* calage vertical */
+  height: 42px;
+  pointer-events: none;  /* on clique seulement sur le curseur */
 }
 
 .volume-bar {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 40px;
-
+  inset: 0;
   background-image: url("https://avantpost-cpu.github.io/depot-quiz/mineure/son.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -70,17 +70,16 @@
 .volume-cursor {
   position: absolute;
   top: 50%;
-  left: 0%;
-  width: 10%;
-  height: 40px;
-
+  left: 0%;              /* départ à gauche */
+  width: 9%;
+  height: 42px;
   background-image: url("https://avantpost-cpu.github.io/depot-quiz/mineure/volume.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-
   transform: translateY(-50%);
   cursor: pointer;
+  pointer-events: auto;
   transition: transform .2s ease;
 }
 
@@ -88,18 +87,23 @@
   transform: translateY(-50%) scale(1.2);
 }
 
-/* ------------------------------------------
-   ICÔNES
-------------------------------------------- */
+/* ---------------------------------------------------
+   ICÔNES 1 → 5  (EN DIV, PAS <img>)
+--------------------------------------------------- */
 .icone {
   position: absolute;
   left: 18%;
   width: 25%;
-  opacity: 0.40;
+  aspect-ratio: 4 / 1; /* ratio approximatif pour que ça reste “long” */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  opacity: .40;
   cursor: pointer;
-  transition: transform .6s ease,
-              filter .6s ease,
-              opacity .4s ease;
+  transition:
+    transform .6s ease,
+    filter .6s ease,
+    opacity .4s ease;
 }
 
 .icone:hover {
@@ -108,121 +112,115 @@
   opacity: 1;
 }
 
-.icone:nth-of-type(1) { top: 38%; }
-.icone:nth-of-type(2) { top: 45%; }
-.icone:nth-of-type(3) { top: 53%; }
-.icone:nth-of-type(4) { top: 64%; }
-.icone:nth-of-type(5) { top: 72%; }
+/* attribution des images + positions verticales */
+.icone-1 { background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/1.png"); top: 38%; }
+.icone-2 { background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/2.png"); top: 45%; }
+.icone-3 { background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/3.png"); top: 53%; }
+.icone-4 { background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/4.png"); top: 64%; }
+.icone-5 { background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/5.png"); top: 72%; }
 
-/* ------------------------------------------
+/* ---------------------------------------------------
    RESPONSIVE
-------------------------------------------- */
-@media (max-width:768px){
-  .zone-fond { width:90%; }
-  .icone { width:30%; }
-
-  .volume-container{
+--------------------------------------------------- */
+@media (max-width: 768px) {
+  .majeure-wrapper {
+    padding: 0;
+  }
+  .icone {
+    width: 30%;
+  }
+  .volume-container {
     width: 90%;
     left: 5%;
     top: 12%;
   }
-
-  .volume-cursor{
+  .volume-cursor {
     width: 12%;
   }
 }
-
 </style>
 </head>
 
-
 <body>
 
-<div class="scene-adulte">
+<div class="majeure-wrapper">
+  <div class="fond">
 
-  <div class="zone-fond">
-
-    <!-- BARRE SON FOND + CURSEUR -->
+    <!-- BARRE + CURSEUR -->
     <div class="volume-container">
       <div class="volume-bar"></div>
       <div class="volume-cursor"></div>
     </div>
 
-    <!-- ICONES -->
-    <img class="icone" data-son="s1.wav" src="https://avantpost-cpu.github.io/depot-quiz/majeure/1.png">
-    <img class="icone" data-son="s2.wav" src="https://avantpost-cpu.github.io/depot-quiz/majeure/2.png">
-    <img class="icone" data-son="s3.wav" src="https://avantpost-cpu.github.io/depot-quiz/majeure/3.png">
-    <img class="icone" data-son="s4.wav" src="https://avantpost-cpu.github.io/depot-quiz/majeure/4.png">
-    <img class="icone" data-son="s5.wav" src="https://avantpost-cpu.github.io/depot-quiz/majeure/5.png">
+    <!-- ICÔNES 1 → 5 -->
+    <div class="icone icone-1" data-son="s1.wav"></div>
+    <div class="icone icone-2" data-son="s2.wav"></div>
+    <div class="icone icone-3" data-son="s3.wav"></div>
+    <div class="icone icone-4" data-son="s4.wav"></div>
+    <div class="icone icone-5" data-son="s5.wav"></div>
 
   </div>
-
 </div>
 
-
 <script>
-
 /* ---------------------------------------------------
-   CURSEUR DE VOLUME
+   CURSEUR DE VOLUME — 0% → 80%
 --------------------------------------------------- */
 let globalVolume = 0.5;
 
-const cursor = document.querySelector('.volume-cursor');
-const bar = document.querySelector('.volume-bar');
+const cursor = document.querySelector(".volume-cursor");
+const bar    = document.querySelector(".volume-bar");
 
 let dragging = false;
-const minX = 0.00;
-const maxX = 0.80;
+const minX = 0.00;   // début de la barre
+const maxX = 0.80;   // 80% de la barre
 
-/* MOUSE */
-cursor.addEventListener('mousedown', e => {
-  dragging = true;
-  e.preventDefault();
-});
-document.addEventListener('mouseup', () => dragging = false);
-
-document.addEventListener('mousemove', e => {
-  if (!dragging) return;
-  
+function moveCursor(clientX) {
   const rect = bar.getBoundingClientRect();
-  let x = (e.clientX - rect.left) / rect.width;
+  let x = (clientX - rect.left) / rect.width;
 
-  x = Math.min(Math.max(x, minX), maxX);
+  // on contraint
+  x = Math.max(minX, Math.min(x, maxX));
+
   cursor.style.left = (x * 100) + "%";
 
+  // volume de 0 à 1
   globalVolume = (x - minX) / (maxX - minX);
-});
+}
 
-/* TOUCH */
-cursor.addEventListener('touchstart', e => {
+/* Souris */
+cursor.addEventListener("mousedown", e => {
   dragging = true;
   e.preventDefault();
 });
-document.addEventListener('touchend', () => dragging = false);
-
-document.addEventListener('touchmove', e => {
+document.addEventListener("mouseup", () => dragging = false);
+document.addEventListener("mousemove", e => {
   if (!dragging) return;
+  moveCursor(e.clientX);
+});
 
+/* Touch (mobile) */
+cursor.addEventListener("touchstart", e => {
+  dragging = true;
+  e.preventDefault();
+});
+document.addEventListener("touchend", () => dragging = false);
+document.addEventListener("touchmove", e => {
+  if (!dragging) return;
   const touch = e.touches[0];
-  const rect = bar.getBoundingClientRect();
-  let x = (touch.clientX - rect.left) / rect.width;
-
-  x = Math.min(Math.max(x, minX), maxX);
-  cursor.style.left = (x * 100) + "%";
-
-  globalVolume = (x - minX) / (maxX - minX);
+  moveCursor(touch.clientX);
 });
 
 /* ---------------------------------------------------
-   SONS AU CLIC
+   SONS AU CLIC SUR LES ICÔNES
 --------------------------------------------------- */
-document.querySelectorAll('.icone').forEach(img => {
-  const src = img.getAttribute('data-son');
-  const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + src);
+document.querySelectorAll('.icone').forEach(el => {
+  const fichier = el.getAttribute('data-son');
+  const audio   = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + fichier);
 
   let playing = false;
 
-  img.addEventListener('click', () => {
+  el.addEventListener("click", () => {
     if (!playing) {
       playing = true;
       audio.currentTime = 0;
@@ -232,7 +230,6 @@ document.querySelectorAll('.icone').forEach(img => {
     }
   });
 });
-
 </script>
 
 </body>

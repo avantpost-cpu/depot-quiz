@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <div class="scene-mineure">
+
+  <div class="zone-fond-mineure">
+
+    <!-- Images à gauche -->
+    <img class="icone" data-son="a.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/a.png">
+    <img class="icone" data-son="b.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/b.png">
+
+    <!-- Images à droite -->
+    <img class="icone" data-son="c.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/c.png">
+    <img class="icone" data-son="d.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/d.png">
+    <img class="icone" data-son="e.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/e.png">
+    <img class="icone" data-son="f.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/f.png">
+    <img class="icone" data-son="g.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/g.png">
+    <img class="icone" data-son="h.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/h.png">
+
+  </div>
+
+</div>
+
+<style>
+  .scene-mineure {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .zone-fond-mineure {
+    position: relative;
+    width: 37%;
+    aspect-ratio: 9 / 16;
+    background: url("https://avantpost-cpu.github.io/depot-quiz/mineure/fondmineure.png")
+                center center / contain no-repeat;
+  }
+
+  .icone {
+    position: absolute;
+    width: 25%;
+    opacity: 0.40;
+    height: auto;
+    transition:
+      transform .60s ease,
+      filter .60s ease,
+      opacity .40s ease;
+    cursor: pointer;
+  }
+
+  .icone:hover {
+    transform: scale(1.8) rotate(-3deg);
+    filter: brightness(1.12);
+    opacity: 1;
+    z-index: 20;
+  }
+
+  /* Positions */
+  .icone:nth-child(1) { top: 34%; left: 14%; }
+  .icone:nth-child(2) { top: 46%; left: 14%; }
+  .icone:nth-child(3) { top: 36%; left: 55%; }
+  .icone:nth-child(4) { top: 42%; left: 55%; }
+  .icone:nth-child(5) { top: 54%; left: 55%; }
+  .icone:nth-child(6) { top: 60%; left: 55%; }
+  .icone:nth-child(7) { top: 68%; left: 55%; }
+  .icone:nth-child(8) { top: 76%; left: 55%; }
+
+  @media (max-width: 768px) {
+    .zone-fond-mineure { width: 90%; }
+    .icone { width: 30%; }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('.icone').forEach(img => {
+    const son = img.getAttribute('data-son');
+    const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/mineure/" + son);
+
+    // Pour éviter les multiples déclenchements
+    let playing = false;
+
+    img.addEventListener('mouseenter', () => {
+      if (!playing) {
+        playing = true;
+        audio.currentTime = 0;
+        audio.play();
+        audio.onended = () => playing = false;
+      }
+    });
+
+    // version mobile (tap)
+    img.addEventListener('touchstart', () => {
+      audio.currentTime = 0;
+      audio.play();
+    });
+  });
+</script>
+    
+  </body>
+  
+</html>

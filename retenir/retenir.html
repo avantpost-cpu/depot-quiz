@@ -11,10 +11,11 @@
   <body>
   <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 <meta charset="UTF-8">
-<title>Module e-learning</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module e-learning</title>
 
 <style>
   * {
@@ -39,7 +40,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;            /* OK */
+    overflow: hidden;
     margin-top: 20px;
     transition: width 0.5s ease, max-width 0.5s ease;
   }
@@ -53,22 +54,22 @@
     width: 100%;
     height: 100%;
     object-fit: contain;
-    display: block;             /* TRÈS IMPORTANT en iframe */
+    display: block;
+    max-width: 100%;    /* PATCH RESPONSIVE DIGIFORMA */
   }
 
   .image-placeholder {
     width: 50%;
     max-width: 600px;
-    margin-top: 20px;           /* FIX Digiforma */
+    margin-top: 20px;   /* FIX DU BUG */
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: margin-top 0.5s ease;
   }
 
-  /* petite compensation esthétique après réduction de la vidéo */
   .video-wrapper.shrink + .image-placeholder {
-    margin-top: -10px;
+    margin-top: -10px; /* léger overlap esthétique */
   }
 
   #finalImage {
@@ -128,12 +129,13 @@
     }
   }
 </style>
+
 </head>
 
 <body>
 
 <div class="video-wrapper" id="videoWrapper">
-  <video id="video" autoplay muted playsinline preload="auto">
+  <video id="video" autoplay="autoplay" muted playsinline preload="auto">
     <source src="https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.mp4" type="video/mp4">
     Votre navigateur ne supporte pas la lecture vidéo.
   </video>
@@ -159,20 +161,42 @@
   const textDivs = document.querySelectorAll('.text-block div');
   const videoWrapper = document.getElementById('videoWrapper');
 
+  /* --- AUTOPLAY DIGIFORMA PATCH --- */
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      if (vid.paused) {
+        vid.muted = true;
+        vid.play().catch(()=>{});
+      }
+    }, 180);
+  });
+
+  /* --- ANIMATION FINALE --- */
   vid.addEventListener('ended', () => {
-    // Réduire la vidéo
     videoWrapper.classList.add('shrink');
 
-    // Afficher l'image
     img.classList.add('show');
 
-    // Apparition en cascade
     textDivs.forEach((div, index) => {
       setTimeout(() => {
         div.classList.add('show');
       }, index * 300);
     });
   });
+
+  /* --- FALLBACK SI DIGIFORMA BLOQUE L'ÉVÉNEMENT "ended" --- */
+  setTimeout(() => {
+    if (!vid.ended && vid.currentTime > 0) return;
+    if (vid.currentTime === 0) {
+      videoWrapper.classList.add('shrink');
+      img.classList.add('show');
+      textDivs.forEach((div, index) => {
+        setTimeout(() => {
+          div.classList.add('show');
+        }, index * 300);
+      });
+    }
+  }, 13000); /* durée vidéo approx */
 </script>
 
 </body>

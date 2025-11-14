@@ -13,99 +13,216 @@
 
   <div class="zone-fond-mineure">
 
-    <!-- Images à gauche -->
-    <img class="icone" data-son="a.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/a.png">
-    <img class="icone" data-son="b.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/b.png">
+    <!-- Barre de volume + curseur -->
+    <div class="volume-container">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/mineure/son.png" class="volume-bar">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/mineure/volume.png" class="volume-cursor">
+    </div>
 
-    <!-- Images à droite -->
-    <img class="icone" data-son="c.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/c.png">
-    <img class="icone" data-son="d.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/d.png">
-    <img class="icone" data-son="e.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/e.png">
-    <img class="icone" data-son="f.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/f.png">
-    <img class="icone" data-son="g.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/g.png">
-    <img class="icone" data-son="h.wav" src="https://avantpost-cpu.github.io/depot-quiz/mineure/h.png">
+    <!-- Icônes gauche -->
+    <img class="icone" data-son="a.wav"
+         src="https://avantpost-cpu.github.io/depot-quiz/mineure/a.png">
+    <img class="icone" data-son="b.wav"
+         src="https://avantpost-cpu.github.io/depot-quiz/mineure/b.png">
+
+    <!-- Icônes droite -->
+    <img class="icone" data-son="c.wav"
+         src="https://avantpost-cpu.github.io/depot-quiz/mineure/c.png">
+    <img class="icone" data-son="d.wav"
+         src="https://avantpost-cpu.github.io/depot-quiz/mineure/d.png">
+    <img class="icone" data-son="e.wav"
+         src="https://avantpost-cpu.github.io/depot-quiz/mineure/e.png">
+    <img class="icone" data-son="f.wav"
+         src="https://avantpost-cpu.github.io/depot-quiz/mineure/f.png">
+    <img class="icone" data-son="g.wav"
+         src="https://avantpost-cpu.github.io/depot-quiz/mineure/g.png">
+    <img class="icone" data-son="h.wav"
+         src="https://avantpost-cpu.github.io/depot-quiz/mineure/h.png">
 
   </div>
-
 </div>
 
 <style>
-  .scene-mineure {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    background: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+/* ---------------------------------------------------
+   CONTENEUR PRINCIPAL
+--------------------------------------------------- */
+.scene-mineure {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .zone-fond-mineure {
-    position: relative;
-    width: 37%;
-    aspect-ratio: 9 / 16;
-    background: url("https://avantpost-cpu.github.io/depot-quiz/mineure/fondmineure.png")
-                center center / contain no-repeat;
-  }
+/* ---------------------------------------------------
+   ZONE FOND 9/16
+--------------------------------------------------- */
+.zone-fond-mineure {
+  position: relative;
+  width: 37%;
+  aspect-ratio: 9 / 16;
+  background: url("https://avantpost-cpu.github.io/depot-quiz/mineure/fondmineure.png")
+              center center / contain no-repeat;
+}
 
-  .icone {
-    position: absolute;
-    width: 25%;
-    opacity: 0.40;
-    height: auto;
-    transition:
-      transform .60s ease,
-      filter .60s ease,
-      opacity .40s ease;
-    cursor: pointer;
-  }
+/* ---------------------------------------------------
+   CONTROLE DE VOLUME
+--------------------------------------------------- */
+.volume-container {
+  position: absolute;
+  width: 24%;
+  left: 37%;
+  top: 30%;
+  pointer-events: none;
+}
 
-  .icone:hover {
-    transform: scale(1.8) rotate(-3deg);
-    filter: brightness(1.12);
-    opacity: 1;
-    z-index: 20;
-  }
+.volume-bar {
+  width: 100%;
+  height: auto;
+}
 
-  /* Positions */
-  .icone:nth-child(1) { top: 34%; left: 14%; }
-  .icone:nth-child(2) { top: 46%; left: 14%; }
-  .icone:nth-child(3) { top: 36%; left: 55%; }
-  .icone:nth-child(4) { top: 42%; left: 55%; }
-  .icone:nth-child(5) { top: 54%; left: 55%; }
-  .icone:nth-child(6) { top: 60%; left: 55%; }
-  .icone:nth-child(7) { top: 68%; left: 55%; }
-  .icone:nth-child(8) { top: 76%; left: 55%; }
+.volume-cursor {
+  position: absolute;
+  top: 50%;
+  left: 0%;     
+  width: 8%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  pointer-events: auto;
+  transition: transform .2s ease;
+}
 
-  @media (max-width: 768px) {
-    .zone-fond-mineure { width: 90%; }
-    .icone { width: 30%; }
-  }
+.volume-cursor:active {
+  transform: translateY(-50%) scale(1.2);
+}
+
+/* ---------------------------------------------------
+   ICÔNES a → h
+--------------------------------------------------- */
+.icone {
+  position: absolute;
+  width: 25%;
+  opacity: 0.40;
+  height: auto;
+  cursor: pointer;
+  transition:
+    transform 0.60s ease,
+    filter 0.60s ease,
+    opacity 0.40s ease;
+}
+
+.icone:hover {
+  transform: scale(1.8) rotate(-3deg);
+  filter: brightness(1.12);
+  opacity: 1;
+  z-index: 20;
+}
+
+/* Positions exactes */
+.icone:nth-child(2) { top: 34%; left: 14%; } /* a.png */
+.icone:nth-child(3) { top: 46%; left: 14%; } /* b.png */
+
+.icone:nth-child(4) { top: 36%; left: 55%; } /* c.png */
+.icone:nth-child(5) { top: 42%; left: 55%; } /* d.png */
+.icone:nth-child(6) { top: 54%; left: 55%; } /* e.png */
+.icone:nth-child(7) { top: 60%; left: 55%; } /* f.png */
+.icone:nth-child(8) { top: 68%; left: 55%; } /* g.png */
+.icone:nth-child(9) { top: 76%; left: 55%; } /* h.png */
+
+@media (max-width: 768px) {
+  .zone-fond-mineure { width: 90%; }
+  .icone { width: 30%; }
+  .volume-container { width: 90%; left: 5%; top: 12%; }
+  .volume-cursor { width: 10%; }
+}
 </style>
 
 <script>
-  document.querySelectorAll('.icone').forEach(img => {
-    const son = img.getAttribute('data-son');
-    const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/mineure/" + son);
+/* ---------------------------------------------------
+   VOLUME GLOBAL (dépend de la position du curseur)
+--------------------------------------------------- */
+let globalVolume = 0.5;
 
-    // Pour éviter les multiples déclenchements
-    let playing = false;
+const cursor = document.querySelector('.volume-cursor');
+const bar = document.querySelector('.volume-bar');
 
-    img.addEventListener('mouseenter', () => {
-      if (!playing) {
-        playing = true;
-        audio.currentTime = 0;
-        audio.play();
-        audio.onended = () => playing = false;
-      }
-    });
+let dragging = false;
 
-    // version mobile (tap)
-    img.addEventListener('touchstart', () => {
+/* 🔥 LIMITE : le curseur ne doit pas dépasser 80% */
+const minX = 0.00;
+const maxX = 0.80;
+
+/* ---------------- MOUSE ---------------- */
+cursor.addEventListener('mousedown', e => {
+  dragging = true;
+  e.preventDefault();
+});
+
+document.addEventListener('mouseup', () => dragging = false);
+
+document.addEventListener('mousemove', e => {
+  if (!dragging) return;
+
+  const rect = bar.getBoundingClientRect();
+  let x = (e.clientX - rect.left) / rect.width;
+
+  x = Math.min(Math.max(x, minX), maxX);
+
+  cursor.style.left = (x * 100) + "%";
+  globalVolume = (x - minX) / (maxX - minX);
+});
+
+/* ---------------- TOUCH (mobile) ---------------- */
+cursor.addEventListener('touchstart', e => {
+  dragging = true;
+  e.preventDefault();
+});
+
+document.addEventListener('touchend', () => dragging = false);
+
+document.addEventListener('touchmove', e => {
+  if (!dragging) return;
+
+  const touch = e.touches[0];
+  const rect = bar.getBoundingClientRect();
+  let x = (touch.clientX - rect.left) / rect.width;
+
+  x = Math.min(Math.max(x, minX), maxX);
+
+  cursor.style.left = (x * 100) + "%";
+  globalVolume = (x - minX) / (maxX - minX);
+});
+
+/* ---------------------------------------------------
+   SONS a.wav → h.wav (clic uniquement)
+--------------------------------------------------- */
+document.querySelectorAll('.icone').forEach(img => {
+  const fichier = img.getAttribute('data-son');
+  const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/mineure/" + fichier);
+
+  let playing = false;
+
+  img.addEventListener('click', () => {
+    if (!playing) {
+      playing = true;
       audio.currentTime = 0;
+
+      /* Volume dépend du curseur */
+      audio.volume = globalVolume;
+
       audio.play();
-    });
+      audio.onended = () => playing = false;
+    }
   });
+
+  img.addEventListener('touchstart', () => {
+    audio.currentTime = 0;
+    audio.volume = globalVolume;
+    audio.play();
+  });
+});
 </script>
     
   </body>

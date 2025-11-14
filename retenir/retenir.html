@@ -14,6 +14,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Module e-learning</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
   * {
     box-sizing: border-box;
@@ -37,41 +39,49 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    overflow: hidden;            /* OK */
     margin-top: 20px;
     transition: width 0.5s ease, max-width 0.5s ease;
   }
 
   .video-wrapper.shrink {
-    width: 60%;       /* réduire la largeur */
-    max-width: 600px; /* ajustement du max-width */
+    width: 60%;
+    max-width: 600px;
   }
 
   video {
     width: 100%;
     height: 100%;
     object-fit: contain;
+    display: block;             /* TRÈS IMPORTANT en iframe */
   }
 
   .image-placeholder {
     width: 50%;
     max-width: 600px;
-    margin-top: -90px;
+    margin-top: 20px;           /* FIX Digiforma */
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: margin-top 0.5s ease;
+  }
+
+  /* petite compensation esthétique après réduction de la vidéo */
+  .video-wrapper.shrink + .image-placeholder {
+    margin-top: -10px;
   }
 
   #finalImage {
     display: none;
     width: 100%;
     height: auto;
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.4s ease;
   }
 
   #finalImage.show {
     display: block;
-    transform: scale(1.1);
+    transform: scale(1.05);
     opacity: 1;
   }
 
@@ -119,6 +129,7 @@
   }
 </style>
 </head>
+
 <body>
 
 <div class="video-wrapper" id="videoWrapper">
@@ -136,7 +147,7 @@
     <div>Lui apporter son soutien et compassion</div>
     <div>Maitriser ses émotions</div>
     <div>Ne pas dramatiser ni minimiser la situation</div>
-    <div>Ne Jamais mettre en doute la parole de la victime</div>
+    <div>Ne jamais mettre en doute la parole de la victime</div>
     <div>Remercier la victime de sa confiance</div>
     <div>Féliciter la victime pour ses révélations et son courage</div>
   </div>
@@ -149,13 +160,13 @@
   const videoWrapper = document.getElementById('videoWrapper');
 
   vid.addEventListener('ended', () => {
-    // Réduire la taille de la vidéo
+    // Réduire la vidéo
     videoWrapper.classList.add('shrink');
 
-    // Afficher image et texte
+    // Afficher l'image
     img.classList.add('show');
 
-    // Apparition en cascade des phrases
+    // Apparition en cascade
     textDivs.forEach((div, index) => {
       setTimeout(() => {
         div.classList.add('show');

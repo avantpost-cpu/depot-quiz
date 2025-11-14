@@ -14,35 +14,46 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Deux vidéos – Version verticale Digiforma</title>
+<title>Communication verbale / non verbale — Rebond</title>
 
 <style>
   body {
     margin: 0;
-    padding: 20px;
+    padding: 0;
     font-family: Arial, sans-serif;
     background: white;
+
+    /* Le point CRUCIAL pour Digiforma : */
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
+    min-height: 100vh;        /* Occupe tout l'espace vertical Digiforma */
   }
 
-  /* --- MODULE EN MODE VERTICAL --- */
-  .block {
+  /* --- MODULE CENTRAL --- */
+  .module-wrapper {
     width: 100%;
-    max-width: 700px; /* Digiforma-friendly */
+    max-width: 1200px;        /* comme ton module horizontal */
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 40px;                /* ESPACE ENTRE TES DEUX COLONNES */
+  }
+
+  /* Colonne vidéo + images */
+  .column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 40px;
+    width: 45%;               /* comme ton HTML original */
   }
 
   .video-wrapper {
-    width: 45%;
+    width: 100%;
     aspect-ratio: 16/9;
     border-radius: 10px;
-    overflow: hidden;
     background: #000;
+    overflow: hidden;
   }
 
   video {
@@ -52,35 +63,45 @@
     display: block;
   }
 
+  /* IMAGES 1–2–3 EN LIGNE */
   .image-sequence-container {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 80%;
-    align-items: center;
+    flex-direction: row;          /* HORIZONTAL */
+    justify-content: center;
+    gap: 15px;
     margin-top: 15px;
+    width: 100%;
   }
 
   .image-sequence-container img {
-    width: 100%;
-    max-width: 260px;
+    width: 30%;                   /* 3 images côte à côte */
+    max-width: 220px;
     border-radius: 8px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
     cursor: pointer;
+
+    transition: transform 0.35s ease,
+                box-shadow 0.35s ease;
   }
 
+  /* --- ZOOM AMPLIFIÉ --- */
   .image-sequence-container img:hover {
-    transform: scale(1.5) rotate(-3deg);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    z-index: 10;
+    transform: scale(2) rotate(-3deg); /* Zoom très visible */
+    box-shadow: 0 16px 35px rgba(0,0,0,0.35);
+    z-index: 20;
   }
 
-  @media (max-width: 500px) {
-    .image-sequence-container {
-      width: 100%;
+  /* MOBILE */
+  @media (max-width: 900px) {
+    .module-wrapper {
+      flex-direction: column;
+      align-items: center;
     }
-    .image-sequence-container img:hover {
-      transform: scale(1.1);
+    .column {
+      width: 90%;
+    }
+    .image-sequence-container img {
+      width: 28%;
+      max-width: 140px;
     }
   }
 </style>
@@ -88,36 +109,40 @@
 
 <body>
 
-<!-- --- BLOC 1 --- -->
-<div class="block">
+<div class="module-wrapper">
 
-  <div class="video-wrapper">
-    <video id="videoMajeur" muted autoplay="autoplay" playsinline preload="auto">
-      <source src="https://avantpost-cpu.github.io/depot-quiz/com/verbale.mp4" type="video/mp4">
-    </video>
+  <!-- --- COLONNE 1 --- -->
+  <div class="column">
+
+    <div class="video-wrapper">
+      <video id="videoMajeur" muted autoplay="autoplay" playsinline preload="auto">
+        <source src="https://avantpost-cpu.github.io/depot-quiz/com/verbale.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <div class="image-sequence-container" id="imagesA">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte1.jpg">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte2.jpg">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg">
+    </div>
+
   </div>
 
-  <div class="image-sequence-container" id="imagesA">
-    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte1.jpg">
-    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte2.jpg">
-    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg">
-  </div>
+  <!-- --- COLONNE 2 --- -->
+  <div class="column">
 
-</div>
+    <div class="video-wrapper">
+      <video id="videoMineur" muted autoplay="autoplay" playsinline preload="auto">
+        <source src="https://avantpost-cpu.github.io/depot-quiz/com/nonverbale.mp4" type="video/mp4">
+      </video>
+    </div>
 
-<!-- --- BLOC 2 --- -->
-<div class="block">
+    <div class="image-sequence-container" id="imagesB">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB1.jpg">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB2.jpg">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg">
+    </div>
 
-  <div class="video-wrapper">
-    <video id="videoMineur" muted autoplay="autoplay" playsinline preload="auto">
-      <source src="https://avantpost-cpu.github.io/depot-quiz/com/nonverbale.mp4" type="video/mp4">
-    </video>
-  </div>
-
-  <div class="image-sequence-container" id="imagesB">
-    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB1.jpg">
-    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB2.jpg">
-    <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg">
   </div>
 
 </div>
@@ -140,35 +165,27 @@ window.addEventListener("load", () => {
         v.play().catch(()=>{});
       }
     });
-  }, 180);
+  }, 150);
 });
 
-/* --- Interactions --- */
-function gray(targets) {
-  targets.forEach(t => t.classList.add('grayscale'));
-}
-function ungray(targets) {
-  targets.forEach(t => t.classList.remove('grayscale'));
-}
+/* Interactions (optionnelles) */
+function gray(targets) { targets.forEach(t => t.classList.add('grayscale')); }
+function ungray(targets) { targets.forEach(t => t.classList.remove('grayscale')); }
 
-/* SURVOL VIDEO MAJEUR */
 videoMajeur.addEventListener('mouseenter', () => gray([...imagesB, videoMineur]));
 videoMajeur.addEventListener('mouseleave', () => ungray([...imagesB, videoMineur]));
 
-/* SURVOL VIDEO MINEUR */
 videoMineur.addEventListener('mouseenter', () => gray([...imagesA, videoMajeur]));
 videoMineur.addEventListener('mouseleave', () => ungray([...imagesA, videoMajeur]));
 
-/* SURVOL IMAGES A */
-imagesA.forEach(imgA => {
-  imgA.addEventListener('mouseenter', () => gray([...imagesB, videoMineur]));
-  imgA.addEventListener('mouseleave', () => ungray([...imagesB, videoMineur]));
+imagesA.forEach(img => {
+  img.addEventListener('mouseenter', () => gray([...imagesB, videoMineur]));
+  img.addEventListener('mouseleave', () => ungray([...imagesB, videoMineur]));
 });
 
-/* SURVOL IMAGES B */
-imagesB.forEach(imgB => {
-  imgB.addEventListener('mouseenter', () => gray([...imagesA, videoMajeur]));
-  imgB.addEventListener('mouseleave', () => ungray([...imagesA, videoMajeur]));
+imagesB.forEach(img => {
+  img.addEventListener('mouseenter', () => gray([...imagesA, videoMajeur]));
+  img.addEventListener('mouseleave', () => ungray([...imagesA, videoMajeur]));
 });
 </script>
 

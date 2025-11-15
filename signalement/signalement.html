@@ -25,94 +25,104 @@
       text-align: center;
     }
 
-    /* --- VIDÉO RESPONSIVE --- */
+    /* --- LAYOUT GLOBAL --- */
+    .layout {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 30px;
+      padding: 20px;
+      flex-wrap: wrap; /* mobile */
+    }
+
+    .left-column {
+      width: 60%;
+      min-width: 300px;
+    }
+
+    .right-column {
+      width: 30%;
+      min-width: 220px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    /* --- VIDÉO --- */
     .video-wrapper {
       width: 100%;
-      max-width: 900px;
-      margin: 20px auto;
+      max-width: 600px;
+      margin: 0 auto 20px auto;
     }
 
     .video-wrapper video {
       width: 100%;
       height: auto;
       border-radius: 8px;
-      display: block;
     }
 
-    /* --- CONTENU PRINCIPAL --- */
-    main {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 20px;
+    /* --- GRILLE 2 × 2 DES MINIATURES --- */
+    .image-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
     }
 
-    /* --- MINIATURES --- */
-    .image-row {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-bottom: 30px;
-    }
-
-    .image-row img {
-      width: 22%;
-      max-width: 130px;
-      height: auto;
+    .image-grid img {
+      width: 100%;
+      max-width: 140px;
       border-radius: 8px;
       cursor: pointer;
-      transition: transform 0.2s, opacity 0.3s;
+      transition: transform .2s, opacity .3s;
     }
 
-    .image-row.hovered img:not(:hover) {
-      opacity: 0.3;
+    .image-grid img:hover {
+      transform: scale(1.05);
+    }
+
+    .image-grid.hovered img:not(:hover) {
+      opacity: .3;
     }
 
     /* --- IMAGE AFFICHÉE --- */
     .hover-container {
       position: relative;
-      width: 90%;
-      max-width: 800px;
-      margin: 0 auto 40px auto;
-      min-height: 260px;
+      width: 100%;
+      aspect-ratio: 4/3;
+      max-width: 600px;
+      margin: 20px auto;
     }
 
     .hover-image {
       position: absolute;
-      top: 0;
-      left: 50%;
-      transform: translateX(-50%);
+      inset: 0;
+      margin: auto;
       max-width: 100%;
-      height: auto;
+      max-height: 100%;
+      object-fit: contain;
       border-radius: 8px;
       opacity: 0;
-      transition: opacity 0.3s ease;
+      transition: opacity .3s;
     }
 
     .hover-image.show {
       opacity: 1;
     }
 
-    /* --- RESPONSIVE MOBILE --- */
-    @media (max-width: 900px) {
-      .image-row img {
-        width: 40%;
-        max-width: 150px;
+    /* --- MOBILE --- */
+    @media (max-width: 800px) {
+      .layout {
+        flex-direction: column;
+        align-items: center;
       }
 
-      .hover-container {
-        min-height: 220px;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .image-row img {
-        width: 45%;
-        max-width: 120px;
+      .left-column,
+      .right-column {
+        width: 90%;
       }
 
-      .hover-container {
-        min-height: 180px;
+      .image-grid {
+        max-width: 300px;
       }
     }
   </style>
@@ -120,50 +130,62 @@
 
 <body>
 
-  <header>
-    <div class="video-wrapper">
-      <video src="https://avantpost-cpu.github.io/depot-quiz/signalement/signalement.mp4"
-        autoplay muted loop></video>
+  <!-- LAYOUT GLOBAL : vidéo + miniatures -->
+  <main class="layout">
+
+    <!-- COLONNE GAUCHE : vidéo + image affichée -->
+    <div class="left-column">
+
+      <div class="video-wrapper">
+        <video src="https://avantpost-cpu.github.io/depot-quiz/signalement/signalement.mp4"
+          autoplay muted loop></video>
+      </div>
+
+      <div class="hover-container">
+        <img id="a1" src="https://avantpost-cpu.github.io/depot-quiz/signalement/a1.jpg" class="hover-image">
+        <img id="b1" src="https://avantpost-cpu.github.io/depot-quiz/signalement/b1.jpg" class="hover-image">
+        <img id="c1" src="https://avantpost-cpu.github.io/depot-quiz/signalement/c1.jpg" class="hover-image">
+        <img id="d1" src="https://avantpost-cpu.github.io/depot-quiz/signalement/d1.jpg" class="hover-image">
+      </div>
+
     </div>
-  </header>
 
-  <main>
+    <!-- COLONNE DROITE : MINIATURES EN 2×2 -->
+    <div class="right-column">
 
-    <div class="image-row">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/signalement/a.jpg" data-image="a1">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/signalement/b.jpg" data-image="b1">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/signalement/c.jpg" data-image="c1">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/signalement/d.jpg" data-image="d1">
-    </div>
+      <div class="image-grid image-row">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/signalement/a.jpg" data-image="a1">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/signalement/b.jpg" data-image="b1">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/signalement/c.jpg" data-image="c1">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/signalement/d.jpg" data-image="d1">
+      </div>
 
-    <div class="hover-container">
-      <img id="a1" src="https://avantpost-cpu.github.io/depot-quiz/signalement/a1.jpg" class="hover-image">
-      <img id="b1" src="https://avantpost-cpu.github.io/depot-quiz/signalement/b1.jpg" class="hover-image">
-      <img id="c1" src="https://avantpost-cpu.github.io/depot-quiz/signalement/c1.jpg" class="hover-image">
-      <img id="d1" src="https://avantpost-cpu.github.io/depot-quiz/signalement/d1.jpg" class="hover-image">
     </div>
 
   </main>
 
+
   <script>
-    const triggers = document.querySelectorAll('.image-row img');
+    const triggers = document.querySelectorAll('.image-grid img');
     const hoverImages = document.querySelectorAll('.hover-image');
-    const imageRow = document.querySelector('.image-row');
+    const grid = document.querySelector('.image-grid');
 
     triggers.forEach(img => {
       const imageId = img.getAttribute('data-image');
 
+      // Desktop hover
       img.addEventListener('mouseenter', () => {
         hoverImages.forEach(h => h.classList.remove('show'));
         document.getElementById(imageId).classList.add('show');
-        imageRow.classList.add('hovered');
+        grid.classList.add('hovered');
       });
 
       img.addEventListener('mouseleave', () => {
         document.getElementById(imageId).classList.remove('show');
-        imageRow.classList.remove('hovered');
+        grid.classList.remove('hovered');
       });
 
+      // Mobile click
       img.addEventListener('click', () => {
         const target = document.getElementById(imageId);
         const visible = target.classList.contains('show');

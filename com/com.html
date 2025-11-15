@@ -13,13 +13,23 @@ html, body {
   font-family: Arial, sans-serif;
 }
 
-/* ⭐ SCÈNE HOMOTHÉTIQUE — largeur optimisée Digiforma (500px) */
+/* ⭐ CONTENEUR DE CONTRÔLE — clé pour Digiforma */
+#outer-container {
+  width: 100%;
+  max-width: 550px;   /* ← largeur contrôlée, indépendante de l’iframe */
+  margin: auto;
+  overflow: hidden;   /* ← empêche la scène de dépasser */
+  position: relative;
+}
+
+/* ⭐ SCÈNE HOMOTHÉTIQUE — base 500 px */
 .homothety-stage {
-  width: 500px;              /* ← largeur réelle finale */
+  width: 500px;              /* ← largeur réelle du module */
   transform-origin: top left;
 }
 
-/* ⭐ TON CSS ORIGINAL — adapté seulement en largeur & hauteur du fond */
+/* ------- TON CSS ORIGINAL ------- */
+
 .scene-adulte {
   width: 500px;
   margin: 0;
@@ -28,14 +38,13 @@ html, body {
 .zone-fond {
   position: relative;
   width: 100%;
-  height: 709px; /* 1278 × (500/900) = 709 px */
+  height: 709px; /* 1278 × (500/900) */
   background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center top;
 }
 
-/* Icônes (positions % conservées) */
 .icone {
   position: absolute;
   width: 25%;
@@ -56,7 +65,6 @@ html, body {
   z-index: 10;
 }
 
-/* Icônes — mêmes positions qu’avant */
 .i1 { top: 38%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/1.png"); }
 .i2 { top: 45%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/2.png"); }
 .i3 { top: 53%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/3.png"); }
@@ -67,50 +75,56 @@ html, body {
 
 <body>
 
-<!-- ⭐ WRAPPER HOMOTHÉTIQUE -->
-<div id="stage-wrapper" class="homothety-stage">
+<!-- ⭐ WRAPPER DE CONTRÔLE -->
+<div id="outer-container">
 
-  <!-- ⭐ TON MODULE ORIGINAL (inchangé structurellement) -->
-  <div class="scene-adulte">
-    <div class="zone-fond">
-      <div class="icone i1" data-son="s1.wav"></div>
-      <div class="icone i2" data-son="s2.wav"></div>
-      <div class="icone i3" data-son="s3.wav"></div>
-      <div class="icone i4" data-son="s4.wav"></div>
-      <div class="icone i5" data-son="s5.wav"></div>
+    <!-- ⭐ SCÈNE À ÉCHELLE FIXE -->
+    <div id="stage-wrapper" class="homothety-stage">
+
+        <div class="scene-adulte">
+            <div class="zone-fond">
+
+                <div class="icone i1" data-son="s1.wav"></div>
+                <div class="icone i2" data-son="s2.wav"></div>
+                <div class="icone i3" data-son="s3.wav"></div>
+                <div class="icone i4" data-son="s4.wav"></div>
+                <div class="icone i5" data-son="s5.wav"></div>
+
+            </div>
+        </div>
+
     </div>
-  </div>
+</div> <!-- fin outer-container -->
 
-</div> <!-- FIN WRAPPER -->
-
-
-<!-- ⭐ SCRIPT HOMOTHÉTIQUE ANTI-BLOCAGE (version finale) -->
+<!-- ⭐ SCRIPT HOMOTHÉTIQUE ANTI-BLOCAGE -->
 <script>
 function scaleStage() {
   const stage = document.getElementById("stage-wrapper");
-  const baseWidth = 500; // largeur réelle finale
+  const container = document.getElementById("outer-container");
 
-  // ⭐ largeur réelle visible (iframe Digiforma incluse)
-  const availableWidth =
-    stage.parentElement.getBoundingClientRect().width ||
-    document.documentElement.clientWidth ||
-    window.innerWidth;
+  const baseWidth = 500;
 
-  // ⭐ scale sans limite vers le bas
+  // ⭐ LARGEUR RÉELLE CONTRÔLÉE
+  const availableWidth = container.getBoundingClientRect().width;
+
+  // ⭐ scale sans limite
   let scale = availableWidth / baseWidth;
 
-  if (scale > 1) scale = 1; // jamais agrandir
+  if (scale > 1) scale = 1;  // jamais agrandir
 
   stage.style.transform = `scale(${scale})`;
 }
 
+// Exécution
 scaleStage();
 window.addEventListener("resize", scaleStage);
+
+// Sécurité Digiforma
 setTimeout(scaleStage, 200);
 setTimeout(scaleStage, 600);
 setInterval(scaleStage, 800);
 
-/* ⭐ Sons — inchangés */
+/* ⭐ Sons */
 document.querySelectorAll(".icone").forEach(el => {
   const fichier = el.getAttribute("data-son");
   const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + fichier);

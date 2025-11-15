@@ -1,49 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <title>Majeure — Rebond</title>
 
 <style>
-/* RESET */
 html, body {
   margin: 0;
   padding: 0;
   background: #fff;
+  overflow-x: auto; /* important pour éviter les casses */
   font-family: Arial, sans-serif;
 }
 
-/* Conteneur central */
-.scene-adulte {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
+/* SCÈNE FIXE — taille de référence */
+.fixed-stage {
+  width: 900px;              /* ← largeur réelle du module */
+  transform-origin: top left;
 }
 
-/* Fond vertical A4 (ratio approximé 141%) */
+/* Conteneur du visuel */
+.scene-adulte {
+  width: 900px;
+  margin: 0;
+}
+
+/* Fond vertical A4 */
 .zone-fond {
   position: relative;
   width: 100%;
-  padding-top: 142%;
+  height: 1278px; /* ← hauteur fixe correspondant à ton ratio fondadulte */
   background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png");
   background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
-  overflow: hidden;
+  background-position: center top;
+  overflow: visible;
 }
 
-/* Icônes (DIV + background-image — pas d'img pour Digiforma) */
+/* Icônes positionnées sur le fond */
 .icone {
   position: absolute;
   width: 25%;
@@ -54,9 +48,7 @@ html, body {
   background-position: left center;
   opacity: .40;
   cursor: pointer;
-  transition: transform .6s ease,
-              filter .6s ease,
-              opacity .4s ease;
+  transition: transform .6s ease, filter .6s ease, opacity .4s ease;
 }
 
 .icone:hover {
@@ -66,44 +58,57 @@ html, body {
   z-index: 10;
 }
 
-/* Positions exactes */
+/* Positions */
 .i1 { top: 38%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/1.png"); }
 .i2 { top: 45%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/2.png"); }
 .i3 { top: 53%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/3.png"); }
 .i4 { top: 64%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/4.png"); }
 .i5 { top: 72%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/5.png"); }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .icone {
-    width: 33%;
-    left: 15%;
-  }
-}
 </style>
 </head>
 
 <body>
 
-<div class="scene-adulte">
-  <div class="zone-fond">
+<!-- SCÈNE FIXE -->
+<div id="stage-wrapper" class="fixed-stage">
 
-    <!-- Icônes -->
-    <div class="icone i1" data-son="s1.wav"></div>
-    <div class="icone i2" data-son="s2.wav"></div>
-    <div class="icone i3" data-son="s3.wav"></div>
-    <div class="icone i4" data-son="s4.wav"></div>
-    <div class="icone i5" data-son="s5.wav"></div>
+  <div class="scene-adulte">
+    <div class="zone-fond">
 
+      <div class="icone i1" data-son="s1.wav"></div>
+      <div class="icone i2" data-son="s2.wav"></div>
+      <div class="icone i3" data-son="s3.wav"></div>
+      <div class="icone i4" data-son="s4.wav"></div>
+      <div class="icone i5" data-son="s5.wav"></div>
+
+    </div>
   </div>
+
 </div>
 
 <script>
-/* Sons au clic */
+/* SCALE HOMOTHÉTIQUE EXACT */
+function scaleStage() {
+  const stage = document.getElementById("stage-wrapper");
+  const baseWidth = 900; /* largeur réelle */
+  const availableWidth = document.body.clientWidth; /* largeur Digiforma / fenêtre */
+
+  const scale = Math.min(availableWidth / baseWidth, 1);
+  stage.style.transform = `scale(${scale})`;
+}
+
+/* au chargement */
+scaleStage();
+/* sur redimensionnement */
+window.addEventListener("resize", scaleStage);
+/* hack Digiforma */
+setTimeout(scaleStage, 300);
+
+/* Lecture sons */
 document.querySelectorAll(".icone").forEach(el => {
   const fichier = el.getAttribute("data-son");
   const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + fichier);
-
   el.addEventListener("click", () => {
     audio.currentTime = 0;
     audio.play();
@@ -112,8 +117,4 @@ document.querySelectorAll(".icone").forEach(el => {
 </script>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>

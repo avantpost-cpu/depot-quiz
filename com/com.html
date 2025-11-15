@@ -1,139 +1,134 @@
 <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Majeure — Rebond</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #fff;
-  overflow-x: auto;
-  font-family: Arial, sans-serif;
-}
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: auto; /* permet le scroll si nécessaire */
+    background: white;
+  }
 
-/* ⭐ CONTENEUR DE CONTRÔLE — clé pour Digiforma */
-#outer-container {
-  width: 100%;
-  max-width: 550px;   /* ← largeur contrôlée, indépendante de l’iframe */
-  margin: auto;
-  overflow: hidden;   /* ← empêche la scène de dépasser */
-  position: relative;
-}
+  /* 🟥 1. CONTENEUR FIXE — jamais responsive */
+  .fixed-stage {
+    width: 800px;      /* ← TAILLE FIXE DE LA SCÈNE */
+    transform-origin: top left;
+  }
 
-/* ⭐ SCÈNE HOMOTHÉTIQUE — base 500 px */
-.homothety-stage {
-  width: 500px;              /* ← largeur réelle du module */
-  transform-origin: top left;
-}
+  /* 🟦 2. Mise en page interne */
+  .columns {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+  }
 
-/* ------- TON CSS ORIGINAL ------- */
+  .column {
+    width: 580px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 
-.scene-adulte {
-  width: 500px;
-  margin: 0;
-}
+  .video-wrapper {
+    width: 100%;
+    height: 200px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+  }
 
-.zone-fond {
-  position: relative;
-  width: 100%;
-  height: 709px; /* 1278 × (500/900) */
-  background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center top;
-}
+  .video-wrapper video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 
-.icone {
-  position: absolute;
-  width: 25%;
-  left: 18%;
-  aspect-ratio: 4 / 1;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left center;
-  opacity: .40;
-  cursor: pointer;
-  transition: transform .6s ease, filter .6s ease, opacity .4s ease;
-}
+  .image-list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: center;
+  }
 
-.icone:hover {
-  transform: scale(1.8) rotate(-3deg);
-  opacity: 1;
-  filter: brightness(1.1);
-  z-index: 10;
-}
+  .image-list img {
+    width: 280px;
+    border-radius: 10px;
+    transition: transform 0.25s ease;
+    cursor: pointer;
+  }
 
-.i1 { top: 38%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/1.png"); }
-.i2 { top: 45%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/2.png"); }
-.i3 { top: 53%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/3.png"); }
-.i4 { top: 64%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/4.png"); }
-.i5 { top: 72%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/5.png"); }
+  .image-list img:hover {
+    transform: scale(1.18);
+  }
+
+  /* 🟧 3. Redimensionnement homothétique ENTIER */
+  @media (max-width: 1200px) {
+    .fixed-stage {
+      transform: scale(calc(100vw / 1200));
+    }
+  }
 </style>
 </head>
 
 <body>
 
-<!-- ⭐ WRAPPER DE CONTRÔLE -->
-<div id="outer-container">
+<!-- 🟥 SCÈNE FIXE QUI SE SCALE ENTIEREMENT -->
+<div class="fixed-stage">
 
-    <!-- ⭐ SCÈNE À ÉCHELLE FIXE -->
-    <div id="stage-wrapper" class="homothety-stage">
+  <div class="columns">
 
-        <div class="scene-adulte">
-            <div class="zone-fond">
+    <!-- COLONNE GAUCHE -->
+    <div class="column">
+      <div class="video-wrapper">
+        <video autoplay muted loop playsinline>
+          <source src="https://avantpost-cpu.github.io/depot-quiz/com/verbale.mp4">
+        </video>
+      </div>
 
-                <div class="icone i1" data-son="s1.wav"></div>
-                <div class="icone i2" data-son="s2.wav"></div>
-                <div class="icone i3" data-son="s3.wav"></div>
-                <div class="icone i4" data-son="s4.wav"></div>
-                <div class="icone i5" data-son="s5.wav"></div>
-
-            </div>
-        </div>
-
+      <div class="image-list">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte1.jpg">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte2.jpg">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg">
+      </div>
     </div>
-</div> <!-- fin outer-container -->
 
-<!-- ⭐ SCRIPT HOMOTHÉTIQUE ANTI-BLOCAGE -->
-<script>
-function scaleStage() {
-  const stage = document.getElementById("stage-wrapper");
-  const container = document.getElementById("outer-container");
+    <!-- COLONNE DROITE -->
+    <div class="column">
+      <div class="video-wrapper">
+        <video autoplay muted loop playsinline>
+          <source src="https://avantpost-cpu.github.io/depot-quiz/com/nonverbale.mp4">
+        </video>
+      </div>
 
-  const baseWidth = 500;
+      <div class="image-list">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB1.jpg">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB2.jpg">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg">
+      </div>
+    </div>
 
-  // ⭐ LARGEUR RÉELLE CONTRÔLÉE
-  const availableWidth = container.getBoundingClientRect().width;
+  </div>
 
-  // ⭐ scale sans limite
-  let scale = availableWidth / baseWidth;
-
-  if (scale > 1) scale = 1;  // jamais agrandir
-
-  stage.style.transform = `scale(${scale})`;
-}
-
-// Exécution
-scaleStage();
-window.addEventListener("resize", scaleStage);
-
-// Sécurité Digiforma
-setTimeout(scaleStage, 200);
-setTimeout(scaleStage, 600);
-setInterval(scaleStage, 800);
-
-/* ⭐ Sons */
-document.querySelectorAll(".icone").forEach(el => {
-  const fichier = el.getAttribute("data-son");
-  const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + fichier);
-  el.addEventListener("click", () => {
-    audio.currentTime = 0;
-    audio.play();
-  });
-});
-</script>
+</div>
 
 </body>
+</html>
+    
+  </body>
+  
 </html>

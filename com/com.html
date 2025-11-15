@@ -14,113 +14,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Communication verbale / non verbale — Rebond</title>
 
 <style>
   body {
     margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background: white;
-
-    /* Le point CRUCIAL pour Digiforma : */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;        /* Occupe tout l'espace vertical Digiforma */
-  }
-
-  /* --- MODULE CENTRAL --- */
-  .module-wrapper {
-    width: 100%;
-    max-width: 1200px;        /* comme ton module horizontal */
     padding: 20px;
+    font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
-    gap: 40px;                /* ESPACE ENTRE TES DEUX COLONNES */
+    background: white;
   }
 
-  /* Colonne vidéo + images */
+  /* CONTENEUR GLOBAL */
+  .container {
+    width: 100%;
+    max-width: 700px;       /* clé stabilité Digiforma */
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;        /* permet de descendre colonne droite si trop étroit */
+  }
+
+  /* DEUX COLONNES */
   .column {
+    flex: 1;
+    min-width: 280px;       /* empêche superposition */
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 45%;               /* comme ton HTML original */
   }
 
+  /* VIDÉO */
   .video-wrapper {
     width: 100%;
-    aspect-ratio: 16/9;
     border-radius: 10px;
-    background: #000;
     overflow: hidden;
+    background: #000;
+    aspect-ratio: 16/9;
   }
 
-  video {
+  .video-wrapper video {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
   }
 
-  /* IMAGES 1–2–3 EN LIGNE */
-  .image-sequence-container {
-    display: flex;
-    flex-direction: row;          /* HORIZONTAL */
-    justify-content: center;
-    gap: 15px;
-    margin-top: 15px;
+  /* IMAGES EN COLONNE */
+  .image-list {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+    align-items: center;
   }
 
-  .image-sequence-container img {
-    width: 30%;                   /* 3 images côte à côte */
-    max-width: 220px;
-    border-radius: 8px;
+  .image-list img {
+    width: 100%;
+    max-width: 240px;
+    border-radius: 10px;
     cursor: pointer;
-
-    transition: transform 0.35s ease,
-                box-shadow 0.35s ease;
+    transition: transform 0.25s ease, z-index 0.25s ease;
   }
 
-  /* --- ZOOM AMPLIFIÉ --- */
-  .image-sequence-container img:hover {
-    transform: scale(2) rotate(-3deg); /* Zoom très visible */
-    box-shadow: 0 16px 35px rgba(0,0,0,0.35);
-    z-index: 20;
+  .image-list img:hover {
+    transform: scale(1.18);
+    z-index: 10;
   }
 
-  /* MOBILE */
-  @media (max-width: 900px) {
-    .module-wrapper {
-      flex-direction: column;
-      align-items: center;
-    }
-    .column {
-      width: 90%;
-    }
-    .image-sequence-container img {
-      width: 28%;
-      max-width: 140px;
+  @media (max-width: 500px) {
+    .image-list img {
+      max-width: 180px;
     }
   }
 </style>
-</head>
 
+</head>
 <body>
 
-<div class="module-wrapper">
+<div class="container">
 
-  <!-- --- COLONNE 1 --- -->
+  <!-- COLONNE GAUCHE -->
   <div class="column">
 
     <div class="video-wrapper">
-      <video id="videoMajeur" muted autoplay="autoplay" playsinline preload="auto">
+      <video muted autoplay playsinline loop preload="auto">
         <source src="https://avantpost-cpu.github.io/depot-quiz/com/verbale.mp4" type="video/mp4">
       </video>
     </div>
 
-    <div class="image-sequence-container" id="imagesA">
+    <div class="image-list">
       <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte1.jpg">
       <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte2.jpg">
       <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg">
@@ -128,16 +110,16 @@
 
   </div>
 
-  <!-- --- COLONNE 2 --- -->
+  <!-- COLONNE DROITE -->
   <div class="column">
 
     <div class="video-wrapper">
-      <video id="videoMineur" muted autoplay="autoplay" playsinline preload="auto">
+      <video muted autoplay playsinline loop preload="auto">
         <source src="https://avantpost-cpu.github.io/depot-quiz/com/nonverbale.mp4" type="video/mp4">
       </video>
     </div>
 
-    <div class="image-sequence-container" id="imagesB">
+    <div class="image-list">
       <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB1.jpg">
       <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB2.jpg">
       <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg">
@@ -146,48 +128,6 @@
   </div>
 
 </div>
-
-<script>
-/* vidéos */
-const videoMajeur = document.getElementById('videoMajeur');
-const videoMineur = document.getElementById('videoMineur');
-
-/* images */
-const imagesA = document.querySelectorAll('#imagesA img');
-const imagesB = document.querySelectorAll('#imagesB img');
-
-/* --- AUTOPLAY PATCH DIGIFORMA --- */
-window.addEventListener("load", () => {
-  setTimeout(() => {
-    [videoMajeur, videoMineur].forEach(v => {
-      if (v.paused) {
-        v.muted = true;
-        v.play().catch(()=>{});
-      }
-    });
-  }, 150);
-});
-
-/* Interactions (optionnelles) */
-function gray(targets) { targets.forEach(t => t.classList.add('grayscale')); }
-function ungray(targets) { targets.forEach(t => t.classList.remove('grayscale')); }
-
-videoMajeur.addEventListener('mouseenter', () => gray([...imagesB, videoMineur]));
-videoMajeur.addEventListener('mouseleave', () => ungray([...imagesB, videoMineur]));
-
-videoMineur.addEventListener('mouseenter', () => gray([...imagesA, videoMajeur]));
-videoMineur.addEventListener('mouseleave', () => ungray([...imagesA, videoMajeur]));
-
-imagesA.forEach(img => {
-  img.addEventListener('mouseenter', () => gray([...imagesB, videoMineur]));
-  img.addEventListener('mouseleave', () => ungray([...imagesB, videoMineur]));
-});
-
-imagesB.forEach(img => {
-  img.addEventListener('mouseenter', () => gray([...imagesA, videoMajeur]));
-  img.addEventListener('mouseleave', () => ungray([...imagesA, videoMajeur]));
-});
-</script>
 
 </body>
 </html>

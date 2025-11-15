@@ -2,122 +2,123 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Majeure — Rebond</title>
 
 <style>
-  body {
-    margin: 0;
-    padding: 0;
-    overflow-x: auto;
-    background: white;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  overflow-x: auto;
+  font-family: Arial, sans-serif;
+}
 
-  /* SCÈNE FIXE */
-  .fixed-stage {
-    width: 800px;          /* largeur de base */
-    transform-origin: top left;
-  }
+/* ⭐ SCÈNE HOMOTHÉTIQUE — largeur optimisée Digiforma */
+.homothety-stage {
+  width: 700px;              /* ← largeur réelle optimisée */
+  transform-origin: top left;
+}
 
-  /* DEUX COLONNES */
-  .columns {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-  }
+/* ⭐ TON CSS ORIGINAL (adapté à 700px seulement en largeur du container) */
+.scene-adulte {
+  width: 700px;
+  margin: 0;
+}
 
-  .column {
-    width: 380px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+.zone-fond {
+  position: relative;
+  width: 100%;
+  height: 994px; /* ← recalculé proportionnellement : 1278 × (700/900) */
+  background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center top;
+}
 
-  /* VIDEO */
-  .video-wrapper {
-    width: 100%;
-    aspect-ratio: 16/9;
-    border-radius: 12px;
-    overflow: hidden;
-    background: black;
-  }
-  .video-wrapper video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+/* Icônes – inchangées (elles restent en pourcentage, donc parfaites pour l’homothétie) */
+.icone {
+  position: absolute;
+  width: 25%;
+  left: 18%;
+  aspect-ratio: 4 / 1;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  opacity: .40;
+  cursor: pointer;
+  transition: transform .6s ease, filter .6s ease, opacity .4s ease;
+}
 
-  /* LISTE IMAGES */
-  .image-list {
-    margin-top: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    align-items: center;
-  }
+.icone:hover {
+  transform: scale(1.8) rotate(-3deg);
+  opacity: 1;
+  filter: brightness(1.1);
+  z-index: 10;
+}
 
-  .image-list img {
-    width: 250px;
-    border-radius: 10px;
-    transition: transform .25s ease;
-    cursor: pointer;
-  }
-
-  .image-list img:hover {
-    transform: scale(1.15);
-  }
+.i1 { top: 38%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/1.png"); }
+.i2 { top: 45%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/2.png"); }
+.i3 { top: 53%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/3.png"); }
+.i4 { top: 64%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/4.png"); }
+.i5 { top: 72%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/5.png"); }
 </style>
 </head>
 
 <body>
 
-<div id="stage-wrapper" class="fixed-stage">
-  <div class="columns">
-    <div class="column">
-      <div class="video-wrapper">
-        <video autoplay muted loop playsinline>
-          <source src="https://avantpost-cpu.github.io/depot-quiz/com/verbale.mp4">
-        </video>
-      </div>
-      <div class="image-list">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte1.jpg">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte2.jpg">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg">
-      </div>
-    </div>
+<!-- ⭐️ WRAPPER HOMOTHÉTIQUE -->
+<div id="stage-wrapper" class="homothety-stage">
 
-    <div class="column">
-      <div class="video-wrapper">
-        <video autoplay muted loop playsinline>
-          <source src="https://avantpost-cpu.github.io/depot-quiz/com/nonverbale.mp4">
-        </video>
-      </div>
-      <div class="image-list">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB1.jpg">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB2.jpg">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg">
-      </div>
+  <!-- ⭐️ TON MODULE COMPLET (inchangé) -->
+  <div class="scene-adulte">
+    <div class="zone-fond">
+      <div class="icone i1" data-son="s1.wav"></div>
+      <div class="icone i2" data-son="s2.wav"></div>
+      <div class="icone i3" data-son="s3.wav"></div>
+      <div class="icone i4" data-son="s4.wav"></div>
+      <div class="icone i5" data-son="s5.wav"></div>
     </div>
   </div>
-</div>
 
+</div> <!-- fin wrapper -->
+
+
+<!-- ⭐ SCRIPT HOMOTHÉTIQUE ANTI-BLOCAGE -->
 <script>
 function scaleStage() {
   const stage = document.getElementById("stage-wrapper");
-  const baseWidth = 800;  // largeur fixe
-  const availableWidth = document.body.clientWidth; // largeur réelle du conteneur (iframe)
+  const baseWidth = 700;  // nouvelle largeur réelle optimisée
 
-  const scale = Math.min(availableWidth / baseWidth, 1); // jamais agrandir, juste réduire
+  // ⭐ Mesure la largeur VISIBLE réelle dans l’iframe Digiforma
+  const availableWidth =
+    stage.parentElement.getBoundingClientRect().width ||
+    document.documentElement.clientWidth ||
+    window.innerWidth;
+
+  // ⭐ scale qui peut descendre sans limite basse
+  let scale = availableWidth / baseWidth;
+
+  if (scale > 1) scale = 1; // jamais d’agrandissement
+
   stage.style.transform = `scale(${scale})`;
 }
 
-// au chargement
+// Exécutions
 scaleStage();
-
-// quand la fenêtre change (ou iframe)
 window.addEventListener("resize", scaleStage);
-
-// petit hack Digiforma : recalcule après chargement iframe
 setTimeout(scaleStage, 200);
+setTimeout(scaleStage, 600);
+setInterval(scaleStage, 800);
+
+/* ⭐ Ton code pour les sons — inchangé */
+document.querySelectorAll(".icone").forEach(el => {
+  const fichier = el.getAttribute("data-son");
+  const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + fichier);
+  el.addEventListener("click", () => {
+    audio.currentTime = 0;
+    audio.play();
+  });
+});
 </script>
 
 </body>

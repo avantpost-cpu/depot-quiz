@@ -1,135 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
+<div id="mineure-wrapper" style="
+  width:100%;
+  display:flex;
+  justify-content:center;
+  overflow-x:hidden;
+">
 
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
+  <div id="mineure-scale-container" style="
+    transform-origin: top left;
+    width:500px;
+    height:auto;
+  ">
 
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
-<html lang="fr">
-<head>
-<meta charset="UTF-8">
-<title>Mineure — Rebond</title>
+    <div class="scene-mineure" style="
+      width:500px;
+      position:relative;
+      font-family: Arial, sans-serif;
+    ">
 
-<style>
-/* RESET */
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #fff;
-  font-family: Arial, sans-serif;
-}
+      <!-- FOND -->
+      <div style="
+        width:100%;
+        padding-top:142%;
+        background-image:url('https://avantpost-cpu.github.io/depot-quiz/mineure/fondmineure.png');
+        background-size:contain;
+        background-repeat:no-repeat;
+        background-position:center;
+        position:relative;
+      ">
 
-/* Conteneur central */
-.scene-mineure {
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-}
+        <!-- ICONES (positions converties proportionnellement à 500px) -->
+        <div class="ico-m" data-son="a.wav" style="top:34%; left:14%;"></div>
+        <div class="ico-m" data-son="b.wav" style="top:46%; left:14%;"></div>
 
-/* Fond vertical A4 — ratio stable */
-.zone-fond-mineure {
-  position: relative;
-  width: 100%;
-  padding-top: 142%;  /* hauteur approximative d’un A4 vertical */
-  background-image: url("https://avantpost-cpu.github.io/depot-quiz/mineure/fondmineure.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  overflow: hidden;
-}
+        <div class="ico-m" data-son="c.wav" style="top:36%; left:55%;"></div>
+        <div class="ico-m" data-son="d.wav" style="top:42%; left:55%;"></div>
+        <div class="ico-m" data-son="e.wav" style="top:54%; left:55%;"></div>
+        <div class="ico-m" data-son="f.wav" style="top:60%; left:55%;"></div>
+        <div class="ico-m" data-son="g.wav" style="top:68%; left:55%;"></div>
+        <div class="ico-m" data-son="h.wav" style="top:76%; left:55%;"></div>
 
-/* ---------------------------------------------------
-   ICONES EN DIV (zéro <img> pour éviter les déformations)
---------------------------------------------------- */
-.icone {
-  position: absolute;
-  width: 25%;
-  aspect-ratio: 4 / 1;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left center;
-  opacity: .40;
-  cursor: pointer;
-  transition:
-    transform .6s ease,
-    filter .6s ease,
-    opacity .4s ease;
-}
-
-.icone:hover {
-  transform: scale(1.8) rotate(-3deg);
-  opacity: 1;
-  filter: brightness(1.1);
-  z-index: 10;
-}
-
-/* POSITIONS EXACTES, comme ta maquette finale */
-.a { top: 34%; left: 14%; background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/a.png"); }
-.b { top: 46%; left: 14%; background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/b.png"); }
-
-.c { top: 36%; left: 55%; background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/c.png"); }
-.d { top: 42%; left: 55%; background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/d.png"); }
-.e { top: 54%; left: 55%; background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/e.png"); }
-.f { top: 60%; left: 55%; background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/f.png"); }
-.g { top: 68%; left: 55%; background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/g.png"); }
-.h { top: 76%; left: 55%; background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/h.png"); }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .icone { width: 33%; }
-  .a, .b { left: 12%; }
-  .c, .d, .e, .f, .g, .h { left: 54%; }
-}
-</style>
-</head>
-
-<body>
-
-<div class="scene-mineure">
-  <div class="zone-fond-mineure">
-
-    <!-- ICÔNES GAUCHE -->
-    <div class="icone a" data-son="a.wav"></div>
-    <div class="icone b" data-son="b.wav"></div>
-
-    <!-- ICÔNES DROITE -->
-    <div class="icone c" data-son="c.wav"></div>
-    <div class="icone d" data-son="d.wav"></div>
-    <div class="icone e" data-son="e.wav"></div>
-    <div class="icone f" data-son="f.wav"></div>
-    <div class="icone g" data-son="g.wav"></div>
-    <div class="icone h" data-son="h.wav"></div>
-
+      </div>
+    </div>
   </div>
 </div>
 
+<style>
+.ico-m {
+  position:absolute;
+  width:25%;
+  aspect-ratio:4/1;
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:left center;
+  opacity:.45;
+  cursor:pointer;
+  transition:transform .5s ease, opacity .3s ease;
+}
+
+/* Images (mêmes URLs que ton repo) */
+.ico-m[data-son="a.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/a.png");}
+.ico-m[data-son="b.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/b.png");}
+.ico-m[data-son="c.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/c.png");}
+.ico-m[data-son="d.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/d.png");}
+.ico-m[data-son="e.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/e.png");}
+.ico-m[data-son="f.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/f.png");}
+.ico-m[data-son="g.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/g.png");}
+.ico-m[data-son="h.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/h.png");}
+
+.ico-m:hover {
+  transform:scale(1.4);
+  opacity:1;
+}
+</style>
+
 <script>
-/* Sons au clic */
-document.querySelectorAll(".icone").forEach(el => {
+/* Homothétie automatique = le conteneur s’adapte toujours */
+function scaleMineure() {
+  const wrapper = document.getElementById("mineure-wrapper");
+  const container = document.getElementById("mineure-scale-container");
+  const maxWidth = 500;
+
+  const available = wrapper.clientWidth;
+  const scale = available < maxWidth ? (available / maxWidth) : 1;
+
+  container.style.transform = "scale(" + scale + ")";
+}
+
+window.addEventListener("resize", scaleMineure);
+window.addEventListener("load", scaleMineure);
+
+/* Audio au clic */
+document.querySelectorAll(".ico-m").forEach(el => {
   const fichier = el.getAttribute("data-son");
   const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/mineure/" + fichier);
 
-  el.addEventListener("click", () => {
-    audio.currentTime = 0;
-    audio.play();
-  });
-
-  /* compatibilité mobile */
-  el.addEventListener("touchstart", () => {
-    audio.currentTime = 0;
-    audio.play();
-  });
+  const play = () => { audio.currentTime = 0; audio.play(); };
+  el.addEventListener("click", play);
+  el.addEventListener("touchstart", play);
 });
 </script>
-
-</body>
-</html>
-    
-  </body>
-  
-</html>

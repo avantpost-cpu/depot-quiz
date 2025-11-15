@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <style>
   body {
     margin: 0;
     padding: 0;
-    overflow-x: auto; /* permet le scroll si nécessaire */
+    overflow-x: auto;
     background: white;
   }
 
-  /* 🟥 1. CONTENEUR FIXE — jamais responsive */
+  /* SCÈNE FIXE QUI SE SCALE EN ENTIER */
   .fixed-stage {
-    width: 800px;      /* ← TAILLE FIXE DE LA SCÈNE */
-    transform-origin: top left;
+    width: 800px;                  /* largeur réelle de la scène */
+    transform-origin: top left;    /* point d’origine du scale */
   }
 
-  /* 🟦 2. Mise en page interne */
+  /* CONTENEUR DES DEUX COLONNES */
   .columns {
     display: flex;
     flex-direction: row;
-    gap: 40px;
+    gap: 20px;
   }
 
   .column {
-    width: 580px;
+    width: 380px;                  /* 380 + 380 + 20px gap ≈ 800px */
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
+  /* VIDEO HOMOTHÉTIQUE */
   .video-wrapper {
     width: 100%;
-    height: 200px;
+    aspect-ratio: 16/9;            /* ← remplace la hauteur fixe */
     border-radius: 12px;
     overflow: hidden;
-    background: #000;
+    background: black;
   }
 
   .video-wrapper video {
@@ -46,74 +47,70 @@
     object-fit: cover;
   }
 
+  /* IMAGES EN COLONNE */
   .image-list {
-    margin-top: 20px;
+    margin-top: 15px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
     align-items: center;
   }
 
   .image-list img {
-    width: 280px;
+    width: 250px;
     border-radius: 10px;
     transition: transform 0.25s ease;
     cursor: pointer;
   }
 
   .image-list img:hover {
-    transform: scale(1.18);
+    transform: scale(1.15);
   }
 
-  /* 🟧 3. Redimensionnement homothétique ENTIER */
-  @media (max-width: 1200px) {
+  /* SCALE AUTOMATIQUE ADAPTÉ À LA TAILLE RÉELLE : 800px */
+  @media (max-width: 800px) {
     .fixed-stage {
-      transform: scale(calc(100vw / 1200));
+      transform: scale(calc(100vw / 800)); /* ← CORRECTIF MAJEUR */
     }
   }
 </style>
 </head>
 
 <body>
+  <div class="fixed-stage">
+    <div class="columns">
+      
+      <!-- COLONNE 1 -->
+      <div class="column">
+        <div class="video-wrapper">
+          <video autoplay muted loop playsinline>
+            <source src="https://avantpost-cpu.github.io/depot-quiz/com/verbale.mp4" />
+          </video>
+        </div>
 
-<!-- 🟥 SCÈNE FIXE QUI SE SCALE ENTIEREMENT -->
-<div class="fixed-stage">
-
-  <div class="columns">
-
-    <!-- COLONNE GAUCHE -->
-    <div class="column">
-      <div class="video-wrapper">
-        <video autoplay muted loop playsinline>
-          <source src="https://avantpost-cpu.github.io/depot-quiz/com/verbale.mp4">
-        </video>
+        <div class="image-list">
+          <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte1.jpg" />
+          <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte2.jpg" />
+          <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg" />
+        </div>
       </div>
 
-      <div class="image-list">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte1.jpg">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte2.jpg">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg">
+      <!-- COLONNE 2 -->
+      <div class="column">
+        <div class="video-wrapper">
+          <video autoplay muted loop playsinline>
+            <source src="https://avantpost-cpu.github.io/depot-quiz/com/nonverbale.mp4" />
+          </video>
+        </div>
+
+        <div class="image-list">
+          <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB1.jpg" />
+          <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB2.jpg" />
+          <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg" />
+        </div>
       </div>
+
     </div>
-
-    <!-- COLONNE DROITE -->
-    <div class="column">
-      <div class="video-wrapper">
-        <video autoplay muted loop playsinline>
-          <source src="https://avantpost-cpu.github.io/depot-quiz/com/nonverbale.mp4">
-        </video>
-      </div>
-
-      <div class="image-list">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB1.jpg">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB2.jpg">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg">
-      </div>
-    </div>
-
   </div>
-
-</div>
-
 </body>
 </html>

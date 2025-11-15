@@ -9,27 +9,26 @@ html, body {
   margin: 0;
   padding: 0;
   background: #fff;
-  overflow-x: auto; /* important pour éviter les casses */
+  overflow-x: auto; /* indispensable pour Digiforma */
   font-family: Arial, sans-serif;
 }
 
-/* SCÈNE FIXE — taille de référence */
-.fixed-stage {
-  width: 900px;              /* ← largeur réelle du module */
-  transform-origin: top left;
+/* ⭐ SCÈNE HOMOTHÉTIQUE — TOUT se scale */
+.homothety-stage {
+  width: 900px;               /* ← largeur réelle du module */
+  transform-origin: top left; /* ← point d’origine du scale */
 }
 
-/* Conteneur du visuel */
+/* TON STYLES EXISTANTS — inchangés */
 .scene-adulte {
   width: 900px;
   margin: 0;
 }
 
-/* Fond vertical A4 */
 .zone-fond {
   position: relative;
   width: 100%;
-  height: 1278px; /* ← hauteur fixe correspondant à ton ratio fondadulte */
+  height: 1278px;
   background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/fondadulte.png");
   background-size: contain;
   background-repeat: no-repeat;
@@ -37,7 +36,6 @@ html, body {
   overflow: visible;
 }
 
-/* Icônes positionnées sur le fond */
 .icone {
   position: absolute;
   width: 25%;
@@ -58,54 +56,52 @@ html, body {
   z-index: 10;
 }
 
-/* Positions */
+/* icônes */
 .i1 { top: 38%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/1.png"); }
 .i2 { top: 45%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/2.png"); }
 .i3 { top: 53%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/3.png"); }
 .i4 { top: 64%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/4.png"); }
 .i5 { top: 72%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/5.png"); }
-
 </style>
 </head>
 
 <body>
 
-<!-- SCÈNE FIXE -->
-<div id="stage-wrapper" class="fixed-stage">
+<!-- ⭐ CONTENEUR HOMOTHÉTIQUE (ajouté) -->
+<div id="stage-wrapper" class="homothety-stage">
 
-  <div class="scene-adulte">
-    <div class="zone-fond">
+    <!-- ⭐ TON CONTENU ORIGINAL (inchangé) -->
+    <div class="scene-adulte">
+      <div class="zone-fond">
 
-      <div class="icone i1" data-son="s1.wav"></div>
-      <div class="icone i2" data-son="s2.wav"></div>
-      <div class="icone i3" data-son="s3.wav"></div>
-      <div class="icone i4" data-son="s4.wav"></div>
-      <div class="icone i5" data-son="s5.wav"></div>
+        <div class="icone i1" data-son="s1.wav"></div>
+        <div class="icone i2" data-son="s2.wav"></div>
+        <div class="icone i3" data-son="s3.wav"></div>
+        <div class="icone i4" data-son="s4.wav"></div>
+        <div class="icone i5" data-son="s5.wav"></div>
 
+      </div>
     </div>
-  </div>
 
-</div>
+</div> <!-- fin du wrapper homothétique -->
 
+
+<!-- ⭐ SCRIPT HOMOTHÉTIQUE : réduit toute la scène proportionnellement -->
 <script>
-/* SCALE HOMOTHÉTIQUE EXACT */
 function scaleStage() {
   const stage = document.getElementById("stage-wrapper");
-  const baseWidth = 900; /* largeur réelle */
-  const availableWidth = document.body.clientWidth; /* largeur Digiforma / fenêtre */
+  const baseWidth = 900;                       // largeur réelle du module
+  const availableWidth = document.body.clientWidth; // largeur dispo dans Digiforma
 
   const scale = Math.min(availableWidth / baseWidth, 1);
   stage.style.transform = `scale(${scale})`;
 }
 
-/* au chargement */
 scaleStage();
-/* sur redimensionnement */
 window.addEventListener("resize", scaleStage);
-/* hack Digiforma */
-setTimeout(scaleStage, 300);
+setTimeout(scaleStage, 250); // hack de sécurité Digiforma
 
-/* Lecture sons */
+/* TON CODE AUDIO — inchangé */
 document.querySelectorAll(".icone").forEach(el => {
   const fichier = el.getAttribute("data-son");
   const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/majeure/" + fichier);

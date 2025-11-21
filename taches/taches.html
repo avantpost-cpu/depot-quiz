@@ -22,25 +22,52 @@
     overflow: hidden;
   }
 
-  /* ⭐ VRAIE IMAGE DE FOND (fond.jpg) */
+  /* ⭐ IMAGE DE FOND */
   #fond {
     position: absolute;
-    left: 0;
-    top: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* garantit qu’elle n’est pas rognée */
+    object-fit: contain;
+    left: 0;
+    top: 0;
     pointer-events: none;
-    user-select: none;
     z-index: 1;
   }
 
+  /* ⭐ BILLES NORMALES */
   .bille {
     position: absolute;
     width: 100px;
-    pointer-events: none;
+    pointer-events: auto;
     user-select: none;
     z-index: 2;
+    transition: none !important; /* Empêche les transitions lentes */
+  }
+
+  /* ⭐ SUPERPOSITION BLEUE (effet garanti même sur PNG noir) */
+  .bille::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 140, 255, 0); /* invisible par défaut */
+    mix-blend-mode: lighten; /* Permet de coloriser du noir */
+    transition: none !important;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* ⭐ HOVER : BLEU PUR + GROSSISSEMENT IMMÉDIAT */
+  .bille:hover {
+    transform: scale(2.8) !important;  
+    transition: none !important;
+    z-index: 20;
+  }
+
+  .bille:hover::after {
+    background: rgba(0, 140, 255, 1); /* bleu pur */
+    transition: none !important;
   }
 </style>
 </head>
@@ -60,21 +87,17 @@ const images = [
   "f.png","g.png","h.png","i.png","j.png"
 ].map(x => "https://avantpost-cpu.github.io/depot-quiz/taches/" + x);
 
-// vitesses lentes
 const SPEED_MIN = 0.05;
 const SPEED_MAX = 0.20;
 
-// dimensions réelles du fichier fond.jpg
-// ⚠️ Mets ici les bonnes dimensions (en pixels EXACTES)
-const fondoW = 2480;   // ← ajustable
-const fondoH = 3508;   // ← ajustable
+const fondoW = 2480; /* dimensions réelles du JPEG */
+const fondoH = 3508;
 
 const container = document.getElementById("billes-container");
-const fond = document.getElementById("fond");
 const billes = [];
 
 /* -----------------------------------------------------
-   CALCUL EXACT DE LA ZONE VISIBLE DU FOND
+   ZONE VISIBLE (object-fit: contain)
 ----------------------------------------------------- */
 function zoneVisible() {
   const cw = container.clientWidth;
@@ -83,12 +106,10 @@ function zoneVisible() {
   const ratioWin = cw / ch;
 
   if (ratioWin > ratioImg) {
-    // bandes latérales
     const visibleW = ch * ratioImg;
     const offsetX = (cw - visibleW) / 2;
     return { x: offsetX, y: 0, width: visibleW, height: ch };
   } else {
-    // bandes haut / bas
     const visibleH = cw / ratioImg;
     const offsetY = (ch - visibleH) / 2;
     return { x: 0, y: offsetY, width: cw, height: visibleH };
@@ -118,17 +139,23 @@ function initBilles() {
       vy: Math.sin(angle) * speed
     };
 
-    respirer(bille);
     billes.push(bille);
+    respirer(bille);
   });
 }
 
 /* -----------------------------------------------------
-   RESPIRATION
+   RESPIRATION (désactivée en hover)
 ----------------------------------------------------- */
 function respirer(bille) {
+
+  if (bille.el.matches(':hover')) {
+    setTimeout(() => respirer(bille), 300);
+    return;
+  }
+
   const scale = 0.85 + Math.random() * 0.4;
-  const duration = 2000 + Math.random() * 3000;
+  const duration = 2000 + Math.random() * 2000;
 
   bille.el.style.transition = `transform ${duration}ms ease-in-out`;
   bille.el.style.transform = `scale(${scale})`;
@@ -137,7 +164,7 @@ function respirer(bille) {
 }
 
 /* -----------------------------------------------------
-   ANIMATION
+   ANIMATION GÉNÉRALE
 ----------------------------------------------------- */
 function animate() {
   const zone = zoneVisible();
@@ -150,7 +177,7 @@ function animate() {
     if (bille.y < zone.y || bille.y > zone.y + zone.height - 100) bille.vy *= -1;
 
     bille.el.style.left = bille.x + "px";
-    bille.el.style.top = bille.y + "px";
+    bille.el.style.top  = bille.y + "px";
   });
 
   requestAnimationFrame(animate);

@@ -1,124 +1,109 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tâches Rebond</title>
+<meta charset="UTF-8">
+<title>Tâches – Rebond</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      overflow: hidden;
-      background: #000;
-      font-family: Arial, sans-serif;
-    }
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    font-family: Arial, sans-serif;
+  }
 
-    #billes-container {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-    }
+  #billes-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
 
-    #fond {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      object-fit: contain;  /* IMPORTANT : pour garder les vraies limites */
-      left: 0;
-      top: 0;
-      z-index: 1;
-      pointer-events: none;
-    }
+  /* ⭐ VRAIE IMAGE DE FOND (fond.jpg) */
+  #fond {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* garantit qu’elle n’est pas rognée */
+    pointer-events: none;
+    user-select: none;
+    z-index: 1;
+  }
 
-    .bille {
-      position: absolute;
-      width: 100px;
-      pointer-events: none;
-      z-index: 2;
-      user-select: none;
-    }
-  </style>
+  .bille {
+    position: absolute;
+    width: 100px;
+    pointer-events: none;
+    user-select: none;
+    z-index: 2;
+  }
+</style>
 </head>
 
 <body>
 
 <div id="billes-container">
-  <!-- Ton image réelle -->
-  <img id="fond" src="https://avantpost-cpu.github.io/depot-quiz/taches/taches.jpg">
+  <img id="fond" src="https://avantpost-cpu.github.io/depot-quiz/taches/fond.jpg" alt="">
 </div>
 
 <script>
-/* -----------------------------------------------------------
+/* -----------------------------------------------------
    CONFIG
------------------------------------------------------------ */
-const dossier = "https://avantpost-cpu.github.io/depot-quiz/taches/";
-const images = ["a.png","b.png","c.png","d.png","e.png","f.png","g.png","h.png","i.png","j.png"];
+----------------------------------------------------- */
+const images = [
+  "a.png","b.png","c.png","d.png","e.png",
+  "f.png","g.png","h.png","i.png","j.png"
+].map(x => "https://avantpost-cpu.github.io/depot-quiz/taches/" + x);
 
-// vitesse ultra lente
+// vitesses lentes
 const SPEED_MIN = 0.05;
 const SPEED_MAX = 0.20;
 
-// vraie résolution image taches.jpg
-const fondoW = 2480;
-const fondoH = 3508;
+// dimensions réelles du fichier fond.jpg
+// ⚠️ Mets ici les bonnes dimensions (en pixels EXACTES)
+const fondoW = 2480;   // ← ajustable
+const fondoH = 3508;   // ← ajustable
 
-/* -----------------------------------------------------------
-   BASE
------------------------------------------------------------ */
 const container = document.getElementById("billes-container");
 const fond = document.getElementById("fond");
 const billes = [];
 
-/* -----------------------------------------------------------
-   CALCUL DE LA ZONE VISIBLE EXACTE DU FOND
------------------------------------------------------------ */
-function calcZoneVisible() {
+/* -----------------------------------------------------
+   CALCUL EXACT DE LA ZONE VISIBLE DU FOND
+----------------------------------------------------- */
+function zoneVisible() {
   const cw = container.clientWidth;
   const ch = container.clientHeight;
-
   const ratioImg = fondoW / fondoH;
   const ratioWin = cw / ch;
 
-  let zone = {};
-
-  // Même logique que object-fit: contain
   if (ratioWin > ratioImg) {
     // bandes latérales
     const visibleW = ch * ratioImg;
     const offsetX = (cw - visibleW) / 2;
-    zone = {
-      x: offsetX,
-      y: 0,
-      width: visibleW,
-      height: ch
-    };
+    return { x: offsetX, y: 0, width: visibleW, height: ch };
   } else {
-    // bandes haut/bas
+    // bandes haut / bas
     const visibleH = cw / ratioImg;
     const offsetY = (ch - visibleH) / 2;
-    zone = {
-      x: 0,
-      y: offsetY,
-      width: cw,
-      height: visibleH
-    };
+    return { x: 0, y: offsetY, width: cw, height: visibleH };
   }
-
-  return zone;
 }
 
-/* -----------------------------------------------------------
-   CREATION DES BILLES
------------------------------------------------------------ */
+/* -----------------------------------------------------
+   CRÉATION DES BILLES
+----------------------------------------------------- */
 function initBilles() {
-  const zone = calcZoneVisible();
+  const zone = zoneVisible();
 
-  images.forEach(file => {
+  images.forEach(url => {
     const img = document.createElement("img");
-    img.src = dossier + file;
+    img.src = url;
     img.className = "bille";
     container.appendChild(img);
 
@@ -133,54 +118,50 @@ function initBilles() {
       vy: Math.sin(angle) * speed
     };
 
-    billes.push(bille);
     respirer(bille);
+    billes.push(bille);
   });
 }
 
-/* -----------------------------------------------------------
-   ANIMATION RESPIRATION
------------------------------------------------------------ */
+/* -----------------------------------------------------
+   RESPIRATION
+----------------------------------------------------- */
 function respirer(bille) {
-  const newScale = 0.85 + Math.random() * 0.4;
+  const scale = 0.85 + Math.random() * 0.4;
   const duration = 2000 + Math.random() * 3000;
 
   bille.el.style.transition = `transform ${duration}ms ease-in-out`;
-  bille.el.style.transform = `scale(${newScale})`;
+  bille.el.style.transform = `scale(${scale})`;
 
   setTimeout(() => respirer(bille), duration);
 }
 
-/* -----------------------------------------------------------
-   ANIMATION DU DEPLACEMENT
------------------------------------------------------------ */
-function animer() {
-  const zone = calcZoneVisible();
+/* -----------------------------------------------------
+   ANIMATION
+----------------------------------------------------- */
+function animate() {
+  const zone = zoneVisible();
 
   billes.forEach(bille => {
     bille.x += bille.vx;
     bille.y += bille.vy;
 
-    if (bille.x <= zone.x || bille.x >= zone.x + zone.width - 100) {
-      bille.vx *= -1;
-    }
-    if (bille.y <= zone.y || bille.y >= zone.y + zone.height - 100) {
-      bille.vy *= -1;
-    }
+    if (bille.x < zone.x || bille.x > zone.x + zone.width - 100) bille.vx *= -1;
+    if (bille.y < zone.y || bille.y > zone.y + zone.height - 100) bille.vy *= -1;
 
     bille.el.style.left = bille.x + "px";
     bille.el.style.top = bille.y + "px";
   });
 
-  requestAnimationFrame(animer);
+  requestAnimationFrame(animate);
 }
 
-/* -----------------------------------------------------------
+/* -----------------------------------------------------
    INIT
------------------------------------------------------------ */
+----------------------------------------------------- */
 window.onload = () => {
   initBilles();
-  animer();
+  animate();
 };
 
 window.onresize = () => {

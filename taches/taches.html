@@ -2,8 +2,8 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Tâches – Rebond</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tâches Rebond</title>
 
   <style>
     html, body {
@@ -11,124 +11,184 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
+      background: #000;
       font-family: Arial, sans-serif;
     }
 
-    /* Conteneur plein écran */
     #billes-container {
       position: relative;
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-      background-image: url("https://avantpost-cpu.github.io/depot-quiz/taches/taches.jpg");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
+    }
+
+    #fond {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;  /* IMPORTANT : pour garder les vraies limites */
+      left: 0;
+      top: 0;
+      z-index: 1;
+      pointer-events: none;
     }
 
     .bille {
       position: absolute;
-      width: 100px;        /* taille des bulles */
+      width: 100px;
       pointer-events: none;
+      z-index: 2;
       user-select: none;
-      transition: transform 2s ease-in-out;
     }
   </style>
 </head>
 
 <body>
-  <div id="billes-container"></div>
 
-  <script>
-    // URLs complètes vers les images (GitHub Pages)
-    const images = [
-      "https://avantpost-cpu.github.io/depot-quiz/taches/a.png",
-      "https://avantpost-cpu.github.io/depot-quiz/taches/b.png",
-      "https://avantpost-cpu.github.io/depot-quiz/taches/c.png",
-      "https://avantpost-cpu.github.io/depot-quiz/taches/d.png",
-      "https://avantpost-cpu.github.io/depot-quiz/taches/e.png",
-      "https://avantpost-cpu.github.io/depot-quiz/taches/f.png",
-      "https://avantpost-cpu.github.io/depot-quiz/taches/g.png",
-      "https://avantpost-cpu.github.io/depot-quiz/taches/h.png",
-      "https://avantpost-cpu.github.io/depot-quiz/taches/i.png",
-      "https://avantpost-cpu.github.io/depot-quiz/taches/j.png"
-    ];
+<div id="billes-container">
+  <!-- Ton image réelle -->
+  <img id="fond" src="https://avantpost-cpu.github.io/depot-quiz/taches/taches.jpg">
+</div>
 
-    const container = document.getElementById("billes-container");
-    const billes = [];
+<script>
+/* -----------------------------------------------------------
+   CONFIG
+----------------------------------------------------------- */
+const dossier = "https://avantpost-cpu.github.io/depot-quiz/taches/";
+const images = ["a.png","b.png","c.png","d.png","e.png","f.png","g.png","h.png","i.png","j.png"];
 
-    // ⚠️ vitesse très lente (tu peux ajuster)
-    const VITESSE_MIN = 0.05;  // pixel / frame
-    const VITESSE_MAX = 0.20;
+// vitesse ultra lente
+const SPEED_MIN = 0.05;
+const SPEED_MAX = 0.20;
 
-    function initBilles() {
-      const w = container.clientWidth;
-      const h = container.clientHeight;
+// vraie résolution image taches.jpg
+const fondoW = 2480;
+const fondoH = 3508;
 
-      images.forEach(url => {
-        const img = document.createElement("img");
-        img.src = url;
-        img.className = "bille";
-        container.appendChild(img);
+/* -----------------------------------------------------------
+   BASE
+----------------------------------------------------------- */
+const container = document.getElementById("billes-container");
+const fond = document.getElementById("fond");
+const billes = [];
 
-        const angle = Math.random() * Math.PI * 2;
-        const speed = VITESSE_MIN + Math.random() * (VITESSE_MAX - VITESSE_MIN);
+/* -----------------------------------------------------------
+   CALCUL DE LA ZONE VISIBLE EXACTE DU FOND
+----------------------------------------------------------- */
+function calcZoneVisible() {
+  const cw = container.clientWidth;
+  const ch = container.clientHeight;
 
-        const bille = {
-          el: img,
-          x: Math.random() * (w - 100),
-          y: Math.random() * (h - 100),
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed
-        };
+  const ratioImg = fondoW / fondoH;
+  const ratioWin = cw / ch;
 
-        billes.push(bille);
-        respirer(bille);
-      });
+  let zone = {};
+
+  // Même logique que object-fit: contain
+  if (ratioWin > ratioImg) {
+    // bandes latérales
+    const visibleW = ch * ratioImg;
+    const offsetX = (cw - visibleW) / 2;
+    zone = {
+      x: offsetX,
+      y: 0,
+      width: visibleW,
+      height: ch
+    };
+  } else {
+    // bandes haut/bas
+    const visibleH = cw / ratioImg;
+    const offsetY = (ch - visibleH) / 2;
+    zone = {
+      x: 0,
+      y: offsetY,
+      width: cw,
+      height: visibleH
+    };
+  }
+
+  return zone;
+}
+
+/* -----------------------------------------------------------
+   CREATION DES BILLES
+----------------------------------------------------------- */
+function initBilles() {
+  const zone = calcZoneVisible();
+
+  images.forEach(file => {
+    const img = document.createElement("img");
+    img.src = dossier + file;
+    img.className = "bille";
+    container.appendChild(img);
+
+    const angle = Math.random() * Math.PI * 2;
+    const speed = SPEED_MIN + Math.random() * (SPEED_MAX - SPEED_MIN);
+
+    const bille = {
+      el: img,
+      x: zone.x + Math.random() * (zone.width - 100),
+      y: zone.y + Math.random() * (zone.height - 100),
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed
+    };
+
+    billes.push(bille);
+    respirer(bille);
+  });
+}
+
+/* -----------------------------------------------------------
+   ANIMATION RESPIRATION
+----------------------------------------------------------- */
+function respirer(bille) {
+  const newScale = 0.85 + Math.random() * 0.4;
+  const duration = 2000 + Math.random() * 3000;
+
+  bille.el.style.transition = `transform ${duration}ms ease-in-out`;
+  bille.el.style.transform = `scale(${newScale})`;
+
+  setTimeout(() => respirer(bille), duration);
+}
+
+/* -----------------------------------------------------------
+   ANIMATION DU DEPLACEMENT
+----------------------------------------------------------- */
+function animer() {
+  const zone = calcZoneVisible();
+
+  billes.forEach(bille => {
+    bille.x += bille.vx;
+    bille.y += bille.vy;
+
+    if (bille.x <= zone.x || bille.x >= zone.x + zone.width - 100) {
+      bille.vx *= -1;
+    }
+    if (bille.y <= zone.y || bille.y >= zone.y + zone.height - 100) {
+      bille.vy *= -1;
     }
 
-    // Effet de "respiration" (zoom léger)
-    function respirer(bille) {
-      const newScale = 0.85 + Math.random() * 0.4;
-      const duration = 2000 + Math.random() * 3000;
+    bille.el.style.left = bille.x + "px";
+    bille.el.style.top = bille.y + "px";
+  });
 
-      bille.el.style.transition = `transform ${duration}ms ease-in-out`;
-      bille.el.style.transform = `scale(${newScale})`;
+  requestAnimationFrame(animer);
+}
 
-      setTimeout(() => respirer(bille), duration);
-    }
+/* -----------------------------------------------------------
+   INIT
+----------------------------------------------------------- */
+window.onload = () => {
+  initBilles();
+  animer();
+};
 
-    function animer() {
-      const w = container.clientWidth;
-      const h = container.clientHeight;
+window.onresize = () => {
+  billes.length = 0;
+  document.querySelectorAll(".bille").forEach(b => b.remove());
+  initBilles();
+};
+</script>
 
-      billes.forEach(bille => {
-        bille.x += bille.vx;
-        bille.y += bille.vy;
-
-        // rebonds doux sur les bords
-        if (bille.x <= 0 || bille.x >= w - 100) {
-          bille.vx *= -1;
-        }
-        if (bille.y <= 0 || bille.y >= h - 100) {
-          bille.vy *= -1;
-        }
-
-        bille.el.style.left = bille.x + "px";
-        bille.el.style.top = bille.y + "px";
-      });
-
-      requestAnimationFrame(animer);
-    }
-
-    window.addEventListener("load", () => {
-      initBilles();
-      animer();
-    });
-
-    window.addEventListener("resize", () => {
-      // on pourrait recalc, mais pour Digiforma ce n'est pas critique
-    });
-  </script>
 </body>
 </html>

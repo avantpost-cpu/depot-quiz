@@ -1,159 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Tâches – Rebond</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
 
-  </head>
-    
-  <body>
-  <div class="scene">
-  <div id="billes-container"></div>
-</div>
-
-<style>
-  .scene {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    margin: 0 auto;
-    background: url("https://avantpost-cpu.github.io/depot-quiz/taches/fond.jpg") center center / contain no-repeat;
-    background-color: #fff;
-    overflow: hidden;
-  }
-
-  #billes-container {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-  }
-
-  #billes-container img {
-    position: absolute;
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    cursor: pointer;
-    z-index: 2;
-    will-change: transform, left, top, filter;
-    transition: transform 0.4s cubic-bezier(0.25, 1.5, 0.5, 1),
-                filter 0.6s ease;
-  }
-
-  /* 💙 Zoom + transformation du noir vers #25657b, préservant le blanc */
-  #billes-container img:hover {
-    transform: scale(3.5) !important;
-    /* filtre ciblé : foncés → bleu #25657b, blancs préservés */
-    filter: invert(18%) sepia(16%) saturate(2272%) hue-rotate(166deg) brightness(96%) contrast(95%);
-    z-index: 6;
-  }
-
-  @media (max-width: 768px) {
-    .scene {
+    /* Conteneur plein écran */
+    #billes-container {
+      position: relative;
+      width: 100vw;
       height: 100vh;
-      max-width: 100vw;
+      overflow: hidden;
+      background-image: url("https://avantpost-cpu.github.io/depot-quiz/taches/taches.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
     }
-    #billes-container img {
-      width: 55px;
-      height: 55px;
+
+    .bille {
+      position: absolute;
+      width: 100px;        /* taille des bulles */
+      pointer-events: none;
+      user-select: none;
+      transition: transform 2s ease-in-out;
     }
-  }
-</style>
+  </style>
+</head>
 
-<script>
-  const dossier = "https://avantpost-cpu.github.io/depot-quiz/taches/";
-  const images = [
-    "a.png", "b.png", "c.png", "d.png",
-    "e.png", "f.png", "g.png", "h.png",
-    "i.png", "j.png"
-  ];
+<body>
+  <div id="billes-container"></div>
 
-  const container = document.getElementById("billes-container");
-  const billes = [];
-  const vitesseMax = 1.5;
-  const ratioFond = 2480 / 3508;
+  <script>
+    // URLs complètes vers les images (GitHub Pages)
+    const images = [
+      "https://avantpost-cpu.github.io/depot-quiz/taches/a.png",
+      "https://avantpost-cpu.github.io/depot-quiz/taches/b.png",
+      "https://avantpost-cpu.github.io/depot-quiz/taches/c.png",
+      "https://avantpost-cpu.github.io/depot-quiz/taches/d.png",
+      "https://avantpost-cpu.github.io/depot-quiz/taches/e.png",
+      "https://avantpost-cpu.github.io/depot-quiz/taches/f.png",
+      "https://avantpost-cpu.github.io/depot-quiz/taches/g.png",
+      "https://avantpost-cpu.github.io/depot-quiz/taches/h.png",
+      "https://avantpost-cpu.github.io/depot-quiz/taches/i.png",
+      "https://avantpost-cpu.github.io/depot-quiz/taches/j.png"
+    ];
 
-  function getZoneFond() {
-    const w = container.clientWidth;
-    const h = container.clientHeight;
-    const ratioEcran = w / h;
-    let zone = {};
+    const container = document.getElementById("billes-container");
+    const billes = [];
 
-    if (ratioEcran > ratioFond) {
-      const visibleW = h * ratioFond;
-      const offsetX = (w - visibleW) / 2;
-      zone = { x: offsetX, y: 0, width: visibleW, height: h };
-    } else {
-      const visibleH = w / ratioFond;
-      const offsetY = (h - visibleH) / 2;
-      zone = { x: 0, y: offsetY, width: w, height: visibleH };
+    // ⚠️ vitesse très lente (tu peux ajuster)
+    const VITESSE_MIN = 0.05;  // pixel / frame
+    const VITESSE_MAX = 0.20;
+
+    function initBilles() {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+
+      images.forEach(url => {
+        const img = document.createElement("img");
+        img.src = url;
+        img.className = "bille";
+        container.appendChild(img);
+
+        const angle = Math.random() * Math.PI * 2;
+        const speed = VITESSE_MIN + Math.random() * (VITESSE_MAX - VITESSE_MIN);
+
+        const bille = {
+          el: img,
+          x: Math.random() * (w - 100),
+          y: Math.random() * (h - 100),
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed
+        };
+
+        billes.push(bille);
+        respirer(bille);
+      });
     }
-    return zone;
-  }
 
-  function initBilles() {
-    const zone = getZoneFond();
+    // Effet de "respiration" (zoom léger)
+    function respirer(bille) {
+      const newScale = 0.85 + Math.random() * 0.4;
+      const duration = 2000 + Math.random() * 3000;
 
-    images.forEach(src => {
-      const img = document.createElement("img");
-      img.src = dossier + src;
-      container.appendChild(img);
+      bille.el.style.transition = `transform ${duration}ms ease-in-out`;
+      bille.el.style.transform = `scale(${newScale})`;
 
-      const bille = {
-        el: img,
-        x: zone.x + Math.random() * (zone.width - 100),
-        y: zone.y + Math.random() * (zone.height - 100),
-        vx: (Math.random() - 0.5) * 3,
-        vy: (Math.random() - 0.5) * 3
-      };
-      billes.push(bille);
-      respirer(bille);
+      setTimeout(() => respirer(bille), duration);
+    }
+
+    function animer() {
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+
+      billes.forEach(bille => {
+        bille.x += bille.vx;
+        bille.y += bille.vy;
+
+        // rebonds doux sur les bords
+        if (bille.x <= 0 || bille.x >= w - 100) {
+          bille.vx *= -1;
+        }
+        if (bille.y <= 0 || bille.y >= h - 100) {
+          bille.vy *= -1;
+        }
+
+        bille.el.style.left = bille.x + "px";
+        bille.el.style.top = bille.y + "px";
+      });
+
+      requestAnimationFrame(animer);
+    }
+
+    window.addEventListener("load", () => {
+      initBilles();
+      animer();
     });
-  }
 
-  // respiration douce aléatoire
-  function respirer(bille) {
-    const newScale = 0.8 + Math.random() * 0.6;
-    const duration = 2000 + Math.random() * 2000;
-
-    bille.el.style.transition = `transform ${duration}ms ease-in-out`;
-    bille.el.style.transform = `scale(${newScale})`;
-
-    setTimeout(() => respirer(bille), duration);
-  }
-
-  // mouvement rebondissant
-  function animer() {
-    const zone = getZoneFond();
-
-    billes.forEach(bille => {
-      bille.x += bille.vx;
-const speedFactor = 1.2; // accélération globale
-bille.x += bille.vx * speedFactor;
-bille.y += bille.vy * speedFactor;
-
-      if (bille.x <= zone.x || bille.x >= zone.x + zone.width - 100) bille.vx *= -1;
-      if (bille.y <= zone.y || bille.y >= zone.y + zone.height - 100) bille.vy *= -1;
-
-      bille.el.style.left = bille.x + "px";
-      bille.el.style.top = bille.y + "px";
+    window.addEventListener("resize", () => {
+      // on pourrait recalc, mais pour Digiforma ce n'est pas critique
     });
-
-    requestAnimationFrame(animer);
-  }
-
-  window.addEventListener("resize", () => {
-    billes.length = 0;
-    container.innerHTML = "";
-    initBilles();
-  });
-
-  initBilles();
-  animer();
-</script>
-    
-  </body>
-  
+  </script>
+</body>
 </html>

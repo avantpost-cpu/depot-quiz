@@ -9,7 +9,9 @@
       padding: 20px;
       max-width: 600px;
       margin: auto;
-      background-image: url('fond.jpg'); /* image de fond répétée */
+
+      /* Fond mosaïque en URL absolue */
+      background-image: url('https://avantpost-cpu.github.io/depot-quiz/fond.jpg');
       background-repeat: repeat;
       background-size: auto;
     }
@@ -34,13 +36,14 @@
       cursor: pointer;
       border-radius: 5px;
       border: none;
+      font-size: 15px;
     }
 
     button:hover { background: #f0f0f0; }
 
     #startBtn {
-      background-color: #4f918d; 
-      color: white;              
+      background-color: #4f918d;
+      color: white;
       font-weight: bold;
       padding: 12px 20px;
       border-radius: 5px;
@@ -49,44 +52,68 @@
       display: block;
       margin: 20px auto;
       width: 200px;
-      text-align: center;
     }
 
-    #startBtn:hover { background-color: #3e736b; }
+    #startBtn:hover {
+      background-color: #3e736b;
+    }
 
     .correct { color: green; font-weight: bold; }
     .wrong { color: red; font-weight: bold; }
 
-    #score { font-size: 18px; font-weight: bold; text-align: center; margin-top: 20px; }
-    #timerBarContainer { width: 100%; height: 20px; background: #eee; border-radius: 10px; margin: 15px 0; overflow: hidden; }
-    #timerBar { height: 100%; width: 100%; background: linear-gradient(to right, #4f918d, #eab400); transition: width 1s linear; }
-    #progress { text-align: center; margin-bottom: 10px; font-weight: bold; }
+    #score {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+      margin-top: 20px;
+      display: none;
+    }
 
-    #quiz, #timerBarContainer, #progress, #score { display: none; }
+    /* Barre de timing masquée */
+    #timerBarContainer {
+      display: none;
+    }
 
-    .result-img { max-width: 50%; height: auto; display: block; margin: 20px auto 0 auto; }
+    #progress {
+      text-align: center;
+      margin-bottom: 10px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .result-img {
+      max-width: 50%;
+      height: auto;
+      display: block;
+      margin: 20px auto 0 auto;
+    }
   </style>
 </head>
+
 <body>
   <h2>Quiz sur le stress post-traumatique</h2>
 
   <p id="instructions">
-    Testez vos connaissances sur les conséquences psychologiques et physiques des violences dans le milieu sportif. 
-    Vous avez 15 secondes pour chaque question. La barre verte/orange indique le temps restant.
+    Testez vos connaissances sur les conséquences psychologiques du traumatisme.
+    Le temps n’est plus affiché pour éviter le stress, mais vous verrez combien de temps vous avez mis pour répondre.
   </p>
 
   <button id="startBtn">Commencer le quiz</button>
 
   <div id="progress"></div>
-  <div id="timerBarContainer">
-    <div id="timerBar"></div>
-  </div>
+  <div id="timerBarContainer"><div id="timerBar"></div></div>
   <div id="quiz"></div>
+
+  <!-- Bouton uniquement pour les questions à choix multiples -->
   <button id="validateBtn" style="display:none;">Valider la réponse</button>
+
   <div id="score"></div>
   <div id="resultImage"></div>
 
   <script>
+    /* ---------------------------
+       QUESTIONS
+       --------------------------- */
     var questions = [
       { 
         text: "Quels symptômes peuvent révéler un stress post-traumatique ?", 
@@ -156,17 +183,20 @@
 
     var currentQuestion = 0;
     var score = 0;
-    var timeLeft = 15;
-    var timer;
+
+    /* Variables pour mesurer le temps réel */
+    var startTime = 0;
+    var endTime = 0;
+    var responseTime = 0;
 
     var quizContainer = document.getElementById("quiz");
-    var scoreContainer = document.getElementById("score");
-    var timerBar = document.getElementById("timerBar");
     var progressContainer = document.getElementById("progress");
-    var startBtn = document.getElementById("startBtn");
+    var scoreContainer = document.getElementById("score");
     var resultImage = document.getElementById("resultImage");
+    var startBtn = document.getElementById("startBtn");
     var validateBtn = document.getElementById("validateBtn");
 
+    /* Mélange des réponses */
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -174,79 +204,48 @@
       }
     }
 
+    /* ------------------------------
+       AFFICHAGE QUESTION
+       ------------------------------ */
     function showQuestion() {
-      if(currentQuestion >= questions.length) { endQuiz(); return; }
+      if (currentQuestion >= questions.length) { endQuiz(); return; }
 
       var q = questions[currentQuestion];
-      progressContainer.textContent = "Question " + (currentQuestion + 1) + " / " + questions.length;
+      var answers = q.answers.slice();
+      shuffleArray(answers);
+
+      progressContainer.style.display = "block";
+      progressContainer.textContent =
+        "Question " + (currentQuestion + 1) + " / " + questions.length;
 
       var html = '<div class="question"><p><strong>' + q.text + '</strong></p>';
-      q.answers.forEach((ans, index) => {
-        if(q.multiple){
-          html += `<label><input type="checkbox" value="${index}"> ${ans.text}</label><br>`;
+
+      answers.forEach((ans, index) => {
+        if (q.multiple) {
+          html += `<label><input type="checkbox" value="${ans.text}"> ${ans.text}</label><br>`;
         } else {
-          html += `<button onclick="checkAnswerSingle(${index})">${ans.text}</button>`;
+          html += `<button onclick="checkAnswerSingle('${ans.text}', ${ans.correct})">${ans.text}</button>`;
         }
       });
+
       html += '<p id="feedback"></p></div>';
       quizContainer.innerHTML = html;
 
-      if(q.multiple) validateBtn.style.display = "block";
-      else validateBtn.style.display = "none";
+      validateBtn.style.display = q.multiple ? "block" : "none";
 
-      timeLeft = 15;
-      timerBar.style.width = "100%";
-      clearInterval(timer);
-      timer = setInterval(updateTimer, 1000);
+      startTime = performance.now(); /* Début du chrono invisible */
     }
 
-    function updateTimer() {
-      timeLeft--;
-      timerBar.style.width = (timeLeft / 15 * 100) + "%";
-      if(timeLeft <= 0) {
-        clearInterval(timer);
-        var feedback = document.getElementById("feedback");
-        feedback.textContent = "⏰ Temps écoulé !";
-        feedback.className = "wrong";
-        setTimeout(function() {
-          currentQuestion++;
-          showQuestion();
-        }, 1000);
-      }
-    }
+    /* ------------------------------
+       RÉPONSE SIMPLE
+       ------------------------------ */
+    function checkAnswerSingle(label, isCorrect) {
+      endTime = performance.now();
+      responseTime = Math.round((endTime - startTime) / 1000);
 
-    function checkAnswerSingle(choiceIndex) {
-      clearInterval(timer);
-      var q = questions[currentQuestion];
-      var ans = q.answers[choiceIndex];
       var feedback = document.getElementById("feedback");
 
-      if(ans.correct){
-        feedback.textContent = "✅ Bonne réponse !";
-        feedback.className = "correct";
-        score++;
-      } else {
-        feedback.textContent = "❌ Mauvaise réponse.";
-        feedback.className = "wrong";
-      }
-      setTimeout(function() {
-        currentQuestion++;
-        showQuestion();
-      }, 1000);
-    }
-
-    validateBtn.onclick = function(){
-      var q = questions[currentQuestion];
-      var checkboxes = quizContainer.querySelectorAll('input[type="checkbox"]');
-      var correct = true;
-
-      checkboxes.forEach(cb => {
-        var ans = q.answers[cb.value];
-        if(cb.checked !== ans.correct) correct = false;
-      });
-
-      var feedback = document.getElementById("feedback");
-      if(correct){
+      if (isCorrect) {
         feedback.textContent = "✅ Bonne réponse !";
         feedback.className = "correct";
         score++;
@@ -255,34 +254,84 @@
         feedback.className = "wrong";
       }
 
-      clearInterval(timer);
+      feedback.innerHTML +=
+        "<br><span style='opacity:0.7;'>⏱ Temps pris : <strong>" +
+        responseTime +
+        " s</strong></span>";
+
       setTimeout(() => {
         currentQuestion++;
         showQuestion();
-      }, 1000);
+      }, 1200);
+    }
+
+    /* ------------------------------
+       RÉPONSE MULTIPLE
+       ------------------------------ */
+    validateBtn.onclick = function () {
+      endTime = performance.now();
+      responseTime = Math.round((endTime - startTime) / 1000);
+
+      var q = questions[currentQuestion];
+      var checkboxes = quizContainer.querySelectorAll('input[type="checkbox"]');
+
+      var correct = true;
+
+      checkboxes.forEach(cb => {
+        var answer = q.answers.find(a => a.text === cb.value);
+        if (cb.checked !== answer.correct) correct = false;
+      });
+
+      var feedback = document.getElementById("feedback");
+
+      if (correct) {
+        feedback.textContent = "✅ Bonne réponse !";
+        feedback.className = "correct";
+        score++;
+      } else {
+        feedback.textContent = "❌ Mauvaise réponse.";
+        feedback.className = "wrong";
+      }
+
+      feedback.innerHTML +=
+        "<br><span style='opacity:0.7;'>⏱ Temps pris : <strong>" +
+        responseTime +
+        " s</strong></span>";
+
+      setTimeout(() => {
+        currentQuestion++;
+        showQuestion();
+      }, 1200);
     };
 
+    /* ------------------------------
+       FIN DU QUIZ
+       ------------------------------ */
     function endQuiz() {
       quizContainer.innerHTML = "";
       validateBtn.style.display = "none";
-      timerBar.style.width = "0%";
+
       progressContainer.textContent = "";
+      scoreContainer.style.display = "block";
       scoreContainer.textContent = "Résultat final : " + score + " / " + questions.length;
 
       resultImage.innerHTML = "";
-      if(score >= 5){
-        resultImage.innerHTML = '<img src="bravo.png" alt="Bravo !" class="result-img">';
+      if (score >= 5) {
+        resultImage.innerHTML =
+          '<img src="bravo.png" alt="Bravo !" class="result-img">';
       } else {
-        resultImage.innerHTML = '<img src="progres.png" alt="Progrès !" class="result-img">';
+        resultImage.innerHTML =
+          '<img src="progres.png" alt="Progrès !" class="result-img">';
       }
     }
 
-    startBtn.addEventListener("click", function() {
+    /* ------------------------------
+       DÉMARRAGE
+       ------------------------------ */
+    startBtn.addEventListener("click", function () {
       startBtn.style.display = "none";
       quizContainer.style.display = "block";
-      timerBar.parentElement.style.display = "block";
-      progressContainer.style.display = "block";
-      scoreContainer.style.display = "block";
+      scoreContainer.style.display = "none";
       showQuestion();
     });
   </script>

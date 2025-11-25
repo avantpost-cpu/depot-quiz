@@ -34,7 +34,7 @@
       cursor: pointer;
     }
 
-    /* 🔧 Correction MINIMALE : images 5 et 5b légèrement réduites */
+    /* Correction simple : images 5 et 5b un peu trop larges */
     .image-container img[src$="5.png"],
     .image-container img[src$="5b.png"] {
       width: 88%;
@@ -90,7 +90,7 @@
     <div class="image-container">
       <img src="3.png" data-text="texte3">
       <div id="texte3" class="text">
-        <span class="highlight">Crime</span> : puni de réclusion criminelle (15 ans, 20 ans, 30 ans ou perpétuité selon gravité).
+        <span class="highlight">Crime</span> : puni de réclusion criminelle (15 ans, 20 ans, 30 ans ou perpétuité selon la gravité).
       </div>
     </div>
 
@@ -129,7 +129,7 @@
 
     images.forEach(img => {
       img.addEventListener("click", () => {
-        
+
         images.forEach(i => i.classList.remove("zoomed"));
         document.querySelectorAll(".text").forEach(t => t.style.display = "none");
 

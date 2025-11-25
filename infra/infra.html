@@ -34,25 +34,23 @@
       cursor: pointer;
     }
 
-    /* 🔧 Correction spécifique des images trop larges */
+    /* 🔧 Correction MINIMALE : images 5 et 5b légèrement réduites */
     .image-container img[src$="5.png"],
     .image-container img[src$="5b.png"] {
-      width: 88%;     /* Ajuste ici si tu veux plus ou moins petit */
+      width: 88%;
       max-width: 88%;
     }
 
-    /* — ZOOM — */
     .zoomed {
       transform: scale(1.3);
       z-index: 10;
       position: relative;
     }
 
-    /* — TEXTE — */
     .text {
       display: none;
       margin-top: 15px;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255,255,255,0.9);
       padding: 15px;
       border-radius: 10px;
       width: 90%;
@@ -62,7 +60,6 @@
       line-height: 1.5;
     }
 
-    /* — Highlight du texte indiqué — */
     .highlight {
       background: yellow;
       padding: 2px 4px;
@@ -76,7 +73,6 @@
 
   <div class="container">
 
-    <!-- IMAGE 1 -->
     <div class="image-container">
       <img src="1.png" data-text="texte1">
       <div id="texte1" class="text">
@@ -84,7 +80,6 @@
       </div>
     </div>
 
-    <!-- IMAGE 2 -->
     <div class="image-container">
       <img src="2.png" data-text="texte2">
       <div id="texte2" class="text">
@@ -92,7 +87,6 @@
       </div>
     </div>
 
-    <!-- IMAGE 3 -->
     <div class="image-container">
       <img src="3.png" data-text="texte3">
       <div id="texte3" class="text">
@@ -100,7 +94,6 @@
       </div>
     </div>
 
-    <!-- IMAGE 4 -->
     <div class="image-container">
       <img src="4.png" data-text="texte4">
       <div id="texte4" class="text">
@@ -108,7 +101,6 @@
       </div>
     </div>
 
-    <!-- IMAGE 5 (corrigée) -->
     <div class="image-container">
       <img src="5.png" data-text="texte5">
       <div id="texte5" class="text">
@@ -116,7 +108,6 @@
       </div>
     </div>
 
-    <!-- IMAGE 5B (corrigée) -->
     <div class="image-container">
       <img src="5b.png" data-text="texte5b">
       <div id="texte5b" class="text">
@@ -124,7 +115,6 @@
       </div>
     </div>
 
-    <!-- IMAGE 6 -->
     <div class="image-container">
       <img src="6.png" data-text="texte6">
       <div id="texte6" class="text">
@@ -140,14 +130,11 @@
     images.forEach(img => {
       img.addEventListener("click", () => {
         
-        // Désactive tout le reste
         images.forEach(i => i.classList.remove("zoomed"));
         document.querySelectorAll(".text").forEach(t => t.style.display = "none");
 
-        // Active image cliquée
         img.classList.add("zoomed");
 
-        // Active texte associé
         const textId = img.getAttribute("data-text");
         if (textId) {
           document.getElementById(textId).style.display = "block";

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Infractions - Présentation</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: url("https://avantpost-cpu.github.io/depot-quiz/tableau/fondpapier.jpg") center/cover no-repeat;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Wrapper Digiforma */
+  .wrapper {
+    max-width: 900px;
+    width: 100%;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  /* --- TITRE REMPLACÉ PAR UNE IMAGE --- */
+  .title img {
+    max-width: 50%;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px auto;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 40px;
+  }
+
+  /* --- GRID 2×2 --- */
+  .wheel {
+    display: grid;
+    grid-template-columns: repeat(2, 160px);
+    grid-template-rows: repeat(2, 160px);
+    justify-content: center;
+    align-items: center;
+    gap: 40px 50px;
+    margin-bottom: 20px;
+  }
+
+  /* --- CARRÉS PNG --- */
+  .carre {
+    width: 160px;
+    height: 160px;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .carre img {
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+    display: block;
+  }
+
+  .carre:hover { transform: scale(1.05); }
+
+  /* --- Zone centrale --- */
+  .center {
+    position: relative;
+    padding: 20px;
+    min-height: 220px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 16px;
+    border-radius: 12px;
+    z-index: 1;
+  }
+
+  .center-bg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: none;
+    opacity: 0;
+    transition: background 0.5s, opacity 0.5s;
+    z-index: 0;
+  }
+
+  .center-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Texte infraction */
+  .circle-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .details { 
+    font-size: 14px;
+    line-height: 1.4;
+    color: #000;
+  }
+
+  .details div { margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="container">
+
+    <!-- TITRE EN IMAGE -->
+    <div class="title">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/tableau1/phrase.png" alt="Titre">
+    </div>
+
+    <div class="subtitle">Survolez un carré pour voir les détails.</div>
+
+    <!-- GRID 2×2 -->
+    <div class="wheel" id="wheel">
+
+      <div class="carre" data-key="violences">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau1/carre2.png" alt="">
+      </div>
+
+      <div class="carre" data-key="harcelement">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau1/carre1.png" alt="">
+      </div>
+
+      <div class="carre" data-key="bizutage">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau1/carre4.png" alt="">
+      </div>
+
+      <div class="carre" data-key="autres">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau1/carre3.png" alt="">
+      </div>
+
+    </div>
+
+    <!-- ZONE CENTRALE -->
+    <div class="center" id="centerText">
+      <div class="center-bg" id="centerBg"></div>
+      <div class="center-content" id="centerContent"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const centerContent = document.getElementById("centerContent");
+const centerBg = document.getElementById("centerBg");
+const carres = document.querySelectorAll(".carre");
+
+/* --- TEXTES DES 4 INFRACTIONS --- */
+const dataContent = {
+  violences: `<div class="circle-title">Violences physiques et psychologiques</div>
+  <div class="details">
+    <div><strong>Articles :</strong> 222-7 à 222-16-3 CP, R.625-1 CP</div>
+    <div><strong>Définition :</strong> Violences entraînant la mort, mutilation, infirmité ou incapacité.</div>
+    <div><strong>Peines :</strong> 3 à 20 ans de réclusion, 15 000 à 150 000 € d’amende. Mineurs &lt; 15 ans : aggravations.</div>
+  </div>`,
+
+  harcelement: `<div class="circle-title">Harcèlement moral</div>
+  <div class="details">
+    <div><strong>Article :</strong> 222-33-2-2 CP</div>
+    <div><strong>Définition :</strong> Propos ou comportements répétés portant atteinte à la santé mentale.</div>
+    <div><strong>Peines :</strong> 1 an / 15 000 €. Mineur : 2 ans / 30 000 €. Aggravé : 3 ans / 45 000 €.</div>
+  </div>`,
+
+  bizutage: `<div class="circle-title">Bizutage</div>
+  <div class="details">
+    <div><strong>Articles :</strong> 225-16-1, R625-8-3, 222-33-1-1</div>
+    <div><strong>Définition :</strong> Actes humiliants ou dégradants interdits depuis 2017.</div>
+    <div><strong>Peines :</strong> 6 mois prison, 7 500 €. Aggravations possibles.</div>
+  </div>`,
+
+  autres: `<div class="circle-title">Autres infractions</div>
+  <div class="details">
+    <div><strong>Informations :</strong> D’autres types d’infractions peuvent être ajoutées selon les situations.</div>
+  </div>`
+};
+
+/* --- HOVER --- */
+carres.forEach(carre => {
+  carre.addEventListener("mouseenter", () => {
+    const key = carre.dataset.key;
+
+    centerContent.innerHTML = dataContent[key];
+    centerBg.style.opacity = 0.8;
+    centerBg.style.background = "rgba(255,255,255,0.4)";
+  });
+
+  carre.addEventListener("mouseleave", () => {
+    centerContent.innerHTML = "";
+    centerBg.style.opacity = 0;
+  });
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

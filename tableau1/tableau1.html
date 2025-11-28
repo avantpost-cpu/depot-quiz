@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -39,7 +28,7 @@
     width: 100%;
   }
 
-  /* --- TITRE REMPLACÉ PAR UNE IMAGE --- */
+  /* --- TITRE EN IMAGE --- */
   .title img {
     max-width: 50%;
     height: auto;
@@ -53,15 +42,14 @@
     margin-bottom: 40px;
   }
 
-  /* --- GRID 2×2 --- */
+  /* --- 4 IMAGES SUR UNE SEULE LIGNE --- */
   .wheel {
-    display: grid;
-    grid-template-columns: repeat(2, 160px);
-    grid-template-rows: repeat(2, 160px);
+    display: flex;
     justify-content: center;
     align-items: center;
-    gap: 40px 50px;
-    margin-bottom: 20px;
+    gap: 35px; /* espace entre les images */
+    margin-bottom: 30px;
+    flex-wrap: nowrap; /* force tout sur une ligne */
   }
 
   /* --- CARRÉS PNG --- */
@@ -70,6 +58,7 @@
     height: 160px;
     cursor: pointer;
     transition: transform 0.3s;
+    flex-shrink: 0;
   }
 
   .carre img {
@@ -141,7 +130,7 @@
 
     <div class="subtitle">Survolez un carré pour voir les détails.</div>
 
-    <!-- GRID 2×2 -->
+    <!-- 4 IMAGES SUR UNE SEULE LIGNE -->
     <div class="wheel" id="wheel">
 
       <div class="carre" data-key="violences">
@@ -182,26 +171,26 @@ const dataContent = {
   <div class="details">
     <div><strong>Articles :</strong> 222-7 à 222-16-3 CP, R.625-1 CP</div>
     <div><strong>Définition :</strong> Violences entraînant la mort, mutilation, infirmité ou incapacité.</div>
-    <div><strong>Peines :</strong> 3 à 20 ans de réclusion, 15 000 à 150 000 € d’amende. Mineurs &lt; 15 ans : aggravations.</div>
+    <div><strong>Peines :</strong> 3 à 20 ans de réclusion, 15 000 à 150 000 € d’amende.</div>
   </div>`,
 
   harcelement: `<div class="circle-title">Harcèlement moral</div>
   <div class="details">
     <div><strong>Article :</strong> 222-33-2-2 CP</div>
     <div><strong>Définition :</strong> Propos ou comportements répétés portant atteinte à la santé mentale.</div>
-    <div><strong>Peines :</strong> 1 an / 15 000 €. Mineur : 2 ans / 30 000 €. Aggravé : 3 ans / 45 000 €.</div>
+    <div><strong>Peines :</strong> 1 an / 15 000 €. Mineur : 2 ans / 30 000 €.</div>
   </div>`,
 
   bizutage: `<div class="circle-title">Bizutage</div>
   <div class="details">
     <div><strong>Articles :</strong> 225-16-1, R625-8-3, 222-33-1-1</div>
     <div><strong>Définition :</strong> Actes humiliants ou dégradants interdits depuis 2017.</div>
-    <div><strong>Peines :</strong> 6 mois prison, 7 500 €. Aggravations possibles.</div>
+    <div><strong>Peines :</strong> 6 mois prison, 7 500 €.</div>
   </div>`,
 
   autres: `<div class="circle-title">Autres infractions</div>
   <div class="details">
-    <div><strong>Informations :</strong> D’autres types d’infractions peuvent être ajoutées selon les situations.</div>
+    <div><strong>Informations :</strong> Ajout possible d’autres infractions selon la situation.</div>
   </div>`
 };
 
@@ -223,8 +212,4 @@ carres.forEach(carre => {
 </script>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>

@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -19,14 +8,14 @@
     font-family: Arial, sans-serif;
     background: url("https://avantpost-cpu.github.io/depot-quiz/tableau/fondpapier.jpg") center/cover no-repeat;
     margin: 0;
-    padding: 20px 0;
+    padding: 10px 0;
     display: flex;
     justify-content: center;
   }
 
   .container {
     text-align: center;
-    max-width: 650px;
+    max-width: 560px;   /* REDUIT POUR DIGIFORMA */
     width: 100%;
   }
 
@@ -35,13 +24,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 48px;
-    margin-bottom: 18px;
+    gap: 28px;    /* réduit */
+    margin-bottom: 12px;
   }
 
   .phrase-img {
-    width: 60%;
-    max-width: 320px;
+    width: 55%;
+    max-width: 260px;   /* réduit */
     height: auto;
   }
 
@@ -49,19 +38,19 @@
   .grid {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;   /* réduit */
     align-items: center;
   }
 
   .row {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 8px;   /* réduit */
   }
 
   .carre {
-    width: 200px;
-    height: 200px;
+    width: 165px;       /* REDUIT DE 200 → 165px */
+    height: 165px;
     cursor: pointer;
     transition: transform 0.3s, opacity 0.3s;
   }
@@ -69,45 +58,46 @@
   .carre img {
     width: 100%;
     height: 100%;
-    border-radius: 18px;
+    border-radius: 14px; /* réduit */
     object-fit: cover;
   }
 
   .carre:hover {
-    transform: scale(1.07);
+    transform: scale(1.06);
   }
 
   /* Effet autres images atténuées */
   .carre.dimmed {
-    opacity: 0.2;
+    opacity: 0.25;  /* légèrement plus clair */
   }
 
-  /* Un bloc global pour tous les textes */
+  /* BLOC TEXTE GLOBAL */
   .center {
-    padding: 10px;
-    margin-top: 12px;
-    min-height: 160px;
-    max-width: 570px;
+    padding: 6px;
+    margin-top: 10px;
+    min-height: 140px;      /* réduit */
+    max-width: 520px;       /* réduit */
     text-align: left;
-    font-size: 16px;
+    font-size: 15px;        /* réduit */
+    line-height: 1.25;      /* compact */
     margin-left: auto;
     margin-right: auto;
   }
 
   .circle-title {
-    font-size: 18px;
+    font-size: 16px;        /* réduit */
     font-weight: bold;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .details {
-    font-size: 16px;
-    line-height: 1.35;
+    font-size: 15px;
+    line-height: 1.28;
     color: #000;
   }
 
   .details div {
-    margin-bottom: 5px;
+    margin-bottom: 4px;    /* réduit */
   }
 </style>
 </head>
@@ -171,21 +161,21 @@ const centerGlobal = document.getElementById("center_global");
 const dataContent = {
   prop_sex: `<div class="circle-title">Propositions sexuelles à un mineur</div>
     <div class="details">
-      <div><strong>Description :</strong> Propositions sexuelles à un mineur via un moyen de communication électronique.</div>
+      <div><strong>Description :</strong> Propositions sexuelles adressées à un mineur via un moyen de communication électronique.</div>
       <div><strong>Article :</strong> 227-22-1</div>
-      <div><strong>Peine :</strong> 2 ans / 30 000 € → 5 ans / 75 000 € avec aggravation.</div>
+      <div><strong>Peine :</strong> 2 ans / 30 000 € → 5 ans / 75 000 € si aggravation.</div>
     </div>`,
 
   extorsion: `<div class="circle-title">Extorsion d’images pédopornographiques</div>
     <div class="details">
-      <div><strong>Description :</strong> Solliciter la transmission ou diffusion d’images sexuelles d’un mineur.</div>
+      <div><strong>Description :</strong> Solliciter la transmission ou la diffusion d’images sexuelles d’un mineur.</div>
       <div><strong>Article :</strong> 227-23-1</div>
-      <div><strong>Peine :</strong> 10 ans et 150 000 € (si victime &lt; 15 ans).</div>
+      <div><strong>Peine :</strong> 10 ans et 150 000 € (victime &lt; 15 ans).</div>
     </div>`,
 
   sextorsion: `<div class="circle-title">Sextorsion</div>
     <div class="details">
-      <div><strong>Description :</strong> Chantage utilisant des images sexuelles pour obtenir argent ou d’autres images.</div>
+      <div><strong>Description :</strong> Chantage pour obtenir argent ou contenus sexuels via menaces de diffusion d’images.</div>
       <div><strong>Article :</strong> 312-10</div>
       <div><strong>Peine :</strong> 5 ans / 75 000 € → 7 ans / 100 000 € en ligne.</div>
     </div>`,
@@ -194,19 +184,19 @@ const dataContent = {
     <div class="details">
       <div><strong>Description :</strong> Fixer ou transmettre des images pornographiques d’un mineur.</div>
       <div><strong>Article :</strong> 227-23</div>
-      <div><strong>Peine :</strong> 5 ans / 75 000 € → 7 ans / 100 000 € avec réseau.</div>
+      <div><strong>Peine :</strong> 5 ans / 75 000 € → 7 ans / 100 000 € (réseau).</div>
     </div>`,
 
   dispo_photo: `<div class="circle-title">Rendre disponible une photo pornographique</div>
     <div class="details">
-      <div><strong>Description :</strong> Offrir, diffuser ou rendre disponible une image pornographique de mineur.</div>
+      <div><strong>Description :</strong> Offrir ou diffuser une image pornographique mettant en scène un mineur.</div>
       <div><strong>Article :</strong> 227-23</div>
       <div><strong>Peine :</strong> Identique à la prise de photo.</div>
     </div>`,
 
   detention: `<div class="circle-title">Consultation ou détention d’images d’abus sexuels</div>
     <div class="details">
-      <div><strong>Description :</strong> Consulter ou détenir des images d'abus sexuels sur un mineur.</div>
+      <div><strong>Description :</strong> Consulter ou détenir des images d’abus sexuels sur mineurs.</div>
       <div><strong>Article :</strong> 227-23</div>
       <div><strong>Peine :</strong> 5 ans et 75 000 €.</div>
     </div>`,
@@ -219,7 +209,7 @@ const dataContent = {
     </div>`
 };
 
-/* Événements souris */
+/* Hover events */
 carres.forEach(carre => {
   const key = carre.dataset.key;
 
@@ -239,8 +229,4 @@ carres.forEach(carre => {
 </script>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>

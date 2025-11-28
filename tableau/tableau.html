@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Infractions - Disposition circulaire</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: url("https://avantpost-cpu.github.io/depot-quiz/tableau/fondpapier.jpg") center/cover no-repeat;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* --- WRAPPER DIGIFORMA --- */
+  .wrapper {
+    max-width: 900px;
+    width: 100%;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .wheel {
+    position: relative;
+    width: 650px;
+    height: 650px;
+  }
+
+  /* --- CENTRE --- */
+  .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;  /* AJUSTÉ POUR LE CENTRAGE */
+    min-height: 200px;
+    text-align: center;
+    z-index: 10;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #centerContent img {
+    max-width: 85%;
+    height: auto;
+    display: block;
+    transform: translateX(18px); /* léger décalage à droite de l'image */
+  }
+
+  .center-bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 440px;   /* AJUSTÉ pour coller au centre réel */
+    height: 440px;
+    border-radius: 50%;
+    background: none;
+    opacity: 0;
+    transition: opacity 0.5s;
+    z-index: 5;
+  }
+
+  .center-underline {
+    width: 0;
+    height: 2px;
+    background: black;
+    transition: width 0.3s;
+    margin-top: 10px;
+  }
+
+  /* --- CERCLES PNG --- */
+  .circle {
+    position: absolute;
+    width: 135px;
+    height: 135px;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .circle img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+
+  .circle:hover {
+    transform: scale(1.15);
+  }
+
+  /* --- textes infraction --- */
+  .details { 
+    font-size: 13px; 
+    text-align: left; 
+    color: #000; 
+    margin-top: 10px; 
+    line-height: 1.3;
+  }
+
+  .details div { margin-bottom: 6px; }
+  .circle-title { font-size: 18px; font-weight: bold; margin-bottom: 8px; }
+
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <div class="wheel" id="wheel">
+
+    <div class="center-bg" id="centerBg"></div>
+
+    <div class="center" id="centerText">
+      <div id="centerContent">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau/titrecentre.png"
+             alt="Titre central">
+      </div>
+      <div class="center-underline" id="centerUnderline"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Références
+const centerContent = document.getElementById("centerContent");
+const centerUnderline = document.getElementById("centerUnderline");
+const centerBg = document.getElementById("centerBg");
+const wheel = document.getElementById("wheel");
+
+// PNG en ordre horaire
+const circlesData = [
+  { key: "viol",        img: "https://avantpost-cpu.github.io/depot-quiz/tableau/cercle1.png" },
+  { key: "agression",   img: "https://avantpost-cpu.github.io/depot-quiz/tableau/cercle2.png" },
+  { key: "atteintes",   img: "https://avantpost-cpu.github.io/depot-quiz/tableau/cercle3.png" },
+  { key: "harcelement", img: "https://avantpost-cpu.github.io/depot-quiz/tableau/cercle4.png" },
+  { key: "exhibition",  img: "https://avantpost-cpu.github.io/depot-quiz/tableau/cercle5.png" },
+  { key: "corruption",  img: "https://avantpost-cpu.github.io/depot-quiz/tableau/cercle6.png" }
+];
+
+// Fiches infractions
+const dataContent = {
+  viol: `
+    <div class="circle-title">Viol</div>
+    <div class="details">
+      <div><strong>Article :</strong> 222-23</div>
+      <div><strong>Qualification :</strong> Crime</div>
+      <div><strong>Définition :</strong> Pénétration sexuelle imposée par violence ou contrainte.</div>
+      <div><strong>Peine :</strong> 15 à 20 ans</div>
+    </div>
+  `,
+
+  agression: `
+    <div class="circle-title">Agression sexuelle</div>
+    <div class="details">
+      <div><strong>Article :</strong> 222-22</div>
+      <div><strong>Qualification :</strong> Délit</div>
+      <div><strong>Définition :</strong> Violence ou contrainte sans pénétration.</div>
+      <div><strong>Peine :</strong> 5 ans / 10 ans si &lt; 15 ans</div>
+    </div>
+  `,
+
+  atteintes: `
+    <div class="circle-title">Atteintes sexuelles</div>
+    <div class="details">
+      <div><strong>Articles :</strong> 227-25, 227-27</div>
+      <div><strong>Qualification :</strong> Délit</div>
+      <div><strong>Définition :</strong> Acte sexuel avec mineur protégé.</div>
+      <div><strong>Peine :</strong> 5 à 10 ans</div>
+    </div>
+  `,
+
+  harcelement: `
+    <div class="circle-title">Harcèlement sexuel</div>
+    <div class="details">
+      <div><strong>Article :</strong> 222-33</div>
+      <div><strong>Qualification :</strong> Délit</div>
+      <div><strong>Définition :</strong> Propos ou comportements sexuels répétés.</div>
+      <div><strong>Peine :</strong> 3 ans et 45 000 €</div>
+    </div>
+  `,
+
+  exhibition: `
+    <div class="circle-title">Exhibition sexuelle</div>
+    <div class="details">
+      <div><strong>Article :</strong> 222-32</div>
+      <div><strong>Qualification :</strong> Délit</div>
+      <div><strong>Définition :</strong> Exposer ses parties sexuelles en public.</div>
+      <div><strong>Peine :</strong> 1 an / 2 ans si mineur</div>
+    </div>
+  `,
+
+  corruption: `
+    <div class="circle-title">Corruption de mineurs</div>
+    <div class="details">
+      <div><strong>Article :</strong> 227-22</div>
+      <div><strong>Qualification :</strong> Délit</div>
+      <div><strong>Définition :</strong> Amener un mineur à des actes sexuels.</div>
+      <div><strong>Peine :</strong> 7 ans et 100 000 €</div>
+    </div>
+  `
+};
+
+// Placement circulaire (Digiforma)
+const radius = 245;
+const cx = 325;
+const cy = 325;
+
+circlesData.forEach((c, i) => {
+  const angle = (i / circlesData.length) * 2 * Math.PI - Math.PI / 2;
+
+  const circle = document.createElement("div");
+  circle.classList.add("circle");
+  circle.dataset.key = c.key;
+  circle.innerHTML = `<img src="${c.img}" alt="">`;
+
+  const x = cx + radius * Math.cos(angle) - 67;
+  const y = cy + radius * Math.sin(angle) - 67;
+
+  circle.style.left = `${x}px`;
+  circle.style.top = `${y}px`;
+
+  wheel.appendChild(circle);
+
+  circle.addEventListener("mouseenter", () => {
+    centerContent.innerHTML = dataContent[c.key];
+    centerBg.style.opacity = 0.8;
+
+    const title = centerContent.querySelector(".circle-title");
+    if (title) centerUnderline.style.width = title.offsetWidth + "px";
+  });
+
+  circle.addEventListener("mouseleave", () => {
+    centerContent.innerHTML = `
+      <img src="https://avantpost-cpu.github.io/depot-quiz/tableau/titrecentre.png"
+           alt="Titre central"
+           style="max-width:85%; height:auto; transform:translateX(18px);">
+    `;
+    centerBg.style.opacity = 0;
+    centerUnderline.style.width = "0";
+  });
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

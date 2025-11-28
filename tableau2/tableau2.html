@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Infractions - Obligation de dénonciation</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: url("https://avantpost-cpu.github.io/depot-quiz/tableau/fondpapier.jpg") center/cover no-repeat;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Wrapper Digiforma */
+  .wrapper {
+    max-width: 900px;
+    width: 100%;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    text-align: center;
+    max-width: 800px;
+    width: 100%;
+  }
+
+  /* --- TITRE REMPLACÉ PAR UNE IMAGE --- */
+  .title img {
+    max-width: 75%;
+    height: auto;
+    display: block;
+    margin: 0 auto 20px auto;
+  }
+
+  .subtitle {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+
+  /* --- 2 IMAGES SUR UNE MÊME LIGNE --- */
+  .wheel {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 15px;
+  }
+
+  /* --- RECTANGLES PNG --- */
+  .carre {
+    width: 270px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+
+  .carre img {
+    width: 100%;
+    height: auto;
+    border-radius: 14px;
+    display: block;
+  }
+
+  .carre:hover { transform: scale(1.14); }
+
+  /* --- Zone centrale --- */
+  .center {
+    position: relative;
+    padding: 10px;
+    min-height: 160px;
+    max-width: 600px;
+    margin: 0 auto;
+    text-align: left;
+    font-size: 16px;
+    border-radius: 12px;
+    z-index: 1;
+  }
+
+  .center-bg {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: none;
+    opacity: 0;
+    transition: background 0.4s, opacity 0.4s;
+    z-index: 0;
+  }
+
+  .center-content {
+    position: relative;
+    z-index: 2;
+    color: #000;
+  }
+
+  .circle-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+
+  .details { 
+    font-size: 14px;
+    line-height: 1.3;
+  }
+
+  .details div { margin-bottom: 2px; }
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+  <div class="container">
+
+    <!-- TITRE EN IMAGE -->
+    <div class="title">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/tableau2/phrase.png" alt="Titre">
+    </div>
+
+    <div class="subtitle">Survolez une image pour voir les détails.</div>
+
+    <!-- DEUX RECTANGLES ALIGNÉS -->
+    <div class="wheel" id="wheel">
+
+      <div class="carre" data-key="citoyen">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau2/rectangle1.png" alt="">
+      </div>
+
+      <div class="carre" data-key="professionnel">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau2/rectangle2.png" alt="">
+      </div>
+
+    </div>
+
+    <!-- ZONE CENTRALE -->
+    <div class="center" id="centerText">
+      <div class="center-bg" id="centerBg"></div>
+      <div class="center-content" id="centerContent"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const centerContent = document.getElementById("centerContent");
+const centerBg = document.getElementById("centerBg");
+const carres = document.querySelectorAll(".carre");
+
+/* --- TEXTES DES 2 BLOCS --- */
+const dataContent = {
+  citoyen: `
+    <div class="circle-title">Non-dénonciation par un citoyen</div>
+    <div class="details">
+      <div><strong>Article du Code :</strong> 434-3 CP</div>
+      <div><strong>Obligation :</strong> Prévenir les autorités en cas de mauvais traitements ou atteintes sexuelles sur un mineur de moins de 15 ans.</div>
+      <div><strong>Peine :</strong> 3 ans d’emprisonnement et 45 000 € d’amende.</div>
+    </div>`,
+
+  professionnel: `
+    <div class="circle-title">Non-dénonciation par un professionnel</div>
+    <div class="details">
+      <div><strong>Article du Code :</strong> 40 CPP</div>
+      <div><strong>Obligation :</strong> Signaler immédiatement au Procureur tout crime ou délit constaté dans l’exercice des fonctions.</div>
+      <div><strong>Peine :</strong> Pas de peine spécifique, protection en cas de signalement de bonne foi.</div>
+    </div>`
+};
+
+/* --- HOVER --- */
+carres.forEach(carre => {
+  carre.addEventListener("mouseenter", () => {
+    const key = carre.dataset.key;
+
+    centerContent.innerHTML = dataContent[key];
+    centerBg.style.opacity = 0.8;
+    centerBg.style.background = "rgba(255,255,255,0.4)";
+  });
+
+  carre.addEventListener("mouseleave", () => {
+    centerContent.innerHTML = "";
+    centerBg.style.opacity = 0;
+  });
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

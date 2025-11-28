@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Infractions sexuelles - Présentation</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: url("https://avantpost-cpu.github.io/depot-quiz/tableau/fondpapier.jpg") center/cover no-repeat;
+    margin: 0;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    text-align: center;
+    max-width: 650px;
+    width: 100%;
+  }
+
+  /* LIGNE 1 : phrase + carre1 */
+  .top-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+    margin-bottom: 18px;
+  }
+
+  .phrase-img {
+    width: 60%;
+    max-width: 320px;
+    height: auto;
+  }
+
+  /* GRILLE DES IMAGES */
+  .grid {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .carre {
+    width: 200px;
+    height: 200px;
+    cursor: pointer;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+
+  .carre img {
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+    object-fit: cover;
+  }
+
+  .carre:hover {
+    transform: scale(1.07);
+  }
+
+  /* Effet autres images atténuées */
+  .carre.dimmed {
+    opacity: 0.2;
+  }
+
+  /* Un bloc global pour tous les textes */
+  .center {
+    padding: 10px;
+    margin-top: 12px;
+    min-height: 160px;
+    max-width: 570px;
+    text-align: left;
+    font-size: 16px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .circle-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+
+  .details {
+    font-size: 16px;
+    line-height: 1.35;
+    color: #000;
+  }
+
+  .details div {
+    margin-bottom: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- LIGNE 1 : phrase.png + carre1.png -->
+  <div class="top-row">
+    <img class="phrase-img" src="https://avantpost-cpu.github.io/depot-quiz/tableau3/phrase.png" alt="">
+    <div class="carre" data-key="prop_sex">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/tableau3/carre1.png" alt="">
+    </div>
+  </div>
+
+  <!-- LIGNES 2 ET 3 -->
+  <div class="grid">
+
+    <!-- LIGNE 2 -->
+    <div class="row">
+      <div class="carre" data-key="extorsion">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau3/carre2.png" alt="">
+      </div>
+
+      <div class="carre" data-key="sextorsion">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau3/carre3.png" alt="">
+      </div>
+
+      <div class="carre" data-key="photo">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau3/carre4.png" alt="">
+      </div>
+    </div>
+
+    <!-- LIGNE 3 -->
+    <div class="row">
+      <div class="carre" data-key="dispo_photo">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau3/carre5.png" alt="">
+      </div>
+
+      <div class="carre" data-key="detention">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau3/carre6.png" alt="">
+      </div>
+
+      <div class="carre" data-key="incitation">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/tableau3/carre7.png" alt="">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- UN SEUL BLOC POUR TOUS LES TEXTES -->
+  <div id="center_global" class="center"></div>
+
+</div>
+
+<script>
+const carres = document.querySelectorAll(".carre");
+const centerGlobal = document.getElementById("center_global");
+
+/* Textes */
+const dataContent = {
+  prop_sex: `<div class="circle-title">Propositions sexuelles à un mineur</div>
+    <div class="details">
+      <div><strong>Description :</strong> Propositions sexuelles à un mineur via un moyen de communication électronique.</div>
+      <div><strong>Article :</strong> 227-22-1</div>
+      <div><strong>Peine :</strong> 2 ans / 30 000 € → 5 ans / 75 000 € avec aggravation.</div>
+    </div>`,
+
+  extorsion: `<div class="circle-title">Extorsion d’images pédopornographiques</div>
+    <div class="details">
+      <div><strong>Description :</strong> Solliciter la transmission ou diffusion d’images sexuelles d’un mineur.</div>
+      <div><strong>Article :</strong> 227-23-1</div>
+      <div><strong>Peine :</strong> 10 ans et 150 000 € (si victime &lt; 15 ans).</div>
+    </div>`,
+
+  sextorsion: `<div class="circle-title">Sextorsion</div>
+    <div class="details">
+      <div><strong>Description :</strong> Chantage utilisant des images sexuelles pour obtenir argent ou d’autres images.</div>
+      <div><strong>Article :</strong> 312-10</div>
+      <div><strong>Peine :</strong> 5 ans / 75 000 € → 7 ans / 100 000 € en ligne.</div>
+    </div>`,
+
+  photo: `<div class="circle-title">Prise de photo pornographique d’un mineur</div>
+    <div class="details">
+      <div><strong>Description :</strong> Fixer ou transmettre des images pornographiques d’un mineur.</div>
+      <div><strong>Article :</strong> 227-23</div>
+      <div><strong>Peine :</strong> 5 ans / 75 000 € → 7 ans / 100 000 € avec réseau.</div>
+    </div>`,
+
+  dispo_photo: `<div class="circle-title">Rendre disponible une photo pornographique</div>
+    <div class="details">
+      <div><strong>Description :</strong> Offrir, diffuser ou rendre disponible une image pornographique de mineur.</div>
+      <div><strong>Article :</strong> 227-23</div>
+      <div><strong>Peine :</strong> Identique à la prise de photo.</div>
+    </div>`,
+
+  detention: `<div class="circle-title">Consultation ou détention d’images d’abus sexuels</div>
+    <div class="details">
+      <div><strong>Description :</strong> Consulter ou détenir des images d'abus sexuels sur un mineur.</div>
+      <div><strong>Article :</strong> 227-23</div>
+      <div><strong>Peine :</strong> 5 ans et 75 000 €.</div>
+    </div>`,
+
+  incitation: `<div class="circle-title">Incitation d’un mineur à un acte sexuel</div>
+    <div class="details">
+      <div><strong>Description :</strong> Inciter un mineur à commettre un acte sexuel, même sans passage à l’acte.</div>
+      <div><strong>Article :</strong> 222-22-2</div>
+      <div><strong>Peine :</strong> 7 ans / 100 000 € → 10 ans / 150 000 € si &lt; 15 ans.</div>
+    </div>`
+};
+
+/* Événements souris */
+carres.forEach(carre => {
+  const key = carre.dataset.key;
+
+  carre.addEventListener("mouseenter", () => {
+    centerGlobal.innerHTML = dataContent[key];
+
+    carres.forEach(c => {
+      if (c !== carre) c.classList.add("dimmed");
+    });
+  });
+
+  carre.addEventListener("mouseleave", () => {
+    centerGlobal.innerHTML = "";
+    carres.forEach(c => c.classList.remove("dimmed"));
+  });
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

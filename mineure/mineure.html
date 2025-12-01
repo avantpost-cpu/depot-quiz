@@ -28,16 +28,16 @@
         position:relative;
       ">
 
-        <!-- ICONES (positions converties proportionnellement à 500px) -->
-        <div class="ico-m" data-son="a.wav" style="top:34%; left:14%;"></div>
-        <div class="ico-m" data-son="b.wav" style="top:46%; left:14%;"></div>
+        <!-- ICONES (positions proportionnelles) -->
+        <div class="ico-m ico-a" data-son="a.wav" style="top:34%; left:14%;"></div>
+        <div class="ico-m ico-b" data-son="b.wav" style="top:46%; left:14%;"></div>
 
-        <div class="ico-m" data-son="c.wav" style="top:36%; left:55%;"></div>
-        <div class="ico-m" data-son="d.wav" style="top:42%; left:55%;"></div>
-        <div class="ico-m" data-son="e.wav" style="top:54%; left:55%;"></div>
-        <div class="ico-m" data-son="f.wav" style="top:60%; left:55%;"></div>
-        <div class="ico-m" data-son="g.wav" style="top:68%; left:55%;"></div>
-        <div class="ico-m" data-son="h.wav" style="top:76%; left:55%;"></div>
+        <div class="ico-m ico-c" data-son="c.wav" style="top:32%; left:44%;"></div>
+        <div class="ico-m ico-d" data-son="d.wav" style="top:43%; left:50%;"></div>
+        <div class="ico-m ico-e" data-son="e.wav" style="top:54%; left:45%;"></div>
+        <div class="ico-m ico-f" data-son="f.wav" style="top:64%; left:50%;"></div>
+        <div class="ico-m ico-g" data-son="g.wav" style="top:74%; left:50%;"></div>
+        <div class="ico-m ico-h" data-son="h.wav" style="top:84%; left:52%;"></div>
 
       </div>
     </div>
@@ -45,6 +45,7 @@
 </div>
 
 <style>
+/* ⭐ Style de base des icônes */
 .ico-m {
   position:absolute;
   width:25%;
@@ -54,27 +55,55 @@
   background-position:left center;
   opacity:.45;
   cursor:pointer;
-  transition:transform .5s ease, opacity .3s ease;
+
+  /* ⭐ Zoom orienté VERS LA DROITE (modifiable individuellement ensuite) */
+  transform-origin:left center;
+
+  transition:transform .15s ease-out, opacity .15s ease-out, filter .2s ease-out;
 }
 
-/* Images (mêmes URLs que ton repo) */
-.ico-m[data-son="a.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/a.png");}
-.ico-m[data-son="b.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/b.png");}
-.ico-m[data-son="c.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/c.png");}
-.ico-m[data-son="d.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/d.png");}
-.ico-m[data-son="e.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/e.png");}
-.ico-m[data-son="f.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/f.png");}
-.ico-m[data-son="g.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/g.png");}
-.ico-m[data-son="h.wav"] {background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/h.png");}
-
+/* ⭐ Apparence au survol */
 .ico-m:hover {
-  transform:scale(1.4);
   opacity:1;
+  filter:brightness(1.15);
+  z-index:50;
 }
+
+/* ⭐ Images */
+.ico-a { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/a.png"); }
+.ico-b { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/b.png"); }
+.ico-c { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/c.png"); }
+.ico-d { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/d.png"); }
+.ico-e { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/e.png"); }
+.ico-f { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/f.png"); }
+.ico-g { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/g.png"); }
+.ico-h { background-image:url("https://avantpost-cpu.github.io/depot-quiz/mineure/h.png"); }
+
+/* ⭐⭐ ZOOM INDIVIDUEL (modifiable icône par icône) ⭐⭐ */
+/* Tu ne changes que le chiffre dans scale(X) */
+
+.ico-a:hover { transform:scale(3.4) rotate(-3deg); }
+.ico-b:hover { transform:scale(2.0) rotate(-3deg); }
+
+.ico-c:hover { transform:scale(2.0) rotate(-3deg); }
+.ico-d:hover { transform:scale(3.8) rotate(-3deg); }
+.ico-e:hover { transform:scale(1.8) rotate(-3deg); }
+.ico-f:hover { transform:scale(3.1) rotate(-3deg); }
+.ico-g:hover { transform:scale(2.8) rotate(-3deg); }
+.ico-h:hover { transform:scale(3.0) rotate(-3deg); }
+
+/* ⭐⭐ DIRECTION INDIVIDUELLE (si tu veux) ⭐⭐ */
+/* Exemples prêts : (décommenter si nécessaire)
+
+.ico-a { transform-origin:left center; }    /* grossit vers la droite *
+.ico-b { transform-origin:center center; } /* grossit au centre     *
+.ico-c { transform-origin:right center; }  /* grossit vers la gauche *
+
+*/
 </style>
 
 <script>
-/* Homothétie automatique = le conteneur s’adapte toujours */
+/* ⭐ Homothétie automatique */
 function scaleMineure() {
   const wrapper = document.getElementById("mineure-wrapper");
   const container = document.getElementById("mineure-scale-container");
@@ -89,7 +118,7 @@ function scaleMineure() {
 window.addEventListener("resize", scaleMineure);
 window.addEventListener("load", scaleMineure);
 
-/* Audio au clic */
+/* ⭐ Audio au clic */
 document.querySelectorAll(".ico-m").forEach(el => {
   const fichier = el.getAttribute("data-son");
   const audio = new Audio("https://avantpost-cpu.github.io/depot-quiz/mineure/" + fichier);

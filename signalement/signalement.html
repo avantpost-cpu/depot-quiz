@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -34,36 +23,35 @@
 
   /* ------ VIDEO ------ */
   .video-box video {
-    width: 100%;
-    height: 100%;
+    width:90%;
+    height:90%;
     object-fit: cover;
     border-radius: 12px;
   }
 
   .video-box {
-    width: 480px;         /* largeur vidéo */
-    height: 200px;        /* hauteur vidéo (reférence pour les images) */
+    width: 450px;
+    height: 200px;
   }
 
-  /* ------ COLONNE DES 4 IMAGES ------ */
+  /* ------ COLONNE DES 3 IMAGES ------ */
   .grid-4 {
-    width: 200px;         /* même hauteur totale que la vidéo */
-    height: 200px;
+    width: 170px;
+    height:180px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    gap: px;
   }
 
   .grid-4 img {
-    width: 50%;
-    height: 60%;
+    width: 100%;
+    height: 100%;
     border-radius: 2px;
     object-fit: cover;
     cursor: pointer;
   }
 
-  /* ------ ZONE D'AFFICHAGE DES TITRES (a1,b1,c1,d1) ------ */
+  /* ------ ZONE D'AFFICHAGE DES TITRES ------ */
   .hover-display {
     width:100%;
     text-align: center;
@@ -73,8 +61,8 @@
 
   .hover-display img {
     display: none;
-    width: 500px;
-    max-width: 80%;
+    width: 820px;
+    max-width: 180%;
     margin: 0 auto;
   }
 
@@ -87,7 +75,7 @@
 
 <body>
 
-<!-- ===== BLOC HAUT : VIDEO + IMAGES A B C D ===== -->
+<!-- ===== BLOC HAUT : VIDEO + IMAGES ===== -->
 <div class="top-block">
 
   <!-- VIDEO -->
@@ -97,7 +85,7 @@
     </video>
   </div>
 
-  <!-- IMAGE GRID A B C D -->
+  <!-- IMAGE GRID A B C (D supprimé) -->
   <div class="grid-4">
     <img src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/a.jpg" 
          alt="a" data-target="a1">
@@ -105,46 +93,33 @@
          alt="b" data-target="b1">
     <img src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/c.jpg" 
          alt="c" data-target="c1">
-    <img src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/d.jpg" 
-         alt="d" data-target="d1">
   </div>
 
 </div>
 
-<!-- ===== ZONE D'AFFICHAGE DES a1 b1 c1 d1 ===== -->
+<!-- ===== ZONE D'AFFICHAGE DES a1 b1 c1 ===== -->
 <div class="hover-display">
   <img id="a1" src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/a1.jpg">
   <img id="b1" src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/b1.jpg">
   <img id="c1" src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/c1.jpg">
-  <img id="d1" src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/d1.jpg">
 </div>
 
 <script>
-  // Survol a/b/c/d → affichage du titre correspondant
   const thumbs = document.querySelectorAll('.grid-4 img');
   const displays = document.querySelectorAll('.hover-display img');
 
   thumbs.forEach(thumb => {
     thumb.addEventListener('mouseenter', () => {
       const target = thumb.dataset.target;
-
-      displays.forEach(img => {
-        img.classList.remove('active');
-      });
-
+      displays.forEach(img => img.classList.remove('active'));
       document.getElementById(target).classList.add('active');
     });
   });
 
-  // Lorsque la souris quitte la zone → effacer l'image
   document.querySelector('.grid-4').addEventListener('mouseleave', () => {
     displays.forEach(img => img.classList.remove('active'));
   });
 </script>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>

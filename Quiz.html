@@ -16,48 +16,61 @@
       background-size: auto;
     }
 
-    #instructions { margin-bottom: 20px; font-size: 16px; line-height: 1.5; }
+    #instructions {
+      margin-bottom: 20px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
 
+    /* ✔ Bloc question bleu */
     .question {
       margin-bottom: 25px;
       padding: 15px;
-      border: 1px solid #ddd;
       border-radius: 8px;
-      background: rgba(255,255,255,0.9);
+      background: #436f80; /* BLEU REBOND */
+      color: white;
     }
 
-    button {
+    .question p {
+      color: white; /* Texte de la question */
+      margin-bottom: 15px;
+      font-size: 17px;
+      font-weight: bold;
+    }
+
+    /* ✔ Boutons de réponses dans cartouches blancs */
+    .question button {
       display: block;
-      margin: 5px 0;
+      margin: 8px 0;
       padding: 10px;
       width: 100%;
       cursor: pointer;
       border-radius: 5px;
       border: none;
       font-size: 15px;
+      background: white;
+      color: black;
     }
 
-    button:hover { background: #f0f0f0; }
+    .question button:hover {
+      background: #f0f0f0;
+    }
 
-    #startBtn, #nextBtn {
-      background-color: #4f918d;
-      color: white;
-      font-weight: bold;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
+    /* ✔ Boutons Start et Suivant sous forme d'images */
+    #startImage, #nextImage {
       display: block;
       margin: 20px auto;
-      width: 220px;
-      text-align: center;
+      max-width: 260px;
+      cursor: pointer;
     }
 
-    #startBtn:hover, #nextBtn:hover { background-color: #3e736b; }
+    #startImage:hover, #nextImage:hover {
+      opacity: 0.85;
+      transition: 0.2s;
+    }
 
-    .correct { color: green; font-weight: bold; }
-    .wrong { color: red; font-weight: bold; }
+    .correct { color: #7cf57c; font-weight: bold; }
+    .wrong { color: #ff8a8a; font-weight: bold; }
 
     #score {
       font-size: 18px;
@@ -85,7 +98,7 @@
 
 <body>
 
-  <!-- ✔ IMAGE À LA PLACE DU TITRE -->
+  <!-- ✔ IMAGE RAISONS -->
   <div style="text-align:center; margin-bottom:20px;">
     <img src="https://avantpost-cpu.github.io/depot-quiz/raisons.png"
          alt="Raisons du silence"
@@ -94,29 +107,43 @@
 
   <p id="instructions">
     Ce quiz vous invite à comprendre pourquoi certaines victimes gardent le silence dans le milieu sportif.
-    Le temps de réponse et une correction apparaîtront après chaque réponse.
+    Le temps de réponse et une correction apparaîtront après chaque question.
   </p>
 
-  <button id="startBtn">Commencer le quiz</button>
+  <!-- ✔ BOUTON START PAR IMAGE -->
+  <img id="startImage"
+       src="https://avantpost-cpu.github.io/depot-quiz/button.png"
+       alt="Commencer le quiz">
 
   <div id="progress"></div>
   <div id="quiz"></div>
   <div id="score"></div>
   <div id="resultImage"></div>
 
-  <button id="nextBtn" style="display:none;">Question suivante</button>
+  <!-- ✔ BOUTON SUIVANT PAR IMAGE -->
+  <img id="nextImage"
+       src="https://avantpost-cpu.github.io/depot-quiz/suivante.png"
+       alt="Question suivante"
+       style="display:none;">
+
 
   <script>
-    /* ---------------------------
+    /* ------------------------------------
        QUESTIONS + CORRECTIONS
-       --------------------------- */
+    ------------------------------------ */
     var questions = [
       { text: "Quelles raisons peuvent conduire une victime à ne pas révéler ce qu’elle subit ?", answers: ["L’agresseur menace la carrière","Trop d’entraînements","Préférence pour la discrétion"], correct: 0 },
+
       { text: "Pourquoi le sentiment de loyauté vis-à-vis du club peut pousser au silence ?", answers: ["Par peur de nuire à l’image ou l’ambiance du club","Veut devenir capitaine","Pense que personne n’écoute"], correct: 0 },
+
       { text: "En quoi le silence peut-il aussi conduire à des menaces physiques sur son propre corps ?", answers: ["Ne pas intervenir en cas de blessure","Entraînements supplémentaires","Récompenses"], correct: 0 },
+
       { text: "En quoi une forme de pression exercée par la famille peut conduire au silence ?", answers: ["Peur de décevoir ou ne pas être cru","Famille encourage à parler","Famille indifférente"], correct: 0 },
+
       { text: "Dans quelle mesure la “culture de l’effort” peut elle aussi contribuer à pousser au silence ?", answers: ["Violences perçues comme rite","Blessures toujours soignées","Douleur ignorée par coach"], correct: 0 },
+
       { text: "Pourquoi le silence est-il renforcé dans une société qui valorise les valeurs de virilité ?", answers: ["Honte de montrer vulnérabilité","Veut prouver sa force","Personne ne remarquera"], correct: 0 },
+
       { text: "Pourquoi certaines victimes gardent-elles le silence face aux institutions ?", answers: ["Par peur de plaintes mal traitées","Préfère amis","Cherche conseils sportifs"], correct: 0 }
     ];
 
@@ -125,9 +152,9 @@
       "La peur de nuire au club, à ses membres ou à son entraîneur empêche parfois les victimes de parler.",
       "Le silence peut entraîner des risques physiques : blessures non traitées, absence d’intervention, aggravation de la situation.",
       "La crainte de décevoir la famille ou de ne pas être prise au sérieux contribue fortement au silence.",
-      "Les violences peuvent être perçues comme un rite, comme une condition sine qua non, parce que la valorisation de l’effort peut pousser à banaliser la souffrance et donc la violence.",
-      "La vulnérabilité est perçue comme une faiblesse ce qui peut conduire les victimes à développer un sentiment de honte, parce que la domination fait partie intégrante du système et elle est intériorisée comme une norme sociale.",
-      "Les plaintes mal-traitées et la maltraitance des institutions (délais de rendez-vous, de prise en charge, des procédures judiciaires, administratives ou médicales) constituent une forme de victimisation secondaire parfois encore plus violente. Parce que les chiffres des % d’instruction, de procès et de condamnation ne sont pas en faveur des victimes. Parce que l’institution peut aussi parfois étouffée, passée sous silence pour ne pas faire de vagues et ne pas nuire à l’image de celle-ci, on appelle cela l’omerta."
+      "Les violences peuvent être perçues comme un rite ou une étape 'normale', banalisant la souffrance et rendant la parole difficile.",
+      "La vulnérabilité est perçue comme une faiblesse, renforçant un sentiment de honte et empêchant les victimes de parler.",
+      "La mauvaise prise en charge des plaintes, les lenteurs administratives ou judiciaires et la minimisation institutionnelle créent une victimisation secondaire."
     ];
 
     var currentQuestion = 0;
@@ -136,8 +163,8 @@
 
     var quizContainer = document.getElementById("quiz");
     var progressContainer = document.getElementById("progress");
-    var startBtn = document.getElementById("startBtn");
-    var nextBtn = document.getElementById("nextBtn");
+    var startImage = document.getElementById("startImage");
+    var nextImage = document.getElementById("nextImage");
     var scoreContainer = document.getElementById("score");
     var resultImage = document.getElementById("resultImage");
 
@@ -148,11 +175,11 @@
       }
     }
 
-    /* ---------------------------
-       AFFICHAGE DE LA QUESTION
-       --------------------------- */
+    /* ------------------------------------
+       AFFICHAGE QUESTION
+    ------------------------------------ */
     function showQuestion() {
-      nextBtn.style.display = "none";
+      nextImage.style.display = "none";
 
       if (currentQuestion >= questions.length) {
         quizContainer.innerHTML = "";
@@ -169,28 +196,30 @@
       }
 
       var q = questions[currentQuestion];
-      var answers = q.answers.map((ans, idx) => ({ text: ans, isCorrect: idx === q.correct }));
+      var answers = q.answers.map((ans, index) => ({
+        text: ans,
+        isCorrect: index === q.correct
+      }));
+
       shuffleArray(answers);
 
       progressContainer.style.display = "block";
-      progressContainer.textContent = "Question " + (currentQuestion + 1) + " / " + questions.length;
+      progressContainer.textContent =
+        "Question " + (currentQuestion + 1) + " / " + questions.length;
 
       var html = '<div class="question"><p><strong>' + q.text + '</strong></p>';
-
       answers.forEach(a => {
         html += '<button onclick="checkAnswer(' + a.isCorrect + ')">' + a.text + '</button>';
       });
-
       html += '<p id="feedback"></p></div>';
 
       quizContainer.innerHTML = html;
-
       startTime = performance.now();
     }
 
-    /* ---------------------------
+    /* ------------------------------------
        TRAITEMENT DE LA RÉPONSE
-       --------------------------- */
+    ------------------------------------ */
     function checkAnswer(isCorrect) {
       var endTime = performance.now();
       var responseTime = Math.round((endTime - startTime) / 1000);
@@ -204,25 +233,26 @@
 
       if (isCorrect) score++;
 
-      nextBtn.style.display = "block";
+      nextImage.style.display = "block";
     }
 
-    /* ---------------------------
-       BOUTON QUESTION SUIVANTE
-       --------------------------- */
-    nextBtn.addEventListener("click", function () {
+    /* ------------------------------------
+       QUESTION SUIVANTE
+    ------------------------------------ */
+    nextImage.addEventListener("click", function () {
       currentQuestion++;
       showQuestion();
     });
 
-    /* ---------------------------
+    /* ------------------------------------
        DÉMARRAGE DU QUIZ
-       --------------------------- */
-    startBtn.addEventListener("click", function () {
-      startBtn.style.display = "none";
+    ------------------------------------ */
+    startImage.addEventListener("click", function () {
+      startImage.style.display = "none";
       showQuestion();
     });
 
   </script>
+
 </body>
 </html>

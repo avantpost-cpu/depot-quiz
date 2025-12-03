@@ -11,13 +11,10 @@
       max-width: 600px;
       margin: auto;
 
-      /* ✔ Fond mosaïque via URL absolue */
       background-image: url('https://avantpost-cpu.github.io/depot-quiz/fond.jpg');
       background-repeat: repeat;
       background-size: auto;
     }
-
-    h2 { text-align: center; }
 
     #instructions { margin-bottom: 20px; font-size: 16px; line-height: 1.5; }
 
@@ -42,7 +39,7 @@
 
     button:hover { background: #f0f0f0; }
 
-    #startBtn {
+    #startBtn, #nextBtn {
       background-color: #4f918d;
       color: white;
       font-weight: bold;
@@ -53,11 +50,11 @@
       font-size: 16px;
       display: block;
       margin: 20px auto;
-      width: 200px;
+      width: 220px;
       text-align: center;
     }
 
-    #startBtn:hover { background-color: #3e736b; }
+    #startBtn:hover, #nextBtn:hover { background-color: #3e736b; }
 
     .correct { color: green; font-weight: bold; }
     .wrong { color: red; font-weight: bold; }
@@ -69,9 +66,6 @@
       margin-top: 20px;
       display: none;
     }
-
-    /* ✔ Timer masqué */
-    #timerBarContainer { display: none; }
 
     #progress {
       text-align: center;
@@ -90,25 +84,31 @@
 </head>
 
 <body>
-  <h2>Devinez les raisons du silence</h2>
+
+  <!-- ✔ IMAGE À LA PLACE DU TITRE -->
+  <div style="text-align:center; margin-bottom:20px;">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/raisons.png"
+         alt="Raisons du silence"
+         style="max-width:100%; height:auto;">
+  </div>
 
   <p id="instructions">
-    Ce quiz vous invite à deviner les raisons pour lesquelles certaines victimes gardent le silence dans le milieu sportif.
-    Le compte à rebours n'est plus visible : répondez calmement.
-    Le temps pris s’affichera après chaque réponse.
+    Ce quiz vous invite à comprendre pourquoi certaines victimes gardent le silence dans le milieu sportif.
+    Le temps de réponse et une correction apparaîtront après chaque réponse.
   </p>
 
   <button id="startBtn">Commencer le quiz</button>
 
   <div id="progress"></div>
-  <div id="timerBarContainer"><div id="timerBar"></div></div>
   <div id="quiz"></div>
   <div id="score"></div>
   <div id="resultImage"></div>
 
+  <button id="nextBtn" style="display:none;">Question suivante</button>
+
   <script>
     /* ---------------------------
-       DONNÉES DU QUIZ
+       QUESTIONS + CORRECTIONS
        --------------------------- */
     var questions = [
       { text: "Quelles raisons peuvent conduire une victime à ne pas révéler ce qu’elle subit ?", answers: ["L’agresseur menace la carrière","Trop d’entraînements","Préférence pour la discrétion"], correct: 0 },
@@ -120,22 +120,27 @@
       { text: "Pourquoi certaines victimes gardent-elles le silence face aux institutions ?", answers: ["Plaintes mal traitées","Préfère amis","Cherche conseils sportifs"], correct: 0 }
     ];
 
+    var corrections = [
+      "De nombreuses victimes se taisent en raison de menaces liées à leur carrière, à des représailles ou au contrôle exercé par l’agresseur.",
+      "La peur de nuire au club, à ses membres ou à son entraîneur empêche parfois les victimes de parler.",
+      "Le silence peut entraîner des risques physiques : blessures non traitées, absence d’intervention, aggravation de la situation.",
+      "La crainte de décevoir la famille ou de ne pas être prise au sérieux contribue fortement au silence.",
+      "La culture de l’effort banalise parfois la douleur et peut faire accepter comme ‘normales’ des violences répétées.",
+      "La virilité imposée décourage l’expression de la vulnérabilité, poussant les victimes à cacher ce qu’elles subissent.",
+      "Certaines victimes pensent que leur parole ne sera pas accueillie ou prise en charge correctement, et renoncent à parler."
+    ];
+
     var currentQuestion = 0;
     var score = 0;
-
-    /* ✔ Variables pour mesurer le temps de réponse */
     var startTime = 0;
-    var endTime = 0;
-    var responseTime = 0;
 
-    /* Liens DOM */
     var quizContainer = document.getElementById("quiz");
-    var scoreContainer = document.getElementById("score");
     var progressContainer = document.getElementById("progress");
     var startBtn = document.getElementById("startBtn");
+    var nextBtn = document.getElementById("nextBtn");
+    var scoreContainer = document.getElementById("score");
     var resultImage = document.getElementById("resultImage");
 
-    /* Mélanger les réponses */
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -143,83 +148,81 @@
       }
     }
 
-    /* ------------------------------
-       AFFICHER QUESTION
-       ------------------------------ */
+    /* ---------------------------
+       AFFICHAGE DE LA QUESTION
+       --------------------------- */
     function showQuestion() {
+      nextBtn.style.display = "none";
+
       if (currentQuestion >= questions.length) {
         quizContainer.innerHTML = "";
         progressContainer.textContent = "";
-
         scoreContainer.style.display = "block";
         scoreContainer.textContent = "Résultat final : " + score + " / " + questions.length;
 
-        resultImage.innerHTML = "";
-        if (score >= 5)
-          resultImage.innerHTML = '<img src="bravo.png" alt="Bravo !" class="result-img">';
-        else
-          resultImage.innerHTML = '<img src="progres.png" alt="Progrès !" class="result-img">';
+        resultImage.innerHTML =
+          score >= 5
+            ? '<img src="bravo.png" class="result-img">'
+            : '<img src="progres.png" class="result-img">';
 
         return;
       }
 
       var q = questions[currentQuestion];
-      var answers = q.answers.map((ans, index) => ({ text: ans, isCorrect: index === q.correct }));
+      var answers = q.answers.map((ans, idx) => ({ text: ans, isCorrect: idx === q.correct }));
       shuffleArray(answers);
 
       progressContainer.style.display = "block";
       progressContainer.textContent = "Question " + (currentQuestion + 1) + " / " + questions.length;
 
       var html = '<div class="question"><p><strong>' + q.text + '</strong></p>';
-      for (var i = 0; i < answers.length; i++)
-        html += '<button onclick="checkAnswer(' + i + ', ' + answers[i].isCorrect + ')">' + answers[i].text + '</button>';
+
+      answers.forEach(a => {
+        html += '<button onclick="checkAnswer(' + a.isCorrect + ')">' + a.text + '</button>';
+      });
 
       html += '<p id="feedback"></p></div>';
 
       quizContainer.innerHTML = html;
 
-      /* ✔ Début du chrono invisible */
       startTime = performance.now();
     }
 
-    /* ------------------------------
-       RÉPONSE UTILISATEUR
-       ------------------------------ */
-    function checkAnswer(choiceIndex, isCorrect) {
-      endTime = performance.now();
-      responseTime = Math.round((endTime - startTime) / 1000);
+    /* ---------------------------
+       TRAITEMENT DE LA RÉPONSE
+       --------------------------- */
+    function checkAnswer(isCorrect) {
+      var endTime = performance.now();
+      var responseTime = Math.round((endTime - startTime) / 1000);
 
       var feedback = document.getElementById("feedback");
 
-      if (isCorrect) {
-        feedback.textContent = "✅ Bonne réponse !";
-        feedback.className = "correct";
-      } else {
-        feedback.textContent = "❌ Mauvaise réponse.";
-        feedback.className = "wrong";
-      }
-
-      /* ✔ Ajout du temps de réponse */
-      feedback.innerHTML +=
-        "<br><span style='opacity:0.7;'>⏱ Temps pris : <strong>" + responseTime + " s</strong></span>";
+      feedback.innerHTML =
+        (isCorrect ? "✅ Bonne réponse !" : "❌ Mauvaise réponse.") +
+        "<br><span style='opacity:0.7;'>⏱ Temps : <strong>" + responseTime + " s</strong></span>" +
+        "<br><br><strong>Correction :</strong> " + corrections[currentQuestion];
 
       if (isCorrect) score++;
 
-      setTimeout(function () {
-        currentQuestion++;
-        showQuestion();
-      }, 1200);
+      nextBtn.style.display = "block";
     }
 
-    /* ------------------------------
-       DÉMARRAGE DU QUIZ
-       ------------------------------ */
-    startBtn.addEventListener("click", function () {
-      startBtn.style.display = "none";
-      quizContainer.style.display = "block";
-      scoreContainer.style.display = "none";
+    /* ---------------------------
+       BOUTON QUESTION SUIVANTE
+       --------------------------- */
+    nextBtn.addEventListener("click", function () {
+      currentQuestion++;
       showQuestion();
     });
+
+    /* ---------------------------
+       DÉMARRAGE DU QUIZ
+       --------------------------- */
+    startBtn.addEventListener("click", function () {
+      startBtn.style.display = "none";
+      showQuestion();
+    });
+
   </script>
 </body>
 </html>

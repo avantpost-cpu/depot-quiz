@@ -3,29 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>Quiz sur le stress post-traumatique</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
       padding: 20px;
       max-width: 600px;
       margin: auto;
-
-      /* Fond mosaïque en URL absolue */
       background-image: url('https://avantpost-cpu.github.io/depot-quiz/fond.jpg');
       background-repeat: repeat;
       background-size: auto;
     }
 
-    h2 { text-align: center; }
+    #instructions {
+      margin-bottom: 20px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
 
-    #instructions { margin-bottom: 20px; font-size: 16px; line-height: 1.5; }
+    .question-title {
+      background-color: white;
+      color: #26667c;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      font-weight: bold;
+    }
 
     .question {
       margin-bottom: 25px;
       padding: 15px;
       border: 1px solid #ddd;
       border-radius: 8px;
-      background: rgba(255,255,255,0.9);
+      background: #26667c;
+      color: white;
     }
 
     button {
@@ -33,33 +44,39 @@
       margin: 5px 0;
       padding: 10px;
       width: 100%;
-      cursor: pointer;
       border-radius: 5px;
       border: none;
+      cursor: pointer;
       font-size: 15px;
     }
 
-    button:hover { background: #f0f0f0; }
-
-    #startBtn {
-      background-color: #4f918d;
-      color: white;
+    #validateBtn {
+      background-color: white;
+      color: #26667c;
       font-weight: bold;
-      padding: 12px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
+      margin-top: 15px;
+    }
+
+    #validateBtn:hover {
+      background-color: #e5e5e5;
+    }
+
+    #startImage, #nextImage {
       display: block;
       margin: 20px auto;
-      width: 200px;
+      max-width: 260px;
+      cursor: pointer;
     }
 
-    #startBtn:hover {
-      background-color: #3e736b;
+    #nextImage { display:none; }
+
+    #startImage:hover, #nextImage:hover {
+      opacity: 0.85;
+      transition: 0.2s;
     }
 
-    .correct { color: green; font-weight: bold; }
-    .wrong { color: red; font-weight: bold; }
+    .correct { color: #74ff74; font-weight: bold; }
+    .wrong { color: #ff6f6f; font-weight: bold; }
 
     #score {
       font-size: 18px;
@@ -69,9 +86,10 @@
       display: none;
     }
 
-    /* Barre de timing masquée */
-    #timerBarContainer {
-      display: none;
+    .result-img {
+      max-width: 60%;
+      display: block;
+      margin: 20px auto;
     }
 
     #progress {
@@ -80,43 +98,41 @@
       font-weight: bold;
       display: none;
     }
-
-    .result-img {
-      max-width: 50%;
-      height: auto;
-      display: block;
-      margin: 20px auto 0 auto;
-    }
   </style>
 </head>
 
 <body>
-  <h2>Quiz sur le stress post-traumatique</h2>
+
+  <h2 style="text-align:center;">Quiz sur le stress post-traumatique</h2>
 
   <p id="instructions">
     Testez vos connaissances sur les conséquences psychologiques du traumatisme.
-    Le temps n’est plus affiché pour éviter le stress, mais vous verrez combien de temps vous avez mis pour répondre.
+    Une correction et le temps de réponse apparaîtront après chaque question.
   </p>
 
-  <button id="startBtn">Commencer le quiz</button>
+  <!-- BOUTON START PAR IMAGE -->
+  <img id="startImage"
+       src="https://avantpost-cpu.github.io/depot-quiz/button.png"
+       alt="Commencer le quiz">
 
   <div id="progress"></div>
-  <div id="timerBarContainer"><div id="timerBar"></div></div>
   <div id="quiz"></div>
 
-  <!-- Bouton uniquement pour les questions à choix multiples -->
+  <!-- BOUTON VALIDER (QCM uniquement) -->
   <button id="validateBtn" style="display:none;">Valider la réponse</button>
+
+  <!-- BOUTON SUIVANTE PAR IMAGE -->
+  <img id="nextImage"
+       src="https://avantpost-cpu.github.io/depot-quiz/suivante.png"
+       alt="Question suivante">
 
   <div id="score"></div>
   <div id="resultImage"></div>
 
   <script>
-    /* ---------------------------
-       QUESTIONS
-       --------------------------- */
+    /* QUESTIONS */
     var questions = [
-      { 
-        text: "Quels symptômes peuvent révéler un stress post-traumatique ?", 
+      { text: "Quels symptômes peuvent révéler un stress post-traumatique ?",
         answers: [
           { text: "Hypervigilance", correct: true },
           { text: "Sur-habillement", correct: true },
@@ -125,8 +141,7 @@
         ],
         multiple: true
       },
-      { 
-        text: "Quel comportement montre une conduite d’évitement ?", 
+      { text: "Quel comportement montre une conduite d’évitement ?",
         answers: [
           { text: "Absence aux entraînements", correct: true },
           { text: "Prendre plus de photos", correct: false },
@@ -134,8 +149,7 @@
         ],
         multiple: false
       },
-      { 
-        text: "Quel trouble inclut des pensées répétitives et compulsions ?", 
+      { text: "Quel trouble inclut des pensées répétitives et compulsions ?",
         answers: [
           { text: "TOC", correct: true },
           { text: "Dépression", correct: false },
@@ -143,8 +157,7 @@
         ],
         multiple: false
       },
-      { 
-        text: "Quels signes physiques peuvent apparaître chez une victime ?", 
+      { text: "Quels signes physiques peuvent apparaître chez une victime ?",
         answers: [
           { text: "Blessures inexpliquées", correct: true },
           { text: "Cicatrices de naissance", correct: false },
@@ -152,8 +165,7 @@
         ],
         multiple: false
       },
-      { 
-        text: "Qu’est-ce que la dissociation ?", 
+      { text: "Qu’est-ce que la dissociation ?",
         answers: [
           { text: "Se sentir détaché de soi-même", correct: true },
           { text: "Sauter de joie", correct: false },
@@ -161,8 +173,7 @@
         ],
         multiple: false
       },
-      { 
-        text: "Quels comportements inhabituels peuvent être des signes de traumatisme ?", 
+      { text: "Quels comportements inhabituels peuvent être des signes de traumatisme ?",
         answers: [
           { text: "Isolement social", correct: true },
           { text: "Hypervigilance", correct: true },
@@ -170,10 +181,9 @@
         ],
         multiple: true
       },
-      { 
-        text: "Pourquoi l’activité physique peut-elle être utilisée après un traumatisme ?", 
+      { text: "Pourquoi l’activité physique peut-elle être utilisée après un traumatisme ?",
         answers: [
-          { text: "Pour reconstruire l’estime de soi et le rapport au corps", correct: true },
+          { text: "Pour reconstruire l’estime de soi", correct: true },
           { text: "Pour perdre du poids", correct: false },
           { text: "Pour punir l’agresseur", correct: false }
         ],
@@ -183,157 +193,108 @@
 
     var currentQuestion = 0;
     var score = 0;
-
-    /* Variables pour mesurer le temps réel */
     var startTime = 0;
-    var endTime = 0;
-    var responseTime = 0;
 
     var quizContainer = document.getElementById("quiz");
-    var progressContainer = document.getElementById("progress");
-    var scoreContainer = document.getElementById("score");
-    var resultImage = document.getElementById("resultImage");
-    var startBtn = document.getElementById("startBtn");
+    var progress = document.getElementById("progress");
+    var nextImage = document.getElementById("nextImage");
     var validateBtn = document.getElementById("validateBtn");
 
-    /* Mélange des réponses */
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-    }
+    function shuffleArray(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}}
 
-    /* ------------------------------
-       AFFICHAGE QUESTION
-       ------------------------------ */
     function showQuestion() {
-      if (currentQuestion >= questions.length) { endQuiz(); return; }
+      nextImage.style.display = "none";
+      validateBtn.style.display = "none";
+
+      if (currentQuestion >= questions.length) return endQuiz();
 
       var q = questions[currentQuestion];
       var answers = q.answers.slice();
       shuffleArray(answers);
 
-      progressContainer.style.display = "block";
-      progressContainer.textContent =
-        "Question " + (currentQuestion + 1) + " / " + questions.length;
+      progress.style.display = "block";
+      progress.textContent = "Question " + (currentQuestion+1) + " / " + questions.length;
 
-      var html = '<div class="question"><p><strong>' + q.text + '</strong></p>';
+      var html = `<div class="question">
+                    <div class="question-title">${q.text}</div>`;
 
-      answers.forEach((ans, index) => {
+      answers.forEach(a => {
         if (q.multiple) {
-          html += `<label><input type="checkbox" value="${ans.text}"> ${ans.text}</label><br>`;
+          html += `<label><input type="checkbox" value="${a.text}"> ${a.text}</label><br>`;
         } else {
-          html += `<button onclick="checkAnswerSingle('${ans.text}', ${ans.correct})">${ans.text}</button>`;
+          html += `<button onclick="answerSingle(${a.correct})">${a.text}</button>`;
         }
       });
 
-      html += '<p id="feedback"></p></div>';
+      html += `<p id="feedback"></p></div>`;
       quizContainer.innerHTML = html;
 
-      validateBtn.style.display = q.multiple ? "block" : "none";
+      if (q.multiple) validateBtn.style.display = "block";
 
-      startTime = performance.now(); /* Début du chrono invisible */
+      startTime = performance.now();
     }
 
-    /* ------------------------------
-       RÉPONSE SIMPLE
-       ------------------------------ */
-    function checkAnswerSingle(label, isCorrect) {
-      endTime = performance.now();
-      responseTime = Math.round((endTime - startTime) / 1000);
-
-      var feedback = document.getElementById("feedback");
-
-      if (isCorrect) {
-        feedback.textContent = "✅ Bonne réponse !";
-        feedback.className = "correct";
-        score++;
-      } else {
-        feedback.textContent = "❌ Mauvaise réponse.";
-        feedback.className = "wrong";
-      }
-
-      feedback.innerHTML +=
-        "<br><span style='opacity:0.7;'>⏱ Temps pris : <strong>" +
-        responseTime +
-        " s</strong></span>";
-
-      setTimeout(() => {
-        currentQuestion++;
-        showQuestion();
-      }, 1200);
+    function answerSingle(correct) {
+      showFeedback(correct);
     }
 
-    /* ------------------------------
-       RÉPONSE MULTIPLE
-       ------------------------------ */
     validateBtn.onclick = function () {
-      endTime = performance.now();
-      responseTime = Math.round((endTime - startTime) / 1000);
-
       var q = questions[currentQuestion];
-      var checkboxes = quizContainer.querySelectorAll('input[type="checkbox"]');
-
+      var boxes = quizContainer.querySelectorAll("input[type='checkbox']");
       var correct = true;
 
-      checkboxes.forEach(cb => {
-        var answer = q.answers.find(a => a.text === cb.value);
-        if (cb.checked !== answer.correct) correct = false;
+      boxes.forEach(cb => {
+        var ans = q.answers.find(a => a.text === cb.value);
+        if (cb.checked !== ans.correct) correct = false;
       });
 
-      var feedback = document.getElementById("feedback");
-
-      if (correct) {
-        feedback.textContent = "✅ Bonne réponse !";
-        feedback.className = "correct";
-        score++;
-      } else {
-        feedback.textContent = "❌ Mauvaise réponse.";
-        feedback.className = "wrong";
-      }
-
-      feedback.innerHTML +=
-        "<br><span style='opacity:0.7;'>⏱ Temps pris : <strong>" +
-        responseTime +
-        " s</strong></span>";
-
-      setTimeout(() => {
-        currentQuestion++;
-        showQuestion();
-      }, 1200);
+      showFeedback(correct);
     };
 
-    /* ------------------------------
-       FIN DU QUIZ
-       ------------------------------ */
+    function showFeedback(correct) {
+      var end = performance.now();
+      var time = Math.round((end - startTime) / 1000);
+
+      var fb = document.getElementById("feedback");
+
+      fb.innerHTML =
+        (correct ? "✅ Bonne réponse !" : "❌ Mauvaise réponse.") +
+        `<br><span style="opacity:0.7;">⏱ Temps : <strong>${time}s</strong></span>`;
+
+      if (correct) score++;
+
+      nextImage.style.display = "block";
+      validateBtn.style.display = "none";
+    }
+
+    nextImage.onclick = function () {
+      currentQuestion++;
+      showQuestion();
+    };
+
     function endQuiz() {
       quizContainer.innerHTML = "";
+      nextImage.style.display = "none";
       validateBtn.style.display = "none";
+      progress.textContent = "";
 
-      progressContainer.textContent = "";
-      scoreContainer.style.display = "block";
-      scoreContainer.textContent = "Résultat final : " + score + " / " + questions.length;
+      var sc = document.getElementById("score");
+      sc.style.display = "block";
+      sc.textContent = `Résultat final : ${score} / ${questions.length}`;
 
-      resultImage.innerHTML = "";
-      if (score >= 5) {
-        resultImage.innerHTML =
-          '<img src="bravo.png" alt="Bravo !" class="result-img">';
+      var img = document.getElementById("resultImage");
+
+      if (score >= Math.ceil(questions.length * 0.7)) {
+        img.innerHTML = `<img src="https://avantpost-cpu.github.io/depot-quiz/bravo.png" class="result-img">`;
       } else {
-        resultImage.innerHTML =
-          '<img src="progres.png" alt="Progrès !" class="result-img">';
+        img.innerHTML = `<img src="https://avantpost-cpu.github.io/depot-quiz/progres.png" class="result-img">`;
       }
     }
 
-    /* ------------------------------
-       DÉMARRAGE
-       ------------------------------ */
-    startBtn.addEventListener("click", function () {
-      startBtn.style.display = "none";
-      quizContainer.style.display = "block";
-      scoreContainer.style.display = "none";
+    document.getElementById("startImage").onclick = function () {
+      this.style.display = "none";
       showQuestion();
-    });
+    };
   </script>
 </body>
 </html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>PixelArt A / B / C / D / E</title>
+
+<style>
+  body {
+    font-family: sans-serif;
+    background: #fff;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+
+  .top-line {
+    display: flex;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .global-box {
+    padding: 12px 18px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f3f3f3;
+  }
+
+  .global-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .stat-color {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    border: 1px solid #777;
+  }
+
+  .mini-row {
+    display: flex;
+    gap: 4px;
+  }
+
+  .mini-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 8px);
+    grid-template-rows: repeat(10, 8px);
+  }
+
+  .mini-pixel {
+    width: 8px;
+    height: 8px;
+  }
+
+  .row {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+  }
+
+  .pixel-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .pixel-grid {
+    display: grid;
+    grid-template-columns: repeat(9, 24px);
+    grid-template-rows: repeat(10, 24px);
+    gap: 1px;
+  }
+
+  .pixel {
+    width: 24px;
+    height: 24px;
+  }
+
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-content: center;
+  }
+
+  .button-row button {
+    padding: 3px 10px;
+    font-size: 12px;
+    border: none;
+    cursor: pointer;
+    background: #26667c;
+    color: white;
+    border-radius: 4px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="top-line">
+  <div class="global-box">
+    <div id="globalStats" class="global-stats"></div>
+  </div>
+
+  <div id="miniRow" class="mini-row"></div>
+</div>
+
+<div id="pixel-row" class="row"></div>
+
+<script>
+/* ============================================================
+   1) COULEURS DE BASE
+   ============================================================ */
+
+const BLUE      = "#2a2f7f";  // bleu original
+const SALMON    = "#d39a82";  // saumon original
+const ROSE      = "#c94c80";  // rose original
+
+const BEIGE     = "#f1eadf";  // couleur chapitres
+const BLUECHAP  = "#1f9acb";  // bleu bandeau
+const PRUNE     = "#442236";  // prune foncé
+
+/* ============================================================
+   2) PALETTES A / B / C / D / E
+   ============================================================ */
+
+const paletteA = {
+  B: BLUE,
+  S: SALMON,
+  R: ROSE,
+  _: "transparent"
+};
+
+const paletteB = {
+  B: ROSE,
+  S: BLUE,
+  R: SALMON,
+  _: "transparent"
+};
+
+const paletteC = {
+  B: SALMON,
+  S: ROSE,
+  R: BLUE,
+  _: "transparent"
+};
+
+const paletteD = {
+  B: BEIGE,
+  S: BLUECHAP,
+  R: PRUNE,
+  _: "transparent"
+};
+
+const paletteE = {
+  B: BLUECHAP,
+  S: BEIGE,
+  R: PRUNE,
+  _: "transparent"
+};
+
+const palettes = { A: paletteA, B: paletteB, C: paletteC, D: paletteD, E: paletteE };
+
+
+/* ============================================================
+   3) MODELS
+   ============================================================ */
+
+const models = [
+  ["BSSSSSSBB","BRSRRRSRB","BBSRBBRSB","BBSRBBRSB","BBSRBBSRB",
+   "BBSSSSRBB","BBSRBBSRB","BBSRBBBSR","BSSSSBSSS","BBBBBBBBB"],
+
+  ["BSSSSSSSB","BRSRRRRSR","BBSRBBBBR","BBSRBBSBB","BBSSSSSRB",
+   "BBSRRRSRB","BBSRBBBBB","BBSRBBBSB","BSSSSSSSR","BBBBBBBBB"],
+
+  ["BSSSSSSBB","BRSRRRRSB","BBSRBBBSR","BBSRBBBSR","BBSSSSSBB",
+   "BBSRRRRSB","BBSRBBBSR","BBSRBBBSR","BSSSSSSRB","BBBBBBBBB"],
+
+  ["BBSSSSBBB","BSRRRRSBB","BSRBBBSRB","BSRBBBSRB","BSRBBBSRB",
+   "BSRBBBSRB","BBSBBBSRB","BBSSSSRBB","BBBRRRRBB","BBBBBBBBB"],
+
+  ["SSSBBSSSB","BSSSBRSRR","BSRSSBSRB","BSRBSBSRB","BSRBSBSRB",
+   "BSRBSSSRB","BSRBBSSRB","BSRBBBSRB","SSSRBSSSR","BBBBBBBBB"],
+
+  ["BSSSSSSBB","BRSRRRRSB","BBSRBBBSR","BBSRBBBSR","BBSRBBBSR",
+   "BBSRBBBSR","BBSRBBBSR","BBSRBBBSR","BSSSSSSRB","BBBBBBBBB"]
+];
+
+
+/* ============================================================
+   4) INTERFACE
+   ============================================================ */
+
+const pixelRow = document.getElementById("pixel-row");
+const miniRow  = document.getElementById("miniRow");
+
+const activeMode = { 1:"A", 2:"A", 3:"A", 4:"A", 5:"A", 6:"A" };
+const pixelArts = [];
+
+// Construction
+models.forEach((model, index) => {
+  const id = index + 1;
+
+  const block = document.createElement("div");
+  block.className = "pixel-block";
+
+  const grid = document.createElement("div");
+  grid.className = "pixel-grid";
+
+  const pixels = [];
+  for (let i = 0; i < 90; i++) {
+    const px = document.createElement("div");
+    px.className = "pixel";
+    pixels.push(px);
+    grid.appendChild(px);
+  }
+
+  const controls = document.createElement("div");
+  controls.className = "button-row";
+
+  ["A","B","C","D","E"].forEach(mode => {
+    const btn = document.createElement("button");
+    btn.textContent = mode;
+    btn.onclick = () => setPalette(id, mode);
+    controls.appendChild(btn);
+  });
+
+  block.appendChild(grid);
+  block.appendChild(controls);
+  pixelRow.appendChild(block);
+
+  const mini = document.createElement("div");
+  mini.className = "mini-grid";
+  mini.id = "mini"+id;
+
+  for (let i = 0; i < 90; i++) {
+    const mp = document.createElement("div");
+    mp.className = "mini-pixel";
+    mini.appendChild(mp);
+  }
+
+  miniRow.appendChild(mini);
+  pixelArts.push({ id, model, pixels });
+});
+
+
+/* ============================================================
+   5) COLORISATION
+   ============================================================ */
+
+function applyPalette(id) {
+  const art = pixelArts.find(p => p.id === id);
+  const palette = palettes[activeMode[id]];
+
+  art.pixels.forEach((px, i) => {
+    const row = Math.floor(i / 9);
+    const col = i % 9;
+    px.style.background = palette[art.model[row][col]];
+  });
+
+  const mini = document.getElementById("mini"+id).children;
+  for (let i = 0; i < 90; i++) {
+    const row = Math.floor(i / 9);
+    const col = i % 9;
+    mini[i].style.background = palette[art.model[row][col]];
+  }
+}
+
+function setPalette(id, mode) {
+  activeMode[id] = mode;
+  applyPalette(id);
+  updateGlobalStats();
+}
+
+
+/* ============================================================
+   6) TOTAUX (6 couleurs)
+   ============================================================ */
+
+function updateGlobalStats() {
+  let count = {
+    [BLUE]: 0,
+    [ROSE]: 0,
+    [SALMON]: 0,
+    [BEIGE]: 0,
+    [BLUECHAP]: 0,
+    [PRUNE]: 0
+  };
+
+  pixelArts.forEach(art => {
+    const palette = palettes[activeMode[art.id]];
+
+    art.model.forEach(row =>
+      row.split("").forEach(code => {
+        const c = palette[code];
+        if (count[c] !== undefined) count[c]++;
+      })
+    );
+  });
+
+  document.getElementById("globalStats").innerHTML =
+    Object.entries(count).map(([color, value]) =>
+      `<div class="stat-row">
+         <div class="stat-color" style="background:${color}"></div> ${value}
+       </div>`
+    ).join("");
+}
+
+
+/* ============================================================
+   7) INITIALISATION
+   ============================================================ */
+
+pixelArts.forEach(a => applyPalette(a.id));
+updateGlobalStats();
+
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

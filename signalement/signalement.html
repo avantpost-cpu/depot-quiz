@@ -34,24 +34,30 @@
     height: 200px;
   }
 
-  /* ------ COLONNE DES 3 IMAGES ------ */
+  /* ------ TITRES A LA PLACE DES IMAGES ------ */
   .grid-4 {
-    width: 170px;
-    height:180px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
-  .grid-4 img {
-    width: 100%;
-    height: 100%;
-    border-radius: 2px;
-    object-fit: cover;
+  .title-item {
+    padding: 16px;
+    background: #26667c;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: bold;
     cursor: pointer;
+    transition: 0.25s;
   }
 
-  /* ------ ZONE D'AFFICHAGE DES TITRES ------ */
+  .title-item:hover {
+    background: #3388a0;
+  }
+
+  /* ------ ZONE D'AFFICHAGE DES IMAGES ------ */
   .hover-display {
     width:100%;
     text-align: center;
@@ -75,7 +81,7 @@
 
 <body>
 
-<!-- ===== BLOC HAUT : VIDEO + IMAGES ===== -->
+<!-- ===== BLOC HAUT : VIDEO + TITRES ===== -->
 <div class="top-block">
 
   <!-- VIDEO -->
@@ -85,19 +91,16 @@
     </video>
   </div>
 
-  <!-- IMAGE GRID A B C (D supprimé) -->
+  <!-- TITRES A/B/C -->
   <div class="grid-4">
-    <img src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/a.jpg" 
-         alt="a" data-target="a1">
-    <img src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/b.jpg" 
-         alt="b" data-target="b1">
-    <img src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/c.jpg" 
-         alt="c" data-target="c1">
+    <div class="title-item" data-target="a1">Procédure judiciaire</div>
+    <div class="title-item" data-target="b1">Procédure administrative</div>
+    <div class="title-item" data-target="c1">Procédure disciplinaire</div>
   </div>
 
 </div>
 
-<!-- ===== ZONE D'AFFICHAGE DES a1 b1 c1 ===== -->
+<!-- ===== ZONE D'AFFICHAGE DES IMAGES a1 b1 c1 ===== -->
 <div class="hover-display">
   <img id="a1" src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/a1.jpg">
   <img id="b1" src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/b1.jpg">
@@ -105,12 +108,12 @@
 </div>
 
 <script>
-  const thumbs = document.querySelectorAll('.grid-4 img');
+  const items = document.querySelectorAll('.title-item');
   const displays = document.querySelectorAll('.hover-display img');
 
-  thumbs.forEach(thumb => {
-    thumb.addEventListener('mouseenter', () => {
-      const target = thumb.dataset.target;
+  items.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      const target = item.dataset.target;
       displays.forEach(img => img.classList.remove('active'));
       document.getElementById(target).classList.add('active');
     });

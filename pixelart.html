@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -47,10 +36,11 @@
     gap: 4px;
   }
 
-  .stat-row {
+  .stat-row, .local-row {
     display: flex;
     align-items: center;
     gap: 6px;
+    font-size: 13px;
   }
 
   .stat-color {
@@ -117,6 +107,13 @@
     color: white;
     border-radius: 4px;
   }
+
+  .local-stats {
+    margin-top: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
 </style>
 </head>
 
@@ -133,96 +130,49 @@
 <div id="pixel-row" class="row"></div>
 
 <script>
-/* ============================================================
-   1) COULEURS DE BASE
-   ============================================================ */
+/* ------------------------------------------------------------
+   COULEURS DE RÉFÉRENCE
+   ------------------------------------------------------------ */
+const BLUE      = "#2a2f7f";
+const SALMON    = "#d39a82";
+const ROSE      = "#c94c80";
 
-const BLUE      = "#2a2f7f";  // bleu original
-const SALMON    = "#d39a82";  // saumon original
-const ROSE      = "#c94c80";  // rose original
+const BEIGE     = "#f1eadf";
+const BLUECHAP  = "#1f9acb";
+const PRUNE     = "#442236";
 
-const BEIGE     = "#f1eadf";  // couleur chapitres
-const BLUECHAP  = "#1f9acb";  // bleu bandeau
-const PRUNE     = "#442236";  // prune foncé
-
-/* ============================================================
-   2) PALETTES A / B / C / D / E
-   ============================================================ */
-
-const paletteA = {
-  B: BLUE,
-  S: SALMON,
-  R: ROSE,
-  _: "transparent"
-};
-
-const paletteB = {
-  B: ROSE,
-  S: BLUE,
-  R: SALMON,
-  _: "transparent"
-};
-
-const paletteC = {
-  B: SALMON,
-  S: ROSE,
-  R: BLUE,
-  _: "transparent"
-};
-
-const paletteD = {
-  B: BEIGE,
-  S: BLUECHAP,
-  R: PRUNE,
-  _: "transparent"
-};
-
-const paletteE = {
-  B: BLUECHAP,
-  S: BEIGE,
-  R: PRUNE,
-  _: "transparent"
-};
+/* ------------------------------------------------------------
+   PALETTES
+   ------------------------------------------------------------ */
+const paletteA = { B: BLUE, S: SALMON, R: ROSE, _: "transparent" };
+const paletteB = { B: ROSE, S: BLUE,   R: SALMON, _: "transparent" };
+const paletteC = { B: SALMON, S: ROSE, R: BLUE, _: "transparent" };
+const paletteD = { B: BEIGE, S: BLUECHAP, R: PRUNE, _: "transparent" };
+const paletteE = { B: BLUECHAP, S: BEIGE, R: PRUNE, _: "transparent" };
 
 const palettes = { A: paletteA, B: paletteB, C: paletteC, D: paletteD, E: paletteE };
 
-
-/* ============================================================
-   3) MODELS
-   ============================================================ */
-
+/* ------------------------------------------------------------
+   MODELES PIXELART
+   ------------------------------------------------------------ */
 const models = [
-  ["BSSSSSSBB","BRSRRRSRB","BBSRBBRSB","BBSRBBRSB","BBSRBBSRB",
-   "BBSSSSRBB","BBSRBBSRB","BBSRBBBSR","BSSSSBSSS","BBBBBBBBB"],
-
-  ["BSSSSSSSB","BRSRRRRSR","BBSRBBBBR","BBSRBBSBB","BBSSSSSRB",
-   "BBSRRRSRB","BBSRBBBBB","BBSRBBBSB","BSSSSSSSR","BBBBBBBBB"],
-
-  ["BSSSSSSBB","BRSRRRRSB","BBSRBBBSR","BBSRBBBSR","BBSSSSSBB",
-   "BBSRRRRSB","BBSRBBBSR","BBSRBBBSR","BSSSSSSRB","BBBBBBBBB"],
-
-  ["BBSSSSBBB","BSRRRRSBB","BSRBBBSRB","BSRBBBSRB","BSRBBBSRB",
-   "BSRBBBSRB","BBSBBBSRB","BBSSSSRBB","BBBRRRRBB","BBBBBBBBB"],
-
-  ["SSSBBSSSB","BSSSBRSRR","BSRSSBSRB","BSRBSBSRB","BSRBSBSRB",
-   "BSRBSSSRB","BSRBBSSRB","BSRBBBSRB","SSSRBSSSR","BBBBBBBBB"],
-
-  ["BSSSSSSBB","BRSRRRRSB","BBSRBBBSR","BBSRBBBSR","BBSRBBBSR",
-   "BBSRBBBSR","BBSRBBBSR","BBSRBBBSR","BSSSSSSRB","BBBBBBBBB"]
+  ["BSSSSSSBB","BRSRRRSRB","BBSRBBRSB","BBSRBBRSB","BBSRBBSRB","BBSSSSRBB","BBSRBBSRB","BBSRBBBSR","BSSSSBSSS","BBBBBBBBB"],
+  ["BSSSSSSSB","BRSRRRRSR","BBSRBBBBR","BBSRBBSBB","BBSSSSSRB","BBSRRRSRB","BBSRBBBBB","BBSRBBBSB","BSSSSSSSR","BBBBBBBBB"],
+  ["BSSSSSSBB","BRSRRRRSB","BBSRBBBSR","BBSRBBBSR","BBSSSSSBB","BBSRRRRSB","BBSRBBBSR","BBSRBBBSR","BSSSSSSRB","BBBBBBBBB"],
+  ["BBSSSSBBB","BSRRRRSBB","BSRBBBSRB","BSRBBBSRB","BSRBBBSRB","BSRBBBSRB","BBSBBBSRB","BBSSSSRBB","BBBRRRRBB","BBBBBBBBB"],
+  ["SSSBBSSSB","BSSSBRSRR","BSRSSBSRB","BSRBSBSRB","BSRBSBSRB","BSRBSSSRB","BSRBBSSRB","BSRBBBSRB","SSSRBSSSR","BBBBBBBBB"],
+  ["BSSSSSSBB","BRSRRRRSB","BBSRBBBSR","BBSRBBBSR","BBSRBBBSR","BBSRBBBSR","BBSRBBBSR","BBSRBBBSR","BSSSSSSRB","BBBBBBBBB"]
 ];
 
-
-/* ============================================================
-   4) INTERFACE
-   ============================================================ */
-
+/* ------------------------------------------------------------
+   INTERFACE CONSTRUCTION
+   ------------------------------------------------------------ */
 const pixelRow = document.getElementById("pixel-row");
 const miniRow  = document.getElementById("miniRow");
 
 const activeMode = { 1:"A", 2:"A", 3:"A", 4:"A", 5:"A", 6:"A" };
 const pixelArts = [];
 
-// Construction
 models.forEach((model, index) => {
   const id = index + 1;
 
@@ -250,8 +200,13 @@ models.forEach((model, index) => {
     controls.appendChild(btn);
   });
 
+  const localStats = document.createElement("div");
+  localStats.className = "local-stats";
+  localStats.id = "local" + id;
+
   block.appendChild(grid);
   block.appendChild(controls);
+  block.appendChild(localStats);
   pixelRow.appendChild(block);
 
   const mini = document.createElement("div");
@@ -265,13 +220,14 @@ models.forEach((model, index) => {
   }
 
   miniRow.appendChild(mini);
+
   pixelArts.push({ id, model, pixels });
 });
 
 
-/* ============================================================
-   5) COLORISATION
-   ============================================================ */
+/* ------------------------------------------------------------
+   COLORISATION
+   ------------------------------------------------------------ */
 
 function applyPalette(id) {
   const art = pixelArts.find(p => p.id === id);
@@ -291,25 +247,47 @@ function applyPalette(id) {
   }
 }
 
-function setPalette(id, mode) {
-  activeMode[id] = mode;
-  applyPalette(id);
-  updateGlobalStats();
+
+/* ------------------------------------------------------------
+   LOCAL COUNTER (NOUVEAU)
+   ------------------------------------------------------------ */
+
+function updateLocalStats(id) {
+  const art = pixelArts.find(p => p.id === id);
+  const palette = palettes[activeMode[id]];
+
+  // compteur local par couleur réelle
+  let counter = {
+    [BLUE]:0, [ROSE]:0, [SALMON]:0,
+    [BEIGE]:0, [BLUECHAP]:0, [PRUNE]:0
+  };
+
+  art.model.forEach(row =>
+    row.split("").forEach(code => {
+      const col = palette[code];
+      if (counter[col] !== undefined) counter[col]++;
+    })
+  );
+
+  document.getElementById("local"+id).innerHTML =
+    Object.entries(counter)
+      .map(([color, value]) =>
+        `<div class='local-row'>
+           <div class='stat-color' style='background:${color}'></div> ${value}
+         </div>`
+      )
+      .join("");
 }
 
 
-/* ============================================================
-   6) TOTAUX (6 couleurs)
-   ============================================================ */
+/* ------------------------------------------------------------
+   GLOBAL COUNTER
+   ------------------------------------------------------------ */
 
 function updateGlobalStats() {
-  let count = {
-    [BLUE]: 0,
-    [ROSE]: 0,
-    [SALMON]: 0,
-    [BEIGE]: 0,
-    [BLUECHAP]: 0,
-    [PRUNE]: 0
+  let total = {
+    [BLUE]:0, [ROSE]:0, [SALMON]:0,
+    [BEIGE]:0, [BLUECHAP]:0, [PRUNE]:0
   };
 
   pixelArts.forEach(art => {
@@ -317,33 +295,47 @@ function updateGlobalStats() {
 
     art.model.forEach(row =>
       row.split("").forEach(code => {
-        const c = palette[code];
-        if (count[c] !== undefined) count[c]++;
+        const col = palette[code];
+        if (total[col] !== undefined) total[col]++;
       })
     );
   });
 
   document.getElementById("globalStats").innerHTML =
-    Object.entries(count).map(([color, value]) =>
-      `<div class="stat-row">
-         <div class="stat-color" style="background:${color}"></div> ${value}
-       </div>`
-    ).join("");
+    Object.entries(total)
+      .map(([color, value]) =>
+        `<div class='stat-row'>
+           <div class='stat-color' style='background:${color}'></div> ${value}
+         </div>`
+      )
+      .join("");
 }
 
 
-/* ============================================================
-   7) INITIALISATION
-   ============================================================ */
+/* ------------------------------------------------------------
+   SET MODE
+   ------------------------------------------------------------ */
 
-pixelArts.forEach(a => applyPalette(a.id));
+function setPalette(id, mode) {
+  activeMode[id] = mode;
+  applyPalette(id);
+  updateLocalStats(id);
+  updateGlobalStats();
+}
+
+
+/* ------------------------------------------------------------
+   INIT
+   ------------------------------------------------------------ */
+
+pixelArts.forEach(art => {
+  applyPalette(art.id);
+  updateLocalStats(art.id);
+});
+
 updateGlobalStats();
 
 </script>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>

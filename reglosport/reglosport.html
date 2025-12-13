@@ -3,139 +3,127 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>RegloSport – Sélection</title>
+<title>Règlo’Sport – situations</title>
 
 <style>
-  /* IMPORT FONTS */
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Darumadrop+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Darumadrop+One&display=swap');
 
-  html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-  }
+/* RESET */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
 
-  /* FOND MOSAÏQUE */
-  body {
-    background-image: url('https://avantpost-cpu.github.io/depot-quiz/livre/fond.jpg');
-    background-repeat: repeat;
-    background-size: auto;
-    background-position: top left;
-    font-family: 'Poppins', sans-serif;
-  }
+/* FOND MOSAÏQUE */
+body {
+  background-image: url('https://avantpost-cpu.github.io/depot-quiz/livre/fond.jpg');
+  background-repeat: repeat;
+  font-family: 'Poppins', sans-serif;
+}
 
-  .reglo-wrapper {
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-  }
+/* STRUCTURE GLOBALE */
+.reglo-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
-  .reglo-scene {
-    width: 100%;
-    min-height: 100vh;
-    padding: 30px 20px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 🔑 centrage structurel */
-  }
+.reglo-scene {
+  width: 100%;
+  padding: 30px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  /* TITRE */
-  .reglo-title {
-    margin-bottom: 8px;
-  }
+/* =========================
+   TITRE — CENTRAGE ROBUSTE
+   ========================= */
+.reglo-title {
+  width: 100%;
+  text-align: center;      /* ✅ CENTRAGE SÛR */
+  margin-bottom: 10px;
+}
 
-  .reglo-title img {
-    max-width: 18%;
-    height: auto;
-    display: block;
-    margin: 0 auto;
-  }
+.reglo-title img {
+  display: inline-block;   /* ✅ respecte text-align */
+  max-width: 18%;
+  height: auto;
+}
 
-  /* CONTENEUR FIGÉ (cartes + texte) */
-  .reglo-content {
-    margin: 0 auto;
-  }
+/* CONTENEUR FIGÉ (cartes + texte) */
+.reglo-content {
+  margin: 0 auto;
+}
 
-  /* LIGNE DE CARTES */
-  .reglo-row {
-    display: flex;
-    gap: 2px;
-    flex-wrap: nowrap;
-  }
+/* =========================
+   CARTES
+   ========================= */
+.reglo-row {
+  display: flex;
+  gap: 2px;
+}
 
-  /* SLOT */
-  .card-slot {
-    width: 36px;
-    height: 60px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    flex-shrink: 0;
-    cursor: pointer;
-  }
+.card-slot {
+  width: 36px;
+  height: 60px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  cursor: pointer;
+}
 
-  /* IMAGE */
-  .card-slot img {
-    width: 36px;
-    height: auto;
-    transform-origin: bottom center;
-    transition:
-      transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
-      filter 0.25s ease,
-      opacity 0.25s ease;
-  }
+.card-slot img {
+  width: 36px;
+  height: auto;
+  transform-origin: bottom center;
+  transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
+}
 
-  /* EFFET GÉNIE */
-  .card-slot:not(.inactive):hover img {
-    transform: scaleY(1.25);
-  }
+.card-slot:not(.inactive):hover img {
+  transform: scaleY(1.25);
+}
 
-  /* ÉTAT GRIS */
-  .card-slot.inactive img {
-    filter: grayscale(100%);
-    opacity: 0.45;
-    transform: none;
-  }
+.card-slot.inactive img {
+  filter: grayscale(100%);
+  opacity: 0.45;
+}
 
-  /* TEXTE */
-  .reglo-text {
-    margin-top: 26px;
-    font-size: 16px;
-    line-height: 1.55;
-    color: #000;
-    display: none;
+/* =========================
+   TEXTE
+   ========================= */
+.reglo-text {
+  display: none;
+  margin-top: 26px;
+  font-size: 15px;
+  line-height: 1.55;
+  text-align: justify;
+  hyphens: auto;
+}
 
-    text-align: justify;
-    hyphens: auto;
-  }
+.reglo-text.visible {
+  display: block;
+}
 
-  .reglo-text.visible {
-    display: block;
-  }
+.reglo-text .intro {
+  font-family: 'Darumadrop One', cursive;
+  font-size: 22px;
+  line-height: 1.15;
+  color: #436f80;
+  margin-bottom: 14px;
+  text-align: left;
+}
 
-  /* INTRO — DARUMADROP */
-  .reglo-text .intro {
-    font-family: 'Darumadrop One', cursive;
-    font-size: 32px;
-    font-weight: 400;
-    color: #436f80;
-    margin-bottom: 14px;
-    text-align: left;
-  }
+/* STYLES TEXTE */
+.bold {
+  font-weight: 700;
+}
 
-  /* GRAS */
-  .reglo-text .bold {
-    font-weight: 700;
-  }
-
-  /* ITALIQUES */
-  .reglo-text .italic {
-    font-style: italic;
-  }
+.italic {
+  font-style: normal; /* ⛔ italique neutralisé partout */
+}
 </style>
 </head>
 
@@ -146,82 +134,76 @@
 
     <!-- TITRE -->
     <div class="reglo-title">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/reglosport/titre.png" alt="Titre RégloSport">
+      <img
+        src="https://avantpost-cpu.github.io/depot-quiz/reglosport/titre.png"
+        alt="Règlo’Sport"
+      >
     </div>
 
-    <!-- CONTENU ALIGNÉ -->
+    <!-- CONTENU -->
     <div class="reglo-content" id="regloContent">
 
       <!-- CARTES -->
       <div class="reglo-row" id="regloRow"></div>
 
-      <!-- TEXTE IMAGE 1 -->
-      <div class="reglo-text" id="text-1">
-
-        <div class="intro">
-          1 — Je me sens encouragé·e dans mes efforts
-        </div>
-
-        <p class="bold">
-          Concernant cette situation, les sentiments ressentis peuvent être, par exemple, les suivants :
-        </p>
-
-        <p class="italic">
-          Mon entraîneur·e me félicite de ce que j’accomplis à l’entraînement. Il/elle m’encourage et me donne des conseils que je gagne ou que je perde, quelles que soient mes performances. Il/elle prend le temps de m’expliquer pour que je m’améliore.
-        </p>
-
-        <p class="italic">
-          Pour m’encourager, parfois l’entraîneur ou mon parent est un peu rude car il/elle est exigeant·e. L’entraînement et les horaires sont parfois difficiles. Mais on m’explique toujours pourquoi, avec calme. On ne me crie jamais dessus, et ne me rabaisse jamais.
-        </p>
-
-        <p class="italic">
-          Le sport, c’est aussi un collectif ! Mes camarades sont présent·es pour moi, ils et elles m’encouragent et l’ambiance au sein du club est travailleuse, rigoureuse et propice à l’amusement.
-        </p>
-
-      </div>
+      <!-- TEXTE -->
+      <div class="reglo-text" id="regloText"></div>
 
     </div>
-
   </div>
 </div>
 
 <script>
-  const BASE_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/";
-  const row = document.getElementById("regloRow");
-  const content = document.getElementById("regloContent");
-  const text1 = document.getElementById("text-1");
-  const slots = [];
+const BASE_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/";
+const JSON_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/textes.json";
 
-  for (let i = 1; i <= 20; i++) {
-    const slot = document.createElement("div");
-    slot.className = "card-slot";
+const row = document.getElementById("regloRow");
+const content = document.getElementById("regloContent");
+const textBox = document.getElementById("regloText");
 
-    const img = document.createElement("img");
-    img.src = BASE_URL + i + ".png";
-    img.alt = "RegloSport " + i;
+const slots = [];
+let REGLO_TEXTS = {};
 
-    slot.appendChild(img);
-    row.appendChild(slot);
-    slots.push(slot);
-  }
+/* CHARGEMENT DES TEXTES */
+fetch(JSON_URL)
+  .then(res => res.json())
+  .then(data => {
+    REGLO_TEXTS = data;
+  })
+  .catch(err => console.error("Erreur chargement JSON", err));
 
-  /* 🔑 figer la largeur sur celle des cartes */
-  requestAnimationFrame(() => {
-    content.style.width = row.offsetWidth + "px";
+/* CRÉATION DES CARTES */
+for (let i = 1; i <= 20; i++) {
+  const slot = document.createElement("div");
+  slot.className = "card-slot";
+
+  const img = document.createElement("img");
+  img.src = BASE_URL + i + ".png";
+  img.alt = "Situation " + i;
+
+  slot.appendChild(img);
+  row.appendChild(slot);
+  slots.push(slot);
+
+  slot.addEventListener("click", () => {
+    slots.forEach(s => s.classList.add("inactive"));
+    slot.classList.remove("inactive");
+
+    const data = REGLO_TEXTS[i];
+    if (!data) return;
+
+    textBox.innerHTML = `
+      <div class="intro">${i} — ${data.title}</div>
+      ${data.content}
+    `;
+    textBox.classList.add("visible");
   });
+}
 
-  slots.forEach((slot, index) => {
-    slot.addEventListener("click", () => {
-      slots.forEach(s => s.classList.add("inactive"));
-      slot.classList.remove("inactive");
-
-      if (index === 0) {
-        text1.classList.add("visible");
-      } else {
-        text1.classList.remove("visible");
-      }
-    });
-  });
+/* FIGER LA LARGEUR SUR CELLE DES CARTES */
+requestAnimationFrame(() => {
+  content.style.width = row.offsetWidth + "px";
+});
 </script>
 
 </body>

@@ -18,6 +18,9 @@
 <title>RegloSport – Sélection</title>
 
 <style>
+  /* IMPORT FONTS */
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Darumadrop+One&display=swap');
+
   html, body {
     margin: 0;
     padding: 0;
@@ -31,6 +34,7 @@
     background-repeat: repeat;
     background-size: auto;
     background-position: top left;
+    font-family: 'Poppins', sans-serif;
   }
 
   .reglo-wrapper {
@@ -43,37 +47,41 @@
   .reglo-scene {
     width: 100%;
     min-height: 100vh;
-    padding: 40px 30px;
+    padding: 30px 20px;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 🔑 centrage structurel */
   }
 
   /* TITRE */
   .reglo-title {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px; /* espace avant les cartes */
+    margin-bottom: 8px;
   }
 
   .reglo-title img {
-    max-width: 20%;
+    max-width: 18%;
     height: auto;
     display: block;
+    margin: 0 auto;
   }
 
-  /* LIGNE */
+  /* CONTENEUR FIGÉ (cartes + texte) */
+  .reglo-content {
+    margin: 0 auto;
+  }
+
+  /* LIGNE DE CARTES */
   .reglo-row {
     display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 12px;
+    gap: 2px;
     flex-wrap: nowrap;
-    overflow-x: auto;
   }
 
-  /* SLOT FIXE (ANTI-COUPE) */
+  /* SLOT */
   .card-slot {
-    width: 48px;
-    height: 80px;
+    width: 36px;
+    height: 60px;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -83,25 +91,61 @@
 
   /* IMAGE */
   .card-slot img {
-    width: 48px;
+    width: 36px;
     height: auto;
     transform-origin: bottom center;
     transition:
-      transform 0.32s cubic-bezier(0.4, 0.0, 0.2, 1),
-      filter 0.3s ease,
-      opacity 0.3s ease;
+      transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+      filter 0.25s ease,
+      opacity 0.25s ease;
   }
 
-  /* ✨ EFFET GÉNIE AU SURVOL */
+  /* EFFET GÉNIE */
   .card-slot:not(.inactive):hover img {
     transform: scaleY(1.25);
   }
 
-  /* 🔘 ÉTAT GRIS */
+  /* ÉTAT GRIS */
   .card-slot.inactive img {
     filter: grayscale(100%);
     opacity: 0.45;
     transform: none;
+  }
+
+  /* TEXTE */
+  .reglo-text {
+    margin-top: 26px;
+    font-size: 16px;
+    line-height: 1.55;
+    color: #000;
+    display: none;
+
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  .reglo-text.visible {
+    display: block;
+  }
+
+  /* INTRO — DARUMADROP */
+  .reglo-text .intro {
+    font-family: 'Darumadrop One', cursive;
+    font-size: 32px;
+    font-weight: 400;
+    color: #436f80;
+    margin-bottom: 14px;
+    text-align: left;
+  }
+
+  /* GRAS */
+  .reglo-text .bold {
+    font-weight: 700;
+  }
+
+  /* ITALIQUES */
+  .reglo-text .italic {
+    font-style: italic;
   }
 </style>
 </head>
@@ -116,8 +160,38 @@
       <img src="https://avantpost-cpu.github.io/depot-quiz/reglosport/titre.png" alt="Titre RégloSport">
     </div>
 
-    <!-- CARTES -->
-    <div class="reglo-row" id="regloRow"></div>
+    <!-- CONTENU ALIGNÉ -->
+    <div class="reglo-content" id="regloContent">
+
+      <!-- CARTES -->
+      <div class="reglo-row" id="regloRow"></div>
+
+      <!-- TEXTE IMAGE 1 -->
+      <div class="reglo-text" id="text-1">
+
+        <div class="intro">
+          1 — Je me sens encouragé·e dans mes efforts
+        </div>
+
+        <p class="bold">
+          Concernant cette situation, les sentiments ressentis peuvent être, par exemple, les suivants :
+        </p>
+
+        <p class="italic">
+          Mon entraîneur·e me félicite de ce que j’accomplis à l’entraînement. Il/elle m’encourage et me donne des conseils que je gagne ou que je perde, quelles que soient mes performances. Il/elle prend le temps de m’expliquer pour que je m’améliore.
+        </p>
+
+        <p class="italic">
+          Pour m’encourager, parfois l’entraîneur ou mon parent est un peu rude car il/elle est exigeant·e. L’entraînement et les horaires sont parfois difficiles. Mais on m’explique toujours pourquoi, avec calme. On ne me crie jamais dessus, et ne me rabaisse jamais.
+        </p>
+
+        <p class="italic">
+          Le sport, c’est aussi un collectif ! Mes camarades sont présent·es pour moi, ils et elles m’encouragent et l’ambiance au sein du club est travailleuse, rigoureuse et propice à l’amusement.
+        </p>
+
+      </div>
+
+    </div>
 
   </div>
 </div>
@@ -125,6 +199,8 @@
 <script>
   const BASE_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/";
   const row = document.getElementById("regloRow");
+  const content = document.getElementById("regloContent");
+  const text1 = document.getElementById("text-1");
   const slots = [];
 
   for (let i = 1; i <= 20; i++) {
@@ -138,12 +214,25 @@
     slot.appendChild(img);
     row.appendChild(slot);
     slots.push(slot);
+  }
 
+  /* 🔑 figer la largeur sur celle des cartes */
+  requestAnimationFrame(() => {
+    content.style.width = row.offsetWidth + "px";
+  });
+
+  slots.forEach((slot, index) => {
     slot.addEventListener("click", () => {
       slots.forEach(s => s.classList.add("inactive"));
       slot.classList.remove("inactive");
+
+      if (index === 0) {
+        text1.classList.add("visible");
+      } else {
+        text1.classList.remove("visible");
+      }
     });
-  }
+  });
 </script>
 
 </body>

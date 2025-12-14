@@ -1,31 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Livres jeunesse – Rebond</title>
+<title>Livres autobiographiques – Rebond</title>
 
 <style>
 /* RESET */
@@ -55,16 +33,28 @@ body {
   box-sizing: border-box;
 }
 
-/* TITRE */
+/* TITRE HORIZONTAL */
 .title {
   display: flex;
+  align-items: center;
   justify-content: center;
+  gap: 18px;
   margin-bottom: 40px;
 }
 
+/* IMAGE TITRE */
 .title img {
-  max-width: 42%;
+  max-width: 38%;
   height: auto;
+  transform: translateX(-20px);
+}
+
+/* TEXTE À CÔTÉ */
+.title-text {
+  font-size: 20px;
+  font-weight: 600;
+  color: #26667c;
+  white-space: nowrap;
 }
 
 /* ZONE LIVRES */
@@ -156,7 +146,8 @@ body {
 
     <!-- TITRE -->
     <div class="title">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/autobio/titre2.png" alt="Les livres jeunesse">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/autobio/titre2.png" alt="Livres autobiographiques">
+      <div class="title-text">Autobiographie / Témoignage</div>
     </div>
 
     <!-- LIVRES -->
@@ -187,32 +178,28 @@ const data = {
   A: {
     title: "Si un jour quelqu'un te fait du mal",
     text: `
-      <p><strong>Si un jour quelqu’un te fait du mal</strong>, de <strong>Angélique Cauchy</strong> (<strong>Éditions Stock</strong>, <strong>2024</strong>), est un témoignage autobiographique qui retrace le parcours d’une enfant victime de violences sexuelles et le long chemin vers la reconnaissance, la parole et la reconstruction. Ce récit met en lumière l’importance de croire la victime et de l’accompagner.</p>
-
+      <p><strong>Si un jour quelqu’un te fait du mal</strong>, de <strong>Angélique Cauchy</strong> (<strong>Éditions Stock</strong>, <strong>2024</strong>), est un témoignage autobiographique retraçant le parcours d’une enfant victime de violences sexuelles et le long chemin vers la parole et la reconstruction.</p>
     `
   },
 
   B: {
     title: "Un si long silence",
     text: `
-     <p><strong>Un si long silence</strong>, de <strong>Sarah Abitbol</strong> et <strong>Emmanuelle Anizon</strong> (<strong>Plon</strong>, <strong>2020</strong>), est un témoignage autobiographique dans lequel la sportive raconte les violences sexuelles subies dans le milieu du sport et les années de silence qui ont suivi. Le livre souligne les mécanismes d’emprise et la nécessité de libérer la parole.</p>
-
+      <p><strong>Un si long silence</strong>, de <strong>Sarah Abitbol</strong> et <strong>Emmanuelle Anizon</strong> (<strong>Plon</strong>, <strong>2020</strong>), est un témoignage autobiographique évoquant les violences sexuelles dans le sport, les mécanismes d’emprise et la difficulté à briser le silence.</p>
     `
   },
 
   C: {
-    title: "Le colosse au pieds d'argile",
+    title: "Le colosse aux pieds d’argile",
     text: `
-      <p><strong>Le colosse aux pieds d’argile</strong>, de <strong>Sébastien Boueilh</strong> et <strong>Thierry Vildary</strong> (<strong>Michel Lafon</strong>, <strong>2020</strong>), est un témoignage autobiographique où l’auteur raconte les violences sexuelles subies durant son adolescence, le long silence qui a suivi et le chemin vers la reconstruction. Ce récit souligne l’importance de la parole, de l’écoute et de la prévention des violences, notamment dans le milieu sportif.</p>
-
+      <p><strong>Le colosse aux pieds d’argile</strong>, de <strong>Sébastien Boueilh</strong> et <strong>Thierry Vildary</strong> (<strong>Michel Lafon</strong>, <strong>2020</strong>), est un témoignage autobiographique sur les violences sexuelles subies durant l’adolescence et le chemin vers la reconstruction et l’engagement.</p>
     `
   },
 
   D: {
-    title: "Service Volé",
+    title: "Service volé",
     text: `
-      <p><strong>Service volé</strong>, de <strong>Isabelle Demongeot</strong> et <strong>Laurence Décréau</strong> (<strong>Éditions Les Sportives</strong>, <strong>2025</strong>), est un témoignage autobiographique qui revient sur les violences sexuelles et les abus de pouvoir dans le sport de haut niveau. L’ouvrage interroge le silence institutionnel et appelle à une prise de responsabilité collective.</p>
-
+      <p><strong>Service volé</strong>, de <strong>Isabelle Demongeot</strong> et <strong>Laurence Décréau</strong> (<strong>Éditions Les Sportives</strong>, <strong>2025</strong>), est un témoignage autobiographique dénonçant les violences sexuelles et les abus de pouvoir dans le sport de haut niveau.</p>
     `
   }
 };
@@ -236,12 +223,4 @@ books.forEach(book => {
 </script>
 
 </body>
-</html>
-    
-  </body>
-  
-</html>
-    
-  </body>
-  
 </html>

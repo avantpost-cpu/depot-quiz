@@ -34,42 +34,34 @@ body {
   box-sizing: border-box;
 }
 
-/* TITRE IMAGE */
+/* TITRE LOGO */
 .reglo-title {
-  width: 100%;
   text-align: center;
   margin-bottom: 12px;
 }
 
 .reglo-title img {
-  display: inline-block;
   max-width: 14%;
-  height: auto;
 }
 
 /* CARTES */
 .reglo-row {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
   gap: 4px;
   margin-bottom: 20px;
-  flex-wrap: nowrap;
 }
 
 .card-slot {
   width: 34px;
   height: 60px;
+  cursor: pointer;
   display: flex;
   align-items: flex-end;
-  justify-content: center;
-  cursor: pointer;
 }
 
 .card-slot img {
   width: 34px;
-  height: auto;
-  transform-origin: bottom center;
   transition: transform 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
 }
 
@@ -97,24 +89,29 @@ body {
 }
 
 /* COULEURS TITRES */
-.text-zone.c1 h2 { color: #9abd24; }  /* 1–7 */
-.text-zone.c8 h2 { color: #fbb003; }
-.text-zone.c9 h2 { color: #f19f01; }
-.text-zone.c10 h2 { color: #f09601; }
-.text-zone.c11 h2 { color: #e68601; }
-.text-zone.c12 h2 { color: #e36f03; }
-.text-zone.c13 h2 { color: #d74e0f; }
-.text-zone.c14 h2 { color: #d03a0d; }
-.text-zone.c15 h2 { color: #c60909; } /* 15–20 */
+.title-1-7 { color: #9abd24; }
+.title-8 { color: #fbb003; }
+.title-9 { color: #f19f01; }
+.title-10 { color: #f09601; }
+.title-11 { color: #e68601; }
+.title-12 { color: #e36f03; }
+.title-13 { color: #d74e0f; }
+.title-14 { color: #d03a0d; }
+.title-15-20 { color: #c60909; }
 
+/* TEXTE */
 .text-zone p {
   font-size: 13px;
   line-height: 1.5;
   text-align: justify;
-  margin-bottom: 10px;
 }
 
-/* BOUTON CONTACT */
+/* SEMI-BOLD POINT 20 */
+.highlight-20 {
+  font-weight: 600;
+}
+
+/* BOUTON */
 .contact-btn {
   display: flex;
   justify-content: center;
@@ -123,7 +120,7 @@ body {
 
 .contact-btn a {
   background: #2858ea;
-  color: #ffffff;
+  color: #fff;
   font-size: 14px;
   padding: 10px 22px;
   border-radius: 26px;
@@ -158,21 +155,8 @@ const TEXTES_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/textes
 const row = document.getElementById("regloRow");
 const textZone = document.getElementById("textZone");
 
-let slots = [];
 let textes = null;
-
-/* CLASSE COULEUR PAR NUMÉRO */
-function getColorClass(i) {
-  if (i <= 7) return "c1";
-  if (i === 8) return "c8";
-  if (i === 9) return "c9";
-  if (i === 10) return "c10";
-  if (i === 11) return "c11";
-  if (i === 12) return "c12";
-  if (i === 13) return "c13";
-  if (i === 14) return "c14";
-  return "c15"; // 15 à 20
-}
+let slots = [];
 
 /* CARTES */
 for (let i = 1; i <= 20; i++) {
@@ -181,7 +165,6 @@ for (let i = 1; i <= 20; i++) {
 
   const img = document.createElement("img");
   img.src = BASE_IMG + i + ".png";
-  img.alt = "Situation " + i;
 
   slot.appendChild(img);
   row.appendChild(slot);
@@ -193,21 +176,30 @@ for (let i = 1; i <= 20; i++) {
     slots.forEach(s => s.classList.add("inactive"));
     slot.classList.remove("inactive");
 
-    const data = textes[String(i)] || textes[i];
+    const data = textes[String(i)];
     if (!data) return;
 
-    textZone.className = "text-zone " + getColorClass(i);
+    let titleClass = "";
+    if (i <= 7) titleClass = "title-1-7";
+    else if (i === 8) titleClass = "title-8";
+    else if (i === 9) titleClass = "title-9";
+    else if (i === 10) titleClass = "title-10";
+    else if (i === 11) titleClass = "title-11";
+    else if (i === 12) titleClass = "title-12";
+    else if (i === 13) titleClass = "title-13";
+    else if (i === 14) titleClass = "title-14";
+    else titleClass = "title-15-20";
 
     textZone.innerHTML = `
-      <h2>${i}. ${data.title}</h2>
+      <h2 class="${titleClass}">${i}. ${data.title}</h2>
       ${data.content}
     `;
   });
 }
 
-/* CHARGEMENT JSON */
+/* JSON */
 fetch(TEXTES_URL, { cache: "no-store" })
-  .then(res => res.json())
+  .then(r => r.json())
   .then(data => textes = data)
   .catch(() => {
     textZone.innerHTML = "<h2>Erreur</h2><p>Impossible de charger les textes.</p>";

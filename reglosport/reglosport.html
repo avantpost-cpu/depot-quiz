@@ -1,183 +1,211 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>RégloSport – Cartes interactives</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RègloSport – Situations</title>
 
-<!-- Google Font -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-  body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background-image: url('https://avantpost-cpu.github.io/depot-quiz/livre/fond.jpg');
-    background-repeat: repeat;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
 
-  .wrapper {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px 16px 40px;
-  }
+body {
+  font-family: 'Poppins', sans-serif;
+  background-image: url('https://avantpost-cpu.github.io/depot-quiz/livre/fond.jpg');
+  background-repeat: repeat;
+}
 
-  /* TITRE */
-  .title {
-    text-align: center;
-    margin-bottom: 14px;
-  }
-  .title img {
-    max-width: 200px;
-    width: 100%;
-    height: auto;
-  }
+/* CONTENEUR GLOBAL */
+.reglo-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
 
-  /* CARTES */
-  .cards {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding-bottom: 10px;
-  }
+.reglo-scene {
+  width: 100%;
+  max-width: 1000px;            /* ⬅️ plus étroit */
+  padding: 20px 16px 40px;      /* ⬅️ moins d’air */
+  box-sizing: border-box;
+}
 
-  .card {
-    width: 38px;
-    height: 58px;
-    border-radius: 8px;
-    background: #ccc;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 700;
-    color: #fff;
-    cursor: pointer;
-    flex-shrink: 0;
-    transition: transform .25s ease;
-  }
+/* TITRE */
+.reglo-title {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 12px;
+}
 
-  .card:hover {
-    transform: scale(1.08);
-  }
+.reglo-title img {
+  display: inline-block;
+  max-width: 14%;               /* ⬅️ plus petit */
+  height: auto;
+}
 
-  /* COULEURS CARTES */
-  .green { background:#3fa37a; }
-  .orange { background:#f1a33c; }
-  .red { background:#c5392f; }
-  .blue { background:#3a6fd8; }
+/* CARTES */
+.reglo-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 4px;                     /* ⬅️ plus serré */
+  margin-bottom: 20px;
+  flex-wrap: nowrap;
+}
 
-  /* CARTOUCHE TEXTE */
-  .text-card {
-    margin-top: 18px;
-    border-radius: 20px;
-    padding: 22px 24px 28px;
-    font-size: 14px;
-    line-height: 1.5;
-    transition: background .4s ease;
-  }
+.card-slot {
+  width: 34px;                  /* ⬅️ réduit */
+  height: 60px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  cursor: pointer;
+}
 
-  .text-card h2 {
-    margin-top: 0;
-    font-size: 20px;
-    font-weight: 700;
-  }
+.card-slot img {
+  width: 34px;
+  height: auto;
+  transform-origin: bottom center;
+  transition: transform 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
+}
 
-  .text-card p {
-    margin-bottom: 12px;
-  }
+.card-slot:hover img {
+  transform: scaleY(1.18);      /* ⬅️ effet plus subtil */
+}
 
-  /* DÉGRADÉS PAR COULEUR */
-  .text-card.green {
-    background: linear-gradient(to bottom, #fff 0%, #eef7f2 60%, #d9eee5 100%);
-  }
-  .text-card.orange {
-    background: linear-gradient(to bottom, #fff 0%, #fff3e6 60%, #ffe0bf 100%);
-  }
-  .text-card.red {
-    background: linear-gradient(to bottom, #fff 0%, #fdeaea 60%, #f6cfcf 100%);
-  }
-  .text-card.blue {
-    background: linear-gradient(to bottom, #fff 0%, #eef4fb 60%, #d6e6f7 100%);
-  }
+.card-slot.inactive img {
+  filter: grayscale(100%);
+  opacity: 0.35;
+}
 
-  /* BOUTON CONTACT */
-  .contact-btn {
-    text-align: center;
-    margin-top: 20px;
-  }
-  .contact-btn a {
-    display: inline-block;
-    background: #2858ea;
-    color: #fff;
-    text-decoration: none;
-    padding: 12px 22px;
-    border-radius: 999px;
-    font-weight: 600;
-    font-size: 14px;
-  }
+/* TEXTE */
+.text-zone {
+  max-width: 760px;             /* ⬅️ zone plus compacte */
+  margin: 0 auto;
+  background: rgba(255,255,255,0.92);
+  padding: 20px 22px;           /* ⬅️ padding réduit */
+  border-radius: 10px;
+}
+
+.text-zone h2 {
+  margin-top: 0;
+  font-size: 20px;              /* ⬅️ titre réduit */
+  color: #436f80;
+}
+
+.text-zone p {
+  font-size: 13px;              /* ⬅️ texte plus compact */
+  line-height: 1.5;
+  text-align: justify;
+  margin-bottom: 10px;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+/* BOUTON CONTACT */
+.contact-btn {
+  display: flex;
+  justify-content: center;
+  margin: 22px 0 6px;
+}
+
+.contact-btn a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #2858ea;
+  color: #ffffff;
+  font-size: 14px;              /* ⬅️ bouton plus discret */
+  padding: 10px 22px;
+  border-radius: 26px;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-btn a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
 </style>
 </head>
 
 <body>
-<div class="wrapper">
 
-  <!-- TITRE -->
-  <div class="title">
-    <img src="https://avantpost-cpu.github.io/depot-quiz/reglosport/titre.png" alt="Le RégloSport">
+<div class="reglo-wrapper">
+  <div class="reglo-scene">
+
+    <!-- TITRE -->
+    <div class="reglo-title">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/reglosport/titre.png" alt="RègloSport">
+    </div>
+
+    <!-- CARTES -->
+    <div class="reglo-row" id="regloRow"></div>
+
+    <!-- TEXTE -->
+    <div class="text-zone" id="textZone">
+      <h2>Sélectionne une situation</h2>
+      <p>Clique sur une carte pour afficher le texte correspondant.</p>
+    </div>
+
   </div>
-
-  <!-- CARTES -->
-  <div class="cards" id="cards"></div>
-
-  <!-- TEXTE -->
-  <div id="textCard" class="text-card green">
-    <h2>Sélectionne une carte</h2>
-    <p>Choisis une situation pour afficher le contenu correspondant.</p>
-  </div>
-
 </div>
 
 <script>
-/* MAPPING COULEURS */
-const colorMap = {
-  1:'green',2:'green',3:'green',4:'green',
-  5:'orange',6:'orange',7:'orange',8:'orange',
-  9:'orange',10:'orange',11:'orange',12:'orange',
-  13:'red',14:'red',15:'red',16:'red',
-  17:'red',18:'red',19:'red',20:'red'
-};
+const BASE_IMG = "https://avantpost-cpu.github.io/depot-quiz/reglosport/";
+const TEXTES_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/textes.json";
 
-const cardsContainer = document.getElementById('cards');
-const textCard = document.getElementById('textCard');
-let textes = {};
+const row = document.getElementById("regloRow");
+const textZone = document.getElementById("textZone");
 
-/* CRÉATION DES CARTES */
+let slots = [];
+let textes = null;
+
+/* CARTES */
 for (let i = 1; i <= 20; i++) {
-  const div = document.createElement('div');
-  div.className = `card ${colorMap[i]}`;
-  div.textContent = i;
-  div.onclick = () => showText(i);
-  cardsContainer.appendChild(div);
+  const slot = document.createElement("div");
+  slot.className = "card-slot";
+
+  const img = document.createElement("img");
+  img.src = BASE_IMG + i + ".png";
+  img.alt = "Situation " + i;
+
+  slot.appendChild(img);
+  row.appendChild(slot);
+  slots.push(slot);
+
+  slot.addEventListener("click", () => {
+    if (!textes) return;
+
+    slots.forEach(s => s.classList.add("inactive"));
+    slot.classList.remove("inactive");
+
+    const data = textes[String(i)] || textes[i];
+    if (!data) return;
+
+    textZone.innerHTML = `
+      <h2>${i}. ${data.title}</h2>
+      ${data.content}
+    `;
+  });
 }
 
 /* CHARGEMENT JSON */
-fetch('https://avantpost-cpu.github.io/depot-quiz/textes.json')
-  .then(r => r.json())
-  .then(data => { textes = data; });
-
-function showText(id) {
-  if (!textes[id]) return;
-
-  textCard.className = 'text-card ' + colorMap[id];
-  textCard.innerHTML = `
-    <h2>${textes[id].title}</h2>
-    ${textes[id].content}
-  `;
-}
+fetch(TEXTES_URL, { cache: "no-store" })
+  .then(res => res.json())
+  .then(data => {
+    textes = data;
+  })
+  .catch(err => {
+    console.error("Erreur chargement textes.json", err);
+    textZone.innerHTML = "<h2>Erreur</h2><p>Impossible de charger les textes.</p>";
+  });
 </script>
 
 </body>

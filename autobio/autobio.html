@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Livres jeunesse – Rebond</title>
+
+<style>
+/* RESET */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+/* FOND MOSAÏQUE */
+body {
+  background-image: url('https://avantpost-cpu.github.io/depot-quiz/livresj/fond.jpg');
+  background-repeat: repeat;
+  background-size: 420px auto;
+  font-family: Arial, sans-serif;
+}
+
+/* CONTENEUR */
+.wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.scene {
+  max-width: 1100px;
+  width: 100%;
+  padding: 30px 20px 60px;
+  box-sizing: border-box;
+}
+
+/* TITRE */
+.title {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.title img {
+  max-width: 42%;
+  height: auto;
+}
+
+/* ZONE LIVRES */
+.books-zone {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+/* ÉTAGÈRE */
+.shelf {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  max-width: 1000px;
+  z-index: 1;
+}
+
+.shelf img {
+  width: 100%;
+}
+
+/* LIVRES */
+.books {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 26px;
+  align-items: flex-end;
+  padding-bottom: 36px;
+}
+
+/* ANIMATION D’ENTRÉE */
+.book {
+  width: 150px;
+  cursor: pointer;
+  transform: translateY(40px);
+  opacity: 0;
+  animation: slideUp 0.6s ease forwards;
+}
+
+.book:nth-child(2) { animation-delay: 0.1s; }
+.book:nth-child(3) { animation-delay: 0.2s; }
+.book:nth-child(4) { animation-delay: 0.3s; }
+
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ZOOM AU CLIC */
+.book.active {
+  transform: translateY(-12px) scale(1.15);
+}
+
+/* FICHE TEXTE */
+.fiche {
+  max-width: 720px;
+  margin: 40px auto 0;
+  background: rgba(255,255,255,0.94);
+  padding: 22px 26px;
+  border-radius: 12px;
+  display: none;
+}
+
+.fiche.active {
+  display: block;
+}
+
+.fiche h3 {
+  margin-top: 0;
+  font-size: 20px;
+}
+
+.fiche p {
+  font-size: 14px;
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <div class="scene">
+
+    <!-- TITRE -->
+    <div class="title">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/autobio/titre2.png" alt="Les livres jeunesse">
+    </div>
+
+    <!-- LIVRES -->
+    <div class="books-zone">
+
+      <div class="books">
+        <img class="book" data-book="A" src="https://avantpost-cpu.github.io/depot-quiz/autobio/E.jpg" alt="">
+        <img class="book" data-book="B" src="https://avantpost-cpu.github.io/depot-quiz/autobio/F.jpg" alt="">
+        <img class="book" data-book="C" src="https://avantpost-cpu.github.io/depot-quiz/autobio/G.jpg" alt="">
+        <img class="book" data-book="D" src="https://avantpost-cpu.github.io/depot-quiz/autobio/H.jpg" alt="">
+      </div>
+
+      <div class="shelf">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/livresj/book.png" alt="">
+      </div>
+
+    </div>
+
+    <!-- FICHE TEXTE -->
+    <div id="fiche" class="fiche"></div>
+
+  </div>
+</div>
+
+<script>
+const data = {
+
+  A: {
+    title: "Si un jour quelqu'un te fait du mal",
+    text: `
+      <p><strong>Si un jour quelqu’un te fait du mal</strong>, de <strong>Angélique Cauchy</strong> (<strong>Éditions Stock</strong>, <strong>2024</strong>), est un témoignage autobiographique qui retrace le parcours d’une enfant victime de violences sexuelles et le long chemin vers la reconnaissance, la parole et la reconstruction. Ce récit met en lumière l’importance de croire la victime et de l’accompagner.</p>
+
+    `
+  },
+
+  B: {
+    title: "Un si long silence",
+    text: `
+     <p><strong>Un si long silence</strong>, de <strong>Sarah Abitbol</strong> et <strong>Emmanuelle Anizon</strong> (<strong>Plon</strong>, <strong>2020</strong>), est un témoignage autobiographique dans lequel la sportive raconte les violences sexuelles subies dans le milieu du sport et les années de silence qui ont suivi. Le livre souligne les mécanismes d’emprise et la nécessité de libérer la parole.</p>
+
+    `
+  },
+
+  C: {
+    title: "Le colosse au pieds d'argile",
+    text: `
+      <p><strong>Le colosse aux pieds d’argile</strong>, de <strong>Sébastien Boueilh</strong> et <strong>Thierry Vildary</strong> (<strong>Michel Lafon</strong>, <strong>2020</strong>), est un témoignage autobiographique où l’auteur raconte les violences sexuelles subies durant son adolescence, le long silence qui a suivi et le chemin vers la reconstruction. Ce récit souligne l’importance de la parole, de l’écoute et de la prévention des violences, notamment dans le milieu sportif.</p>
+
+    `
+  },
+
+  D: {
+    title: "Service Volé",
+    text: `
+      <p><strong>Service volé</strong>, de <strong>Isabelle Demongeot</strong> et <strong>Laurence Décréau</strong> (<strong>Éditions Les Sportives</strong>, <strong>2025</strong>), est un témoignage autobiographique qui revient sur les violences sexuelles et les abus de pouvoir dans le sport de haut niveau. L’ouvrage interroge le silence institutionnel et appelle à une prise de responsabilité collective.</p>
+
+    `
+  }
+};
+
+const books = document.querySelectorAll('.book');
+const fiche = document.getElementById('fiche');
+
+books.forEach(book => {
+  book.addEventListener('click', () => {
+    books.forEach(b => b.classList.remove('active'));
+    book.classList.add('active');
+
+    const key = book.dataset.book;
+    fiche.innerHTML = `
+      <h3>${data[key].title}</h3>
+      ${data[key].text}
+    `;
+    fiche.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>
+    
+  </body>
+  
+</html>

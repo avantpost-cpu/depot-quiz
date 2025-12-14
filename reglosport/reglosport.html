@@ -20,7 +20,7 @@ body {
   background-repeat: repeat;
 }
 
-/* CONTENEUR */
+/* CONTENEUR GLOBAL */
 .reglo-wrapper {
   width: 100%;
   display: flex;
@@ -29,8 +29,8 @@ body {
 
 .reglo-scene {
   width: 100%;
-  max-width: 1200px;
-  padding: 30px 20px 60px;
+  max-width: 1000px;            /* ⬅️ plus étroit */
+  padding: 20px 16px 40px;      /* ⬅️ moins d’air */
   box-sizing: border-box;
 }
 
@@ -38,12 +38,12 @@ body {
 .reglo-title {
   width: 100%;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .reglo-title img {
   display: inline-block;
-  max-width: 18%;
+  max-width: 14%;               /* ⬅️ plus petit */
   height: auto;
 }
 
@@ -52,14 +52,14 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 6px;
-  margin-bottom: 30px;
+  gap: 4px;                     /* ⬅️ plus serré */
+  margin-bottom: 20px;
   flex-wrap: nowrap;
 }
 
 .card-slot {
-  width: 42px;
-  height: 75px;
+  width: 34px;                  /* ⬅️ réduit */
+  height: 60px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -67,14 +67,14 @@ body {
 }
 
 .card-slot img {
-  width: 42px;
+  width: 34px;
   height: auto;
   transform-origin: bottom center;
   transition: transform 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
 }
 
 .card-slot:hover img {
-  transform: scaleY(1.25);
+  transform: scaleY(1.18);      /* ⬅️ effet plus subtil */
 }
 
 .card-slot.inactive img {
@@ -84,24 +84,24 @@ body {
 
 /* TEXTE */
 .text-zone {
-  max-width: 900px;
+  max-width: 760px;             /* ⬅️ zone plus compacte */
   margin: 0 auto;
   background: rgba(255,255,255,0.92);
-  padding: 30px;
-  border-radius: 12px;
+  padding: 20px 22px;           /* ⬅️ padding réduit */
+  border-radius: 10px;
 }
 
 .text-zone h2 {
   margin-top: 0;
-  font-size: 24px;
+  font-size: 20px;              /* ⬅️ titre réduit */
   color: #436f80;
 }
 
-/* 🔽 TEXTE RÉDUIT */
 .text-zone p {
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 13px;              /* ⬅️ texte plus compact */
+  line-height: 1.5;
   text-align: justify;
+  margin-bottom: 10px;
 }
 
 .bold {
@@ -110,24 +110,27 @@ body {
 
 /* BOUTON CONTACT */
 .contact-btn {
-  text-align: center;
-  margin: 30px 0 10px;
+  display: flex;
+  justify-content: center;
+  margin: 22px 0 6px;
 }
 
 .contact-btn a {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: #2858ea;
   color: #ffffff;
-  font-size: 16px;
-  padding: 12px 26px;
-  border-radius: 30px;
+  font-size: 14px;              /* ⬅️ bouton plus discret */
+  padding: 10px 22px;
+  border-radius: 26px;
   text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .contact-btn a:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 </style>
 </head>
@@ -164,10 +167,10 @@ const textZone = document.getElementById("textZone");
 let slots = [];
 let textes = null;
 
-/* CARTES (AU DÉPART : EN COULEUR) */
+/* CARTES */
 for (let i = 1; i <= 20; i++) {
   const slot = document.createElement("div");
-  slot.className = "card-slot"; // ✅ PAS inactive au départ
+  slot.className = "card-slot";
 
   const img = document.createElement("img");
   img.src = BASE_IMG + i + ".png";

@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -72,12 +61,12 @@ body{
   display:flex;
   gap:10px;
   align-items:flex-end;
-  padding-bottom:30px;
+  padding-bottom:5px;
 }
 
 /* ANIMATION */
 .book{
-  width:150px;
+  width:120px;
   cursor:pointer;
   transform:translateY(40px);
   opacity:0;
@@ -87,6 +76,7 @@ body{
 .book:nth-child(3){animation-delay:.2s;}
 .book:nth-child(4){animation-delay:.3s;}
 .book:nth-child(5){animation-delay:.4s;}
+.book:nth-child(6){animation-delay:.5s;}
 
 @keyframes slideUp{
   to{ transform:translateY(0); opacity:1; }
@@ -140,6 +130,7 @@ body{
         <img class="book" data-book="C" src="https://avantpost-cpu.github.io/depot-quiz/films/3.jpg" alt="">
         <img class="book" data-book="D" src="https://avantpost-cpu.github.io/depot-quiz/films/4.jpg" alt="Whiplash">
         <img class="book" data-book="E" src="https://avantpost-cpu.github.io/depot-quiz/films/5.jpg" alt="Le Colosse aux pieds d’argile">
+        <img class="book" data-book="F" src="https://avantpost-cpu.github.io/depot-quiz/films/6.jpg" alt="Service volé">
       </div>
 
       <div class="shelf">
@@ -178,7 +169,7 @@ const data = {
   },
 
   /* ===== C : (slot libre) ===== */
-  C: {
+ C: {
     title: "Lilia <p>Charlène Favier</p>",
     text: `“Lilia” est un kit de formation composé d’un court-métrage réalisé par Charlène Favier pour la Miprof et d’un livret de formation à destination des encadrants professionnels et encadrantes professionnelles et bénévoles du sport et de l’activité physique dont la création a été conduite par la Mission interministérielle pour la protection des femmes contre les violences et la lutte contre la traite des êtres humains (Miprof) </p>`
   },
@@ -193,17 +184,26 @@ const data = {
     `
   },
 
-  /* ===== E : LE COLOSSE AUX PIEDS D’ARGILE ===== */
-E: {
-  title: "Le Colosse aux pieds d’argile <p>Stéphanie Murat, 2022 (téléfilm)</p>",
+  /* ===== E : LE COLOSSE AUX PIEDS D’ARGILE (téléfilm) ===== */
+  C: {
+  title: "Lilia <p>Charlène Favier</p>",
   text: `
-    <p><strong>Le Colosse aux pieds d’argile</strong> est un téléfilm dramatique français réalisé par <strong>Stéphanie Murat</strong> (diffusé sur <strong>TF1</strong>).</p>
+    <p><strong>Lilia</strong> est un outil pédagogique composé d’un court-métrage réalisé par <strong>Charlène Favier</strong> et d’un livret de formation conçu par la <strong>Mission interministérielle pour la protection des femmes contre les violences et la lutte contre la traite des êtres humains (Miprof)</strong>.</p>
 
-    <p>Librement adapté du livre de <strong>Sébastien Boueilh</strong> et <strong>Thierry Vildary</strong> (Michel Lafon, 2020), le récit s’inspire de l’histoire vraie d’un ancien rugbyman victime de violences sexuelles durant son adolescence, et de la difficulté à briser le silence.</p>
+    <p>Le film met en scène Lilia, une jeune sportive confrontée à une situation de violences sexuelles dans le cadre de sa pratique sportive, et s’attache à montrer les mécanismes d’emprise, de sidération et de silence qui peuvent empêcher une victime de parler.</p>
 
-    <p>Porté notamment par <strong>Éric Cantona</strong>, le téléfilm met en lumière les mécanismes d’emprise, les conséquences durables des violences, et l’importance de la parole, de l’écoute et de la prévention.</p>
- 
+    <p>Destiné aux encadrants et encadrantes, professionnels et bénévoles du sport et de l’activité physique, ce kit vise à faciliter la compréhension des violences, à repérer les signaux d’alerte et à encourager des réactions adaptées pour protéger les victimes.</p>
+  
+    `
+  },
 
+  /* ===== F : SERVICE VOLÉ (téléfilm) ===== */
+  F: {
+    title: "Service volé <p>Jérôme Foulon, 2021 (téléfilm)</p>",
+    text: `
+      <p><strong>Service volé</strong> est un téléfilm dramatique inspiré de l’histoire d’<strong>Isabelle Demongeot</strong>, ancienne joueuse de tennis, qui décide de briser le silence sur les violences sexuelles subies pendant sa jeunesse.</p>
+      <p>Le récit suit le moment où elle s’apprête à publier son témoignage et le combat qui s’engage : affronter le doute, les résistances, la solitude, mais aussi retrouver d’autres victimes pour faire émerger la vérité.</p>
+      <p>À travers ce parcours, le téléfilm met en lumière les obstacles rencontrés par les victimes lorsqu’elles parlent, ainsi que la nécessité d’un soutien collectif et institutionnel pour protéger les enfants et prévenir les violences dans le sport.</p>
     `
   }
 
@@ -230,8 +230,4 @@ books.forEach(book => {
 </script>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>

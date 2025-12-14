@@ -3,182 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Règlo’Sport – situations</title>
+<title>RègloSport – Situations</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Darumadrop+One&display=swap');
-
-/* RESET */
-html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
+html, body { margin:0; padding:0; width:100%; }
+body{
+  font-family:'Poppins',sans-serif;
+  background-image:url('https://avantpost-cpu.github.io/depot-quiz/livre/fond.jpg');
+  background-repeat:repeat;
 }
+.reglo-wrapper{ width:100%; display:flex; justify-content:center; }
+.reglo-scene{ width:100%; max-width:1200px; padding:30px 20px 60px; box-sizing:border-box; }
 
-/* FOND MOSAÏQUE */
-body {
-  background-image: url('https://avantpost-cpu.github.io/depot-quiz/livre/fond.jpg');
-  background-repeat: repeat;
-  font-family: 'Poppins', sans-serif;
-}
+/* TITRE */
+.reglo-title{ width:100%; text-align:center; margin-bottom:20px; }
+.reglo-title img{ display:inline-block; max-width:18%; height:auto; }
 
-/* STRUCTURE GLOBALE */
-.reglo-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
+/* CARTES */
+.reglo-row{
+  display:flex; justify-content:center; align-items:flex-end;
+  gap:6px; margin-bottom:30px; flex-wrap:nowrap;
 }
+.card-slot{ width:42px; height:75px; display:flex; align-items:flex-end; justify-content:center; cursor:pointer; }
+.card-slot img{
+  width:42px; height:auto; transform-origin:bottom center;
+  transition: transform .25s ease, filter .25s ease, opacity .25s ease;
+}
+.card-slot:hover img{ transform:scaleY(1.25); }
+.card-slot.inactive img{ filter:grayscale(100%); opacity:.35; }
 
-.reglo-scene {
-  width: 100%;
-  padding: 30px 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* TEXTE */
+.text-zone{
+  max-width:900px; margin:0 auto;
+  background:rgba(255,255,255,.92);
+  padding:30px; border-radius:12px;
 }
+.text-zone h2{ margin-top:0; font-size:26px; color:#436f80; }
+.text-zone p{ font-size:16px; line-height:1.6; text-align:justify; }
+.bold{ font-weight:600; }
 
-/* =========================
-   TITRE — CENTRAGE ROBUSTE
-   ========================= */
-.reglo-title {
-  width: 100%;
-  text-align: center;      /* ✅ CENTRAGE SÛR */
-  margin-bottom: 10px;
+/* BOUTON CONTACT */
+.contact-btn{ text-align:center; margin:30px 0 10px; }
+.contact-btn a{
+  display:inline-block; background:#2858ea; color:#fff;
+  font-size:18px; padding:14px 28px; border-radius:30px;
+  text-decoration:none; transition:transform .2s ease, box-shadow .2s ease;
 }
-
-.reglo-title img {
-  display: inline-block;   /* ✅ respecte text-align */
-  max-width: 18%;
-  height: auto;
-}
-
-/* CONTENEUR FIGÉ (cartes + texte) */
-.reglo-content {
-  margin: 0 auto;
-}
-
-/* =========================
-   CARTES
-   ========================= */
-.reglo-row {
-  display: flex;
-  gap: 2px;
-}
-
-.card-slot {
-  width: 36px;
-  height: 60px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.card-slot img {
-  width: 36px;
-  height: auto;
-  transform-origin: bottom center;
-  transition: transform 0.3s ease, filter 0.3s ease, opacity 0.3s ease;
-}
-
-.card-slot:not(.inactive):hover img {
-  transform: scaleY(1.25);
-}
-
-.card-slot.inactive img {
-  filter: grayscale(100%);
-  opacity: 0.45;
-}
-
-/* =========================
-   TEXTE
-   ========================= */
-.reglo-text {
-  display: none;
-  margin-top: 26px;
-  font-size: 15px;
-  line-height: 1.55;
-  text-align: justify;
-  hyphens: auto;
-}
-
-.reglo-text.visible {
-  display: block;
-}
-
-.reglo-text .intro {
-  font-family: 'Darumadrop One', cursive;
-  font-size: 22px;
-  line-height: 1.15;
-  color: #436f80;
-  margin-bottom: 14px;
-  text-align: left;
-}
-
-/* STYLES TEXTE */
-.bold {
-  font-weight: 700;
-}
-
-.italic {
-  font-style: normal; /* ⛔ italique neutralisé partout */
-}
+.contact-btn a:hover{ transform:translateY(-2px); box-shadow:0 6px 14px rgba(0,0,0,.2); }
 </style>
 </head>
 
 <body>
-
 <div class="reglo-wrapper">
   <div class="reglo-scene">
 
-    <!-- TITRE -->
     <div class="reglo-title">
-      <img
-        src="https://avantpost-cpu.github.io/depot-quiz/reglosport/titre.png"
-        alt="Règlo’Sport"
-      >
+      <img src="https://avantpost-cpu.github.io/depot-quiz/reglosport/titre.png" alt="RègloSport">
     </div>
 
-    <!-- CONTENU -->
-    <div class="reglo-content" id="regloContent">
+    <div class="reglo-row" id="regloRow"></div>
 
-      <!-- CARTES -->
-      <div class="reglo-row" id="regloRow"></div>
-
-      <!-- TEXTE -->
-      <div class="reglo-text" id="regloText"></div>
-
+    <div class="text-zone" id="textZone">
+      <h2>Chargement…</h2>
+      <p>Le contenu se charge depuis textes.json.</p>
     </div>
+
   </div>
 </div>
 
 <script>
-const BASE_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/";
-const JSON_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/textes.json";
+const BASE_IMG  = "https://avantpost-cpu.github.io/depot-quiz/reglosport/";
+const TEXTES_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/textes.json";
 
 const row = document.getElementById("regloRow");
-const content = document.getElementById("regloContent");
-const textBox = document.getElementById("regloText");
+const textZone = document.getElementById("textZone");
 
-const slots = [];
-let REGLO_TEXTS = {};
+let slots = [];
+let textes = null;
 
-/* CHARGEMENT DES TEXTES */
-fetch(JSON_URL)
-  .then(res => res.json())
-  .then(data => {
-    REGLO_TEXTS = data;
-  })
-  .catch(err => console.error("Erreur chargement JSON", err));
-
-/* CRÉATION DES CARTES */
+/* 1) Créer les cartes tout de suite */
 for (let i = 1; i <= 20; i++) {
   const slot = document.createElement("div");
-  slot.className = "card-slot";
+  slot.className = "card-slot inactive";
 
   const img = document.createElement("img");
-  img.src = BASE_URL + i + ".png";
+  img.src = BASE_IMG + i + ".png";
   img.alt = "Situation " + i;
 
   slot.appendChild(img);
@@ -186,25 +97,41 @@ for (let i = 1; i <= 20; i++) {
   slots.push(slot);
 
   slot.addEventListener("click", () => {
+    if (!textes) {
+      textZone.innerHTML = "<h2>Chargement…</h2><p>Le fichier textes.json n’est pas encore chargé.</p>";
+      return;
+    }
+
+    const data = textes[String(i)] || textes[i];
+    if (!data) {
+      textZone.innerHTML = `<h2>Erreur</h2><p>Le texte pour la situation ${i} est introuvable dans le JSON.</p>`;
+      return;
+    }
+
     slots.forEach(s => s.classList.add("inactive"));
     slot.classList.remove("inactive");
 
-    const data = REGLO_TEXTS[i];
-    if (!data) return;
-
-    textBox.innerHTML = `
-      <div class="intro">${i} — ${data.title}</div>
+    textZone.innerHTML = `
+      <h2>${i}. ${data.title}</h2>
       ${data.content}
     `;
-    textBox.classList.add("visible");
   });
 }
 
-/* FIGER LA LARGEUR SUR CELLE DES CARTES */
-requestAnimationFrame(() => {
-  content.style.width = row.offsetWidth + "px";
-});
+/* 2) Charger le JSON */
+fetch(TEXTES_URL, { cache: "no-store" })
+  .then(res => {
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    return res.json();
+  })
+  .then(data => {
+    textes = data;
+    textZone.innerHTML = "<h2>Sélectionne une situation</h2><p>Clique sur une carte pour afficher le texte correspondant.</p>";
+  })
+  .catch(err => {
+    console.error("Erreur chargement JSON :", err);
+    textZone.innerHTML = "<h2>Erreur de chargement</h2><p>Impossible de charger textes.json. Vérifie l’URL et que GitHub Pages est bien à jour.</p>";
+  });
 </script>
-
 </body>
 </html>

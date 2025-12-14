@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Livres autobiographiques – Rebond</title>
+<title>Bibliothèque Rebond</title>
 
 <style>
 /* RESET */
@@ -12,7 +12,7 @@ html, body {
   padding: 0;
 }
 
-/* FOND MOSAÏQUE */
+/* FOND */
 body {
   background-image: url('https://avantpost-cpu.github.io/depot-quiz/livresj/fond.jpg');
   background-repeat: repeat;
@@ -20,7 +20,51 @@ body {
   font-family: Arial, sans-serif;
 }
 
-/* CONTENEUR */
+/* ===== SLIDER ===== */
+.slider-wrapper {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.slider {
+  display: flex;
+  width: 200%;
+  transition: transform 0.6s ease;
+}
+
+.slide {
+  width: 50%;
+  flex-shrink: 0;
+}
+
+/* ===== BOUTON NAVIGATION ===== */
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  background: #26667c;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 26px;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+.nav-btn:hover {
+  opacity: 1;
+}
+
+/* 👉 aligné sur la scène (1100px), pas sur le bord écran */
+.nav-right {
+  right: calc(50% - 550px + 20px);
+}
+
+/* ===== CONTENEUR ===== */
 .wrapper {
   display: flex;
   justify-content: center;
@@ -33,7 +77,7 @@ body {
   box-sizing: border-box;
 }
 
-/* TITRE HORIZONTAL */
+/* ===== TITRE ===== */
 .title {
   display: flex;
   align-items: center;
@@ -42,14 +86,12 @@ body {
   margin-bottom: 40px;
 }
 
-/* IMAGE TITRE */
 .title img {
   max-width: 38%;
   height: auto;
   transform: translateX(-20px);
 }
 
-/* TEXTE À CÔTÉ */
 .title-text {
   font-size: 20px;
   font-weight: 600;
@@ -57,27 +99,13 @@ body {
   white-space: nowrap;
 }
 
-/* ZONE LIVRES */
+/* ===== LIVRES ===== */
 .books-zone {
   position: relative;
   display: flex;
   justify-content: center;
 }
 
-/* ÉTAGÈRE */
-.shelf {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  max-width: 1000px;
-  z-index: 1;
-}
-
-.shelf img {
-  width: 100%;
-}
-
-/* LIVRES */
 .books {
   position: relative;
   z-index: 2;
@@ -87,7 +115,6 @@ body {
   padding-bottom: 36px;
 }
 
-/* ANIMATION D’ENTRÉE */
 .book {
   width: 150px;
   cursor: pointer;
@@ -107,12 +134,24 @@ body {
   }
 }
 
-/* ZOOM AU CLIC */
 .book.active {
   transform: translateY(-12px) scale(1.15);
 }
 
-/* FICHE TEXTE */
+/* ===== ÉTAGÈRE ===== */
+.shelf {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  max-width: 1000px;
+  z-index: 1;
+}
+
+.shelf img {
+  width: 100%;
+}
+
+/* ===== FICHE ===== */
 .fiche {
   max-width: 720px;
   margin: 40px auto 0;
@@ -129,7 +168,7 @@ body {
 .fiche h3 {
   margin-top: 0;
   font-size: 20px;
-  color: #26667c; /* ← couleur souhaitée */
+  color: #26667c;
 }
 
 .fiche p {
@@ -142,84 +181,133 @@ body {
 
 <body>
 
-<div class="wrapper">
-  <div class="scene">
+<div class="slider-wrapper">
 
-    <!-- TITRE -->
-    <div class="title">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/autobio/titre2.png" alt="Livres autobiographiques">
-      <div class="title-text">AUTOBIOGRAPHIE / TEMOIGNAGE</div>
+  <!-- BOUTON DROITE -->
+  <button class="nav-btn nav-right" id="nextBtn">›</button>
+
+  <div class="slider" id="slider">
+
+    <!-- ================= SLIDE 1 : AUTOBIO ================= -->
+    <div class="slide" data-section="autobio">
+      <div class="wrapper">
+        <div class="scene">
+
+          <div class="title">
+            <img src="https://avantpost-cpu.github.io/depot-quiz/autobio/titre2.png" alt="">
+            <div class="title-text">AUTOBIOGRAPHIE / TÉMOIGNAGE</div>
+          </div>
+
+          <div class="books-zone">
+            <div class="books">
+              <img class="book" data-book="A" src="https://avantpost-cpu.github.io/depot-quiz/autobio/E.jpg">
+              <img class="book" data-book="B" src="https://avantpost-cpu.github.io/depot-quiz/autobio/F.jpg">
+              <img class="book" data-book="C" src="https://avantpost-cpu.github.io/depot-quiz/autobio/G.jpg">
+              <img class="book" data-book="D" src="https://avantpost-cpu.github.io/depot-quiz/autobio/H.jpg">
+            </div>
+
+            <div class="shelf">
+              <img src="https://avantpost-cpu.github.io/depot-quiz/livresj/book.png">
+            </div>
+          </div>
+
+          <div class="fiche"></div>
+
+        </div>
+      </div>
     </div>
 
-    <!-- LIVRES -->
-    <div class="books-zone">
+    <!-- ================= SLIDE 2 : ESSAI ================= -->
+    <div class="slide" data-section="essai">
+      <div class="wrapper">
+        <div class="scene">
 
-      <div class="books">
-        <img class="book" data-book="A" src="https://avantpost-cpu.github.io/depot-quiz/autobio/E.jpg" alt="">
-        <img class="book" data-book="B" src="https://avantpost-cpu.github.io/depot-quiz/autobio/F.jpg" alt="">
-        <img class="book" data-book="C" src="https://avantpost-cpu.github.io/depot-quiz/autobio/G.jpg" alt="">
-        <img class="book" data-book="D" src="https://avantpost-cpu.github.io/depot-quiz/autobio/H.jpg" alt="">
+          <div class="title">
+            <img src="https://avantpost-cpu.github.io/depot-quiz/autobio/titre2.png" alt="">
+            <div class="title-text">ESSAI</div>
+          </div>
+
+          <div class="books-zone">
+            <div class="books">
+              <img class="book" data-book="A" src="https://avantpost-cpu.github.io/depot-quiz/essai/I.jpg">
+              <img class="book" data-book="B" src="https://avantpost-cpu.github.io/depot-quiz/essai/J.jpg">
+              <img class="book" data-book="C" src="https://avantpost-cpu.github.io/depot-quiz/essai/K.jpg">
+            </div>
+
+            <div class="shelf">
+              <img src="https://avantpost-cpu.github.io/depot-quiz/livresj/book.png">
+            </div>
+          </div>
+
+          <div class="fiche"></div>
+
+        </div>
       </div>
-
-      <div class="shelf">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/livresj/book.png" alt="">
-      </div>
-
     </div>
-
-    <!-- FICHE TEXTE -->
-    <div id="fiche" class="fiche"></div>
 
   </div>
 </div>
 
 <script>
-const data = {
-
+// ===== DONNÉES (TEXTES INCHANGÉS) =====
+const dataAutobio = {
   A: {
-    title: "Si un jour quelqu'un te fait du mal<p>(Éditions Stock)</strong>, de <strong>Angélique Cauchy</strong> , <strong>2024</strong>),",
-    text: `
-      <p>Si un jour quelqu’un te fait du mal est un témoignage autobiographique retraçant le parcours d’une enfant victime de violences sexuelles et le long chemin vers la parole et la reconstruction.</p>
-    `
+    title: "Si un jour quelqu'un te fait du mal<p>(Éditions Stock), de <strong>Angélique Cauchy</strong>, <strong>2024</strong></p>",
+    text: `<p>Si un jour quelqu’un te fait du mal est un témoignage autobiographique retraçant le parcours d’une enfant victime de violences sexuelles et le long chemin vers la parole et la reconstruction.</p>`
   },
-
   B: {
-    title: "Un si long silence  <p>de <strong>Sarah Abitbol</strong> et <strong>Emmanuelle Anizon</strong> (<strong>Plon</strong>, <strong>2020</strong>)",
-    text: `
-      <p>Un si long silence est un témoignage autobiographique évoquant les violences sexuelles dans le sport, les mécanismes d’emprise et la difficulté à briser le silence.</p>
-    `
+    title: "Un si long silence<p>de <strong>Sarah Abitbol</strong> et <strong>Emmanuelle Anizon</strong> (<strong>Plon</strong>, <strong>2020</strong>)</p>",
+    text: `<p>Un si long silence est un témoignage autobiographique évoquant les violences sexuelles dans le sport, les mécanismes d’emprise et la difficulté à briser le silence.</p>`
   },
-
   C: {
-    title: "Le colosse aux pieds d’argile <p><strong> de Sébastien Boueilh</strong> et <strong>Thierry Vildary</strong> (<strong>Michel Lafon</strong>, <strong>2020</strong>)",
-    text: `
-      <p>Le colosse aux pieds d’argile est un témoignage autobiographique sur les violences sexuelles subies durant l’adolescence et le chemin vers la reconstruction et l’engagement.</p>
-    `
+    title: "Le colosse aux pieds d’argile<p>de <strong>Sébastien Boueilh</strong> et <strong>Thierry Vildary</strong> (<strong>Michel Lafon</strong>, <strong>2020</strong>)</p>",
+    text: `<p>Le colosse aux pieds d’argile est un témoignage autobiographique sur les violences sexuelles subies durant l’adolescence et le chemin vers la reconstruction et l’engagement.</p>`
   },
-
   D: {
-    title: "Service volé <p><strong>de Isabelle Demongeot</strong> et <strong>Laurence Décréau</strong> (<strong>Éditions Les Sportives</strong>, <strong>2025</strong>)",
-    text: `
-      <p>Service volé est un témoignage autobiographique dénonçant les violences sexuelles et les abus de pouvoir dans le sport de haut niveau.</p>
-    `
+    title: "Service volé<p>de <strong>Isabelle Demongeot</strong> et <strong>Laurence Décréau</strong> (<strong>Éditions Les Sportives</strong>, <strong>2025</strong>)</p>",
+    text: `<p>Service volé est un témoignage autobiographique dénonçant les violences sexuelles et les abus de pouvoir dans le sport de haut niveau.</p>`
   }
 };
 
-const books = document.querySelectorAll('.book');
-const fiche = document.getElementById('fiche');
+const dataEssai = {
+  A: {
+    title: "L’entraîneur et l’enfant<p>(Pierre Emmanuel Luneau-Daurignac, Éditions Seuil, 2021)</p>",
+    text: `<p>Le livre analyse les mécanismes des violences sexuelles dans le milieu sportif à partir d’enquêtes, de témoignages de victimes et de données judiciaires. L’auteur montre comment la relation d’autorité entre l’entraîneur et l’enfant, le silence institutionnel et le culte de la performance favorisent les abus et leur dissimulation.</p><p>Cet ouvrage de référence met en lumière les responsabilités individuelles et collectives, et appelle à une transformation profonde du système sportif pour mieux protéger les mineurs.</p>`
+  },
+  B: {
+    title: "Le revers de nos médailles<p>(Patrick Roux, Karine Repérant, Dunod, 2023)</p>",
+    text: `<p>Le livre analyse les dérives et les violences systémiques dans le sport de haut niveau, en donnant la parole aux victimes et aux professionnels. Les auteurs mettent en lumière les mécanismes d’emprise, la pression de la performance et le silence des institutions.</p><p>L’ouvrage interroge les responsabilités collectives et appelle à repenser en profondeur le modèle sportif.</p>`
+  },
+  C: {
+    title: "Violences sexuelles et sport : l’essentiel pour agir<p>(Olivier Coste, Philippe Liotard, Atlande, 2025)</p>",
+    text: `<p>Le livre propose une synthèse claire et opérationnelle des connaissances sur les violences sexuelles dans le sport. Il fournit des repères juridiques et pratiques pour prévenir, repérer et agir.</p>`
+  }
+};
 
-books.forEach(book => {
-  book.addEventListener('click', () => {
-    books.forEach(b => b.classList.remove('active'));
-    book.classList.add('active');
+// ===== LOGIQUE LIVRES =====
+document.querySelectorAll('.slide').forEach(slide => {
+  const section = slide.dataset.section;
+  const data = section === "autobio" ? dataAutobio : dataEssai;
+  const fiche = slide.querySelector('.fiche');
 
-    const key = book.dataset.book;
-    fiche.innerHTML = `
-      <h3>${data[key].title}</h3>
-      ${data[key].text}
-    `;
-    fiche.classList.add('active');
+  slide.querySelectorAll('.book').forEach(book => {
+    book.addEventListener('click', () => {
+      slide.querySelectorAll('.book').forEach(b => b.classList.remove('active'));
+      book.classList.add('active');
+
+      const key = book.dataset.book;
+      fiche.innerHTML = `<h3>${data[key].title}</h3>${data[key].text}`;
+      fiche.classList.add('active');
+    });
   });
+});
+
+// ===== SLIDER =====
+let current = 0;
+const slider = document.getElementById('slider');
+document.getElementById('nextBtn').addEventListener('click', () => {
+  current = current === 0 ? 1 : 0;
+  slider.style.transform = `translateX(-${current * 50}%)`;
 });
 </script>
 

@@ -34,7 +34,7 @@ body {
   box-sizing: border-box;
 }
 
-/* TITRE */
+/* TITRE PRINCIPAL */
 .reglo-title {
   width: 100%;
   text-align: center;
@@ -42,7 +42,6 @@ body {
 }
 
 .reglo-title img {
-  display: inline-block;
   max-width: 14%;
   height: auto;
 }
@@ -67,7 +66,6 @@ body {
 
 .card-slot img {
   width: 34px;
-  height: auto;
   transform-origin: bottom center;
   transition: transform 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
 }
@@ -90,11 +88,12 @@ body {
   border-radius: 10px;
 }
 
-/* TITRES DES TEXTES */
+/* TITRES DES SITUATIONS */
 .text-zone h2 {
   margin-top: 0;
   font-size: 18px;
   line-height: 1.3;
+  font-weight: 600;
 }
 
 /* TEXTE */
@@ -105,7 +104,7 @@ body {
   margin-bottom: 10px;
 }
 
-/* SEMI BOLD (JSON) */
+/* SEMI-BOLD (JSON) */
 .bold {
   font-weight: 600;
 }
@@ -118,21 +117,12 @@ body {
 }
 
 .contact-btn a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   background: #2858ea;
-  color: #ffffff;
+  color: #fff;
   font-size: 13px;
   padding: 9px 20px;
   border-radius: 24px;
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.contact-btn a:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 </style>
 </head>
@@ -142,15 +132,12 @@ body {
 <div class="reglo-wrapper">
   <div class="reglo-scene">
 
-    <!-- TITRE -->
     <div class="reglo-title">
       <img src="https://avantpost-cpu.github.io/depot-quiz/reglosport/titre.png" alt="RègloSport">
     </div>
 
-    <!-- CARTES -->
     <div class="reglo-row" id="regloRow"></div>
 
-    <!-- TEXTE -->
     <div class="text-zone" id="textZone">
       <h2>Sélectionne une situation</h2>
       <p>Clique sur une carte pour afficher le texte correspondant.</p>
@@ -163,11 +150,24 @@ body {
 const BASE_IMG = "https://avantpost-cpu.github.io/depot-quiz/reglosport/";
 const TEXTES_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/textes.json";
 
+/* COULEURS DES TITRES */
+function getTitleColor(i) {
+  if (i >= 1 && i <= 7) return "#9abd24";
+  if (i === 8) return "#fbb003";
+  if (i === 9) return "#f19f01";
+  if (i === 10) return "#f09601";
+  if (i === 11) return "#e68601";
+  if (i === 12) return "#e36f03";
+  if (i === 13) return "#d74e0f";
+  if (i === 14) return "#d03a0d";
+  if (i >= 15) return "#c60909";
+  return "#436f80";
+}
+
 const row = document.getElementById("regloRow");
 const textZone = document.getElementById("textZone");
-
-let slots = [];
 let textes = null;
+let slots = [];
 
 /* CARTES */
 for (let i = 1; i <= 20; i++) {
@@ -192,7 +192,7 @@ for (let i = 1; i <= 20; i++) {
     if (!data) return;
 
     textZone.innerHTML = `
-      <h2>${i}. ${data.title}</h2>
+      <h2 style="color:${getTitleColor(i)}">${i}. ${data.title}</h2>
       ${data.content}
     `;
   });
@@ -201,9 +201,7 @@ for (let i = 1; i <= 20; i++) {
 /* CHARGEMENT JSON */
 fetch(TEXTES_URL, { cache: "no-store" })
   .then(res => res.json())
-  .then(data => {
-    textes = data;
-  })
+  .then(data => textes = data)
   .catch(() => {
     textZone.innerHTML = "<h2>Erreur</h2><p>Impossible de charger les textes.</p>";
   });

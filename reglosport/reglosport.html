@@ -29,30 +29,27 @@ body {
 
 .reglo-scene {
   width: 100%;
-  max-width: 980px;
-  padding: 18px 16px 36px;
+  max-width: 1000px;
+  padding: 20px 16px 40px;
   box-sizing: border-box;
 }
 
-/* TITRE GLOBAL */
+/* TITRE */
 .reglo-title {
-  width: 100%;
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .reglo-title img {
   max-width: 14%;
-  height: auto;
 }
 
 /* CARTES */
 .reglo-row {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
   gap: 4px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .card-slot {
@@ -66,7 +63,6 @@ body {
 
 .card-slot img {
   width: 34px;
-  transform-origin: bottom center;
   transition: transform 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
 }
 
@@ -79,21 +75,18 @@ body {
   opacity: 0.35;
 }
 
-/* ZONE TEXTE */
+/* TEXTE */
 .text-zone {
   max-width: 760px;
   margin: 0 auto;
-  background: rgba(255,255,255,0.94);
-  padding: 18px 22px;
+  background: rgba(255,255,255,0.92);
+  padding: 20px 22px;
   border-radius: 10px;
 }
 
-/* TITRE SITUATION */
 .text-zone h2 {
   margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 19px;
-  font-weight: 600;
+  font-size: 20px;
 }
 
 /* TEXTE */
@@ -104,7 +97,6 @@ body {
   margin-bottom: 10px;
 }
 
-/* GRAS CONTROLE */
 .bold {
   font-weight: 600;
 }
@@ -113,7 +105,7 @@ body {
 .contact-btn {
   display: flex;
   justify-content: center;
-  margin: 20px 0 6px;
+  margin: 22px 0 6px;
 }
 
 .contact-btn a {
@@ -123,13 +115,18 @@ body {
   padding: 10px 22px;
   border-radius: 26px;
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.contact-btn a:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-}
+/* COULEURS TITRES */
+.title-1-7 { color: #9abd24; }
+.title-8   { color: #fbb003; }
+.title-9   { color: #f19f01; }
+.title-10  { color: #f09601; }
+.title-11  { color: #e68601; }
+.title-12  { color: #e36f03; }
+.title-13  { color: #d74e0f; }
+.title-14  { color: #d03a0d; }
+.title-15-20 { color: #c60909; }
 </style>
 </head>
 
@@ -138,15 +135,12 @@ body {
 <div class="reglo-wrapper">
   <div class="reglo-scene">
 
-    <!-- TITRE -->
     <div class="reglo-title">
       <img src="https://avantpost-cpu.github.io/depot-quiz/reglosport/titre.png" alt="RègloSport">
     </div>
 
-    <!-- CARTES -->
     <div class="reglo-row" id="regloRow"></div>
 
-    <!-- TEXTE -->
     <div class="text-zone" id="textZone">
       <h2>Sélectionne une situation</h2>
       <p>Clique sur une carte pour afficher le texte correspondant.</p>
@@ -162,20 +156,20 @@ const TEXTES_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/textes
 const row = document.getElementById("regloRow");
 const textZone = document.getElementById("textZone");
 
-let textes = null;
 let slots = [];
+let textes = null;
 
-/* COULEURS DES TITRES */
-function getTitleColor(i) {
-  if (i <= 7) return "#9abd24";
-  if (i === 8) return "#fbb003";
-  if (i === 9) return "#f19f01";
-  if (i === 10) return "#f09601";
-  if (i === 11) return "#e68601";
-  if (i === 12) return "#e36f03";
-  if (i === 13) return "#d74e0f";
-  if (i === 14) return "#d03a0d";
-  return "#c60909"; // 15 à 20
+/* Fonction couleur titre */
+function getTitleClass(i) {
+  if (i <= 7) return "title-1-7";
+  if (i === 8) return "title-8";
+  if (i === 9) return "title-9";
+  if (i === 10) return "title-10";
+  if (i === 11) return "title-11";
+  if (i === 12) return "title-12";
+  if (i === 13) return "title-13";
+  if (i === 14) return "title-14";
+  return "title-15-20";
 }
 
 /* CARTES */
@@ -185,7 +179,6 @@ for (let i = 1; i <= 20; i++) {
 
   const img = document.createElement("img");
   img.src = BASE_IMG + i + ".png";
-  img.alt = "Situation " + i;
 
   slot.appendChild(img);
   row.appendChild(slot);
@@ -200,10 +193,8 @@ for (let i = 1; i <= 20; i++) {
     const data = textes[String(i)];
     if (!data) return;
 
-    const color = getTitleColor(i);
-
     textZone.innerHTML = `
-      <h2 style="color:${color}">${i}. ${data.title}</h2>
+      <h2 class="${getTitleClass(i)}">${i}. ${data.title}</h2>
       ${data.content}
     `;
   });
@@ -211,7 +202,7 @@ for (let i = 1; i <= 20; i++) {
 
 /* CHARGEMENT JSON */
 fetch(TEXTES_URL, { cache: "no-store" })
-  .then(r => r.json())
+  .then(res => res.json())
   .then(data => textes = data)
   .catch(() => {
     textZone.innerHTML = "<h2>Erreur</h2><p>Impossible de charger les textes.</p>";

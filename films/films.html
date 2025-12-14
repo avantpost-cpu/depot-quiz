@@ -6,10 +6,8 @@
 <title>Films – Rebond</title>
 
 <style>
-/* RESET */
 html, body { margin:0; padding:0; }
 
-/* FOND */
 body{
   background-image:url('https://avantpost-cpu.github.io/depot-quiz/livresj/fond.jpg');
   background-repeat:repeat;
@@ -17,12 +15,12 @@ body{
   font-family:Arial, sans-serif;
 }
 
-/* CONTENEUR */
 .wrapper{ display:flex; justify-content:center; }
+
 .scene{
   max-width:1100px;
   width:100%;
-  padding:30px 20px 60px;
+  padding:30px 20px 40px;
   box-sizing:border-box;
 }
 
@@ -30,18 +28,76 @@ body{
 .title{
   display:flex;
   justify-content:center;
-  margin-bottom:40px;
+  margin-bottom:20px;
 }
-.title img{
-  max-width:30%;
-  height:auto;
+.title img{ max-width:30%; }
+
+/* ===== SLIDER ===== */
+.slider-wrapper{
+  position:relative;
+  overflow:hidden;
 }
+
+.slider{
+  display:flex;
+  transition:transform .6s ease;
+}
+
+.slide{
+  min-width:100%;
+}
+
+/* NAV */
+.nav{
+  position:absolute;
+  top:38%;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:none;
+  background:#26667c;
+  color:#fff;
+  font-size:22px;
+  cursor:pointer;
+  z-index:10;
+}
+.nav.prev{ left:10px; }
+.nav.next{ right:10px; }
 
 /* ZONE FILMS */
 .books-zone{
   position:relative;
   display:flex;
   justify-content:center;
+}
+
+.books{
+  display:flex;
+  gap:10px;
+  align-items:flex-end;
+  padding-bottom:5px;
+}
+
+.book{
+  width:120px;
+  cursor:pointer;
+  opacity:0;
+  transform:translateY(40px);
+  animation:slideUp .6s forwards;
+}
+
+.book:nth-child(2){animation-delay:.1s;}
+.book:nth-child(3){animation-delay:.2s;}
+.book:nth-child(4){animation-delay:.3s;}
+.book:nth-child(5){animation-delay:.4s;}
+.book:nth-child(6){animation-delay:.5s;}
+
+@keyframes slideUp{
+  to{ opacity:1; transform:translateY(0); }
+}
+
+.book.active{
+  transform:translateY(-10px) scale(1.1);
 }
 
 /* ÉTAGÈRE */
@@ -51,46 +107,14 @@ body{
   width:100%;
   max-width:1000px;
   z-index:1;
+  pointer-events:none; /* ✅ CORRECTION UNIQUE */
 }
 .shelf img{ width:100%; }
-
-/* AFFICHES */
-.books{
-  position:relative;
-  z-index:2;
-  display:flex;
-  gap:10px;
-  align-items:flex-end;
-  padding-bottom:5px;
-}
-
-/* ANIMATION */
-.book{
-  width:120px;
-  cursor:pointer;
-  transform:translateY(40px);
-  opacity:0;
-  animation:slideUp .6s ease forwards;
-}
-.book:nth-child(2){animation-delay:.1s;}
-.book:nth-child(3){animation-delay:.2s;}
-.book:nth-child(4){animation-delay:.3s;}
-.book:nth-child(5){animation-delay:.4s;}
-.book:nth-child(6){animation-delay:.5s;}
-
-@keyframes slideUp{
-  to{ transform:translateY(0); opacity:1; }
-}
-
-/* CLIC */
-.book.active{
-  transform:translateY(-12px) scale(1.15);
-}
 
 /* FICHE */
 .fiche{
   max-width:720px;
-  margin:40px auto 0;
+  margin:20px auto 0;
   background:rgba(255,255,255,0.94);
   padding:22px 26px;
   border-radius:12px;
@@ -114,41 +138,77 @@ body{
 <body>
 
 <div class="wrapper">
-  <div class="scene">
+<div class="scene">
 
-    <!-- TITRE -->
-    <div class="title">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/films/titre3.png" alt="Films">
-    </div>
-
-    <!-- FILMS -->
-    <div class="books-zone">
-
-      <div class="books">
-        <img class="book" data-book="A" src="https://avantpost-cpu.github.io/depot-quiz/films/1.jpg" alt="Julie se tait">
-        <img class="book" data-book="B" src="https://avantpost-cpu.github.io/depot-quiz/films/2.jpg" alt="Slalom">
-        <img class="book" data-book="C" src="https://avantpost-cpu.github.io/depot-quiz/films/3.jpg" alt="">
-        <img class="book" data-book="D" src="https://avantpost-cpu.github.io/depot-quiz/films/4.jpg" alt="Whiplash">
-        <img class="book" data-book="E" src="https://avantpost-cpu.github.io/depot-quiz/films/5.jpg" alt="Le Colosse aux pieds d’argile">
-        <img class="book" data-book="F" src="https://avantpost-cpu.github.io/depot-quiz/films/6.jpg" alt="Service volé">
-      </div>
-
-      <div class="shelf">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/films/book2.png" alt="">
-      </div>
-
-    </div>
-
-    <!-- FICHE TEXTE -->
-    <div id="fiche" class="fiche"></div>
-
+  <!-- TITRE -->
+  <div class="title">
+    <img src="https://avantpost-cpu.github.io/depot-quiz/films/titre3.png" alt="Films">
   </div>
+
+  <!-- SLIDER -->
+  <div class="slider-wrapper">
+
+    <button class="nav prev">‹</button>
+    <button class="nav next">›</button>
+
+    <div class="slider" id="slider">
+
+      <!-- ===== SLIDE 1 : FICTIONS ===== -->
+      <div class="slide">
+        <div class="books-zone">
+          <div class="books">
+            <img class="book" data-book="A" src="https://avantpost-cpu.github.io/depot-quiz/films/1.jpg">
+            <img class="book" data-book="B" src="https://avantpost-cpu.github.io/depot-quiz/films/2.jpg">
+            <img class="book" data-book="C" src="https://avantpost-cpu.github.io/depot-quiz/films/3.jpg">
+            <img class="book" data-book="D" src="https://avantpost-cpu.github.io/depot-quiz/films/4.jpg">
+            <img class="book" data-book="E" src="https://avantpost-cpu.github.io/depot-quiz/films/5.jpg">
+            <img class="book" data-book="F" src="https://avantpost-cpu.github.io/depot-quiz/films/6.jpg">
+          </div>
+          <div class="shelf">
+           
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SLIDE 2 : DOCUMENTAIRES ===== -->
+      <div class="slide">
+        <div class="books-zone">
+          <div class="books">
+            <img class="book" data-book="G" src="https://avantpost-cpu.github.io/depot-quiz/films/7.jpg">
+            <img class="book" data-book="H" src="https://avantpost-cpu.github.io/depot-quiz/films/8.jpg">
+            <img class="book" data-book="I" src="https://avantpost-cpu.github.io/depot-quiz/films/9.jpg">
+          </div>
+          <div class="shelf">
+            
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FICHE -->
+  <div id="fiche" class="fiche"></div>
+
+</div>
 </div>
 
 <script>
+let slideIndex = 0;
+const slider = document.getElementById('slider');
+
+document.querySelector('.next').onclick = () => {
+  slideIndex = Math.min(slideIndex + 1, 1);
+  slider.style.transform = `translateX(-${slideIndex * 100}%)`;
+};
+
+document.querySelector('.prev').onclick = () => {
+  slideIndex = Math.max(slideIndex - 1, 0);
+  slider.style.transform = `translateX(-${slideIndex * 100}%)`;
+};
+
 const data = {
 
-  /* ===== A : JULIE SE TAIT ===== */
   A: {
     title: "Julie se tait <p>Leonardo Van Dijl, 2024</p>",
     text: `
@@ -158,7 +218,6 @@ const data = {
     `
   },
 
-  /* ===== B : SLALOM ===== */
   B: {
     title: "Slalom <p>Charlène Favier, 2020</p>",
     text: `
@@ -168,18 +227,15 @@ const data = {
     `
   },
 
-  /* ===== C : (slot libre) ===== */
   C: {
-  title: "Lilia <p>Charlène Favier</p>",
-  text: `
-    <p><strong>Lilia</strong> est un outil pédagogique composé d’un court-métrage réalisé par <strong>Charlène Favier</strong> et d’un livret de formation conçu par la <strong>Mission interministérielle pour la protection des femmes contre les violences et la lutte contre la traite des êtres humains (Miprof)</strong>.</p>
+    title: "Lilia <p>Charlène Favier</p>",
+    text: `
+      <p><strong>Lilia</strong> est un outil pédagogique composé d’un court-métrage réalisé par <strong>Charlène Favier</strong> et d’un livret de formation conçu par la <strong>Mission interministérielle pour la protection des femmes contre les violences et la lutte contre la traite des êtres humains (Miprof)</strong>.</p>
+      <p>Le film met en scène Lilia, une jeune sportive confrontée à une situation de violences sexuelles dans le cadre de sa pratique sportive, et s’attache à montrer les mécanismes d’emprise, de sidération et de silence qui peuvent empêcher une victime de parler.</p>
+      <p>Destiné aux encadrants et encadrantes, professionnels et bénévoles du sport et de l’activité physique, ce kit vise à faciliter la compréhension des violences, à repérer les signaux d’alerte et à encourager des réactions adaptées pour protéger les victimes.</p>
+    `
+  },
 
-    <p>Le film met en scène Lilia, une jeune sportive confrontée à une situation de violences sexuelles dans le cadre de sa pratique sportive, et s’attache à montrer les mécanismes d’emprise, de sidération et de silence qui peuvent empêcher une victime de parler.</p>
-
-    
-    `  },
-
-  /* ===== D : WHIPLASH ===== */
   D: {
     title: "Whiplash <p>Damien Chazelle, 2014</p>",
     text: `
@@ -189,28 +245,27 @@ const data = {
     `
   },
 
-  /* ===== E : LE COLOSSE AUX PIEDS D’ARGILE (téléfilm) ===== */
- E: {
-  title: "Le Colosse aux pieds d’argile <p>Stéphanie Murat, 2022 (téléfilm)</p>",
-  text: `
-    <p><strong>Le Colosse aux pieds d’argile</strong> est un téléfilm dramatique français réalisé par <strong>Stéphanie Murat</strong>, diffusé sur <strong>TF1</strong>.</p>
-
-    <p>Inspiré de l’histoire vraie de <strong>Sébastien Boueilh</strong>, ancien rugbyman victime de violences sexuelles durant son adolescence, le récit met en scène un homme confronté à son passé et à la difficulté de briser le silence imposé par l’emprise et la peur.</p>
-
-    <p>Le téléfilm explore les conséquences durables des violences sexuelles, le poids du non-dit et les mécanismes de domination dans le sport, tout en soulignant l’importance de la parole, de l’écoute et de la reconnaissance des victimes.</p>
-  `
-
+  E: {
+    title: "Le Colosse aux pieds d’argile <p>Stéphanie Murat, 2022 (téléfilm)</p>",
+    text: `
+      <p><strong>Le Colosse aux pieds d’argile</strong> est un téléfilm dramatique français réalisé par <strong>Stéphanie Murat</strong>.</p>
+      <p>Librement adapté du livre de <strong>Sébastien Boueilh</strong> et <strong>Thierry Vildary</strong> (Michel Lafon, 2020), il retrace le parcours d’un ancien sportif confronté aux violences sexuelles subies durant son adolescence.</p>
+      <p>Le récit met en lumière les mécanismes d’emprise, le silence institutionnel et l’importance de la parole et de la prévention dans le milieu sportif.</p>
+    `
   },
 
-  /* ===== F : SERVICE VOLÉ (téléfilm) ===== */
   F: {
     title: "Service volé <p>Jérôme Foulon, 2021 (téléfilm)</p>",
     text: `
-      <p><strong>Service volé</strong> est un téléfilm dramatique inspiré de l’histoire d’<strong>Isabelle Demongeot</strong>, ancienne joueuse de tennis, qui décide de briser le silence sur les violences sexuelles subies pendant sa jeunesse.</p>
-      <p>Le récit suit le moment où elle s’apprête à publier son témoignage et le combat qui s’engage : affronter le doute, les résistances, la solitude, mais aussi retrouver d’autres victimes pour faire émerger la vérité.</p>
-      <p>À travers ce parcours, le téléfilm met en lumière les obstacles rencontrés par les victimes lorsqu’elles parlent, ainsi que la nécessité d’un soutien collectif et institutionnel pour protéger les enfants et prévenir les violences dans le sport.</p>
+      <p><strong>Service volé</strong> est un téléfilm dramatique inspiré de l’histoire d’<strong>Isabelle Demongeot</strong>, ancienne joueuse de tennis.</p>
+      <p>Il retrace le combat d’une femme qui décide de briser le silence sur les violences sexuelles subies dans sa jeunesse.</p>
+      <p>Le film souligne les obstacles rencontrés par les victimes lorsqu’elles parlent et la nécessité d’un soutien collectif pour prévenir les violences dans le sport.</p>
     `
-  }
+  },
+
+  G:{ title:"Documentaire", text:`<p>Fiche documentaire à compléter.</p>` },
+  H:{ title:"Documentaire", text:`<p>Fiche documentaire à compléter.</p>` },
+  I:{ title:"Documentaire", text:`<p>Fiche documentaire à compléter.</p>` }
 
 };
 
@@ -223,12 +278,7 @@ books.forEach(book => {
     book.classList.add('active');
 
     const key = book.dataset.book;
-    if (!data[key]) return;
-
-    fiche.innerHTML = `
-      <h3>${data[key].title}</h3>
-      ${data[key].text}
-    `;
+    fiche.innerHTML = `<h3>${data[key].title}</h3>${data[key].text}`;
     fiche.classList.add('active');
   });
 });

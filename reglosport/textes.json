@@ -115,7 +115,27 @@
 
  "20": {
   "title": "On me fait du chantage pour que je garde le secret",
-  "content": "<p><span class='bold'>Ces situations entraînent des sensations de peur, de piège, d’isolement et d’injustice&nbsp;:</span></p><p>Une ou des personnes me touchent, caressent des parties intimes de mon corps, ou me tiennent des propos très flatteurs sur mon corps, sur des parties de mon corps, prennent des photos ou me demandent d’envoyer des photos dénudées de moi. Elles me demandent de ne parler à personne de ces paroles et de ces gestes. Elles m’informent que ce sont nos « petits secrets », que personne ne pourrait comprendre.</p><p>Elles me disent que les autres ne comprendraient pas pourquoi elle et moi on fait cela, ou qu’en fait j’aime ça puisque je me laisse faire. Elles me disent qu’il vaut mieux ne pas en parler, garder cela secret. Sinon, c’est moi qui aurais honte. Elles peuvent ajouter que j’ai de la chance que l’on s’intéresse à moi. Ma famille, mon entourage ne comprendraient pas et me regarderaient différemment.</p><p>Une ou des personnes menacent ma famille ou mon entourage si je révèle le secret, le fait qu’elles me caressent, me touchent, regardent des photos de moi.</p><p>Ces situations ne sont pas tolérables et sont punies par la loi. Les personnes qui obligent ou font ces actes sont passibles de poursuites judiciaires et de condamnation.</p><p>Mais avant tout, j’ai le droit de ne pas vouloir pratiquer mon sport en subissant ces violences. J’ai le droit d’être écouté·e et d’être accompagné·e. Je peux en parler à une personne de confiance ou contacter le tchat ou les numéros présents sur le Règlo’Sport. Mes interlocuteurs et interlocutrices pourront m’écouter et me donner des conseils pour ne plus me retrouver dans cette situation et ne plus avoir peur.</p><p class='contact-btn'><a href='https://reglosport.france-paralympique.fr/#contact' target='_blank' rel='noopener'>Je contacte une personne de confiance</a></p>"
+  "content": "<p>Ces situations entraînent des sensations de peur, de piège, d’isolement et d’injustice :</p>
+
+  <p>Une ou des personnes me touchent, caressent des parties intimes de mon corps, ou me tiennent des propos très flatteurs sur mon corps, sur des parties de mon corps, prennent des photos ou me demandent d’envoyer des photos dénudées de moi.
+  <span class='highlight-20'>Elles me demandent de ne parler à personne de ces paroles et ces gestes. Elles m’informent que ce sont nos “petits secrets”, que personne ne pourrait comprendre.</span></p>
+
+  <p>Elles me disent que <span class='highlight-20'>les autres ne comprendraient pas pourquoi elle et moi on fait cela, ou qu’en fait j’aime ça puisque je me laisse faire</span>.
+  Elles ajoutent que ce serait <span class='highlight-20'>moi qui aurais honte</span>.
+  <span class='highlight-20'>Ma famille, mon entourage ne comprendraient pas et me regarderaient différemment.</span></p>
+
+  <p>Une ou des personnes <span class='highlight-20'>menacent</span> ma famille ou mon entourage si je révèle le <span class='highlight-20'>secret</span>, le fait qu’elles me caressent, me touchent, regardent des photos de moi.</p>
+
+  <p>Ces situations ne sont pas tolérables et <span class='highlight-20'>sont punies par la loi. Les personnes qui obligent ou font ces actes</span> sont passibles de poursuites judiciaires et de condamnation.</p>
+
+  <p><span class='highlight-20'>J’ai le droit de ne pas vouloir pratiquer mon sport en subissant ces violences. J’ai le droit d’être écouté·e et d’être accompagné·e. Je peux en parler à une personne de confiance ou contacter le tchat ou les numéros présents sur le Règlo’Sport. Mes interlocuteurs et interlocutrices pourront m’écouter et me donner des conseils pour ne plus me retrouver dans cette situation et ne plus avoir peur.</span></p>
+
+  <div class='contact-btn'>
+    <a href='https://reglosport.france-paralympique.fr/#contact' target='_blank'>
+      Je contacte une personne de confiance
+    </a>
+  </div>"
 }
+
 
 }

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Films – Rebond</title>
+
+<style>
+/* RESET */
+html, body { margin:0; padding:0; }
+
+/* FOND */
+body{
+  background-image:url('https://avantpost-cpu.github.io/depot-quiz/livresj/fond.jpg');
+  background-repeat:repeat;
+  background-size:420px auto;
+  font-family:Arial, sans-serif;
+}
+
+/* CONTENEUR */
+.wrapper{ display:flex; justify-content:center; }
+.scene{
+  max-width:1100px;
+  width:100%;
+  padding:30px 20px 60px;
+  box-sizing:border-box;
+}
+
+/* TITRE */
+.title{
+  display:flex;
+  justify-content:center;
+  margin-bottom:40px;
+}
+.title img{
+  max-width:42%;
+  height:auto;
+}
+
+/* ZONE FILMS */
+.books-zone{
+  position:relative;
+  display:flex;
+  justify-content:center;
+}
+
+/* ÉTAGÈRE */
+.shelf{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  max-width:1000px;
+  z-index:1;
+}
+.shelf img{ width:100%; }
+
+/* AFFICHES */
+.books{
+  position:relative;
+  z-index:2;
+  display:flex;
+  gap:10px;
+  align-items:flex-end;
+  padding-bottom:30px;
+}
+
+/* ANIMATION */
+.book{
+  width:150px;
+  cursor:pointer;
+  transform:translateY(40px);
+  opacity:0;
+  animation:slideUp .6s ease forwards;
+}
+.book:nth-child(2){animation-delay:.1s;}
+.book:nth-child(3){animation-delay:.2s;}
+.book:nth-child(4){animation-delay:.3s;}
+.book:nth-child(5){animation-delay:.4s;}
+
+@keyframes slideUp{
+  to{ transform:translateY(0); opacity:1; }
+}
+
+/* CLIC */
+.book.active{
+  transform:translateY(-12px) scale(1.15);
+}
+
+/* FICHE */
+.fiche{
+  max-width:720px;
+  margin:40px auto 0;
+  background:rgba(255,255,255,0.94);
+  padding:22px 26px;
+  border-radius:12px;
+  display:none;
+}
+.fiche.active{ display:block; }
+
+.fiche h3{
+  margin-top:0;
+  font-size:20px;
+  color:#26667c;
+}
+.fiche p{
+  font-size:14px;
+  line-height:1.55;
+  margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <div class="scene">
+
+    <!-- TITRE -->
+    <div class="title">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/films/titre3.png" alt="Films">
+    </div>
+
+    <!-- FILMS -->
+    <div class="books-zone">
+
+      <div class="books">
+        <img class="book" data-book="A" src="https://avantpost-cpu.github.io/depot-quiz/films/1.jpg" alt="Julie se tait">
+        <img class="book" data-book="B" src="https://avantpost-cpu.github.io/depot-quiz/films/2.jpg" alt="Slalom">
+        <img class="book" data-book="C" src="https://avantpost-cpu.github.io/depot-quiz/films/3.jpg" alt="">
+        <img class="book" data-book="D" src="https://avantpost-cpu.github.io/depot-quiz/films/4.jpg" alt="Whiplash">
+        <img class="book" data-book="E" src="https://avantpost-cpu.github.io/depot-quiz/films/5.jpg" alt="Le Colosse aux pieds d’argile">
+      </div>
+
+      <div class="shelf">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/films/book2.png" alt="">
+      </div>
+
+    </div>
+
+    <!-- FICHE TEXTE -->
+    <div id="fiche" class="fiche"></div>
+
+  </div>
+</div>
+
+<script>
+const data = {
+
+  /* ===== A : JULIE SE TAIT ===== */
+  A: {
+    title: "Julie se tait <p>Leonardo Van Dijl, 2024</p>",
+    text: `
+      <p><strong>Julie se tait</strong> est un film dramatique qui suit Julie, jeune joueuse de tennis prometteuse intégrée dans une académie sportive de haut niveau.</p>
+      <p>Lorsque son entraîneur est suspendu à la suite d’événements graves et qu’une enquête est ouverte, les jeunes athlètes sont encouragés à prendre la parole. Pourtant, Julie choisit de garder le silence et de se concentrer sur sa pratique sportive.</p>
+      <p>À travers une mise en scène sobre et immersive, le film explore les mécanismes du silence, de l’emprise et de la pression de la performance dans le sport.</p>
+    `
+  },
+
+  /* ===== B : SLALOM ===== */
+  B: {
+    title: "Slalom <p>Charlène Favier, 2020</p>",
+    text: `
+      <p><strong>Slalom</strong> suit Lyz, une adolescente de 15 ans repérée pour intégrer une section ski-études au sein d’un centre d’entraînement de haut niveau.</p>
+      <p>Sous l’autorité de son entraîneur, la jeune sportive s’engage dans une relation d’emprise progressive, mêlant pression de la performance, isolement et manipulation psychologique.</p>
+      <p>Le film interroge la frontière entre exigence sportive et abus, et la difficulté pour une jeune athlète de se protéger.</p>
+    `
+  },
+
+  /* ===== C : (slot libre) ===== */
+  C: {
+    title: "Lilia <p>Charlène Favier</p>",
+    text: `“Lilia” est un kit de formation composé d’un court-métrage réalisé par Charlène Favier pour la Miprof et d’un livret de formation à destination des encadrants professionnels et encadrantes professionnelles et bénévoles du sport et de l’activité physique dont la création a été conduite par la Mission interministérielle pour la protection des femmes contre les violences et la lutte contre la traite des êtres humains (Miprof) </p>`
+  },
+
+  /* ===== D : WHIPLASH ===== */
+  D: {
+    title: "Whiplash <p>Damien Chazelle, 2014</p>",
+    text: `
+      <p><strong>Whiplash</strong> suit Andrew Neiman, jeune batteur de jazz ambitieux, admis dans un prestigieux conservatoire.</p>
+      <p>Sous la direction d’un professeur aux méthodes humiliantes et violentes, il subit une pression psychologique extrême présentée comme un moteur de performance.</p>
+      <p>Le film questionne le prix de l’excellence lorsque la violence devient une norme.</p>
+    `
+  },
+
+  /* ===== E : LE COLOSSE AUX PIEDS D’ARGILE ===== */
+E: {
+  title: "Le Colosse aux pieds d’argile <p>Stéphanie Murat, 2022 (téléfilm)</p>",
+  text: `
+    <p><strong>Le Colosse aux pieds d’argile</strong> est un téléfilm dramatique français réalisé par <strong>Stéphanie Murat</strong> (diffusé sur <strong>TF1</strong>).</p>
+
+    <p>Librement adapté du livre de <strong>Sébastien Boueilh</strong> et <strong>Thierry Vildary</strong> (Michel Lafon, 2020), le récit s’inspire de l’histoire vraie d’un ancien rugbyman victime de violences sexuelles durant son adolescence, et de la difficulté à briser le silence.</p>
+
+    <p>Porté notamment par <strong>Éric Cantona</strong>, le téléfilm met en lumière les mécanismes d’emprise, les conséquences durables des violences, et l’importance de la parole, de l’écoute et de la prévention.</p>
+ 
+
+    `
+  }
+
+};
+
+const books = document.querySelectorAll('.book');
+const fiche = document.getElementById('fiche');
+
+books.forEach(book => {
+  book.addEventListener('click', () => {
+    books.forEach(b => b.classList.remove('active'));
+    book.classList.add('active');
+
+    const key = book.dataset.book;
+    if (!data[key]) return;
+
+    fiche.innerHTML = `
+      <h3>${data[key].title}</h3>
+      ${data[key].text}
+    `;
+    fiche.classList.add('active');
+  });
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

@@ -29,12 +29,12 @@ body {
 
 .reglo-scene {
   width: 100%;
-  max-width: 1000px;            /* ⬅️ plus étroit */
-  padding: 20px 16px 40px;      /* ⬅️ moins d’air */
+  max-width: 1000px;
+  padding: 20px 16px 40px;
   box-sizing: border-box;
 }
 
-/* TITRE */
+/* TITRE IMAGE */
 .reglo-title {
   width: 100%;
   text-align: center;
@@ -43,7 +43,7 @@ body {
 
 .reglo-title img {
   display: inline-block;
-  max-width: 14%;               /* ⬅️ plus petit */
+  max-width: 14%;
   height: auto;
 }
 
@@ -52,13 +52,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 4px;                     /* ⬅️ plus serré */
+  gap: 4px;
   margin-bottom: 20px;
   flex-wrap: nowrap;
 }
 
 .card-slot {
-  width: 34px;                  /* ⬅️ réduit */
+  width: 34px;
   height: 60px;
   display: flex;
   align-items: flex-end;
@@ -74,7 +74,7 @@ body {
 }
 
 .card-slot:hover img {
-  transform: scaleY(1.18);      /* ⬅️ effet plus subtil */
+  transform: scaleY(1.18);
 }
 
 .card-slot.inactive img {
@@ -84,28 +84,34 @@ body {
 
 /* TEXTE */
 .text-zone {
-  max-width: 760px;             /* ⬅️ zone plus compacte */
+  max-width: 760px;
   margin: 0 auto;
   background: rgba(255,255,255,0.92);
-  padding: 20px 22px;           /* ⬅️ padding réduit */
+  padding: 20px 22px;
   border-radius: 10px;
 }
 
 .text-zone h2 {
   margin-top: 0;
-  font-size: 20px;              /* ⬅️ titre réduit */
-  color: #436f80;
+  font-size: 20px;
 }
 
+/* COULEURS TITRES */
+.text-zone.c1 h2 { color: #9abd24; }  /* 1–7 */
+.text-zone.c8 h2 { color: #fbb003; }
+.text-zone.c9 h2 { color: #f19f01; }
+.text-zone.c10 h2 { color: #f09601; }
+.text-zone.c11 h2 { color: #e68601; }
+.text-zone.c12 h2 { color: #e36f03; }
+.text-zone.c13 h2 { color: #d74e0f; }
+.text-zone.c14 h2 { color: #d03a0d; }
+.text-zone.c15 h2 { color: #c60909; } /* 15–20 */
+
 .text-zone p {
-  font-size: 13px;              /* ⬅️ texte plus compact */
+  font-size: 13px;
   line-height: 1.5;
   text-align: justify;
   margin-bottom: 10px;
-}
-
-.bold {
-  font-weight: 600;
 }
 
 /* BOUTON CONTACT */
@@ -116,21 +122,12 @@ body {
 }
 
 .contact-btn a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   background: #2858ea;
   color: #ffffff;
-  font-size: 14px;              /* ⬅️ bouton plus discret */
+  font-size: 14px;
   padding: 10px 22px;
   border-radius: 26px;
   text-decoration: none;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.contact-btn a:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 </style>
 </head>
@@ -140,15 +137,12 @@ body {
 <div class="reglo-wrapper">
   <div class="reglo-scene">
 
-    <!-- TITRE -->
     <div class="reglo-title">
       <img src="https://avantpost-cpu.github.io/depot-quiz/reglosport/titre.png" alt="RègloSport">
     </div>
 
-    <!-- CARTES -->
     <div class="reglo-row" id="regloRow"></div>
 
-    <!-- TEXTE -->
     <div class="text-zone" id="textZone">
       <h2>Sélectionne une situation</h2>
       <p>Clique sur une carte pour afficher le texte correspondant.</p>
@@ -166,6 +160,19 @@ const textZone = document.getElementById("textZone");
 
 let slots = [];
 let textes = null;
+
+/* CLASSE COULEUR PAR NUMÉRO */
+function getColorClass(i) {
+  if (i <= 7) return "c1";
+  if (i === 8) return "c8";
+  if (i === 9) return "c9";
+  if (i === 10) return "c10";
+  if (i === 11) return "c11";
+  if (i === 12) return "c12";
+  if (i === 13) return "c13";
+  if (i === 14) return "c14";
+  return "c15"; // 15 à 20
+}
 
 /* CARTES */
 for (let i = 1; i <= 20; i++) {
@@ -189,6 +196,8 @@ for (let i = 1; i <= 20; i++) {
     const data = textes[String(i)] || textes[i];
     if (!data) return;
 
+    textZone.className = "text-zone " + getColorClass(i);
+
     textZone.innerHTML = `
       <h2>${i}. ${data.title}</h2>
       ${data.content}
@@ -199,11 +208,8 @@ for (let i = 1; i <= 20; i++) {
 /* CHARGEMENT JSON */
 fetch(TEXTES_URL, { cache: "no-store" })
   .then(res => res.json())
-  .then(data => {
-    textes = data;
-  })
-  .catch(err => {
-    console.error("Erreur chargement textes.json", err);
+  .then(data => textes = data)
+  .catch(() => {
     textZone.innerHTML = "<h2>Erreur</h2><p>Impossible de charger les textes.</p>";
   });
 </script>

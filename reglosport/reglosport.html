@@ -29,39 +29,46 @@ body {
 
 .reglo-scene {
   width: 100%;
-  max-width: 1000px;
-  padding: 20px 16px 40px;
+  max-width: 900px;
+  padding: 18px 14px 36px;
   box-sizing: border-box;
 }
 
-/* TITRE LOGO */
+/* TITRE */
 .reglo-title {
+  width: 100%;
   text-align: center;
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 }
 
 .reglo-title img {
+  display: inline-block;
   max-width: 14%;
+  height: auto;
 }
 
 /* CARTES */
 .reglo-row {
   display: flex;
   justify-content: center;
+  align-items: flex-end;
   gap: 4px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .card-slot {
   width: 34px;
   height: 60px;
-  cursor: pointer;
   display: flex;
   align-items: flex-end;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .card-slot img {
   width: 34px;
+  height: auto;
+  transform-origin: bottom center;
   transition: transform 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
 }
 
@@ -74,57 +81,58 @@ body {
   opacity: 0.35;
 }
 
-/* TEXTE */
+/* ZONE TEXTE */
 .text-zone {
   max-width: 760px;
   margin: 0 auto;
-  background: rgba(255,255,255,0.92);
-  padding: 20px 22px;
+  background: rgba(255,255,255,0.94);
+  padding: 18px 20px;
   border-radius: 10px;
 }
 
+/* TITRES DES TEXTES */
 .text-zone h2 {
   margin-top: 0;
-  font-size: 20px;
+  font-size: 18px;
+  line-height: 1.3;
 }
-
-/* COULEURS TITRES */
-.title-1-7 { color: #9abd24; }
-.title-8 { color: #fbb003; }
-.title-9 { color: #f19f01; }
-.title-10 { color: #f09601; }
-.title-11 { color: #e68601; }
-.title-12 { color: #e36f03; }
-.title-13 { color: #d74e0f; }
-.title-14 { color: #d03a0d; }
-.title-15-20 { color: #c60909; }
 
 /* TEXTE */
 .text-zone p {
   font-size: 13px;
   line-height: 1.5;
   text-align: justify;
+  margin-bottom: 10px;
 }
 
-/* SEMI-BOLD POINT 20 */
-.highlight-20 {
+/* SEMI BOLD (JSON) */
+.bold {
   font-weight: 600;
 }
 
-/* BOUTON */
+/* BOUTON CONTACT */
 .contact-btn {
   display: flex;
   justify-content: center;
-  margin: 22px 0 6px;
+  margin: 18px 0 6px;
 }
 
 .contact-btn a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: #2858ea;
-  color: #fff;
-  font-size: 14px;
-  padding: 10px 22px;
-  border-radius: 26px;
+  color: #ffffff;
+  font-size: 13px;
+  padding: 9px 20px;
+  border-radius: 24px;
   text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-btn a:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 </style>
 </head>
@@ -134,12 +142,15 @@ body {
 <div class="reglo-wrapper">
   <div class="reglo-scene">
 
+    <!-- TITRE -->
     <div class="reglo-title">
       <img src="https://avantpost-cpu.github.io/depot-quiz/reglosport/titre.png" alt="RègloSport">
     </div>
 
+    <!-- CARTES -->
     <div class="reglo-row" id="regloRow"></div>
 
+    <!-- TEXTE -->
     <div class="text-zone" id="textZone">
       <h2>Sélectionne une situation</h2>
       <p>Clique sur une carte pour afficher le texte correspondant.</p>
@@ -155,8 +166,8 @@ const TEXTES_URL = "https://avantpost-cpu.github.io/depot-quiz/reglosport/textes
 const row = document.getElementById("regloRow");
 const textZone = document.getElementById("textZone");
 
-let textes = null;
 let slots = [];
+let textes = null;
 
 /* CARTES */
 for (let i = 1; i <= 20; i++) {
@@ -165,6 +176,7 @@ for (let i = 1; i <= 20; i++) {
 
   const img = document.createElement("img");
   img.src = BASE_IMG + i + ".png";
+  img.alt = "Situation " + i;
 
   slot.appendChild(img);
   row.appendChild(slot);
@@ -179,28 +191,19 @@ for (let i = 1; i <= 20; i++) {
     const data = textes[String(i)];
     if (!data) return;
 
-    let titleClass = "";
-    if (i <= 7) titleClass = "title-1-7";
-    else if (i === 8) titleClass = "title-8";
-    else if (i === 9) titleClass = "title-9";
-    else if (i === 10) titleClass = "title-10";
-    else if (i === 11) titleClass = "title-11";
-    else if (i === 12) titleClass = "title-12";
-    else if (i === 13) titleClass = "title-13";
-    else if (i === 14) titleClass = "title-14";
-    else titleClass = "title-15-20";
-
     textZone.innerHTML = `
-      <h2 class="${titleClass}">${i}. ${data.title}</h2>
+      <h2>${i}. ${data.title}</h2>
       ${data.content}
     `;
   });
 }
 
-/* JSON */
+/* CHARGEMENT JSON */
 fetch(TEXTES_URL, { cache: "no-store" })
-  .then(r => r.json())
-  .then(data => textes = data)
+  .then(res => res.json())
+  .then(data => {
+    textes = data;
+  })
   .catch(() => {
     textZone.innerHTML = "<h2>Erreur</h2><p>Impossible de charger les textes.</p>";
   });

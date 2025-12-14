@@ -24,13 +24,26 @@ body{
   box-sizing:border-box;
 }
 
-/* TITRE */
-.title{
+/* ===== TITRE + LABEL ===== */
+.title-wrap{
   display:flex;
   justify-content:center;
+  align-items:center;
+  gap:16px;
   margin-bottom:20px;
 }
-.title img{ max-width:30%; }
+
+.title-wrap img{
+  max-width:30%;
+  transform:translateX(-20px);
+}
+
+.slide-label{
+  font-size:20px;
+  font-weight:600;
+  color:#26667c;
+  white-space:nowrap;
+}
 
 /* ===== SLIDER ===== */
 .slider-wrapper{
@@ -64,7 +77,7 @@ body{
 .nav.prev{ left:10px; }
 .nav.next{ right:10px; }
 
-/* ZONE FILMS */
+/* ===== ZONE FILMS ===== */
 .books-zone{
   position:relative;
   display:flex;
@@ -107,11 +120,10 @@ body{
   width:100%;
   max-width:1000px;
   z-index:1;
-  pointer-events:none; /* ✅ CORRECTION UNIQUE */
+  pointer-events:none;
 }
-.shelf img{ width:100%; }
 
-/* FICHE */
+/* ===== FICHE TEXTE ===== */
 .fiche{
   max-width:720px;
   margin:20px auto 0;
@@ -141,8 +153,9 @@ body{
 <div class="scene">
 
   <!-- TITRE -->
-  <div class="title">
+  <div class="title-wrap">
     <img src="https://avantpost-cpu.github.io/depot-quiz/films/titre3.png" alt="Films">
+    <div class="slide-label" id="slideLabel">FICTION</div>
   </div>
 
   <!-- SLIDER -->
@@ -164,9 +177,7 @@ body{
             <img class="book" data-book="E" src="https://avantpost-cpu.github.io/depot-quiz/films/5.jpg">
             <img class="book" data-book="F" src="https://avantpost-cpu.github.io/depot-quiz/films/6.jpg">
           </div>
-          <div class="shelf">
-           
-          </div>
+          <div class="shelf"></div>
         </div>
       </div>
 
@@ -178,9 +189,7 @@ body{
             <img class="book" data-book="H" src="https://avantpost-cpu.github.io/depot-quiz/films/8.jpg">
             <img class="book" data-book="I" src="https://avantpost-cpu.github.io/depot-quiz/films/9.jpg">
           </div>
-          <div class="shelf">
-            
-          </div>
+          <div class="shelf"></div>
         </div>
       </div>
 
@@ -196,113 +205,40 @@ body{
 <script>
 let slideIndex = 0;
 const slider = document.getElementById('slider');
+const slideLabel = document.getElementById('slideLabel');
 
 document.querySelector('.next').onclick = () => {
   slideIndex = Math.min(slideIndex + 1, 1);
   slider.style.transform = `translateX(-${slideIndex * 100}%)`;
+  slideLabel.textContent = slideIndex === 1 ? "DOCUMENTAIRE" : "FICTION";
 };
 
 document.querySelector('.prev').onclick = () => {
   slideIndex = Math.max(slideIndex - 1, 0);
   slider.style.transform = `translateX(-${slideIndex * 100}%)`;
+  slideLabel.textContent = slideIndex === 1 ? "DOCUMENTAIRE" : "FICTION";
 };
 
+/* ===== DATA : STRICTEMENT INCHANGÉE ===== */
 const data = {
-
-  A: {
-    title: "Julie se tait <p>Leonardo Van Dijl, 2024</p>",
-    text: `
-      <p><strong>Julie se tait</strong> est un film dramatique qui suit Julie, jeune joueuse de tennis prometteuse intégrée dans une académie sportive de haut niveau.</p>
-      <p>Lorsque son entraîneur est suspendu à la suite d’événements graves et qu’une enquête est ouverte, les jeunes athlètes sont encouragés à prendre la parole. Pourtant, Julie choisit de garder le silence et de se concentrer sur sa pratique sportive.</p>
-      <p>À travers une mise en scène sobre et immersive, le film explore les mécanismes du silence, de l’emprise et de la pression de la performance dans le sport.</p>
-    `
-  },
-
-  B: {
-    title: "Slalom <p>Charlène Favier, 2020</p>",
-    text: `
-      <p><strong>Slalom</strong> suit Lyz, une adolescente de 15 ans repérée pour intégrer une section ski-études au sein d’un centre d’entraînement de haut niveau.</p>
-      <p>Sous l’autorité de son entraîneur, la jeune sportive s’engage dans une relation d’emprise progressive, mêlant pression de la performance, isolement et manipulation psychologique.</p>
-      <p>Le film interroge la frontière entre exigence sportive et abus, et la difficulté pour une jeune athlète de se protéger.</p>
-    `
-  },
-
-  C: {
-    title: "Lilia <p>Charlène Favier</p>",
-    text: `
-      <p><strong>Lilia</strong> est un outil pédagogique composé d’un court-métrage réalisé par <strong>Charlène Favier</strong> et d’un livret de formation conçu par la <strong>Mission interministérielle pour la protection des femmes contre les violences et la lutte contre la traite des êtres humains (Miprof)</strong>.</p>
-      <p>Le film met en scène Lilia, une jeune sportive confrontée à une situation de violences sexuelles dans le cadre de sa pratique sportive, et s’attache à montrer les mécanismes d’emprise, de sidération et de silence qui peuvent empêcher une victime de parler.</p>
-      <p>Destiné aux encadrants et encadrantes, professionnels et bénévoles du sport et de l’activité physique, ce kit vise à faciliter la compréhension des violences, à repérer les signaux d’alerte et à encourager des réactions adaptées pour protéger les victimes.</p>
-    `
-  },
-
-  D: {
-    title: "Whiplash <p>Damien Chazelle, 2014</p>",
-    text: `
-      <p><strong>Whiplash</strong> suit Andrew Neiman, jeune batteur de jazz ambitieux, admis dans un prestigieux conservatoire.</p>
-      <p>Sous la direction d’un professeur aux méthodes humiliantes et violentes, il subit une pression psychologique extrême présentée comme un moteur de performance.</p>
-      <p>Le film questionne le prix de l’excellence lorsque la violence devient une norme.</p>
-    `
-  },
-
-  E: {
-    title: "Le Colosse aux pieds d’argile <p>Stéphanie Murat, 2022 (téléfilm)</p>",
-    text: `
-      <p><strong>Le Colosse aux pieds d’argile</strong> est un téléfilm dramatique français réalisé par <strong>Stéphanie Murat</strong>.</p>
-      <p>Librement adapté du livre de <strong>Sébastien Boueilh</strong> et <strong>Thierry Vildary</strong> (Michel Lafon, 2020), il retrace le parcours d’un ancien sportif confronté aux violences sexuelles subies durant son adolescence.</p>
-      <p>Le récit met en lumière les mécanismes d’emprise, le silence institutionnel et l’importance de la parole et de la prévention dans le milieu sportif.</p>
-    `
-  },
-
-  F: {
-    title: "Service volé <p>Jérôme Foulon, 2021 (téléfilm)</p>",
-    text: `
-      <p><strong>Service volé</strong> est un téléfilm dramatique inspiré de l’histoire d’<strong>Isabelle Demongeot</strong>, ancienne joueuse de tennis.</p>
-      <p>Il retrace le combat d’une femme qui décide de briser le silence sur les violences sexuelles subies dans sa jeunesse.</p>
-      <p>Le film souligne les obstacles rencontrés par les victimes lorsqu’elles parlent et la nécessité d’un soutien collectif pour prévenir les violences dans le sport.</p>
-    `
-  },
-
- /* ===== DOCUMENTAIRES ===== */
-
-G: {
-  title: "Violences sexuelles dans le sport, l’enquête, le silence des champions <p>Pierre-Emmanuel Luneau-Daurignac, 2020</p>",
-  text: `
-    <p><strong>Violences sexuelles dans le sport, l’enquête, le silence des champions</strong> est une enquête journalistique qui met en lumière l’ampleur des violences sexuelles dans le milieu sportif.</p>
-    <p>À partir de témoignages de victimes, d’archives et d’investigations de terrain, l’auteur révèle les mécanismes de silence, de protection des agresseurs et de déni institutionnel qui ont longtemps prévalu.</p>
-    <p>L’ouvrage interroge les responsabilités des fédérations, des encadrants et des institutions, et souligne l’urgence de transformer en profondeur le système sportif pour mieux protéger les enfants et les athlètes.</p>
-  `
-},
-
-H: {
-  title: "Futurs champions, le prix de la gloire <p>Pierre-Emmanuel Luneau-Daurignac, 2025</p>",
-  text: `
-    <p><strong>Futurs champions, le prix de la gloire</strong> analyse les dérives du sport de haut niveau et la pression exercée sur de très jeunes athlètes dès leur entrée dans les filières d’excellence.</p>
-    <p>À travers des enquêtes et des témoignages, l’auteur montre comment la quête de performance peut favoriser des situations de violences, d’abus d’autorité et de mise en danger physique et psychologique.</p>
-    <p>L’ouvrage invite à repenser le modèle de formation des jeunes sportifs afin de concilier performance, respect de l’intégrité et protection des mineurs.</p>
-  `
-},
-
-I: {
-  title: "Un si long silence <p>Emmanuelle Anizon et Rémy Burkel, 2022</p>",
-  text: `
-    <p><strong>Un si long silence</strong> retrace le parcours de victimes de violences sexuelles dans le sport et les années de silence imposées par la peur, l’emprise et l’isolement.</p>
-    <p>À travers un travail d’enquête et de recueil de témoignages, les auteurs mettent en lumière les mécanismes qui empêchent la parole, ainsi que les obstacles rencontrés par celles et ceux qui tentent de dénoncer les faits.</p>
-    <p>L’ouvrage souligne l’importance de l’écoute, de la reconnaissance des victimes et de la responsabilité collective pour lutter contre les violences sexuelles dans le sport.</p>
-  `
-}
-
-
+  A:{ title:"Julie se tait <p>Leonardo Van Dijl, 2024</p>", text:`<p><strong>Julie se tait</strong> est un film dramatique qui suit Julie, jeune joueuse de tennis prometteuse intégrée dans une académie sportive de haut niveau.</p><p>Lorsque son entraîneur est suspendu à la suite d’événements graves et qu’une enquête est ouverte, les jeunes athlètes sont encouragés à prendre la parole. Pourtant, Julie choisit de garder le silence et de se concentrer sur sa pratique sportive.</p><p>À travers une mise en scène sobre et immersive, le film explore les mécanismes du silence, de l’emprise et de la pression de la performance dans le sport.</p>`},
+  B:{ title:"Slalom <p>Charlène Favier, 2020</p>", text:`<p><strong>Slalom</strong> suit Lyz, une adolescente de 15 ans repérée pour intégrer une section ski-études au sein d’un centre d’entraînement de haut niveau.</p><p>Sous l’autorité de son entraîneur, la jeune sportive s’engage dans une relation d’emprise progressive, mêlant pression de la performance, isolement et manipulation psychologique.</p><p>Le film interroge la frontière entre exigence sportive et abus, et la difficulté pour une jeune athlète de se protéger.</p>`},
+  C:{ title:"Lilia <p>Charlène Favier</p>", text:`<p><strong>Lilia</strong> est un outil pédagogique composé d’un court-métrage réalisé par <strong>Charlène Favier</strong> et d’un livret de formation conçu par la <strong>Mission interministérielle pour la protection des femmes contre les violences et la lutte contre la traite des êtres humains (Miprof)</strong>.</p><p>Le film met en scène Lilia, une jeune sportive confrontée à une situation de violences sexuelles dans le cadre de sa pratique sportive, et s’attache à montrer les mécanismes d’emprise, de sidération et de silence qui peuvent empêcher une victime de parler.</p><p>Destiné aux encadrants et encadrantes, professionnels et bénévoles du sport et de l’activité physique, ce kit vise à faciliter la compréhension des violences, à repérer les signaux d’alerte et à encourager des réactions adaptées pour protéger les victimes.</p>`},
+  D:{ title:"Whiplash <p>Damien Chazelle, 2014</p>", text:`<p><strong>Whiplash</strong> suit Andrew Neiman, jeune batteur de jazz ambitieux, admis dans un prestigieux conservatoire.</p><p>Sous la direction d’un professeur aux méthodes humiliantes et violentes, il subit une pression psychologique extrême présentée comme un moteur de performance.</p><p>Le film questionne le prix de l’excellence lorsque la violence devient une norme.</p>`},
+  E:{ title:"Le Colosse aux pieds d’argile <p>Stéphanie Murat, 2022 (téléfilm)</p>", text:`<p><strong>Le Colosse aux pieds d’argile</strong> est un téléfilm dramatique français réalisé par <strong>Stéphanie Murat</strong>.</p><p>Librement adapté du livre de <strong>Sébastien Boueilh</strong> et <strong>Thierry Vildary</strong> (Michel Lafon, 2020), il retrace le parcours d’un ancien sportif confronté aux violences sexuelles subies durant son adolescence.</p><p>Le récit met en lumière les mécanismes d’emprise, le silence institutionnel et l’importance de la parole et de la prévention dans le milieu sportif.</p>`},
+  F:{ title:"Service volé <p>Jérôme Foulon, 2021 (téléfilm)</p>", text:`<p><strong>Service volé</strong> est un téléfilm dramatique inspiré de l’histoire d’<strong>Isabelle Demongeot</strong>, ancienne joueuse de tennis.</p><p>Il retrace le combat d’une femme qui décide de briser le silence sur les violences sexuelles subies dans sa jeunesse.</p><p>Le film souligne les obstacles rencontrés par les victimes lorsqu’elles parlent et la nécessité d’un soutien collectif pour prévenir les violences dans le sport.</p>`},
+  G:{ title:"Violences sexuelles dans le sport, l’enquête, le silence des champions <p>Pierre-Emmanuel Luneau-Daurignac, 2020</p>", text:`<p><strong>Violences sexuelles dans le sport, l’enquête, le silence des champions</strong> est une enquête journalistique qui met en lumière l’ampleur des violences sexuelles dans le milieu sportif.</p><p>À partir de témoignages de victimes, d’archives et d’investigations de terrain, l’auteur révèle les mécanismes de silence, de protection des agresseurs et de déni institutionnel qui ont longtemps prévalu.</p><p>L’ouvrage interroge les responsabilités des fédérations, des encadrants et des institutions, et souligne l’urgence de transformer en profondeur le système sportif pour mieux protéger les enfants et les athlètes.</p>`},
+  H:{ title:"Futurs champions, le prix de la gloire <p>Pierre-Emmanuel Luneau-Daurignac, 2025</p>", text:`<p><strong>Futurs champions, le prix de la gloire</strong> analyse les dérives du sport de haut niveau et la pression exercée sur de très jeunes athlètes dès leur entrée dans les filières d’excellence.</p><p>À travers des enquêtes et des témoignages, l’auteur montre comment la quête de performance peut favoriser des situations de violences, d’abus d’autorité et de mise en danger physique et psychologique.</p><p>L’ouvrage invite à repenser le modèle de formation des jeunes sportifs afin de concilier performance, respect de l’intégrité et protection des mineurs.</p>`},
+  I:{ title:"Un si long silence <p>Emmanuelle Anizon et Rémy Burkel, 2022</p>", text:`<p><strong>Un si long silence</strong> retrace le parcours de victimes de violences sexuelles dans le sport et les années de silence imposées par la peur, l’emprise et l’isolement.</p><p>À travers un travail d’enquête et de recueil de témoignages, les auteurs mettent en lumière les mécanismes qui empêchent la parole, ainsi que les obstacles rencontrés par celles et ceux qui tentent de dénoncer les faits.</p><p>L’ouvrage souligne l’importance de l’écoute, de la reconnaissance des victimes et de la responsabilité collective pour lutter contre les violences sexuelles dans le sport.</p>`}
 };
 
 const books = document.querySelectorAll('.book');
 const fiche = document.getElementById('fiche');
 
-books.forEach(book => {
-  book.addEventListener('click', () => {
-    books.forEach(b => b.classList.remove('active'));
+books.forEach(book=>{
+  book.addEventListener('click',()=>{
+    books.forEach(b=>b.classList.remove('active'));
     book.classList.add('active');
-
     const key = book.dataset.book;
     fiche.innerHTML = `<h3>${data[key].title}</h3>${data[key].text}`;
     fiche.classList.add('active');

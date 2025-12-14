@@ -1,20 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RègloSport – Nouvelle animation</title>
+<title>RègloSport – Animation images</title>
 
 <style>
 html, body {
@@ -29,7 +18,7 @@ body {
   background-repeat: repeat;
 }
 
-/* CONTENEUR GLOBAL DIGIFORMA */
+/* CONTENEUR GLOBAL */
 .reglo-wrapper {
   width: 100%;
   display: flex;
@@ -39,19 +28,61 @@ body {
 .reglo-scene {
   width: 100%;
   max-width: 1000px;
-  padding: 30px 16px;
+  padding: 30px 16px 40px;
   box-sizing: border-box;
 }
 
 /* TITRE */
 .reglo-title {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .reglo-title img {
-  max-width: 22%;      /* taille ajustable */
+  max-width: 22%;
   height: auto;
+}
+
+/* CARROUSEL */
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+/* IMAGE */
+.carousel-image-wrapper {
+  width: 100%;
+  max-width: 720px;
+  text-align: center;
+}
+
+.carousel-image-wrapper img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* FLÈCHES */
+.arrow {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  font-size: 20px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.arrow:hover {
+  background: rgba(0,0,0,0.8);
+  transform: scale(1.05);
 }
 </style>
 </head>
@@ -63,18 +94,60 @@ body {
 
     <!-- TITRE -->
     <div class="reglo-title">
-      <img 
-        src="https://avantpost-cpu.github.io/depot-quiz/affiches/titre.png" 
-        alt="RègloSport"
-      >
+      <img src="https://avantpost-cpu.github.io/depot-quiz/affiches/titre.png" alt="RègloSport">
+    </div>
+
+    <!-- CARROUSEL -->
+    <div class="carousel">
+
+      <!-- FLÈCHE GAUCHE -->
+      <div class="arrow" id="prevBtn">‹</div>
+
+      <!-- IMAGE -->
+      <div class="carousel-image-wrapper">
+        <img id="carouselImage"
+             src="https://avantpost-cpu.github.io/depot-quiz/affiches/A.png"
+             alt="Affiche">
+      </div>
+
+      <!-- FLÈCHE DROITE -->
+      <div class="arrow" id="nextBtn">›</div>
+
     </div>
 
   </div>
 </div>
 
+<script>
+const images = [
+  "A.jpg",
+  "B.jpg",
+  "C.jpg",
+  "D.jpg",
+  "E.jpg"
+];
+
+const basePath = "https://avantpost-cpu.github.io/depot-quiz/affiches/";
+let currentIndex = 0;
+
+const imgEl = document.getElementById("carouselImage");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+
+function updateImage() {
+  imgEl.src = basePath + images[currentIndex];
+}
+
+nextBtn.addEventListener("click", () => {
+  currentIndex = (currentIndex + 1) % images.length;
+  updateImage();
+});
+
+prevBtn.addEventListener("click", () => {
+  currentIndex = (currentIndex - 1 + images.length) % images.length;
+  updateImage();
+});
+</script>
+
 </body>
-</html>
-    
-  </body>
-  
 </html>

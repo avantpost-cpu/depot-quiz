@@ -1,21 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Module e-learning stable</title>
+
 <style>
+/* ---------- BASE ---------- */
 body {
   margin: 0;
   background: #fff;
@@ -29,7 +20,7 @@ body {
   max-width: 400px;
 }
 
-/* Lignes flex */
+/* ---------- LIGNES ---------- */
 .row {
   display: flex;
   margin: 0;
@@ -37,7 +28,8 @@ body {
   line-height: 0;
 }
 
-.row img, .row video {
+.row img,
+.row video {
   display: block;
   user-select: none;
   -webkit-user-drag: none;
@@ -49,26 +41,33 @@ body {
 .row-1 { height: 240px; }
 .row-1 img { width: 120%; }
 
-/* Ligne 2 : vidéo + 2 images */
+/* Ligne 2 */
 .row-2 { height: 124px; }
-.row-2 video, .row-2 .highlight {
-  flex:  1 2 8;
+.row-2 video,
+.row-2 .highlight {
+  flex: 1 2 8;
   width: 80.333%;
 }
 
-/* Ligne 3 : 2 images */
+/* Ligne 3 */
 .row-3 { height: 90px; }
 .row-3 .highlight {
-  flex: 0 0 45%;   /* chaque image prend exactement 50% de la ligne */
-  max-height: 100%; 
-  object-fit: cover;
+  flex: 0 0 50%;
 }
 
-/* Ligne 4 : 1 image */
+/* Ligne 4 */
 .row-4 { height: 100px; }
-.row-4 .highlight { flex: 1; }
+.row-4 .highlight {
+  flex: 1;
+}
 
-/* Hover / active effects */
+/* Ligne 5 (NOUVEAU – 2 boutons) */
+.row-5 { height: 80px; }
+.row-5 .highlight {
+  flex: 0 0 40%;
+}
+
+/* ---------- INTERACTIONS ---------- */
 .highlight {
   cursor: pointer;
   position: relative;
@@ -89,34 +88,54 @@ body {
 }
 </style>
 </head>
+
 <body>
 <div class="container">
-  <!-- Ligne 1 -->
+
+  <!-- IMAGE PRINCIPALE -->
   <div class="row row-1">
-    <img id="img1" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/1.png" alt="image principale">
+    <img id="img1"
+         src="https://avantpost-cpu.github.io/depot-quiz/urgence2/1.png"
+         alt="image principale">
   </div>
 
-  <!-- Groupe highlight -->
+  <!-- GROUPE INTERACTIF -->
   <div class="highlight-group">
+
     <!-- Ligne 2 -->
     <div class="row row-2">
       <video autoplay muted loop playsinline>
         <source src="https://avantpost-cpu.github.io/depot-quiz/urgence2/2.mp4" type="video/mp4">
       </video>
-      <img class="highlight" id="img3" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/3.png" alt="image 3">
-      <img class="highlight" id="img4" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/4.png" alt="image 4">
+      <img class="highlight" id="img3"
+           src="https://avantpost-cpu.github.io/depot-quiz/urgence2/3.png">
+      <img class="highlight" id="img4"
+           src="https://avantpost-cpu.github.io/depot-quiz/urgence2/4.png">
     </div>
 
     <!-- Ligne 3 -->
     <div class="row row-3">
-      <img class="highlight" id="img5" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/5.png" alt="image 5">
-      <img class="highlight" id="img6" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/6.png" alt="image 6">
+      <img class="highlight" id="img5"
+           src="https://avantpost-cpu.github.io/depot-quiz/urgence2/5.png">
+      <img class="highlight" id="img6"
+           src="https://avantpost-cpu.github.io/depot-quiz/urgence2/6.png">
     </div>
 
     <!-- Ligne 4 -->
     <div class="row row-4">
-      <img class="highlight" id="img7" src="https://avantpost-cpu.github.io/depot-quiz/urgence2/7.png" alt="image 7">
+      <img class="highlight" id="img7"
+           src="https://avantpost-cpu.github.io/depot-quiz/urgence2/7.png">
     </div>
+
+    <!-- Ligne 5 (NOUVEAUX BOUTONS) -->
+    <div class="row row-5">
+      <img class="highlight" id="img8"
+           src="https://avantpost-cpu.github.io/depot-quiz/urgence2/8.png">
+      <img class="highlight" id="img9"
+           src="https://avantpost-cpu.github.io/depot-quiz/urgence2/8.jpg
+                ">
+    </div>
+
   </div>
 </div>
 
@@ -128,18 +147,20 @@ body {
   const highlights = Array.from(group.querySelectorAll('.highlight'));
 
   const replacements = {
-    'img3':'https://avantpost-cpu.github.io/depot-quiz/urgence2/1a.png',
-    'img4':'https://avantpost-cpu.github.io/depot-quiz/urgence2/1b.png',
-    'img5':'https://avantpost-cpu.github.io/depot-quiz/urgence2/1e.jpg',
-    'img6':'https://avantpost-cpu.github.io/depot-quiz/urgence2/1d.jpg',
-    'img7':'https://avantpost-cpu.github.io/depot-quiz/urgence2/1c.jpg'
+    img3: 'https://avantpost-cpu.github.io/depot-quiz/urgence2/1a.png',
+    img4: 'https://avantpost-cpu.github.io/depot-quiz/urgence2/1b.png',
+    img5: 'https://avantpost-cpu.github.io/depot-quiz/urgence2/1e.jpg',
+    img6: 'https://avantpost-cpu.github.io/depot-quiz/urgence2/1d.jpg',
+    img7: 'https://avantpost-cpu.github.io/depot-quiz/urgence2/1c.jpg',
+    img8: 'https://avantpost-cpu.github.io/depot-quiz/urgence2/1f.jpg',
+    img9: 'https://avantpost-cpu.github.io/depot-quiz/urgence2/1g.jpg'
   };
 
   let activeImg = null;
   const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   function activate(img){
-    highlights.forEach(h=>h.classList.remove('active'));
+    highlights.forEach(h => h.classList.remove('active'));
     img.classList.add('active');
     group.classList.add('dim');
     img1.src = replacements[img.id] || originalSrc;
@@ -147,37 +168,33 @@ body {
   }
 
   function clear(){
-    highlights.forEach(h=>h.classList.remove('active'));
+    highlights.forEach(h => h.classList.remove('active'));
     group.classList.remove('dim');
     img1.src = originalSrc;
     activeImg = null;
   }
 
-  highlights.forEach(img=>{
-    if(isTouch){
-      img.addEventListener('touchstart', e=>{
+  highlights.forEach(img => {
+    if (isTouch) {
+      img.addEventListener('touchstart', e => {
         e.stopPropagation();
-        if(activeImg===img) clear();
-        else activate(img);
-      }, {passive:true});
+        activeImg === img ? clear() : activate(img);
+      }, { passive:true });
     } else {
-      img.addEventListener('pointerenter', ()=>activate(img));
-      img.addEventListener('pointerleave', ()=>clear());
+      img.addEventListener('pointerenter', () => activate(img));
+      img.addEventListener('pointerleave', clear);
     }
   });
 
-  if(isTouch){
-    document.addEventListener('touchstart', e=>{
-      if(!e.target.closest('.highlight')) clear();
-    }, {passive:true});
+  if (isTouch) {
+    document.addEventListener('touchstart', e => {
+      if (!e.target.closest('.highlight')) clear();
+    }, { passive:true });
   } else {
     group.addEventListener('pointerleave', clear);
   }
 })();
 </script>
+
 </body>
-</html>
-    
-  </body>
-  
 </html>

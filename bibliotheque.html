@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Bibliothèque d’animations – Rebond</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* { box-sizing: border-box; }
+
+:root{
+  --rebond-blue:#1b5e6f;
+  --rebond-yellow:#edb01a;
+}
+
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#f4f4f4;
+  color:#222;
+}
+
+/* HEADER */
+header{
+  background:var(--rebond-blue);
+  color:#fff;
+  padding:40px 20px;
+  text-align:center;
+}
+header h1{
+  margin:0 0 10px;
+  font-size:28px;
+}
+header p{
+  margin:0;
+  max-width:900px;
+  margin-inline:auto;
+}
+
+/* NAV ALPHABET */
+.alphabet{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  padding:20px;
+  background:#fff;
+  border-bottom:1px solid #ddd;
+}
+.alphabet a{
+  text-decoration:none;
+  color:var(--rebond-blue);
+  font-weight:bold;
+  padding:6px 10px;
+  border-radius:6px;
+  border:1px solid var(--rebond-blue);
+  font-size:14px;
+}
+.alphabet a.disabled{
+  opacity:.3;
+  pointer-events:none;
+}
+
+/* GRID */
+.grid{
+  max-width:1400px;
+  margin:40px auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));
+  gap:25px;
+  padding:0 20px 60px;
+}
+
+/* CARD */
+.card{
+  background:#fff;
+  border-radius:14px;
+  padding:18px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+}
+.card h2{
+  margin-top:0;
+  color:var(--rebond-blue);
+  font-size:20px;
+}
+.card p{
+  font-size:14px;
+  line-height:1.5;
+}
+
+/* PREVIEW */
+.preview{
+  margin:15px 0;
+  border-radius:10px;
+  overflow:hidden;
+  border:1px solid #ddd;
+  background:#000;
+}
+.preview iframe{
+  width:100%;
+  height:260px;
+  border:none;
+}
+
+/* ACTIONS */
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.actions a{
+  text-decoration:none;
+  background:var(--rebond-blue);
+  color:#fff;
+  padding:8px 14px;
+  border-radius:6px;
+  font-size:14px;
+}
+.actions button{
+  background:var(--rebond-yellow);
+  color:#000;
+  border:none;
+  padding:8px 14px;
+  border-radius:6px;
+  font-size:14px;
+  cursor:pointer;
+  font-weight:bold;
+}
+.actions button:hover{
+  background:#d39c16;
+}
+
+.helper{
+  font-size:12px;
+  color:#666;
+  margin-top:6px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Bibliothèque d’animations Rebond</h1>
+  <p>
+    Ensemble des modules interactifs développés pour le e-learning Rebond.
+    Chaque animation peut être ouverte ou partagée simplement en copiant son lien.
+  </p>
+</header>
+
+<nav class="alphabet">
+  <a href="#A">A</a>
+  <a href="#C">C</a>
+  <a href="#E">E</a>
+  <a href="#F">F</a>
+  <a href="#H">H</a>
+  <a href="#I">I</a>
+  <a href="#L">L</a>
+  <a href="#M">M</a>
+  <a href="#P">P</a>
+  <a href="#Q">Q</a>
+  <a href="#R">R</a>
+  <a href="#S">S</a>
+  <a href="#T">T</a>
+  <a href="#U">U</a>
+  <a href="#V">V</a>
+
+  <a class="disabled">B</a>
+  <a class="disabled">D</a>
+  <a class="disabled">G</a>
+  <a class="disabled">J</a>
+  <a class="disabled">K</a>
+  <a class="disabled">N</a>
+  <a class="disabled">O</a>
+  <a class="disabled">W</a>
+  <a class="disabled">X</a>
+  <a class="disabled">Y</a>
+  <a class="disabled">Z</a>
+</nav>
+
+<section class="grid">
+
+<!-- ===================== A ===================== -->
+<div class="card" id="A">
+  <h2>A — Affiches</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/affiches/affiches.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/affiches/affiches.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/affiches/affiches.html')">📋 Copier le lien</button>
+  </div>
+  <div class="helper">Copie le lien (URL) uniquement</div>
+</div>
+
+<div class="card">
+  <h2>A — Âges</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/ages/agesretravail.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/ages/agesretravail.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/ages/agesretravail.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>A — Autobiographie / Témoignage</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/autobio/autobio.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/autobio/autobio.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/autobio/autobio.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== C ===================== -->
+<div class="card" id="C">
+  <h2>C — Chiffres</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/chiffres/chiffres.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/chiffres/chiffres.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/chiffres/chiffres.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>C — Communication</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/com/com.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/com/com.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/com/com.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>C — Comparaison</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/comparaison/comparaison.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/comparaison/comparaison.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/comparaison/comparaison.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>C — Course</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/course/course.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/course/course.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/course/course.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== E ===================== -->
+<div class="card" id="E">
+  <h2>E — Essai</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/essai/essai.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/essai/essai.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/essai/essai.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== F ===================== -->
+<div class="card" id="F">
+  <h2>F — Films</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/films/films.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/films/films.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/films/films.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== H ===================== -->
+<div class="card" id="H">
+  <h2>H — Honorabilité</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/hono/hono.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/hono/hono.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/hono/hono.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== I ===================== -->
+<div class="card" id="I">
+  <h2>I — Infra</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/infra/infra.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/infra/infra.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/infra/infra.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== L ===================== -->
+<div class="card" id="L">
+  <h2>L — Livre</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/livre/livre.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/livre/livre.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/livre/livre.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>L — Livres jeunesse</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/livresj/livresj.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/livresj/livresj.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/livresj/livresj.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== M ===================== -->
+<div class="card" id="M">
+  <h2>M — Majeure</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/majeure/majeure.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/majeure/majeure.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/majeure/majeure.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>M — Mineure</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/mineure/mineure.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/mineure/mineure.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/mineure/mineure.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>M — Miroir (outil)</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/outil/miroir.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/outil/miroir.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/outil/miroir.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== P ===================== -->
+<div class="card" id="P">
+  <h2>P — Phrases</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/phrases/phrases.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/phrases/phrases.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/phrases/phrases.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>P — Puzzle (définition)</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/puzzledef/puzzledef.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/puzzledef/puzzledef.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/puzzledef/puzzledef.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== Q ===================== -->
+<div class="card" id="Q">
+  <h2>Q — Question</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/question/question1.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/question/question1.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/question/question1.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== R ===================== -->
+<div class="card" id="R">
+  <h2>R — Réglo’Sport</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/reglosport/reglosport.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/reglosport/reglosport.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/reglosport/reglosport.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>R — Retenir</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/retenir/retenir.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== S ===================== -->
+<div class="card" id="S">
+  <h2>S — Signalement</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/signalement/signalement.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/signalement/signalement.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/signalement/signalement.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== T ===================== -->
+<div class="card" id="T">
+  <h2>T — Tableau</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/tableau/tableau.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/tableau/tableau.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/tableau/tableau.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>T — Tableau 1</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/tableau1/tableau1.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/tableau1/tableau1.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/tableau1/tableau1.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>T — Tableau 2</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/tableau2/tableau2.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/tableau2/tableau2.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/tableau2/tableau2.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>T — Tableau 3</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/tableau3/tableau3.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/tableau3/tableau3.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/tableau3/tableau3.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>T — Tâches</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/taches/taches.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/taches/taches.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/taches/taches.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== U ===================== -->
+<div class="card" id="U">
+  <h2>U — Urgence</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/urgence/urgence.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/urgence/urgence.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/urgence/urgence.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<div class="card">
+  <h2>U — Urgence 2</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/urgence2/urgence2.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/urgence2/urgence2.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/urgence2/urgence2.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+<!-- ===================== V ===================== -->
+<div class="card" id="V">
+  <h2>V — Violences</h2>
+  <div class="preview"><iframe src="https://avantpost-cpu.github.io/depot-quiz/violences/violences.html"></iframe></div>
+  <div class="actions">
+    <a href="https://avantpost-cpu.github.io/depot-quiz/violences/violences.html" target="_blank">Ouvrir</a>
+    <button onclick="copierURL('https://avantpost-cpu.github.io/depot-quiz/violences/violences.html')">📋 Copier le lien</button>
+  </div>
+</div>
+
+</section>
+
+<script>
+function copierURL(url){
+  navigator.clipboard.writeText(url).then(() => {
+    alert("Le lien a été copié dans le presse-papiers ✅");
+  }).catch(() => {
+    // Fallback minimal si le navigateur bloque clipboard
+    prompt("Copie ce lien :", url);
+  });
+}
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

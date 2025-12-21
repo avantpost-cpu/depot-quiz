@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infographie – Lieux</title>
+
+<style>
+/* RESET */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+/* FOND MOSAÏQUE */
+body {
+  background-image: url('https://avantpost-cpu.github.io/depot-quiz/fond.jpg');
+  background-repeat: repeat;
+  background-size: 420px auto;
+  font-family: Arial, sans-serif;
+}
+
+/* CONTENEUR GLOBAL — CENTRAGE */
+.wrapper {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 1000px;
+  margin: auto;
+  padding: 40px 20px 80px;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* SCÈNE — CENTRÉE */
+.scene {
+  position: relative;
+  width: 640px;
+  height: 640px;
+}
+
+/* TITRE CENTRAL — PLUS GRAND */
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 360px;     /* ⬅️ AGRANDI */
+  height: 320px;    /* ⬅️ AGRANDI */
+  transform: translate(-34%, -40%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.center img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* IMAGES AUTOUR */
+.orbit-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120px;
+  height: 120px;
+  transform-origin: center center;
+}
+
+.orbit-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+  cursor: pointer;
+}
+
+/* ZOOM AU SURVOL */
+.orbit-item img:hover {
+  transform: scale(1.8);
+}
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .scene {
+    width: 420px;
+    height: 420px;
+  }
+
+  .center {
+    width: 180px;
+    height: 180px;
+  }
+
+  .orbit-item {
+    width: 90px;
+    height: 90px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+  <div class="scene">
+
+    <!-- TITRE CENTRAL -->
+    <div class="center">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/lieux/titre.png" alt="Titre">
+    </div>
+
+    <!-- LIEUX -->
+    <div id="orbit"></div>
+
+  </div>
+</div>
+
+<script>
+const images = [
+  "competitions.png",
+  "deplacements.png",
+  "fetes.png",
+  "hotel.png",
+  "soins.png",
+  "training.png",
+  "vestiaires.png"
+];
+
+const orbit = document.getElementById("orbit");
+const radius = 280; // ⬅️ ajusté pour le nouveau titre
+
+images.forEach((img, i) => {
+  const angle = (360 / images.length) * i;
+
+  const item = document.createElement("div");
+  item.className = "orbit-item";
+  item.style.transform =
+    `rotate(${angle}deg) translate(${radius}px) rotate(-${angle}deg)`;
+
+  item.innerHTML = `
+    <img src="https://avantpost-cpu.github.io/depot-quiz/lieux/${img}" alt="">
+  `;
+
+  orbit.appendChild(item);
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

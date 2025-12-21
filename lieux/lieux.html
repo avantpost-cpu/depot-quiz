@@ -1,15 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -21,45 +10,46 @@
 html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
 }
 
-/* FOND MOSAÏQUE */
+/* FOND MOSAÏQUE + CENTRAGE GLOBAL */
 body {
   background-image: url('https://avantpost-cpu.github.io/depot-quiz/fond.jpg');
   background-repeat: repeat;
   background-size: 420px auto;
   font-family: Arial, sans-serif;
-}
-
-/* CONTENEUR GLOBAL — CENTRAGE */
-.wrapper {
-  min-height: 100vh;
-  width: 100%;
-  max-width: 1000px;
-  margin: auto;
-  padding: 40px 20px 80px;
-  box-sizing: border-box;
 
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* SCÈNE — CENTRÉE */
+/* CONTENEUR (NE CENTRE PLUS) */
+.wrapper {
+  width: 100%;
+  max-width: 1000px;
+  padding: 0;            /* ⬅️ suppression du biais */
+  box-sizing: border-box;
+}
+
+/* SCÈNE — RÉFÉRENCE CENTRALE */
 .scene {
   position: relative;
   width: 640px;
   height: 640px;
+  margin: auto;
 }
 
-/* TITRE CENTRAL — PLUS GRAND */
+/* TITRE CENTRAL */
 .center {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 360px;     /* ⬅️ AGRANDI */
-  height: 320px;    /* ⬅️ AGRANDI */
-  transform: translate(-34%, -40%);
+  width: 380px;
+  height: 280px;
+  transform: translate(-40%, -40%);
   z-index: 5;
   pointer-events: none;
 }
@@ -118,7 +108,7 @@ body {
 <div class="wrapper">
   <div class="scene">
 
-    <!-- TITRE CENTRAL -->
+    <!-- TITRE -->
     <div class="center">
       <img src="https://avantpost-cpu.github.io/depot-quiz/lieux/titre.png" alt="Titre">
     </div>
@@ -141,7 +131,7 @@ const images = [
 ];
 
 const orbit = document.getElementById("orbit");
-const radius = 280; // ⬅️ ajusté pour le nouveau titre
+const radius = 280;
 
 images.forEach((img, i) => {
   const angle = (360 / images.length) * i;
@@ -160,8 +150,4 @@ images.forEach((img, i) => {
 </script>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>

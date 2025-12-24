@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mosaïques Angie – navigation cinéma</title>
+
+<style>
+/* RESET GLOBAL */
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  background:#fff;
+  font-family:Arial, sans-serif;
+  overflow-x:hidden;
+}
+
+/* ===============================
+   NAVIGATION
+   =============================== */
+.nav{
+  position:fixed;
+  top:16px;
+  right:16px;
+  z-index:1000;
+}
+
+.nav button{
+  margin-left:8px;
+  padding:8px 14px;
+  cursor:pointer;
+  background:#104c64;
+  color:#fff;
+  border:none;
+  font-size:14px;
+}
+
+/* ===============================
+   CONTENEUR DES PAGES
+   =============================== */
+.pages{
+  position:relative;
+  width:100%;
+}
+
+/* pages superposées */
+.page{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  opacity:0;
+  pointer-events:none;
+
+  transform:translateX(60px);
+  transition:
+    opacity .6s ease,
+    transform .6s cubic-bezier(.2,.8,.2,1);
+}
+
+/* page visible */
+.page.active{
+  opacity:1;
+  pointer-events:auto;
+  transform:translateX(0);
+  position:relative;
+}
+
+/* ===============================
+   BOUTON RETOUR (PAGE 2)
+   =============================== */
+.back{
+  position:fixed;
+  bottom:24px;
+  left:24px;
+  z-index:1000;
+
+  background:#104c64;
+  color:#fff;
+  border:none;
+  padding:10px 16px;
+  cursor:pointer;
+  font-size:14px;
+  display:none;
+}
+
+.page-2.active .back{
+  display:block;
+}
+</style>
+</head>
+
+<body>
+
+<!-- NAVIGATION (optionnelle, debug / desktop) -->
+<div class="nav">
+  <button id="btnPage1">Page 1</button>
+  <button id="btnPage2">Page 2</button>
+</div>
+
+<!-- ===============================
+     PAGES
+     =============================== -->
+<div class="pages">
+
+  <!-- ==================================================
+       PAGE 1 – MOSAÏQUE ANGIE (A / B / C / D / E)
+       ================================================== -->
+  <section class="page page-1 active">
+
+    <!-- 🔹 COLLE ICI TON CODE COMPLET DE LA MOSAÏQUE ANGIE
+         (wrapper + style + script éventuel)
+         SANS RIEN MODIFIER
+    -->
+
+    <div class="wrapper">
+      <!-- mosaïque Angie A/B/C/D/E -->
+    </div>
+
+  </section>
+
+  <!-- ==================================================
+       PAGE 2 – MOSAÏQUE F (page 2 finale)
+       ================================================== -->
+  <section class="page page-2">
+
+    <!-- 🔹 BOUTON RETOUR -->
+    <button class="back" id="backBtn">← Retour</button>
+
+    <!-- 🔹 COLLE ICI TOUT LE CODE DE LA MOSAÏQUE F
+         (structure PAO + zoom + opacités)
+         SANS RIEN MODIFIER
+    -->
+
+    <div class="wrapper">
+      <!-- mosaïque F finale -->
+    </div>
+
+  </section>
+
+</div>
+
+<!-- ===============================
+     SCRIPT DE BASCULE
+     =============================== -->
+<script>
+const page1 = document.querySelector(".page-1");
+const page2 = document.querySelector(".page-2");
+
+const btnPage1 = document.getElementById("btnPage1");
+const btnPage2 = document.getElementById("btnPage2");
+const backBtn  = document.getElementById("backBtn");
+
+btnPage2.onclick = () => {
+  page2.classList.add("active");
+  page1.classList.remove("active");
+};
+
+btnPage1.onclick = backBtn.onclick = () => {
+  page1.classList.add("active");
+  page2.classList.remove("active");
+};
+
+/* ===============================
+   OPTION : BASCULE VIA IMAGE (ex D)
+   =============================== */
+/*
+document.getElementById("D").onclick = () => {
+  btnPage2.click();
+};
+*/
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

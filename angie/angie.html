@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mosaïque Angie – scale 60%</title>
+
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #fff;
+  padding: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Wrapper de mise à l’échelle */
+.wrapper {
+  position: relative;
+  transform: scale(0.3);          /* ⚠️ 0.3 = 30% (je laisse ta valeur) */
+  transform-origin: top center;
+}
+
+/* Mosaïque compacte */
+.mosaic {
+  display: grid;
+  gap: 0;
+  line-height: 0;
+
+  grid-template-columns: var(--w1) var(--w2) var(--w3);
+  grid-template-rows: var(--h1) var(--h2) var(--h3);
+
+  width: calc(var(--w1) + var(--w2) + var(--w3));
+  height: calc(var(--h1) + var(--h2) + var(--h3));
+}
+
+/* Images = tailles exactes des cellules */
+.mosaic img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: fill;
+}
+
+/* Placement */
+#A1 { grid-column: 1; grid-row: 1 / span 3; }
+
+#A2 { grid-column: 2; grid-row: 1; }
+#C  { grid-column: 2; grid-row: 2; }
+#A3 { grid-column: 2; grid-row: 3; }
+
+#B  { grid-column: 3; grid-row: 1; }
+#D  { grid-column: 3; grid-row: 2; }
+#E  { grid-column: 3; grid-row: 3; }
+
+/* ========================= */
+/* OVERLAY TEXTE SUR D */
+/* ========================= */
+#overlayD{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 10px;
+  height: 10px;
+  display: none;
+  pointer-events: none;
+
+  background: #104c64;      /* ✅ fond demandé */
+  padding: 22px 24px;
+  overflow: hidden;
+}
+
+#overlayD p{
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 36px;          /* ✅ corps plus gros */
+  line-height: 1.55;
+  text-align: justify;
+  color: #ffffff;           /* ✅ texte blanc */
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper" id="wrap">
+
+  <div id="mosaic" class="mosaic">
+    <img id="A1" src="https://avantpost-cpu.github.io/depot-quiz/angie/A1.jpg" alt="">
+    <img id="A2" src="https://avantpost-cpu.github.io/depot-quiz/angie/A2.jpg" alt="">
+    <img id="C"  src="https://avantpost-cpu.github.io/depot-quiz/angie/C.jpg"  alt="">
+    <img id="A3" src="https://avantpost-cpu.github.io/depot-quiz/angie/A3.jpg" alt="">
+    <img id="B"  src="https://avantpost-cpu.github.io/depot-quiz/angie/B.jpg"  alt="">
+    <img id="D"  src="https://avantpost-cpu.github.io/depot-quiz/angie/D.jpg"  alt="">
+    <img id="E"  src="https://avantpost-cpu.github.io/depot-quiz/angie/E.jpg"  alt="">
+  </div>
+
+  <!-- Overlay texte (ne modifie PAS la structure de la mosaïque) -->
+  <div id="overlayD">
+    <p>
+      <strong>Angélique Cauchy</strong> incarne une force rare&nbsp;: celle de transformer un traumatisme profond en un engagement durable au service de la protection de l’enfance. Ancienne sportive de haut niveau en tennis, elle est victime de violences sexuelles entre 12 et 14 ans. À 27 ans, elle franchit le mur du silence en portant plainte contre son agresseur. Ce choix marque un tournant décisif&nbsp;: celui de faire de son histoire un levier de changement collectif.
+      <br><br>
+      Aujourd’hui, Angélique Cauchy est reconnue comme l’une des voix les plus puissantes en France sur la prévention des violences, notamment dans le sport. Son témoignage, diffusé sur Brut, est visionné plus de 16&nbsp;millions de fois en 48&nbsp;heures, révélant l’ampleur du besoin de compréhension et d’action sur ces sujets.
+    </p>
+  </div>
+
+</div>
+
+<script>
+const ids = ["A1","A2","C","A3","B","D","E"];
+const imgs = ids.map(id => document.getElementById(id));
+const mosaic = document.getElementById("mosaic");
+const overlay = document.getElementById("overlayD");
+
+function allLoaded(images){
+  return Promise.all(images.map(img => new Promise(res => {
+    if (img.complete && img.naturalWidth) return res();
+    img.addEventListener("load", () => res(), { once:true });
+  })));
+}
+
+function applyGrid(){
+  const a1 = document.getElementById("A1");
+  const a2 = document.getElementById("A2");
+  const c  = document.getElementById("C");
+  const a3 = document.getElementById("A3");
+  const b  = document.getElementById("B");
+
+  mosaic.style.setProperty("--w1", a1.naturalWidth + "px");
+  mosaic.style.setProperty("--w2", a2.naturalWidth + "px");
+  mosaic.style.setProperty("--w3", b.naturalWidth  + "px");
+
+  mosaic.style.setProperty("--h1", a2.naturalHeight + "px");
+  mosaic.style.setProperty("--h2", c.naturalHeight  + "px");
+  mosaic.style.setProperty("--h3", a3.naturalHeight + "px");
+}
+
+function placeOverlay(){
+  const d = document.getElementById("D");
+
+  overlay.style.left   = d.offsetLeft + "px";
+  overlay.style.top    = d.offsetTop  + "px";
+  overlay.style.width  = d.clientWidth  + "px";
+  overlay.style.height = d.clientHeight + "px";
+
+  overlay.style.display = "block";
+}
+
+allLoaded(imgs).then(() => {
+  applyGrid();
+  requestAnimationFrame(placeOverlay);
+});
+
+window.addEventListener("resize", () => {
+  requestAnimationFrame(placeOverlay);
+});
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

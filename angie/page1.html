@@ -1,19 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Page 1 – découpe visuelle</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Page 1 – découpe mosaïque</title>
 
 <style>
 /* RESET */
@@ -24,37 +14,92 @@ body{
   justify-content:center;
   align-items:center;
   height:100vh;
+  overflow:hidden;
 }
 
 /* ===================== */
-/* PAGE DÉCOUPÉE */
+/* GRILLE MOSAÏQUE */
 /* ===================== */
 .page-angie{
   display:grid;
+
+  /* même logique que ta mosaïque Angie */
   grid-template-columns: 1.2fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
+
   width:80vw;
   max-width:1200px;
   aspect-ratio:3 / 2;
 }
 
-/* image source */
+/* image commune */
 .page-angie div{
-  background-image:url("https://avantpost-cpu.github.io/depot-quiz/angie/page1.jpg"); /* ⚠️ image dans le même dossier */
+  background-image:url("page1.jpg"); /* image dans le même dossier */
   background-repeat:no-repeat;
+}
+
+/* ===================== */
+/* COLONNE 1 – A1 */
+/* ===================== */
+.A1{
+  grid-column:1;
+  grid-row:1 / span 3;
+
+  /* découpe horizontale uniquement */
+  background-size:300% 100%;
+  background-position:0% 50%;
+}
+
+/* ===================== */
+/* COLONNE 2 */
+/* ===================== */
+.A2,.C,.A3{
   background-size:300% 300%;
 }
 
-/* BLOCS */
-.A1{grid-column:1;grid-row:1 / span 3; background-position:0% 50%}
-.A2{grid-column:2;grid-row:1; background-position:50% 0%}
-.C {grid-column:2;grid-row:2; background-position:50% 50%}
-.A3{grid-column:2;grid-row:3; background-position:50% 100%}
-.B {grid-column:3;grid-row:1; background-position:100% 0%}
-.D {grid-column:3;grid-row:2; background-position:100% 50%}
-.E {grid-column:3;grid-row:3; background-position:100% 100%}
-</style>
+.A2{
+  grid-column:2;
+  grid-row:1;
+  background-position:50% 0%;
+}
 
+.C{
+  grid-column:2;
+  grid-row:2;
+  background-position:50% 50%;
+}
+
+.A3{
+  grid-column:2;
+  grid-row:3;
+  background-position:50% 100%;
+}
+
+/* ===================== */
+/* COLONNE 3 */
+/* ===================== */
+.B,.D,.E{
+  background-size:300% 300%;
+}
+
+.B{
+  grid-column:3;
+  grid-row:1;
+  background-position:100% 0%;
+}
+
+.D{
+  grid-column:3;
+  grid-row:2;
+  background-position:100% 50%;
+}
+
+.E{
+  grid-column:3;
+  grid-row:3;
+  background-position:100% 100%;
+}
+</style>
 </head>
 
 <body>
@@ -70,8 +115,4 @@ body{
 </div>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>

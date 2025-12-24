@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Page 1 – Découpe mosaïque</title>
+<title>page1.jpg – découpe stable</title>
 
 <style>
 /* RESET */
@@ -14,11 +14,10 @@ body{
   justify-content:center;
   align-items:center;
   height:100vh;
-  overflow:hidden;
 }
 
 /* ===================== */
-/* CONTENEUR MOSAÏQUE */
+/* GRILLE MOSAÏQUE */
 /* ===================== */
 .page-angie{
   display:grid;
@@ -31,9 +30,17 @@ body{
 }
 
 /* blocs */
-.page-angie div{
-  background-image:url("page1.jpg");
-  background-repeat:no-repeat;
+.block{
+  position:relative;
+  overflow:hidden;              /* 🔥 clé */
+}
+
+/* image unique */
+.block img{
+  width:100%;
+  height:100%;
+  object-fit:cover;             /* 🔥 adapte */
+  display:block;
 }
 
 /* placement */
@@ -44,69 +51,42 @@ body{
 .B {grid-column:3;grid-row:1}
 .D {grid-column:3;grid-row:2}
 .E {grid-column:3;grid-row:3}
+
+/* ===================== */
+/* DÉCOUPE PAR POSITION */
+/* ===================== */
+
+/* colonne 1 = tranche gauche */
+.A1 img{ object-position: 0% 50%; }
+
+/* colonne 2 */
+.A2 img{ object-position: 50% 0%; }
+.C  img{ object-position: 50% 50%; }
+.A3 img{ object-position: 50% 100%; }
+
+/* colonne 3 */
+.B  img{ object-position: 100% 0%; }
+.D  img{ object-position: 100% 50%; }
+.E  img{ object-position: 100% 100%; }
+
 </style>
 </head>
 
 <body>
 
-<div class="page-angie" id="mosaic">
-  <div class="A1"></div>
-  <div class="A2"></div>
-  <div class="C"></div>
-  <div class="A3"></div>
-  <div class="B"></div>
-  <div class="D"></div>
-  <div class="E"></div>
+<div class="page-angie">
+
+  <div class="block A1"><img src="page1.jpg" alt=""></div>
+
+  <div class="block A2"><img src="page1.jpg" alt=""></div>
+  <div class="block C"><img src="page1.jpg" alt=""></div>
+  <div class="block A3"><img src="page1.jpg" alt=""></div>
+
+  <div class="block B"><img src="page1.jpg" alt=""></div>
+  <div class="block D"><img src="page1.jpg" alt=""></div>
+  <div class="block E"><img src="page1.jpg" alt=""></div>
+
 </div>
-
-<script>
-/* =====================================================
-   DÉCOUPE VISUELLE PRÉCISE DE page1.jpg
-   (basée sur la taille réelle de l’image)
-   ===================================================== */
-
-const img = new Image();
-img.src = "page1.jpg";
-
-img.onload = () => {
-
-  const W = img.width;
-  const H = img.height;
-
-  /* proportions de ta mosaïque :
-     colonne 1 = 40%
-     colonne 2 = 30%
-     colonne 3 = 30%
-     lignes = 3 parts égales
-  */
-
-  const col1 = 0;
-  const col2 = W * 0.4;
-  const col3 = W * 0.7;
-
-  const row1 = 0;
-  const row2 = H / 3;
-  const row3 = H * 2 / 3;
-
-  apply(".A1", col1, row1, W * 0.4, H);
-  apply(".A2", col2, row1, W * 0.3, H / 3);
-  apply(".C",  col2, row2, W * 0.3, H / 3);
-  apply(".A3", col2, row3, W * 0.3, H / 3);
-  apply(".B",  col3, row1, W * 0.3, H / 3);
-  apply(".D",  col3, row2, W * 0.3, H / 3);
-  apply(".E",  col3, row3, W * 0.3, H / 3);
-};
-
-function apply(selector, x, y, w, h){
-  const el = document.querySelector(selector);
-
-  /* on force la taille réelle de l’image */
-  el.style.backgroundSize = `${img.width}px ${img.height}px`;
-
-  /* on décale la vue pour montrer la bonne zone */
-  el.style.backgroundPosition = `-${x}px -${y}px`;
-}
-</script>
 
 </body>
 </html>

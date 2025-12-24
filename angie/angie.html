@@ -1,176 +1,204 @@
 <!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Mosaïque Angie – scale 60%</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mosaïque Angie – Coverflow</title>
 
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  background: #fff;
-  padding: 24px;
-  display: flex;
-  justify-content: center;
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#fff;
+  font-family:Arial, Helvetica, sans-serif;
+  overflow:hidden;
 }
 
-/* Wrapper de mise à l’échelle */
-.wrapper {
-  position: relative;
-  transform: scale(0.3);          /* ⚠️ 0.3 = 30% (je laisse ta valeur) */
-  transform-origin: top center;
+/* ===================== */
+/* COVERFLOW */
+/* ===================== */
+.coverflow{
+  display:flex;
+  align-items:center;
+  gap:120px;
+  width:100vw;
+  height:100vh;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+  perspective:1600px;
+  padding:0 15vw;
+}
+.coverflow::-webkit-scrollbar{display:none}
+.coverflow{scrollbar-width:none}
+
+.slide{
+  flex:0 0 auto;
+  width:80vw;
+  max-width:1200px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  transform:rotateY(35deg);
+  opacity:.35;
+  transition:transform .6s ease, opacity .6s ease;
+}
+.slide.active{transform:rotateY(0deg);opacity:1}
+.slide.left{transform:rotateY(45deg)}
+.slide.right{transform:rotateY(-45deg)}
+
+.slide img{
+  width:100%;
+  height:auto;
+  display:block;
 }
 
-/* Mosaïque compacte */
-.mosaic {
-  display: grid;
-  gap: 0;
-  line-height: 0;
-
-  grid-template-columns: var(--w1) var(--w2) var(--w3);
-  grid-template-rows: var(--h1) var(--h2) var(--h3);
-
-  width: calc(var(--w1) + var(--w2) + var(--w3));
-  height: calc(var(--h1) + var(--h2) + var(--h3));
+/* NAV */
+.nav{
+  position:fixed;
+  bottom:24px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:16px;
+  z-index:20;
+}
+.nav button{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  border:none;
+  font-size:28px;
+  background:#104c64;
+  color:#fff;
+  cursor:pointer;
 }
 
-/* Images = tailles exactes des cellules */
-.mosaic img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: fill;
+/* ===================== */
+/* MOSAÏQUE */
+/* ===================== */
+.wrapper{
+  position:relative;
+  transform:scale(0.35);
+  transform-origin:top center;
 }
 
-/* Placement */
-#A1 { grid-column: 1; grid-row: 1 / span 3; }
+.mosaic{
+  display:grid;
+  grid-template-columns:var(--w1) var(--w2) var(--w3);
+  grid-template-rows:var(--h1) var(--h2) var(--h3);
+  width:calc(var(--w1) + var(--w2) + var(--w3));
+  height:calc(var(--h1) + var(--h2) + var(--h3));
+  line-height:0;
+}
 
-#A2 { grid-column: 2; grid-row: 1; }
-#C  { grid-column: 2; grid-row: 2; }
-#A3 { grid-column: 2; grid-row: 3; }
+.mosaic img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:fill;
+}
 
-#B  { grid-column: 3; grid-row: 1; }
-#D  { grid-column: 3; grid-row: 2; }
-#E  { grid-column: 3; grid-row: 3; }
+#A1{grid-column:1;grid-row:1/span 3}
+#A2{grid-column:2;grid-row:1}
+#C {grid-column:2;grid-row:2}
+#A3{grid-column:2;grid-row:3}
+#B {grid-column:3;grid-row:1}
+#D {grid-column:3;grid-row:2}
+#E {grid-column:3;grid-row:3}
 
-/* ========================= */
-/* OVERLAY TEXTE SUR D */
-/* ========================= */
+/* OVERLAY */
 #overlayD{
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 10px;
-  height: 10px;
-  display: none;
-  pointer-events: none;
-
-  background: #104c64;      /* ✅ fond demandé */
-  padding: 22px 24px;
-  overflow: hidden;
+  position:absolute;
+  display:none;
+  background:#104c64;
+  padding:22px 24px;
 }
-
 #overlayD p{
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 36px;          /* ✅ corps plus gros */
-  line-height: 1.55;
-  text-align: justify;
-  color: #ffffff;           /* ✅ texte blanc */
+  color:#fff;
+  font-size:36px;
+  line-height:1.55;
+  text-align:justify;
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrapper" id="wrap">
+<div class="coverflow" id="coverflow">
 
-  <div id="mosaic" class="mosaic">
-    <img id="A1" src="https://avantpost-cpu.github.io/depot-quiz/angie/A1.jpg" alt="">
-    <img id="A2" src="https://avantpost-cpu.github.io/depot-quiz/angie/A2.jpg" alt="">
-    <img id="C"  src="https://avantpost-cpu.github.io/depot-quiz/angie/C.jpg"  alt="">
-    <img id="A3" src="https://avantpost-cpu.github.io/depot-quiz/angie/A3.jpg" alt="">
-    <img id="B"  src="https://avantpost-cpu.github.io/depot-quiz/angie/B.jpg"  alt="">
-    <img id="D"  src="https://avantpost-cpu.github.io/depot-quiz/angie/D.jpg"  alt="">
-    <img id="E"  src="https://avantpost-cpu.github.io/depot-quiz/angie/E.jpg"  alt="">
-  </div>
 
-  <!-- Overlay texte (ne modifie PAS la structure de la mosaïque) -->
-  <div id="overlayD">
-    <p>
-      <strong>Angélique Cauchy</strong> incarne une force rare&nbsp;: celle de transformer un traumatisme profond en un engagement durable au service de la protection de l’enfance. Ancienne sportive de haut niveau en tennis, elle est victime de violences sexuelles entre 12 et 14 ans. À 27 ans, elle franchit le mur du silence en portant plainte contre son agresseur. Ce choix marque un tournant décisif&nbsp;: celui de faire de son histoire un levier de changement collectif.
-      <br><br>
-      Aujourd’hui, Angélique Cauchy est reconnue comme l’une des voix les plus puissantes en France sur la prévention des violences, notamment dans le sport. Son témoignage, diffusé sur Brut, est visionné plus de 16&nbsp;millions de fois en 48&nbsp;heures, révélant l’ampleur du besoin de compréhension et d’action sur ces sujets.
-    </p>
-  </div>
+
+<!-- AUTRES PAGES -->
+<section class="slide"><img src="https://avantpost-cpu.github.io/depot-quiz/angie/page0.jpg"></section>
+<section class="slide"><img src="https://avantpost-cpu.github.io/depot-quiz/angie/page1.jpg"></section>
+<section class="slide"><img src="https://avantpost-cpu.github.io/depot-quiz/angie/page2.jpg"></section>
+<section class="slide"><img src="https://avantpost-cpu.github.io/depot-quiz/angie/page3.jpg"></section>
 
 </div>
 
-<script>
-const ids = ["A1","A2","C","A3","B","D","E"];
-const imgs = ids.map(id => document.getElementById(id));
-const mosaic = document.getElementById("mosaic");
-const overlay = document.getElementById("overlayD");
+<div class="nav">
+  <button id="prev">‹</button>
+  <button id="next">›</button>
+</div>
 
-function allLoaded(images){
-  return Promise.all(images.map(img => new Promise(res => {
-    if (img.complete && img.naturalWidth) return res();
-    img.addEventListener("load", () => res(), { once:true });
-  })));
-}
+<script>
+/* ===================== */
+/* MOSAÏQUE */
+/* ===================== */
+const mosaic=document.getElementById("mosaic");
+const overlay=document.getElementById("overlayD");
 
 function applyGrid(){
-  const a1 = document.getElementById("A1");
-  const a2 = document.getElementById("A2");
-  const c  = document.getElementById("C");
-  const a3 = document.getElementById("A3");
-  const b  = document.getElementById("B");
-
-  mosaic.style.setProperty("--w1", a1.naturalWidth + "px");
-  mosaic.style.setProperty("--w2", a2.naturalWidth + "px");
-  mosaic.style.setProperty("--w3", b.naturalWidth  + "px");
-
-  mosaic.style.setProperty("--h1", a2.naturalHeight + "px");
-  mosaic.style.setProperty("--h2", c.naturalHeight  + "px");
-  mosaic.style.setProperty("--h3", a3.naturalHeight + "px");
+  mosaic.style.setProperty("--w1",A1.naturalWidth+"px");
+  mosaic.style.setProperty("--w2",A2.naturalWidth+"px");
+  mosaic.style.setProperty("--w3",B.naturalWidth+"px");
+  mosaic.style.setProperty("--h1",A2.naturalHeight+"px");
+  mosaic.style.setProperty("--h2",C.naturalHeight+"px");
+  mosaic.style.setProperty("--h3",A3.naturalHeight+"px");
 }
 
 function placeOverlay(){
-  const d = document.getElementById("D");
-
-  overlay.style.left   = d.offsetLeft + "px";
-  overlay.style.top    = d.offsetTop  + "px";
-  overlay.style.width  = d.clientWidth  + "px";
-  overlay.style.height = d.clientHeight + "px";
-
-  overlay.style.display = "block";
+  overlay.style.left=D.offsetLeft+"px";
+  overlay.style.top=D.offsetTop+"px";
+  overlay.style.width=D.clientWidth+"px";
+  overlay.style.height=D.clientHeight+"px";
+  overlay.style.display="block";
 }
 
-allLoaded(imgs).then(() => {
+window.onload=()=>{
   applyGrid();
   requestAnimationFrame(placeOverlay);
-});
+};
 
-window.addEventListener("resize", () => {
-  requestAnimationFrame(placeOverlay);
-});
+/* ===================== */
+/* COVERFLOW */
+/* ===================== */
+const coverflow=document.getElementById("coverflow");
+const slides=[...document.querySelectorAll(".slide")];
+let index=0;
+
+function centerSlide(i){
+  const s=slides[i];
+  const x=s.offsetLeft-(coverflow.clientWidth-s.clientWidth)/2;
+  coverflow.scrollTo({left:x,behavior:"smooth"});
+}
+
+function updateSlides(){
+  slides.forEach((s,i)=>{
+    s.classList.remove("active","left","right");
+    if(i===index) s.classList.add("active");
+    else if(i<index) s.classList.add("left");
+    else s.classList.add("right");
+  });
+  centerSlide(index);
+}
+
+document.getElementById("prev").onclick=()=>{if(index>0){index--;updateSlides();}};
+document.getElementById("next").onclick=()=>{if(index<slides.length-1){index++;updateSlides();}};
+
+requestAnimationFrame(updateSlides);
 </script>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Page 1 – découpe mosaïque</title>
+<title>Page 1 – Découpe mosaïque</title>
 
 <style>
 /* RESET */
@@ -18,12 +18,10 @@ body{
 }
 
 /* ===================== */
-/* GRILLE MOSAÏQUE */
+/* CONTENEUR MOSAÏQUE */
 /* ===================== */
 .page-angie{
   display:grid;
-
-  /* même logique que ta mosaïque Angie */
   grid-template-columns: 1.2fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
 
@@ -32,79 +30,26 @@ body{
   aspect-ratio:3 / 2;
 }
 
-/* image commune */
+/* blocs */
 .page-angie div{
-  background-image:url("page1.jpg"); /* image dans le même dossier */
+  background-image:url("page1.jpg");
   background-repeat:no-repeat;
 }
 
-/* ===================== */
-/* COLONNE 1 – A1 */
-/* ===================== */
-.A1{
-  grid-column:1;
-  grid-row:1 / span 3;
-
-  /* découpe horizontale uniquement */
-  background-size:300% 100%;
-  background-position:0% 50%;
-}
-
-/* ===================== */
-/* COLONNE 2 */
-/* ===================== */
-.A2,.C,.A3{
-  background-size:300% 300%;
-}
-
-.A2{
-  grid-column:2;
-  grid-row:1;
-  background-position:50% 0%;
-}
-
-.C{
-  grid-column:2;
-  grid-row:2;
-  background-position:50% 50%;
-}
-
-.A3{
-  grid-column:2;
-  grid-row:3;
-  background-position:50% 100%;
-}
-
-/* ===================== */
-/* COLONNE 3 */
-/* ===================== */
-.B,.D,.E{
-  background-size:300% 300%;
-}
-
-.B{
-  grid-column:3;
-  grid-row:1;
-  background-position:100% 0%;
-}
-
-.D{
-  grid-column:3;
-  grid-row:2;
-  background-position:100% 50%;
-}
-
-.E{
-  grid-column:3;
-  grid-row:3;
-  background-position:100% 100%;
-}
+/* placement */
+.A1{grid-column:1;grid-row:1 / span 3}
+.A2{grid-column:2;grid-row:1}
+.C {grid-column:2;grid-row:2}
+.A3{grid-column:2;grid-row:3}
+.B {grid-column:3;grid-row:1}
+.D {grid-column:3;grid-row:2}
+.E {grid-column:3;grid-row:3}
 </style>
 </head>
 
 <body>
 
-<div class="page-angie">
+<div class="page-angie" id="mosaic">
   <div class="A1"></div>
   <div class="A2"></div>
   <div class="C"></div>
@@ -113,6 +58,55 @@ body{
   <div class="D"></div>
   <div class="E"></div>
 </div>
+
+<script>
+/* =====================================================
+   DÉCOUPE VISUELLE PRÉCISE DE page1.jpg
+   (basée sur la taille réelle de l’image)
+   ===================================================== */
+
+const img = new Image();
+img.src = "page1.jpg";
+
+img.onload = () => {
+
+  const W = img.width;
+  const H = img.height;
+
+  /* proportions de ta mosaïque :
+     colonne 1 = 40%
+     colonne 2 = 30%
+     colonne 3 = 30%
+     lignes = 3 parts égales
+  */
+
+  const col1 = 0;
+  const col2 = W * 0.4;
+  const col3 = W * 0.7;
+
+  const row1 = 0;
+  const row2 = H / 3;
+  const row3 = H * 2 / 3;
+
+  apply(".A1", col1, row1, W * 0.4, H);
+  apply(".A2", col2, row1, W * 0.3, H / 3);
+  apply(".C",  col2, row2, W * 0.3, H / 3);
+  apply(".A3", col2, row3, W * 0.3, H / 3);
+  apply(".B",  col3, row1, W * 0.3, H / 3);
+  apply(".D",  col3, row2, W * 0.3, H / 3);
+  apply(".E",  col3, row3, W * 0.3, H / 3);
+};
+
+function apply(selector, x, y, w, h){
+  const el = document.querySelector(selector);
+
+  /* on force la taille réelle de l’image */
+  el.style.backgroundSize = `${img.width}px ${img.height}px`;
+
+  /* on décale la vue pour montrer la bonne zone */
+  el.style.backgroundPosition = `-${x}px -${y}px`;
+}
+</script>
 
 </body>
 </html>

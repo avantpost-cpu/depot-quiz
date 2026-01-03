@@ -21,7 +21,7 @@
 
 body{
   margin:0;
-  padding:24px;
+  padding:20px;
   background:var(--bg-main);
   color:var(--ink-main);
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
@@ -30,47 +30,60 @@ body{
 }
 
 .app{
-  width:min(1100px,100%);
+  width:min(1200px,100%);
   background:var(--bg-card);
   border-radius:18px;
-  padding:28px;
-  box-shadow:0 18px 40px rgba(11,15,43,.12);
+  padding:24px;
+  box-shadow:0 16px 36px rgba(11,15,43,.12);
 }
 
-/* ===== TITRE ===== */
+/* ===== HEADER ===== */
+.header{
+  display:grid;
+  grid-template-columns: 1fr auto;
+  gap:20px;
+  align-items:center;
+}
+
 h1{
   margin:0;
-  font-size:36px;
+  font-size:34px;
   font-weight:800;
   letter-spacing:-0.02em;
 }
+
 .sub{
   margin-top:6px;
   font-size:14px;
   color:var(--ink-soft);
 }
 
-/* ===== LAYOUT ===== */
+/* ===== SNOOPY (HEADER) ===== */
+.snoopyHeader img{
+  max-width:130px;
+  height:auto;
+  border-radius:12px;
+  /* volontairement AUCUNE ombre */
+}
+
+/* ===== MAIN LAYOUT ===== */
 .main{
   display:grid;
   grid-template-columns: 1.6fr 1fr;
-  gap:24px;
-  margin-top:24px;
-}
-@media(max-width:900px){
-  .main{grid-template-columns:1fr}
+  gap:22px;
+  margin-top:20px;
 }
 
 /* ===== STATS ===== */
 .stats{
   display:flex;
-  gap:12px;
+  gap:10px;
   flex-wrap:wrap;
-  margin:18px 0;
+  margin:14px 0;
 }
 .stat{
   background:#fff;
-  padding:8px 14px;
+  padding:6px 12px;
   border-radius:999px;
   font-size:13px;
   border:1px solid var(--border);
@@ -79,9 +92,9 @@ h1{
 /* ===== CONTROLS ===== */
 .controls{
   display:flex;
-  gap:12px;
+  gap:10px;
   flex-wrap:wrap;
-  margin-bottom:16px;
+  margin-bottom:12px;
 }
 select, input{
   padding:8px 12px;
@@ -94,22 +107,17 @@ select, input{
 button{
   cursor:pointer;
   border-radius:14px;
-  padding:10px 16px;
+  padding:8px 14px;
   font-weight:700;
   border:1px solid var(--border);
   background:#fff;
   color:var(--ink-main);
 }
-button.primary{
-  background:var(--accent-blue);
-  color:#fff;
-  border:none;
-}
 
 /* ===== QUIZ ===== */
 .question{
-  font-size:34px;
-  margin:16px 0;
+  font-size:32px;
+  margin:14px 0;
 }
 .answers{
   display:grid;
@@ -119,7 +127,7 @@ button.primary{
   background:#fff;
   border:1px solid var(--border);
   border-radius:14px;
-  padding:14px;
+  padding:12px;
   font-size:16px;
 }
 .choice:hover{border-color:var(--accent-blue)}
@@ -127,8 +135,8 @@ button.primary{
 .choice.bad{background:#fff0f0;border-color:var(--accent-coral)}
 
 .feedback{
-  margin-top:14px;
-  padding:12px;
+  margin-top:10px;
+  padding:10px 12px;
   border-radius:12px;
   background:#fff;
   font-size:14px;
@@ -137,12 +145,10 @@ button.primary{
 
 /* ===== MINI LEÇON ===== */
 .lesson{
-  background:#ffffff;
+  background:#fff;
   border-radius:16px;
-  padding:20px;
+  padding:18px;
   border:1px solid var(--border);
-  position:sticky;
-  top:24px;
 }
 .lesson h2{
   margin:0 0 10px;
@@ -152,11 +158,9 @@ button.primary{
   margin:0;
   padding-left:18px;
   color:var(--ink-soft);
-  line-height:1.5;
+  line-height:1.45;
 }
-.lesson li{
-  margin-bottom:10px;
-}
+.lesson li{margin-bottom:8px}
 .lesson .example{
   background:#f7f7f7;
   border-radius:10px;
@@ -164,32 +168,31 @@ button.primary{
   font-size:13px;
   margin-top:10px;
 }
-
-/* ===== SNOOPY ===== */
-.snoopyBox{
-  display:flex;
-  justify-content:center;
-  margin:14px 0;
-}
-.snoopyBox img{
-  max-width:160px;
-  border-radius:14px;
-  box-shadow:0 10px 24px rgba(0,0,0,.12);
-}
 </style>
 </head>
 
 <body>
 <div class="app">
 
-<h1>Questionnaire pour Alma</h1>
-<div class="sub">Additions et soustractions de nombres relatifs</div>
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <div>
+    <h1>Questionnaire pour Alma</h1>
+    <div class="sub">Additions et soustractions de nombres relatifs</div>
+  </div>
 
+  <div class="snoopyHeader">
+    <img id="snoopyImg"
+         src="https://avantpost-cpu.github.io/depot-quiz/snoopy_calm.png"
+         alt="">
+  </div>
+</div>
+
+<!-- ===== MAIN ===== -->
 <div class="main">
 
-<!-- ================= COLONNE GAUCHE : QUIZ ================= -->
+<!-- ===== QUIZ ===== -->
 <div>
-
   <div class="stats">
     <div class="stat">Question <b id="qnum">1</b> / 20</div>
     <div class="stat">Score <b id="score">0</b></div>
@@ -211,33 +214,23 @@ button.primary{
     <button id="restart">Recommencer</button>
   </div>
 
-  <div class="snoopyBox">
-    <img id="snoopyImg" src="https://avantpost-cpu.github.io/depot-quiz/snoopy_calm.png" alt="">
-  </div>
-
   <div class="question" id="question">—</div>
   <div class="answers" id="answers"></div>
   <div class="feedback" id="feedback" style="display:none"></div>
-
 </div>
 
-<!-- ================= COLONNE DROITE : MINI LEÇON ================= -->
+<!-- ===== MINI LEÇON ===== -->
 <div class="lesson">
   <h2>Mini-leçon</h2>
   <ul>
-    <li><b>Addition</b> :  
-      mêmes signes → on additionne et on garde le signe.</li>
-
-    <li>Signes différents → on soustrait  
-      et on garde le signe du plus grand en valeur.</li>
-
-    <li><b>Soustraction</b> :  
-      <i>soustraire</i>, c’est <i>ajouter l’opposé</i>.</li>
+    <li><b>Addition</b> : mêmes signes → on additionne, on garde le signe.</li>
+    <li>Signes différents → on soustrait, on garde le signe du plus grand.</li>
+    <li><b>Soustraction</b> : soustraire = ajouter l’opposé.</li>
   </ul>
 
   <div class="example">
-    Exemple :<br>
-    7 − (−3) = 7 + 3 = 10<br><br>
+    Exemples :<br>
+    7 − (−3) = 10<br>
     −8 + 5 = −3
   </div>
 </div>
@@ -246,82 +239,133 @@ button.primary{
 </div>
 
 <script>
-const TOTAL=20;
-const SNOOPY={
-  calm:"https://avantpost-cpu.github.io/depot-quiz/snoopy_calm.png",
-  happy:"https://avantpost-cpu.github.io/depot-quiz/snoopy_happy.png",
-  encourage:"https://avantpost-cpu.github.io/depot-quiz/snoopy_encourage.png"
+const TOTAL = 20;
+
+// ✅ Base GitHub Pages (sans "images/")
+const BASE = "https://avantpost-cpu.github.io/depot-quiz/";
+
+const SNOOPY = {
+  calm: BASE + "snoopy_calm.png",
+  happy: BASE + "snoopy_happy.png",
+  encourage: BASE + "snoopy_encourage.png"
 };
 
-let index=1, score=0, streak=0;
-let answer=0;
+let index = 1, score = 0, streak = 0;
+let answer = 0;
 
-const qnum=qnumEl=document.getElementById("qnum");
-const scoreEl=document.getElementById("score");
-const streakEl=document.getElementById("streak");
-const qEl=document.getElementById("question");
-const answersEl=document.getElementById("answers");
-const feedbackEl=document.getElementById("feedback");
-const snoopyImg=document.getElementById("snoopyImg");
+const qnum = document.getElementById("qnum");
+const scoreEl = document.getElementById("score");
+const streakEl = document.getElementById("streak");
+const qEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const feedbackEl = document.getElementById("feedback");
+const snoopyImg = document.getElementById("snoopyImg");
 
 function rand(limit){
-  let n=0;
-  while(n===0) n=Math.floor(Math.random()*(2*limit+1))-limit;
+  let n = 0;
+  while(n === 0) n = Math.floor(Math.random()*(2*limit+1)) - limit;
   return n;
 }
-function fmt(n){return n<0?"−"+Math.abs(n):n}
+function fmt(n){ return n < 0 ? "−" + Math.abs(n) : n; }
 
 function newQuestion(){
-  feedbackEl.style.display="none";
-  answersEl.innerHTML="";
-  snoopyImg.src=SNOOPY.calm;
+  feedbackEl.style.display = "none";
+  answersEl.innerHTML = "";
+  snoopyImg.src = SNOOPY.calm;
 
-  const limit=+level.value;
-  const a=rand(limit);
-  const b=rand(limit);
-  const op=Math.random()<0.5?"+":"−";
-  answer=op==="+"?a+b:a-b;
+  const limit = +level.value;
+  const a = rand(limit);
+  const b = rand(limit);
+  const op = Math.random() < 0.5 ? "+" : "−";
 
-  qEl.textContent=`${fmt(a)} ${op} ${fmt(b)}`;
+  answer = (op === "+") ? (a + b) : (a - b);
 
-  const set=new Set([answer]);
-  while(set.size<4) set.add(answer+Math.floor(Math.random()*5)-2);
+  qEl.textContent = `${fmt(a)} ${op} ${fmt(b)}`;
 
-  [...set].sort(()=>Math.random()-0.5).forEach(v=>{
-    const btn=document.createElement("button");
-    btn.className="choice";
-    btn.textContent=fmt(v);
-    btn.onclick=()=>check(v,btn);
-    answersEl.appendChild(btn);
-  });
+  if(mode.value === "qcm"){
+    const set = new Set([answer]);
+    while(set.size < 4) set.add(answer + Math.floor(Math.random()*5) - 2);
+
+    [...set].sort(() => Math.random() - 0.5).forEach(v => {
+      const btn = document.createElement("button");
+      btn.className = "choice";
+      btn.textContent = fmt(v);
+      btn.onclick = () => check(v, btn);
+      answersEl.appendChild(btn);
+    });
+  } else {
+    const input = document.createElement("input");
+    input.placeholder = "Ta réponse (ex : -7)";
+    input.type = "text";
+    input.inputMode = "numeric";
+    input.autocomplete = "off";
+
+    const btn = document.createElement("button");
+    btn.textContent = "Valider";
+
+    function submit(){
+      const cleaned = input.value.trim().replace("−","-");
+      const val = Number(cleaned);
+      if(!Number.isFinite(val)){
+        feedbackEl.style.display = "block";
+        feedbackEl.textContent = "Écris un nombre (ex : -7).";
+        snoopyImg.src = SNOOPY.encourage;
+        return;
+      }
+      check(val, null);
+    }
+
+    btn.onclick = submit;
+    input.onkeydown = (e) => { if(e.key === "Enter") submit(); };
+
+    answersEl.append(input, btn);
+    setTimeout(() => input.focus(), 0);
+  }
 }
 
-function check(val,btn){
-  if(val===answer){
-    score++; streak++;
-    snoopyImg.src=SNOOPY.happy;
+function check(val, btn){
+  const ok = (val === answer);
+
+  if(ok){
+    score++;
+    streak++;
+    snoopyImg.src = SNOOPY.happy;
   } else {
-    streak=0;
-    snoopyImg.src=SNOOPY.encourage;
+    streak = 0;
+    snoopyImg.src = SNOOPY.encourage;
   }
 
-  feedbackEl.style.display="block";
-  feedbackEl.textContent=`Réponse correcte : ${fmt(answer)}`;
+  feedbackEl.style.display = "block";
+  feedbackEl.textContent = `Réponse correcte : ${fmt(answer)}`;
 
-  scoreEl.textContent=score;
-  streakEl.textContent=streak;
-  qnum.textContent=++index;
+  scoreEl.textContent = score;
+  streakEl.textContent = streak;
 
-  if(index<=TOTAL) setTimeout(newQuestion,900);
+  // Avancer dans la session
+  index++;
+  qnum.textContent = Math.min(index, TOTAL);
+
+  if(index <= TOTAL){
+    setTimeout(newQuestion, 900);
+  } else {
+    // Fin simple (sans écran séparé, pour rester "tout sur un écran")
+    feedbackEl.textContent = `Fin de session : ${score}/${TOTAL}. (Recommencer pour rejouer)`;
+    snoopyImg.src = SNOOPY.happy;
+  }
 }
 
-restart.onclick=()=>{
-  index=1; score=0; streak=0;
-  qnum.textContent=1;
-  scoreEl.textContent=0;
-  streakEl.textContent=0;
+restart.onclick = () => {
+  index = 1; score = 0; streak = 0;
+  qnum.textContent = 1;
+  scoreEl.textContent = 0;
+  streakEl.textContent = 0;
+  feedbackEl.style.display = "none";
+  snoopyImg.src = SNOOPY.calm;
   newQuestion();
 };
+
+mode.onchange = newQuestion;
+level.onchange = newQuestion;
 
 newQuestion();
 </script>

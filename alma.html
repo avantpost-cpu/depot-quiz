@@ -6,9 +6,6 @@
 <title>Questionnaire pour Alma – Nombres relatifs</title>
 
 <style>
-/* ===================== */
-/* PALETTE & BASE        */
-/* ===================== */
 :root{
   --bg-main:#ece9e4;
   --bg-card:#f4f1ec;
@@ -32,36 +29,39 @@ body{
   justify-content:center;
 }
 
-/* ===================== */
-/* CONTAINER             */
-/* ===================== */
 .app{
-  width:min(880px,100%);
+  width:min(1100px,100%);
   background:var(--bg-card);
   border-radius:18px;
   padding:28px;
   box-shadow:0 18px 40px rgba(11,15,43,.12);
 }
 
-/* ===================== */
-/* TITRE                 */
-/* ===================== */
+/* ===== TITRE ===== */
 h1{
   margin:0;
   font-size:36px;
   font-weight:800;
   letter-spacing:-0.02em;
 }
-
 .sub{
   margin-top:6px;
   font-size:14px;
   color:var(--ink-soft);
 }
 
-/* ===================== */
-/* STATS                 */
-/* ===================== */
+/* ===== LAYOUT ===== */
+.main{
+  display:grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap:24px;
+  margin-top:24px;
+}
+@media(max-width:900px){
+  .main{grid-template-columns:1fr}
+}
+
+/* ===== STATS ===== */
 .stats{
   display:flex;
   gap:12px;
@@ -76,9 +76,7 @@ h1{
   border:1px solid var(--border);
 }
 
-/* ===================== */
-/* CONTROLS              */
-/* ===================== */
+/* ===== CONTROLS ===== */
 .controls{
   display:flex;
   gap:12px;
@@ -108,61 +106,11 @@ button.primary{
   border:none;
 }
 
-/* ===================== */
-/* COACH                 */
-/* ===================== */
-.coach{
-  background:#fff;
-  border-left:6px solid var(--accent-pink);
-  border-radius:16px;
-  padding:16px;
-}
-.coachTitle{
-  font-weight:700;
-  font-size:15px;
-}
-.coachMsg{
-  margin-top:6px;
-  color:var(--ink-soft);
-  line-height:1.4;
-}
-.tip{
-  margin-top:10px;
-  padding:10px 12px;
-  border-radius:12px;
-  background:#f7f7f7;
-  font-size:13px;
-}
-
-/* ===================== */
-/* SNOOPY                */
-/* ===================== */
-.snoopyBox{
-  display:flex;
-  justify-content:center;
-  margin:16px 0 10px;
-}
-.snoopyBox img{
-  max-width:170px;
-  border-radius:14px;
-  box-shadow:0 10px 24px rgba(0,0,0,.12);
-  transition:transform .3s ease;
-}
-.snoopyBox img.bounce{
-  transform:scale(1.05);
-}
-
-/* ===================== */
-/* QUESTION              */
-/* ===================== */
+/* ===== QUIZ ===== */
 .question{
   font-size:34px;
   margin:16px 0;
 }
-
-/* ===================== */
-/* ANSWERS               */
-/* ===================== */
 .answers{
   display:grid;
   gap:10px;
@@ -174,21 +122,10 @@ button.primary{
   padding:14px;
   font-size:16px;
 }
-.choice:hover{
-  border-color:var(--accent-blue);
-}
-.choice.ok{
-  background:#eef6ff;
-  border-color:var(--accent-blue);
-}
-.choice.bad{
-  background:#fff0f0;
-  border-color:var(--accent-coral);
-}
+.choice:hover{border-color:var(--accent-blue)}
+.choice.ok{background:#eef6ff;border-color:var(--accent-blue)}
+.choice.bad{background:#fff0f0;border-color:var(--accent-coral)}
 
-/* ===================== */
-/* FEEDBACK              */
-/* ===================== */
 .feedback{
   margin-top:14px;
   padding:12px;
@@ -198,19 +135,46 @@ button.primary{
   border-left:4px solid var(--accent-blue);
 }
 
-/* ===================== */
-/* FIN SESSION           */
-/* ===================== */
-.panel{
-  background:#fff;
+/* ===== MINI LEÇON ===== */
+.lesson{
+  background:#ffffff;
   border-radius:16px;
   padding:20px;
   border:1px solid var(--border);
+  position:sticky;
+  top:24px;
 }
-.small{
-  font-size:12px;
+.lesson h2{
+  margin:0 0 10px;
+  font-size:18px;
+}
+.lesson ul{
+  margin:0;
+  padding-left:18px;
   color:var(--ink-soft);
-  margin-top:6px;
+  line-height:1.5;
+}
+.lesson li{
+  margin-bottom:10px;
+}
+.lesson .example{
+  background:#f7f7f7;
+  border-radius:10px;
+  padding:10px 12px;
+  font-size:13px;
+  margin-top:10px;
+}
+
+/* ===== SNOOPY ===== */
+.snoopyBox{
+  display:flex;
+  justify-content:center;
+  margin:14px 0;
+}
+.snoopyBox img{
+  max-width:160px;
+  border-radius:14px;
+  box-shadow:0 10px 24px rgba(0,0,0,.12);
 }
 </style>
 </head>
@@ -221,201 +185,144 @@ button.primary{
 <h1>Questionnaire pour Alma</h1>
 <div class="sub">Additions et soustractions de nombres relatifs</div>
 
-<div class="stats">
-  <div class="stat">Question <b id="qnum">1</b> / 20</div>
-  <div class="stat">Score <b id="score">0</b></div>
-  <div class="stat">Série <b id="streak">0</b></div>
-</div>
+<div class="main">
 
-<div class="controls">
-  <select id="level">
-    <option value="10">Facile (±10)</option>
-    <option value="20" selected>Moyen (±20)</option>
-    <option value="50">Plus dur (±50)</option>
-  </select>
+<!-- ================= COLONNE GAUCHE : QUIZ ================= -->
+<div>
 
-  <select id="mode">
-    <option value="qcm" selected>QCM</option>
-    <option value="input">Saisie</option>
-  </select>
-
-  <button id="restart">Recommencer</button>
-</div>
-
-<div class="coach">
-  <div class="coachTitle">Conseil</div>
-  <div class="coachMsg" id="coachMsg">
-    Prends ton temps. Lis bien les signes avant de calculer.
+  <div class="stats">
+    <div class="stat">Question <b id="qnum">1</b> / 20</div>
+    <div class="stat">Score <b id="score">0</b></div>
+    <div class="stat">Série <b id="streak">0</b></div>
   </div>
-  <div class="tip" id="tipBox">
-    Soustraire un nombre, c’est ajouter son opposé.
+
+  <div class="controls">
+    <select id="level">
+      <option value="10">Facile (±10)</option>
+      <option value="20" selected>Moyen (±20)</option>
+      <option value="50">Plus dur (±50)</option>
+    </select>
+
+    <select id="mode">
+      <option value="qcm" selected>QCM</option>
+      <option value="input">Saisie</option>
+    </select>
+
+    <button id="restart">Recommencer</button>
   </div>
-</div>
 
-<div class="snoopyBox">
-  <img id="snoopyImg" src="images/snoopy_calm.png" alt="">
-</div>
+  <div class="snoopyBox">
+    <img id="snoopyImg" src="images/snoopy_calm.png" alt="">
+  </div>
 
-<div id="play">
   <div class="question" id="question">—</div>
   <div class="answers" id="answers"></div>
   <div class="feedback" id="feedback" style="display:none"></div>
+
 </div>
 
-<div id="end" style="display:none">
-  <div class="panel">
-    <h2>Fin de session</h2>
-    <div id="summary"></div>
-    <button class="primary" id="newSession">Nouvelle session</button>
-    <div class="small">20 questions, c’est déjà très bien.</div>
+<!-- ================= COLONNE DROITE : MINI LEÇON ================= -->
+<div class="lesson">
+  <h2>Mini-leçon</h2>
+  <ul>
+    <li><b>Addition</b> :  
+      mêmes signes → on additionne et on garde le signe.</li>
+
+    <li>Signes différents → on soustrait  
+      et on garde le signe du plus grand en valeur.</li>
+
+    <li><b>Soustraction</b> :  
+      <i>soustraire</i>, c’est <i>ajouter l’opposé</i>.</li>
+  </ul>
+
+  <div class="example">
+    Exemple :<br>
+    7 − (−3) = 7 + 3 = 10<br><br>
+    −8 + 5 = −3
   </div>
 </div>
 
 </div>
+</div>
 
 <script>
-/* ===================== */
-/* CONFIG                */
-/* ===================== */
-const TOTAL = 20;
-const SNOOPY = {
+const TOTAL=20;
+const SNOOPY={
   calm:"images/snoopy_calm.png",
   happy:"images/snoopy_happy.png",
-  encourage:"images/snoopy_encourage.png",
-  celebrate:"images/snoopy_celebrate.png"
+  encourage:"images/snoopy_encourage.png"
 };
 
-/* ===================== */
-/* STATE                 */
-/* ===================== */
 let index=1, score=0, streak=0;
-let answer=0, a=0, b=0, op="+";
+let answer=0;
 
-/* ===================== */
-/* DOM                   */
-/* ===================== */
-const qnum = document.getElementById("qnum");
-const scoreEl = document.getElementById("score");
-const streakEl = document.getElementById("streak");
-const qEl = document.getElementById("question");
-const answersEl = document.getElementById("answers");
-const feedbackEl = document.getElementById("feedback");
-const snoopyImg = document.getElementById("snoopyImg");
-const coachMsg = document.getElementById("coachMsg");
-const tipBox = document.getElementById("tipBox");
+const qnum=qnumEl=document.getElementById("qnum");
+const scoreEl=document.getElementById("score");
+const streakEl=document.getElementById("streak");
+const qEl=document.getElementById("question");
+const answersEl=document.getElementById("answers");
+const feedbackEl=document.getElementById("feedback");
+const snoopyImg=document.getElementById("snoopyImg");
 
-/* ===================== */
-/* HELPERS               */
-/* ===================== */
 function rand(limit){
   let n=0;
   while(n===0) n=Math.floor(Math.random()*(2*limit+1))-limit;
   return n;
 }
-function fmt(n){ return n<0 ? "−"+Math.abs(n) : n; }
+function fmt(n){return n<0?"−"+Math.abs(n):n}
 
-/* ===================== */
-/* QUESTION              */
-/* ===================== */
 function newQuestion(){
   feedbackEl.style.display="none";
   answersEl.innerHTML="";
   snoopyImg.src=SNOOPY.calm;
-  snoopyImg.classList.remove("bounce");
 
   const limit=+level.value;
-  a=rand(limit);
-  b=rand(limit);
-  op=Math.random()<0.5?"+":"−";
+  const a=rand(limit);
+  const b=rand(limit);
+  const op=Math.random()<0.5?"+":"−";
   answer=op==="+"?a+b:a-b;
 
   qEl.textContent=`${fmt(a)} ${op} ${fmt(b)}`;
-  coachMsg.textContent="Lis les signes puis calcule calmement.";
-  tipBox.textContent = (op==="−" && b<0)
-    ? "Soustraire un négatif revient à additionner."
-    : "Même signe → on additionne. Signes différents → on soustrait.";
 
-  if(mode.value==="qcm"){
-    const set=new Set([answer]);
-    while(set.size<4) set.add(answer+Math.floor(Math.random()*5)-2);
-    [...set].sort(()=>Math.random()-0.5).forEach(v=>{
-      const btn=document.createElement("button");
-      btn.className="choice";
-      btn.textContent=fmt(v);
-      btn.onclick=()=>check(v,btn);
-      answersEl.appendChild(btn);
-    });
-  } else {
-    const input=document.createElement("input");
-    input.placeholder="Ta réponse";
+  const set=new Set([answer]);
+  while(set.size<4) set.add(answer+Math.floor(Math.random()*5)-2);
+
+  [...set].sort(()=>Math.random()-0.5).forEach(v=>{
     const btn=document.createElement("button");
-    btn.textContent="Valider";
-    btn.onclick=()=>check(Number(input.value.replace("−","-")));
-    answersEl.append(input,btn);
-  }
+    btn.className="choice";
+    btn.textContent=fmt(v);
+    btn.onclick=()=>check(v,btn);
+    answersEl.appendChild(btn);
+  });
 }
 
-/* ===================== */
-/* CHECK                 */
-/* ===================== */
 function check(val,btn){
   if(val===answer){
     score++; streak++;
     snoopyImg.src=SNOOPY.happy;
-    snoopyImg.classList.add("bounce");
-    coachMsg.textContent="Bravo. Continue comme ça.";
   } else {
     streak=0;
     snoopyImg.src=SNOOPY.encourage;
-    coachMsg.textContent="Ce n’est pas grave. Regarde la règle et réessaie.";
   }
 
   feedbackEl.style.display="block";
   feedbackEl.textContent=`Réponse correcte : ${fmt(answer)}`;
 
-  qnum.textContent=++index;
   scoreEl.textContent=score;
   streakEl.textContent=streak;
+  qnum.textContent=++index;
 
-  if(index>TOTAL){
-    endSession();
-  } else {
-    setTimeout(newQuestion,900);
-  }
+  if(index<=TOTAL) setTimeout(newQuestion,900);
 }
 
-/* ===================== */
-/* END                   */
-/* ===================== */
-function endSession(){
-  play.style.display="none";
-  end.style.display="block";
-  snoopyImg.src=SNOOPY.celebrate;
-  summary.innerHTML=`Score : <b>${score} / ${TOTAL}</b>`;
-}
-
-/* ===================== */
-/* RESET                 */
-/* ===================== */
-function reset(){
+restart.onclick=()=>{
   index=1; score=0; streak=0;
   qnum.textContent=1;
   scoreEl.textContent=0;
   streakEl.textContent=0;
-  end.style.display="none";
-  play.style.display="block";
   newQuestion();
-}
+};
 
-/* ===================== */
-/* EVENTS                */
-/* ===================== */
-restart.onclick=reset;
-newSession.onclick=reset;
-mode.onchange=newQuestion;
-level.onchange=newQuestion;
-
-/* INIT */
 newQuestion();
 </script>
 

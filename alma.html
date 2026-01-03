@@ -1,592 +1,423 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Entraînement – Nombres relatifs (12 ans)</title>
-  <style>
-    :root{
-      --bg:#0b1220; --card:#121b2f; --muted:#98a2b3; --txt:#e5e7eb;
-      --ok:#22c55e; --bad:#ef4444; --accent:#60a5fa; --accent2:#fbbf24;
-      --shadow: 0 12px 30px rgba(0,0,0,.35);
-      --radius: 18px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1000px 600px at 20% 10%, #1b2a52 0%, transparent 60%),
-                  radial-gradient(900px 600px at 80% 20%, #2a1b52 0%, transparent 55%),
-                  var(--bg);
-      color:var(--txt);
-      padding:24px;
-      display:flex; justify-content:center;
-    }
-    .app{width:min(920px, 100%); display:grid; gap:16px}
-    .top{
-      background: linear-gradient(135deg, rgba(96,165,250,.18), rgba(251,191,36,.12));
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius);
-      padding:16px 18px;
-      box-shadow: var(--shadow);
-      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px;
-    }
-    h1{font-size:18px; margin:0}
-    .sub{color:var(--muted); font-size:13px; margin-top:2px}
-    .stats{display:flex; gap:14px; flex-wrap:wrap; align-items:center}
-    .pill{
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.08);
-      padding:8px 10px; border-radius: 999px;
-      font-size:13px; color:#e9edf6;
-      display:flex; gap:8px; align-items:center;
-    }
-    .pill b{font-weight:700}
-    .grid{display:grid; grid-template-columns: 1.15fr .85fr; gap:16px}
-    @media (max-width:900px){ .grid{grid-template-columns:1fr} }
-    .card{
-      background: rgba(18,27,47,.92);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding:16px;
-    }
-    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-    label{font-size:13px; color:var(--muted)}
-    select, input[type="number"], input[type="text"]{
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      color:var(--txt);
-      border-radius: 12px;
-      padding:10px 12px;
-      outline:none;
-    }
-    select{cursor:pointer}
-    button{
-      cursor:pointer;
-      border:0;
-      border-radius: 14px;
-      padding:10px 12px;
-      font-weight:700;
-      color:#0b1220;
-      background: linear-gradient(135deg, var(--accent), #93c5fd);
-      box-shadow: 0 10px 20px rgba(96,165,250,.25);
-    }
-    button.secondary{
-      color:var(--txt);
-      background: rgba(255,255,255,.06);
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow:none;
-    }
-    button.warn{
-      background: linear-gradient(135deg, #fca5a5, #fb7185);
-      box-shadow: 0 10px 20px rgba(239,68,68,.18);
-    }
-    .question{
-      font-size:34px;
-      letter-spacing: .3px;
-      margin:12px 0 10px;
-      display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
-    }
-    .qtag{
-      font-size:12px;
-      color:#111827;
-      background: rgba(251,191,36,.95);
-      padding:4px 8px;
-      border-radius: 999px;
-      font-weight:800;
-    }
-    .help{color:var(--muted); font-size:13px; line-height:1.35}
-    .answers{display:grid; gap:10px; margin-top:12px}
-    .choice{
-      text-align:left;
-      width:100%;
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      color:var(--txt);
-      padding:12px;
-      border-radius: 14px;
-      font-weight:700;
-    }
-    .choice:hover{border-color: rgba(96,165,250,.55)}
-    .ok{border-color: rgba(34,197,94,.65)!important; background: rgba(34,197,94,.12)!important}
-    .bad{border-color: rgba(239,68,68,.65)!important; background: rgba(239,68,68,.10)!important}
-    .feedback{
-      margin-top:12px; padding:12px; border-radius: 14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      font-size:14px;
-    }
-    .feedback.ok{border-color: rgba(34,197,94,.55); background: rgba(34,197,94,.10)}
-    .feedback.bad{border-color: rgba(239,68,68,.55); background: rgba(239,68,68,.08)}
-    .small{font-size:12px; color:var(--muted)}
-    .divider{height:1px; background: rgba(255,255,255,.10); margin:14px 0}
-    .kbd{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-      padding:2px 6px; border-radius: 8px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color:#e8eefc;
-      font-size:12px;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questionnaire pour Alma – Nombres relatifs</title>
+
+<style>
+/* ===================== */
+/* PALETTE & BASE        */
+/* ===================== */
+:root{
+  --bg-main:#ece9e4;
+  --bg-card:#f4f1ec;
+  --ink-main:#0b0f2b;
+  --ink-soft:#6b6f7a;
+  --accent-blue:#3f72f4;
+  --accent-pink:#ff9fd6;
+  --accent-coral:#ef6234;
+  --border:#ddd8cf;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  padding:24px;
+  background:var(--bg-main);
+  color:var(--ink-main);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  display:flex;
+  justify-content:center;
+}
+
+/* ===================== */
+/* CONTAINER             */
+/* ===================== */
+.app{
+  width:min(880px,100%);
+  background:var(--bg-card);
+  border-radius:18px;
+  padding:28px;
+  box-shadow:0 18px 40px rgba(11,15,43,.12);
+}
+
+/* ===================== */
+/* TITRE                 */
+/* ===================== */
+h1{
+  margin:0;
+  font-size:36px;
+  font-weight:800;
+  letter-spacing:-0.02em;
+}
+
+.sub{
+  margin-top:6px;
+  font-size:14px;
+  color:var(--ink-soft);
+}
+
+/* ===================== */
+/* STATS                 */
+/* ===================== */
+.stats{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:18px 0;
+}
+.stat{
+  background:#fff;
+  padding:8px 14px;
+  border-radius:999px;
+  font-size:13px;
+  border:1px solid var(--border);
+}
+
+/* ===================== */
+/* CONTROLS              */
+/* ===================== */
+.controls{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+select, input{
+  padding:8px 12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--ink-main);
+  font-size:14px;
+}
+button{
+  cursor:pointer;
+  border-radius:14px;
+  padding:10px 16px;
+  font-weight:700;
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--ink-main);
+}
+button.primary{
+  background:var(--accent-blue);
+  color:#fff;
+  border:none;
+}
+
+/* ===================== */
+/* COACH                 */
+/* ===================== */
+.coach{
+  background:#fff;
+  border-left:6px solid var(--accent-pink);
+  border-radius:16px;
+  padding:16px;
+}
+.coachTitle{
+  font-weight:700;
+  font-size:15px;
+}
+.coachMsg{
+  margin-top:6px;
+  color:var(--ink-soft);
+  line-height:1.4;
+}
+.tip{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:#f7f7f7;
+  font-size:13px;
+}
+
+/* ===================== */
+/* SNOOPY                */
+/* ===================== */
+.snoopyBox{
+  display:flex;
+  justify-content:center;
+  margin:16px 0 10px;
+}
+.snoopyBox img{
+  max-width:170px;
+  border-radius:14px;
+  box-shadow:0 10px 24px rgba(0,0,0,.12);
+  transition:transform .3s ease;
+}
+.snoopyBox img.bounce{
+  transform:scale(1.05);
+}
+
+/* ===================== */
+/* QUESTION              */
+/* ===================== */
+.question{
+  font-size:34px;
+  margin:16px 0;
+}
+
+/* ===================== */
+/* ANSWERS               */
+/* ===================== */
+.answers{
+  display:grid;
+  gap:10px;
+}
+.choice{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:14px;
+  font-size:16px;
+}
+.choice:hover{
+  border-color:var(--accent-blue);
+}
+.choice.ok{
+  background:#eef6ff;
+  border-color:var(--accent-blue);
+}
+.choice.bad{
+  background:#fff0f0;
+  border-color:var(--accent-coral);
+}
+
+/* ===================== */
+/* FEEDBACK              */
+/* ===================== */
+.feedback{
+  margin-top:14px;
+  padding:12px;
+  border-radius:12px;
+  background:#fff;
+  font-size:14px;
+  border-left:4px solid var(--accent-blue);
+}
+
+/* ===================== */
+/* FIN SESSION           */
+/* ===================== */
+.panel{
+  background:#fff;
+  border-radius:16px;
+  padding:20px;
+  border:1px solid var(--border);
+}
+.small{
+  font-size:12px;
+  color:var(--ink-soft);
+  margin-top:6px;
+}
+</style>
 </head>
+
 <body>
-  <div class="app">
-    <div class="top">
-      <div>
-        <h1>Entraînement – Nombres relatifs</h1>
-        <div class="sub">Additions, soustractions, produits, priorités. Correction immédiate + explication.</div>
-      </div>
-      <div class="stats">
-        <div class="pill">✅ Score : <b id="score">0</b> / <b id="done">0</b></div>
-        <div class="pill">🔥 Série : <b id="streak">0</b></div>
-        <div class="pill">⏱️ Temps : <b id="time">00:00</b></div>
-      </div>
-    </div>
+<div class="app">
 
-    <div class="grid">
-      <div class="card">
-        <div class="row" style="justify-content:space-between; gap:12px">
-          <div class="row">
-            <div>
-              <label for="mode">Mode</label><br>
-              <select id="mode">
-                <option value="mix">Mix</option>
-                <option value="addsub">Add / Sub</option>
-                <option value="mul">Produits</option>
-                <option value="prio">Priorités</option>
-                <option value="compare">Comparer</option>
-              </select>
-            </div>
-            <div>
-              <label for="level">Difficulté</label><br>
-              <select id="level">
-                <option value="1">Facile (±1 à ±10)</option>
-                <option value="2" selected>Moyen (±1 à ±20)</option>
-                <option value="3">Plus dur (±1 à ±50)</option>
-              </select>
-            </div>
-            <div>
-              <label for="inputMode">Réponse</label><br>
-              <select id="inputMode">
-                <option value="qcm" selected>QCM (4 choix)</option>
-                <option value="saisie">Saisie (au clavier)</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <button class="secondary" id="btnSkip" title="Passer">Passer</button>
-            <button class="warn" id="btnReset" title="Remettre à zéro">Reset</button>
-          </div>
-        </div>
+<h1>Questionnaire pour Alma</h1>
+<div class="sub">Additions et soustractions de nombres relatifs</div>
 
-        <div class="divider"></div>
+<div class="stats">
+  <div class="stat">Question <b id="qnum">1</b> / 20</div>
+  <div class="stat">Score <b id="score">0</b></div>
+  <div class="stat">Série <b id="streak">0</b></div>
+</div>
 
-        <div class="question">
-          <span class="qtag" id="tag">MIX</span>
-          <span id="qtext">—</span>
-        </div>
-        <div class="help" id="hint">Astuce : soustraire un négatif, c’est ajouter son opposé. (ex : 7 − (−3) = 7 + 3)</div>
+<div class="controls">
+  <select id="level">
+    <option value="10">Facile (±10)</option>
+    <option value="20" selected>Moyen (±20)</option>
+    <option value="50">Plus dur (±50)</option>
+  </select>
 
-        <div id="areaQCM" class="answers" aria-live="polite"></div>
+  <select id="mode">
+    <option value="qcm" selected>QCM</option>
+    <option value="input">Saisie</option>
+  </select>
 
-        <div id="areaSaisie" style="display:none; margin-top:12px">
-          <div class="row" style="gap:10px; align-items:flex-end">
-            <div style="flex:1">
-              <label for="userAnswer">Ta réponse</label><br>
-              <input id="userAnswer" type="text" inputmode="numeric" placeholder="Ex : -7" style="width:100%" />
-              <div class="small" style="margin-top:6px">Astuce : utilise le signe moins <span class="kbd">-</span>. Puis <span class="kbd">Entrée</span> pour valider.</div>
-            </div>
-            <button id="btnCheck">Vérifier</button>
-          </div>
-        </div>
+  <button id="restart">Recommencer</button>
+</div>
 
-        <div id="feedback" class="feedback" style="display:none"></div>
-
-      </div>
-
-      <div class="card">
-        <h2 style="margin:0 0 8px; font-size:16px">Mini-leçon (rappels)</h2>
-        <div class="help">
-          <ul style="margin:8px 0 0 18px; padding:0; line-height:1.45">
-            <li><b>Addition</b> : mêmes signes → on additionne, on garde le signe. Signes différents → on soustrait, on garde le signe du plus grand en valeur.</li>
-            <li><b>Soustraction</b> : <span class="kbd">a − b</span> = <span class="kbd">a + (−b)</span>.</li>
-            <li><b>Produit</b> : même signe → positif. Signes différents → négatif.</li>
-            <li><b>Priorités</b> : parenthèses → multiplications → additions/soustractions.</li>
-          </ul>
-          <div class="divider"></div>
-          <div class="row" style="justify-content:space-between">
-            <div class="small">Conseil : 10 min par jour = très efficace.</div>
-            <div class="small">Objectif : 20 bonnes réponses d’affilée 🔥</div>
-          </div>
-        </div>
-      </div>
-
-    </div>
+<div class="coach">
+  <div class="coachTitle">Conseil</div>
+  <div class="coachMsg" id="coachMsg">
+    Prends ton temps. Lis bien les signes avant de calculer.
   </div>
+  <div class="tip" id="tipBox">
+    Soustraire un nombre, c’est ajouter son opposé.
+  </div>
+</div>
+
+<div class="snoopyBox">
+  <img id="snoopyImg" src="images/snoopy_calm.png" alt="">
+</div>
+
+<div id="play">
+  <div class="question" id="question">—</div>
+  <div class="answers" id="answers"></div>
+  <div class="feedback" id="feedback" style="display:none"></div>
+</div>
+
+<div id="end" style="display:none">
+  <div class="panel">
+    <h2>Fin de session</h2>
+    <div id="summary"></div>
+    <button class="primary" id="newSession">Nouvelle session</button>
+    <div class="small">20 questions, c’est déjà très bien.</div>
+  </div>
+</div>
+
+</div>
 
 <script>
-(() => {
-  // ---------- ÉTAT ----------
-  const state = {
-    score: 0,
-    done: 0,
-    streak: 0,
-    current: null,
-    startTs: Date.now(),
-    timer: null,
-  };
+/* ===================== */
+/* CONFIG                */
+/* ===================== */
+const TOTAL = 20;
+const SNOOPY = {
+  calm:"images/snoopy_calm.png",
+  happy:"images/snoopy_happy.png",
+  encourage:"images/snoopy_encourage.png",
+  celebrate:"images/snoopy_celebrate.png"
+};
 
-  // ---------- UI ----------
-  const $ = (id) => document.getElementById(id);
-  const scoreEl = $("score");
-  const doneEl = $("done");
-  const streakEl = $("streak");
-  const timeEl = $("time");
-  const modeEl = $("mode");
-  const levelEl = $("level");
-  const inputModeEl = $("inputMode");
-  const tagEl = $("tag");
-  const qtextEl = $("qtext");
-  const hintEl = $("hint");
-  const areaQCM = $("areaQCM");
-  const areaSaisie = $("areaSaisie");
-  const userAnswer = $("userAnswer");
-  const btnCheck = $("btnCheck");
-  const feedbackEl = $("feedback");
+/* ===================== */
+/* STATE                 */
+/* ===================== */
+let index=1, score=0, streak=0;
+let answer=0, a=0, b=0, op="+";
 
-  function pad2(n){ return String(n).padStart(2,"0"); }
-  function formatTime(ms){
-    const s = Math.floor(ms/1000);
-    const m = Math.floor(s/60);
-    const r = s % 60;
-    return `${pad2(m)}:${pad2(r)}`;
+/* ===================== */
+/* DOM                   */
+/* ===================== */
+const qnum = document.getElementById("qnum");
+const scoreEl = document.getElementById("score");
+const streakEl = document.getElementById("streak");
+const qEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const feedbackEl = document.getElementById("feedback");
+const snoopyImg = document.getElementById("snoopyImg");
+const coachMsg = document.getElementById("coachMsg");
+const tipBox = document.getElementById("tipBox");
+
+/* ===================== */
+/* HELPERS               */
+/* ===================== */
+function rand(limit){
+  let n=0;
+  while(n===0) n=Math.floor(Math.random()*(2*limit+1))-limit;
+  return n;
+}
+function fmt(n){ return n<0 ? "−"+Math.abs(n) : n; }
+
+/* ===================== */
+/* QUESTION              */
+/* ===================== */
+function newQuestion(){
+  feedbackEl.style.display="none";
+  answersEl.innerHTML="";
+  snoopyImg.src=SNOOPY.calm;
+  snoopyImg.classList.remove("bounce");
+
+  const limit=+level.value;
+  a=rand(limit);
+  b=rand(limit);
+  op=Math.random()<0.5?"+":"−";
+  answer=op==="+"?a+b:a-b;
+
+  qEl.textContent=`${fmt(a)} ${op} ${fmt(b)}`;
+  coachMsg.textContent="Lis les signes puis calcule calmement.";
+  tipBox.textContent = (op==="−" && b<0)
+    ? "Soustraire un négatif revient à additionner."
+    : "Même signe → on additionne. Signes différents → on soustrait.";
+
+  if(mode.value==="qcm"){
+    const set=new Set([answer]);
+    while(set.size<4) set.add(answer+Math.floor(Math.random()*5)-2);
+    [...set].sort(()=>Math.random()-0.5).forEach(v=>{
+      const btn=document.createElement("button");
+      btn.className="choice";
+      btn.textContent=fmt(v);
+      btn.onclick=()=>check(v,btn);
+      answersEl.appendChild(btn);
+    });
+  } else {
+    const input=document.createElement("input");
+    input.placeholder="Ta réponse";
+    const btn=document.createElement("button");
+    btn.textContent="Valider";
+    btn.onclick=()=>check(Number(input.value.replace("−","-")));
+    answersEl.append(input,btn);
   }
-  function updateStats(){
-    scoreEl.textContent = state.score;
-    doneEl.textContent = state.done;
-    streakEl.textContent = state.streak;
-  }
-  function showFeedback(ok, html){
-    feedbackEl.style.display = "block";
-    feedbackEl.classList.toggle("ok", ok);
-    feedbackEl.classList.toggle("bad", !ok);
-    feedbackEl.innerHTML = html;
-  }
-  function clearFeedback(){
-    feedbackEl.style.display = "none";
-    feedbackEl.classList.remove("ok","bad");
-    feedbackEl.innerHTML = "";
-  }
+}
 
-  // ---------- GÉNÉRATION ----------
-  function randint(min, max){ // inclusif
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-  function nonZeroInt(limit){
-    let x = 0;
-    while(x === 0) x = randint(-limit, limit);
-    return x;
-  }
-  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
-
-  function limits(){
-    const lv = Number(levelEl.value);
-    if(lv === 1) return 10;
-    if(lv === 2) return 20;
-    return 50;
-  }
-
-  function buildQuestion(){
-    const L = limits();
-    const mode = modeEl.value === "mix"
-      ? pick(["addsub","mul","prio","compare"])
-      : modeEl.value;
-
-    let q = { mode, text:"", answer:null, explain:"", hint:"" };
-
-    if(mode === "addsub"){
-      const a = nonZeroInt(L);
-      const b = nonZeroInt(L);
-      const op = pick(["+","-"]);
-      if(op === "+"){
-        q.text = `${fmt(a)} + ${fmtPar(b)}`;
-        q.answer = a + b;
-        q.explain = explainAdd(a,b);
-        q.hint = "Rappel : mêmes signes → on additionne, signes différents → on soustrait.";
-      } else {
-        q.text = `${fmt(a)} − ${fmtPar(b)}`;
-        q.answer = a - b;
-        q.explain = `On transforme : ${fmt(a)} − ${fmtPar(b)} = ${fmt(a)} + (${fmt(-b)})<br>` + explainAdd(a, -b);
-        q.hint = "Astuce : soustraire un nombre, c’est ajouter son opposé.";
-      }
-    }
-
-    if(mode === "mul"){
-      const a = nonZeroInt(Math.max(3, Math.floor(L/2)));
-      const b = nonZeroInt(Math.max(3, Math.floor(L/2)));
-      q.text = `${fmtPar(a)} × ${fmtPar(b)}`;
-      q.answer = a * b;
-      const sign = (a*b >= 0) ? "positif" : "négatif";
-      q.explain = `Signes : ${a<0?"−":"+"} × ${b<0?"−":"+"} → résultat ${sign}.<br>
-                   Valeurs : |${a}| × |${b}| = ${Math.abs(a)} × ${Math.abs(b)} = ${Math.abs(a*b)}.`;
-      q.hint = "Produit : même signe → + ; signe différent → −.";
-    }
-
-    if(mode === "prio"){
-      // Forme : a + (b × c)  ou  (a − b) × c  (niveau 2/3)
-      const lv = Number(levelEl.value);
-      const a = nonZeroInt(Math.max(10, Math.floor(L/2)));
-      const b = nonZeroInt(Math.max(10, Math.floor(L/2)));
-      const c = nonZeroInt(Math.max(6, Math.floor(L/3)));
-      if(lv === 1){
-        // parenthèse simple
-        q.text = `${fmt(a)} + (${fmt(b)} × ${fmt(c)})`;
-        q.answer = a + (b*c);
-        q.explain = `Priorités : on calcule d’abord la multiplication.<br>
-                     ${fmt(b)} × ${fmt(c)} = ${fmt(b*c)} puis ${fmt(a)} + ${fmt(b*c)} = ${fmt(q.answer)}.`;
-      } else {
-        const form = pick(["a_plus_bxc", "a_min_b_par_c"]);
-        if(form === "a_plus_bxc"){
-          q.text = `${fmt(a)} − (${fmtPar(b)} × ${fmtPar(c)})`;
-          q.answer = a - (b*c);
-          q.explain = `1) Multiplication : ${fmtPar(b)} × ${fmtPar(c)} = ${fmt(b*c)}<br>
-                       2) Puis soustraction : ${fmt(a)} − ${fmtPar(b*c)} = ${fmt(q.answer)}.`;
-        } else {
-          q.text = `(${fmt(a)} − ${fmtPar(b)}) × ${fmtPar(c)}`;
-          q.answer = (a - b) * c;
-          q.explain = `1) Parenthèses : ${fmt(a)} − ${fmtPar(b)} = ${fmt(a-b)}<br>
-                       2) Multiplication : ${fmt(a-b)} × ${fmtPar(c)} = ${fmt(q.answer)}.`;
-        }
-      }
-      q.hint = "Priorités : parenthèses → multiplications → +/−.";
-    }
-
-    if(mode === "compare"){
-      const a = nonZeroInt(L);
-      const b = nonZeroInt(L);
-      // question "Quel est le plus grand ?"
-      q.text = `Quel est le plus grand ?  ${fmt(a)}  et  ${fmt(b)}`;
-      q.answer = (a > b) ? "A" : (b > a ? "B" : "E");
-      q.explain = (a === b)
-        ? `Ils sont égaux : ${fmt(a)} = ${fmt(b)}.`
-        : `Sur la droite graduée, le plus grand est celui qui est le plus à droite :<br>
-           ${fmt(a)} ${a>b?">":"<"} ${fmt(b)}.`;
-      q.hint = "Rappel : parmi les négatifs, celui qui est le “moins loin” de 0 est le plus grand.";
-    }
-
-    return q;
+/* ===================== */
+/* CHECK                 */
+/* ===================== */
+function check(val,btn){
+  if(val===answer){
+    score++; streak++;
+    snoopyImg.src=SNOOPY.happy;
+    snoopyImg.classList.add("bounce");
+    coachMsg.textContent="Bravo. Continue comme ça.";
+  } else {
+    streak=0;
+    snoopyImg.src=SNOOPY.encourage;
+    coachMsg.textContent="Ce n’est pas grave. Regarde la règle et réessaie.";
   }
 
-  function fmt(n){
-    return (n < 0) ? `−${Math.abs(n)}` : `${n}`;
+  feedbackEl.style.display="block";
+  feedbackEl.textContent=`Réponse correcte : ${fmt(answer)}`;
+
+  qnum.textContent=++index;
+  scoreEl.textContent=score;
+  streakEl.textContent=streak;
+
+  if(index>TOTAL){
+    endSession();
+  } else {
+    setTimeout(newQuestion,900);
   }
-  function fmtPar(n){
-    return (n < 0) ? `(${fmt(n)})` : fmt(n);
-  }
+}
 
-  function explainAdd(a,b){
-    const sameSign = (a>=0 && b>=0) || (a<0 && b<0);
-    if(sameSign){
-      const s = a+b;
-      return `Mêmes signes → on additionne : |${fmt(a)}| + |${fmt(b)}| = ${Math.abs(a)} + ${Math.abs(b)} = ${Math.abs(s)}.<br>
-              On garde le signe : résultat = ${fmt(s)}.`;
-    } else {
-      const s = a+b;
-      const big = (Math.abs(a) >= Math.abs(b)) ? a : b;
-      return `Signes différents → on soustrait : ${Math.max(Math.abs(a),Math.abs(b))} − ${Math.min(Math.abs(a),Math.abs(b))} = ${Math.abs(s)}.<br>
-              On garde le signe du plus grand en valeur (${fmt(big)}) : résultat = ${fmt(s)}.`;
-    }
-  }
+/* ===================== */
+/* END                   */
+/* ===================== */
+function endSession(){
+  play.style.display="none";
+  end.style.display="block";
+  snoopyImg.src=SNOOPY.celebrate;
+  summary.innerHTML=`Score : <b>${score} / ${TOTAL}</b>`;
+}
 
-  // ---------- QCM ----------
-  function makeChoices(q){
-    // 4 choix dont 1 correct (ou cas compare)
-    let correct = q.answer;
-    let choices = [];
+/* ===================== */
+/* RESET                 */
+/* ===================== */
+function reset(){
+  index=1; score=0; streak=0;
+  qnum.textContent=1;
+  scoreEl.textContent=0;
+  streakEl.textContent=0;
+  end.style.display="none";
+  play.style.display="block";
+  newQuestion();
+}
 
-    if(q.mode === "compare"){
-      // A = premier, B = second, E = égaux
-      const labels = [
-        {key:"A", txt:"Le 1er"},
-        {key:"B", txt:"Le 2e"},
-        {key:"E", txt:"Ils sont égaux"},
-        {key:"N", txt:"Impossible à savoir"}
-      ];
-      // remplace N par un distracteur raisonnable
-      choices = shuffle(labels).slice(0,4);
-      // s'assurer que la bonne réponse est présente
-      if(!choices.some(x => x.key === correct)){
-        choices[0] = labels.find(x => x.key === correct);
-      }
-      return { choices, correct };
-    }
+/* ===================== */
+/* EVENTS                */
+/* ===================== */
+restart.onclick=reset;
+newSession.onclick=reset;
+mode.onchange=newQuestion;
+level.onchange=newQuestion;
 
-    choices.push(correct);
-
-    // distracteurs : +/- 1, inversion signe, oubli de parenthèses
-    const d1 = correct + pick([-2,-1,1,2]);
-    const d2 = -correct;
-    const d3 = (q.mode === "mul" || q.mode === "prio") ? correct + pick([-5,5,-10,10]) : correct + pick([-3,3]);
-
-    [d1,d2,d3].forEach(v => { if(!choices.includes(v)) choices.push(v); });
-
-    while(choices.length < 4){
-      const v = correct + randint(-12,12);
-      if(v !== correct && !choices.includes(v)) choices.push(v);
-    }
-
-    choices = shuffle(choices).slice(0,4);
-    return { choices, correct };
-  }
-
-  function shuffle(arr){
-    const a = arr.slice();
-    for(let i=a.length-1;i>0;i--){
-      const j = Math.floor(Math.random()*(i+1));
-      [a[i],a[j]] = [a[j],a[i]];
-    }
-    return a;
-  }
-
-  // ---------- FLUX ----------
-  function renderQuestion(){
-    clearFeedback();
-    state.current = buildQuestion();
-
-    const q = state.current;
-    tagEl.textContent = q.mode.toUpperCase();
-    qtextEl.textContent = q.text;
-    hintEl.innerHTML = q.hint || "";
-
-    const inputMode = inputModeEl.value;
-
-    areaQCM.innerHTML = "";
-    if(inputMode === "qcm"){
-      areaQCM.style.display = "grid";
-      areaSaisie.style.display = "none";
-
-      const { choices, correct } = makeChoices(q);
-      choices.forEach((c) => {
-        const btn = document.createElement("button");
-        btn.className = "choice";
-        if(q.mode === "compare"){
-          btn.textContent = c.txt;
-          btn.dataset.val = c.key;
-        } else {
-          btn.textContent = fmt(c);
-          btn.dataset.val = String(c);
-        }
-        btn.addEventListener("click", () => checkAnswer(btn.dataset.val, btn));
-        areaQCM.appendChild(btn);
-      });
-    } else {
-      areaQCM.style.display = "none";
-      areaSaisie.style.display = "block";
-      userAnswer.value = "";
-      userAnswer.focus();
-    }
-  }
-
-  function checkAnswer(raw, clickedBtn=null){
-    const q = state.current;
-    let userVal;
-
-    if(q.mode === "compare"){
-      userVal = String(raw).trim().toUpperCase();
-      const ok = userVal === q.answer;
-      afterAnswer(ok, clickedBtn, userVal);
-      return;
-    }
-
-    // autoriser "−" ou "-"
-    const cleaned = String(raw).trim().replace("−","-");
-    userVal = Number(cleaned);
-
-    if(!Number.isFinite(userVal)){
-      showFeedback(false, `Je ne comprends pas la réponse. Essaie un nombre comme <span class="kbd">-7</span>.`);
-      return;
-    }
-
-    const ok = userVal === q.answer;
-    afterAnswer(ok, clickedBtn, userVal);
-  }
-
-  function afterAnswer(ok, clickedBtn, userVal){
-    const q = state.current;
-
-    state.done += 1;
-
-    if(ok){
-      state.score += 1;
-      state.streak += 1;
-    } else {
-      state.streak = 0;
-    }
-    updateStats();
-
-    // Marquer les boutons en QCM
-    if(inputModeEl.value === "qcm"){
-      const btns = [...areaQCM.querySelectorAll("button")];
-      btns.forEach(b => {
-        const v = b.dataset.val;
-        const isCorrect = (q.mode === "compare") ? (v === q.answer) : (Number(v) === q.answer);
-        if(isCorrect) b.classList.add("ok");
-      });
-      if(clickedBtn && !ok) clickedBtn.classList.add("bad");
-      btns.forEach(b => b.disabled = true);
-    }
-
-    const goodTxt = (q.mode === "compare")
-      ? `Bonne réponse ✅`
-      : `Bonne réponse ✅ <b>${fmt(q.answer)}</b>`;
-
-    const badTxt = (q.mode === "compare")
-      ? `Raté ❌ La bonne réponse était : <b>${q.answer==="A"?"Le 1er":q.answer==="B"?"Le 2e":"Ils sont égaux"}</b>`
-      : `Raté ❌ Ta réponse : <b>${fmt(Number.isFinite(userVal)?userVal:0)}</b> — Bonne réponse : <b>${fmt(q.answer)}</b>`;
-
-    showFeedback(ok, `
-      <div style="font-weight:800; margin-bottom:6px">${ok ? goodTxt : badTxt}</div>
-      <div>${q.explain}</div>
-      <div class="small" style="margin-top:8px">Prochaine question dans 1 seconde…</div>
-    `);
-
-    setTimeout(renderQuestion, 1000);
-  }
-
-  // ---------- EVENTS ----------
-  inputModeEl.addEventListener("change", renderQuestion);
-  modeEl.addEventListener("change", renderQuestion);
-  levelEl.addEventListener("change", renderQuestion);
-
-  btnCheck.addEventListener("click", () => checkAnswer(userAnswer.value));
-  userAnswer.addEventListener("keydown", (e) => {
-    if(e.key === "Enter") checkAnswer(userAnswer.value);
-  });
-
-  $("btnSkip").addEventListener("click", () => renderQuestion());
-
-  $("btnReset").addEventListener("click", () => {
-    state.score = 0; state.done = 0; state.streak = 0;
-    state.startTs = Date.now();
-    updateStats();
-    clearFeedback();
-    renderQuestion();
-  });
-
-  // ---------- TIMER ----------
-  function startTimer(){
-    if(state.timer) clearInterval(state.timer);
-    state.timer = setInterval(() => {
-      timeEl.textContent = formatTime(Date.now() - state.startTs);
-    }, 250);
-  }
-
-  // ---------- INIT ----------
-  updateStats();
-  startTimer();
-  renderQuestion();
-})();
+/* INIT */
+newQuestion();
 </script>
+
 </body>
 </html>

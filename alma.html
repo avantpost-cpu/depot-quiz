@@ -1,290 +1,592 @@
-<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Angie – Mosaïques A→F avec slide</title>
-
-<style>
-/* ==================================================
-   RESET & SCÈNE
-   ================================================== */
-*{margin:0;padding:0;box-sizing:border-box}
-
-html,body{
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  font-family:Arial, sans-serif;
-  background:#fff;
-}
-
-/* ==================================================
-   STAGE / SLIDE
-   ================================================== */
-.stage{
-  position:relative;
-  width:100vw;
-  height:100vh;
-  overflow:hidden;
-}
-
-/* pages */
-.page{
-  position:absolute;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  overflow:auto;
-  transition:transform .8s cubic-bezier(.2,.8,.2,1);
-}
-
-/* positions initiales */
-.page-1{ transform:translateX(0); }
-.page-2{ transform:translateX(100%); }
-
-/* état slide */
-.stage.show-page-2 .page-1{ transform:translateX(-100%); }
-.stage.show-page-2 .page-2{ transform:translateX(0); }
-
-/* ==================================================
-   BOUTONS
-   ================================================== */
-.btn{
-  position:fixed;
-  bottom:24px;
-  right:24px;
-  z-index:1000;
-  background:#104c64;
-  color:#fff;
-  border:none;
-  padding:12px 18px;
-  cursor:pointer;
-  font-size:14px;
-}
-
-.btn.back{
-  left:24px;
-  right:auto;
-}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Entraînement – Nombres relatifs (12 ans)</title>
+  <style>
+    :root{
+      --bg:#0b1220; --card:#121b2f; --muted:#98a2b3; --txt:#e5e7eb;
+      --ok:#22c55e; --bad:#ef4444; --accent:#60a5fa; --accent2:#fbbf24;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1000px 600px at 20% 10%, #1b2a52 0%, transparent 60%),
+                  radial-gradient(900px 600px at 80% 20%, #2a1b52 0%, transparent 55%),
+                  var(--bg);
+      color:var(--txt);
+      padding:24px;
+      display:flex; justify-content:center;
+    }
+    .app{width:min(920px, 100%); display:grid; gap:16px}
+    .top{
+      background: linear-gradient(135deg, rgba(96,165,250,.18), rgba(251,191,36,.12));
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      padding:16px 18px;
+      box-shadow: var(--shadow);
+      display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px;
+    }
+    h1{font-size:18px; margin:0}
+    .sub{color:var(--muted); font-size:13px; margin-top:2px}
+    .stats{display:flex; gap:14px; flex-wrap:wrap; align-items:center}
+    .pill{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      padding:8px 10px; border-radius: 999px;
+      font-size:13px; color:#e9edf6;
+      display:flex; gap:8px; align-items:center;
+    }
+    .pill b{font-weight:700}
+    .grid{display:grid; grid-template-columns: 1.15fr .85fr; gap:16px}
+    @media (max-width:900px){ .grid{grid-template-columns:1fr} }
+    .card{
+      background: rgba(18,27,47,.92);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:16px;
+    }
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    label{font-size:13px; color:var(--muted)}
+    select, input[type="number"], input[type="text"]{
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--txt);
+      border-radius: 12px;
+      padding:10px 12px;
+      outline:none;
+    }
+    select{cursor:pointer}
+    button{
+      cursor:pointer;
+      border:0;
+      border-radius: 14px;
+      padding:10px 12px;
+      font-weight:700;
+      color:#0b1220;
+      background: linear-gradient(135deg, var(--accent), #93c5fd);
+      box-shadow: 0 10px 20px rgba(96,165,250,.25);
+    }
+    button.secondary{
+      color:var(--txt);
+      background: rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:none;
+    }
+    button.warn{
+      background: linear-gradient(135deg, #fca5a5, #fb7185);
+      box-shadow: 0 10px 20px rgba(239,68,68,.18);
+    }
+    .question{
+      font-size:34px;
+      letter-spacing: .3px;
+      margin:12px 0 10px;
+      display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+    }
+    .qtag{
+      font-size:12px;
+      color:#111827;
+      background: rgba(251,191,36,.95);
+      padding:4px 8px;
+      border-radius: 999px;
+      font-weight:800;
+    }
+    .help{color:var(--muted); font-size:13px; line-height:1.35}
+    .answers{display:grid; gap:10px; margin-top:12px}
+    .choice{
+      text-align:left;
+      width:100%;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
+      color:var(--txt);
+      padding:12px;
+      border-radius: 14px;
+      font-weight:700;
+    }
+    .choice:hover{border-color: rgba(96,165,250,.55)}
+    .ok{border-color: rgba(34,197,94,.65)!important; background: rgba(34,197,94,.12)!important}
+    .bad{border-color: rgba(239,68,68,.65)!important; background: rgba(239,68,68,.10)!important}
+    .feedback{
+      margin-top:12px; padding:12px; border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      font-size:14px;
+    }
+    .feedback.ok{border-color: rgba(34,197,94,.55); background: rgba(34,197,94,.10)}
+    .feedback.bad{border-color: rgba(239,68,68,.55); background: rgba(239,68,68,.08)}
+    .small{font-size:12px; color:var(--muted)}
+    .divider{height:1px; background: rgba(255,255,255,.10); margin:14px 0}
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      padding:2px 6px; border-radius: 8px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:#e8eefc;
+      font-size:12px;
+    }
+  </style>
 </head>
-
 <body>
-
-<div class="stage" id="stage">
-
-<!-- ==================================================
-     PAGE 1 — MOSAÏQUE ANGIE (A/B/C/D/E)
-     ================================================== -->
-<section class="page page-1">
-
-<style>
-/* ===== PAGE 1 ===== */
-.wrapperA{
-  transform:scale(0.3);
-  transform-origin:top center;
-  padding:24px;
-}
-
-.mosaicA{
-  display:grid;
-  gap:0;
-  line-height:0;
-  grid-template-columns: var(--w1) var(--w2) var(--w3);
-  grid-template-rows: var(--h1) var(--h2) var(--h3);
-}
-
-.mosaicA img{
-  width:100%;
-  height:100%;
-  display:block;
-}
-
-#A1{grid-column:1;grid-row:1/span 3;}
-#A2{grid-column:2;grid-row:1;}
-#C {grid-column:2;grid-row:2;}
-#A3{grid-column:2;grid-row:3;}
-#B {grid-column:3;grid-row:1;}
-#D {grid-column:3;grid-row:2;}
-#E {grid-column:3;grid-row:3;}
-
-#overlayD{
-  position:absolute;
-  background:#104c64;
-  color:#fff;
-  padding:22px 24px;
-  font-size:36px;
-  line-height:1.55;
-  display:none;
-}
-</style>
-
-<div class="wrapperA" id="wrapA">
-  <div id="mosaicA" class="mosaicA">
-    <img id="A1" src="https://avantpost-cpu.github.io/depot-quiz/angie/A1.jpg">
-    <img id="A2" src="https://avantpost-cpu.github.io/depot-quiz/angie/A2.jpg">
-    <img id="C"  src="https://avantpost-cpu.github.io/depot-quiz/angie/C.jpg">
-    <img id="A3" src="https://avantpost-cpu.github.io/depot-quiz/angie/A3.jpg">
-    <img id="B"  src="https://avantpost-cpu.github.io/depot-quiz/angie/B.jpg">
-    <img id="D"  src="https://avantpost-cpu.github.io/depot-quiz/angie/D.jpg">
-    <img id="E"  src="https://avantpost-cpu.github.io/depot-quiz/angie/E.jpg">
-  </div>
-
-  <div id="overlayD">
-    <strong>Angélique Cauchy</strong> incarne une force rare…
-  </div>
-</div>
-
-<button class="btn" id="goPage2">Découvrir la suite →</button>
-
-<script>
-const idsA=["A1","A2","C","A3","B","D","E"];
-const imgsA=idsA.map(id=>document.getElementById(id));
-const mosaicA=document.getElementById("mosaicA");
-const overlayD=document.getElementById("overlayD");
-
-Promise.all(imgsA.map(img=>new Promise(r=>{
-  if(img.complete) r();
-  else img.onload=r;
-}))).then(()=>{
-  mosaicA.style.setProperty("--w1",A1.naturalWidth+"px");
-  mosaicA.style.setProperty("--w2",A2.naturalWidth+"px");
-  mosaicA.style.setProperty("--w3",B.naturalWidth+"px");
-  mosaicA.style.setProperty("--h1",A2.naturalHeight+"px");
-  mosaicA.style.setProperty("--h2",C.naturalHeight+"px");
-  mosaicA.style.setProperty("--h3",A3.naturalHeight+"px");
-
-  overlayD.style.left=D.offsetLeft+"px";
-  overlayD.style.top=D.offsetTop+"px";
-  overlayD.style.width=D.clientWidth+"px";
-  overlayD.style.height=D.clientHeight+"px";
-  overlayD.style.display="block";
-});
-</script>
-
-</section>
-
-<!-- ==================================================
-     PAGE 2 — MOSAÏQUE F (PAO CORRECTE)
-     ================================================== -->
-<section class="page page-2">
-
-<style>
-/* ===== PAGE 2 ===== */
-.wrapperF{
-  transform:scale(0.6);
-  transform-origin:top center;
-  padding:24px;
-  display:flex;
-  justify-content:center;
-}
-
-.mosaicF{
-  display:grid;
-  grid-template-columns:696px 1226px;
-  line-height:0;
-}
-
-.col{display:flex;flex-direction:column;}
-.row{display:flex;}
-
-.img-box{
-  position:relative;
-  overflow:visible;
-}
-
-.img-box img{
-  display:block;
-}
-
-.img-box .hover{
-  position:absolute;
-  top:0;
-  left:0;
-  z-index:2;
-  pointer-events:none;
-  transform:scale(1);
-  transition:transform .35s ease;
-}
-
-.img-box:hover .hover{
-  transform:scale(1.2);
-}
-</style>
-
-<div class="wrapperF">
-  <div class="mosaicF">
-
-    <div class="col">
-      <div class="img-box">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/angie/F1.jpg"
-             width="696" height="633">
+  <div class="app">
+    <div class="top">
+      <div>
+        <h1>Entraînement – Nombres relatifs</h1>
+        <div class="sub">Additions, soustractions, produits, priorités. Correction immédiate + explication.</div>
       </div>
-      <div class="img-box">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/angie/F2.jpg"
-             width="696" height="448">
-        <img class="hover"
-             src="https://avantpost-cpu.github.io/depot-quiz/angie/F2b.jpg"
-             width="696" height="448">
+      <div class="stats">
+        <div class="pill">✅ Score : <b id="score">0</b> / <b id="done">0</b></div>
+        <div class="pill">🔥 Série : <b id="streak">0</b></div>
+        <div class="pill">⏱️ Temps : <b id="time">00:00</b></div>
       </div>
     </div>
 
-    <div class="col">
-      <div class="img-box">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/angie/F3.jpg"
-             width="1225" height="343">
-        <img class="hover"
-             src="https://avantpost-cpu.github.io/depot-quiz/angie/F3b.jpg"
-             width="1225" height="343">
-      </div>
-      <div class="row">
-        <div class="img-box">
-          <img src="https://avantpost-cpu.github.io/depot-quiz/angie/F4.jpg"
-               width="590" height="738">
-          <img class="hover"
-               src="https://avantpost-cpu.github.io/depot-quiz/angie/F4b.jpg"
-               width="590" height="738">
+    <div class="grid">
+      <div class="card">
+        <div class="row" style="justify-content:space-between; gap:12px">
+          <div class="row">
+            <div>
+              <label for="mode">Mode</label><br>
+              <select id="mode">
+                <option value="mix">Mix</option>
+                <option value="addsub">Add / Sub</option>
+                <option value="mul">Produits</option>
+                <option value="prio">Priorités</option>
+                <option value="compare">Comparer</option>
+              </select>
+            </div>
+            <div>
+              <label for="level">Difficulté</label><br>
+              <select id="level">
+                <option value="1">Facile (±1 à ±10)</option>
+                <option value="2" selected>Moyen (±1 à ±20)</option>
+                <option value="3">Plus dur (±1 à ±50)</option>
+              </select>
+            </div>
+            <div>
+              <label for="inputMode">Réponse</label><br>
+              <select id="inputMode">
+                <option value="qcm" selected>QCM (4 choix)</option>
+                <option value="saisie">Saisie (au clavier)</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <button class="secondary" id="btnSkip" title="Passer">Passer</button>
+            <button class="warn" id="btnReset" title="Remettre à zéro">Reset</button>
+          </div>
         </div>
-        <div class="img-box">
-          <img src="https://avantpost-cpu.github.io/depot-quiz/angie/F5.jpg"
-               width="636" height="738">
-          <img class="hover"
-               src="https://avantpost-cpu.github.io/depot-quiz/angie/F5b.jpg"
-               width="636" height="738">
+
+        <div class="divider"></div>
+
+        <div class="question">
+          <span class="qtag" id="tag">MIX</span>
+          <span id="qtext">—</span>
+        </div>
+        <div class="help" id="hint">Astuce : soustraire un négatif, c’est ajouter son opposé. (ex : 7 − (−3) = 7 + 3)</div>
+
+        <div id="areaQCM" class="answers" aria-live="polite"></div>
+
+        <div id="areaSaisie" style="display:none; margin-top:12px">
+          <div class="row" style="gap:10px; align-items:flex-end">
+            <div style="flex:1">
+              <label for="userAnswer">Ta réponse</label><br>
+              <input id="userAnswer" type="text" inputmode="numeric" placeholder="Ex : -7" style="width:100%" />
+              <div class="small" style="margin-top:6px">Astuce : utilise le signe moins <span class="kbd">-</span>. Puis <span class="kbd">Entrée</span> pour valider.</div>
+            </div>
+            <button id="btnCheck">Vérifier</button>
+          </div>
+        </div>
+
+        <div id="feedback" class="feedback" style="display:none"></div>
+
+      </div>
+
+      <div class="card">
+        <h2 style="margin:0 0 8px; font-size:16px">Mini-leçon (rappels)</h2>
+        <div class="help">
+          <ul style="margin:8px 0 0 18px; padding:0; line-height:1.45">
+            <li><b>Addition</b> : mêmes signes → on additionne, on garde le signe. Signes différents → on soustrait, on garde le signe du plus grand en valeur.</li>
+            <li><b>Soustraction</b> : <span class="kbd">a − b</span> = <span class="kbd">a + (−b)</span>.</li>
+            <li><b>Produit</b> : même signe → positif. Signes différents → négatif.</li>
+            <li><b>Priorités</b> : parenthèses → multiplications → additions/soustractions.</li>
+          </ul>
+          <div class="divider"></div>
+          <div class="row" style="justify-content:space-between">
+            <div class="small">Conseil : 10 min par jour = très efficace.</div>
+            <div class="small">Objectif : 20 bonnes réponses d’affilée 🔥</div>
+          </div>
         </div>
       </div>
+
     </div>
-
   </div>
-</div>
-
-<button class="btn back" id="backPage1">← Retour</button>
-
-</section>
-
-</div>
 
 <script>
-const stage=document.getElementById("stage");
-document.getElementById("goPage2").onclick=()=>stage.classList.add("show-page-2");
-document.getElementById("backPage1").onclick=()=>stage.classList.remove("show-page-2");
-</script>
+(() => {
+  // ---------- ÉTAT ----------
+  const state = {
+    score: 0,
+    done: 0,
+    streak: 0,
+    current: null,
+    startTs: Date.now(),
+    timer: null,
+  };
 
+  // ---------- UI ----------
+  const $ = (id) => document.getElementById(id);
+  const scoreEl = $("score");
+  const doneEl = $("done");
+  const streakEl = $("streak");
+  const timeEl = $("time");
+  const modeEl = $("mode");
+  const levelEl = $("level");
+  const inputModeEl = $("inputMode");
+  const tagEl = $("tag");
+  const qtextEl = $("qtext");
+  const hintEl = $("hint");
+  const areaQCM = $("areaQCM");
+  const areaSaisie = $("areaSaisie");
+  const userAnswer = $("userAnswer");
+  const btnCheck = $("btnCheck");
+  const feedbackEl = $("feedback");
+
+  function pad2(n){ return String(n).padStart(2,"0"); }
+  function formatTime(ms){
+    const s = Math.floor(ms/1000);
+    const m = Math.floor(s/60);
+    const r = s % 60;
+    return `${pad2(m)}:${pad2(r)}`;
+  }
+  function updateStats(){
+    scoreEl.textContent = state.score;
+    doneEl.textContent = state.done;
+    streakEl.textContent = state.streak;
+  }
+  function showFeedback(ok, html){
+    feedbackEl.style.display = "block";
+    feedbackEl.classList.toggle("ok", ok);
+    feedbackEl.classList.toggle("bad", !ok);
+    feedbackEl.innerHTML = html;
+  }
+  function clearFeedback(){
+    feedbackEl.style.display = "none";
+    feedbackEl.classList.remove("ok","bad");
+    feedbackEl.innerHTML = "";
+  }
+
+  // ---------- GÉNÉRATION ----------
+  function randint(min, max){ // inclusif
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+  function nonZeroInt(limit){
+    let x = 0;
+    while(x === 0) x = randint(-limit, limit);
+    return x;
+  }
+  function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+  function limits(){
+    const lv = Number(levelEl.value);
+    if(lv === 1) return 10;
+    if(lv === 2) return 20;
+    return 50;
+  }
+
+  function buildQuestion(){
+    const L = limits();
+    const mode = modeEl.value === "mix"
+      ? pick(["addsub","mul","prio","compare"])
+      : modeEl.value;
+
+    let q = { mode, text:"", answer:null, explain:"", hint:"" };
+
+    if(mode === "addsub"){
+      const a = nonZeroInt(L);
+      const b = nonZeroInt(L);
+      const op = pick(["+","-"]);
+      if(op === "+"){
+        q.text = `${fmt(a)} + ${fmtPar(b)}`;
+        q.answer = a + b;
+        q.explain = explainAdd(a,b);
+        q.hint = "Rappel : mêmes signes → on additionne, signes différents → on soustrait.";
+      } else {
+        q.text = `${fmt(a)} − ${fmtPar(b)}`;
+        q.answer = a - b;
+        q.explain = `On transforme : ${fmt(a)} − ${fmtPar(b)} = ${fmt(a)} + (${fmt(-b)})<br>` + explainAdd(a, -b);
+        q.hint = "Astuce : soustraire un nombre, c’est ajouter son opposé.";
+      }
+    }
+
+    if(mode === "mul"){
+      const a = nonZeroInt(Math.max(3, Math.floor(L/2)));
+      const b = nonZeroInt(Math.max(3, Math.floor(L/2)));
+      q.text = `${fmtPar(a)} × ${fmtPar(b)}`;
+      q.answer = a * b;
+      const sign = (a*b >= 0) ? "positif" : "négatif";
+      q.explain = `Signes : ${a<0?"−":"+"} × ${b<0?"−":"+"} → résultat ${sign}.<br>
+                   Valeurs : |${a}| × |${b}| = ${Math.abs(a)} × ${Math.abs(b)} = ${Math.abs(a*b)}.`;
+      q.hint = "Produit : même signe → + ; signe différent → −.";
+    }
+
+    if(mode === "prio"){
+      // Forme : a + (b × c)  ou  (a − b) × c  (niveau 2/3)
+      const lv = Number(levelEl.value);
+      const a = nonZeroInt(Math.max(10, Math.floor(L/2)));
+      const b = nonZeroInt(Math.max(10, Math.floor(L/2)));
+      const c = nonZeroInt(Math.max(6, Math.floor(L/3)));
+      if(lv === 1){
+        // parenthèse simple
+        q.text = `${fmt(a)} + (${fmt(b)} × ${fmt(c)})`;
+        q.answer = a + (b*c);
+        q.explain = `Priorités : on calcule d’abord la multiplication.<br>
+                     ${fmt(b)} × ${fmt(c)} = ${fmt(b*c)} puis ${fmt(a)} + ${fmt(b*c)} = ${fmt(q.answer)}.`;
+      } else {
+        const form = pick(["a_plus_bxc", "a_min_b_par_c"]);
+        if(form === "a_plus_bxc"){
+          q.text = `${fmt(a)} − (${fmtPar(b)} × ${fmtPar(c)})`;
+          q.answer = a - (b*c);
+          q.explain = `1) Multiplication : ${fmtPar(b)} × ${fmtPar(c)} = ${fmt(b*c)}<br>
+                       2) Puis soustraction : ${fmt(a)} − ${fmtPar(b*c)} = ${fmt(q.answer)}.`;
+        } else {
+          q.text = `(${fmt(a)} − ${fmtPar(b)}) × ${fmtPar(c)}`;
+          q.answer = (a - b) * c;
+          q.explain = `1) Parenthèses : ${fmt(a)} − ${fmtPar(b)} = ${fmt(a-b)}<br>
+                       2) Multiplication : ${fmt(a-b)} × ${fmtPar(c)} = ${fmt(q.answer)}.`;
+        }
+      }
+      q.hint = "Priorités : parenthèses → multiplications → +/−.";
+    }
+
+    if(mode === "compare"){
+      const a = nonZeroInt(L);
+      const b = nonZeroInt(L);
+      // question "Quel est le plus grand ?"
+      q.text = `Quel est le plus grand ?  ${fmt(a)}  et  ${fmt(b)}`;
+      q.answer = (a > b) ? "A" : (b > a ? "B" : "E");
+      q.explain = (a === b)
+        ? `Ils sont égaux : ${fmt(a)} = ${fmt(b)}.`
+        : `Sur la droite graduée, le plus grand est celui qui est le plus à droite :<br>
+           ${fmt(a)} ${a>b?">":"<"} ${fmt(b)}.`;
+      q.hint = "Rappel : parmi les négatifs, celui qui est le “moins loin” de 0 est le plus grand.";
+    }
+
+    return q;
+  }
+
+  function fmt(n){
+    return (n < 0) ? `−${Math.abs(n)}` : `${n}`;
+  }
+  function fmtPar(n){
+    return (n < 0) ? `(${fmt(n)})` : fmt(n);
+  }
+
+  function explainAdd(a,b){
+    const sameSign = (a>=0 && b>=0) || (a<0 && b<0);
+    if(sameSign){
+      const s = a+b;
+      return `Mêmes signes → on additionne : |${fmt(a)}| + |${fmt(b)}| = ${Math.abs(a)} + ${Math.abs(b)} = ${Math.abs(s)}.<br>
+              On garde le signe : résultat = ${fmt(s)}.`;
+    } else {
+      const s = a+b;
+      const big = (Math.abs(a) >= Math.abs(b)) ? a : b;
+      return `Signes différents → on soustrait : ${Math.max(Math.abs(a),Math.abs(b))} − ${Math.min(Math.abs(a),Math.abs(b))} = ${Math.abs(s)}.<br>
+              On garde le signe du plus grand en valeur (${fmt(big)}) : résultat = ${fmt(s)}.`;
+    }
+  }
+
+  // ---------- QCM ----------
+  function makeChoices(q){
+    // 4 choix dont 1 correct (ou cas compare)
+    let correct = q.answer;
+    let choices = [];
+
+    if(q.mode === "compare"){
+      // A = premier, B = second, E = égaux
+      const labels = [
+        {key:"A", txt:"Le 1er"},
+        {key:"B", txt:"Le 2e"},
+        {key:"E", txt:"Ils sont égaux"},
+        {key:"N", txt:"Impossible à savoir"}
+      ];
+      // remplace N par un distracteur raisonnable
+      choices = shuffle(labels).slice(0,4);
+      // s'assurer que la bonne réponse est présente
+      if(!choices.some(x => x.key === correct)){
+        choices[0] = labels.find(x => x.key === correct);
+      }
+      return { choices, correct };
+    }
+
+    choices.push(correct);
+
+    // distracteurs : +/- 1, inversion signe, oubli de parenthèses
+    const d1 = correct + pick([-2,-1,1,2]);
+    const d2 = -correct;
+    const d3 = (q.mode === "mul" || q.mode === "prio") ? correct + pick([-5,5,-10,10]) : correct + pick([-3,3]);
+
+    [d1,d2,d3].forEach(v => { if(!choices.includes(v)) choices.push(v); });
+
+    while(choices.length < 4){
+      const v = correct + randint(-12,12);
+      if(v !== correct && !choices.includes(v)) choices.push(v);
+    }
+
+    choices = shuffle(choices).slice(0,4);
+    return { choices, correct };
+  }
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]] = [a[j],a[i]];
+    }
+    return a;
+  }
+
+  // ---------- FLUX ----------
+  function renderQuestion(){
+    clearFeedback();
+    state.current = buildQuestion();
+
+    const q = state.current;
+    tagEl.textContent = q.mode.toUpperCase();
+    qtextEl.textContent = q.text;
+    hintEl.innerHTML = q.hint || "";
+
+    const inputMode = inputModeEl.value;
+
+    areaQCM.innerHTML = "";
+    if(inputMode === "qcm"){
+      areaQCM.style.display = "grid";
+      areaSaisie.style.display = "none";
+
+      const { choices, correct } = makeChoices(q);
+      choices.forEach((c) => {
+        const btn = document.createElement("button");
+        btn.className = "choice";
+        if(q.mode === "compare"){
+          btn.textContent = c.txt;
+          btn.dataset.val = c.key;
+        } else {
+          btn.textContent = fmt(c);
+          btn.dataset.val = String(c);
+        }
+        btn.addEventListener("click", () => checkAnswer(btn.dataset.val, btn));
+        areaQCM.appendChild(btn);
+      });
+    } else {
+      areaQCM.style.display = "none";
+      areaSaisie.style.display = "block";
+      userAnswer.value = "";
+      userAnswer.focus();
+    }
+  }
+
+  function checkAnswer(raw, clickedBtn=null){
+    const q = state.current;
+    let userVal;
+
+    if(q.mode === "compare"){
+      userVal = String(raw).trim().toUpperCase();
+      const ok = userVal === q.answer;
+      afterAnswer(ok, clickedBtn, userVal);
+      return;
+    }
+
+    // autoriser "−" ou "-"
+    const cleaned = String(raw).trim().replace("−","-");
+    userVal = Number(cleaned);
+
+    if(!Number.isFinite(userVal)){
+      showFeedback(false, `Je ne comprends pas la réponse. Essaie un nombre comme <span class="kbd">-7</span>.`);
+      return;
+    }
+
+    const ok = userVal === q.answer;
+    afterAnswer(ok, clickedBtn, userVal);
+  }
+
+  function afterAnswer(ok, clickedBtn, userVal){
+    const q = state.current;
+
+    state.done += 1;
+
+    if(ok){
+      state.score += 1;
+      state.streak += 1;
+    } else {
+      state.streak = 0;
+    }
+    updateStats();
+
+    // Marquer les boutons en QCM
+    if(inputModeEl.value === "qcm"){
+      const btns = [...areaQCM.querySelectorAll("button")];
+      btns.forEach(b => {
+        const v = b.dataset.val;
+        const isCorrect = (q.mode === "compare") ? (v === q.answer) : (Number(v) === q.answer);
+        if(isCorrect) b.classList.add("ok");
+      });
+      if(clickedBtn && !ok) clickedBtn.classList.add("bad");
+      btns.forEach(b => b.disabled = true);
+    }
+
+    const goodTxt = (q.mode === "compare")
+      ? `Bonne réponse ✅`
+      : `Bonne réponse ✅ <b>${fmt(q.answer)}</b>`;
+
+    const badTxt = (q.mode === "compare")
+      ? `Raté ❌ La bonne réponse était : <b>${q.answer==="A"?"Le 1er":q.answer==="B"?"Le 2e":"Ils sont égaux"}</b>`
+      : `Raté ❌ Ta réponse : <b>${fmt(Number.isFinite(userVal)?userVal:0)}</b> — Bonne réponse : <b>${fmt(q.answer)}</b>`;
+
+    showFeedback(ok, `
+      <div style="font-weight:800; margin-bottom:6px">${ok ? goodTxt : badTxt}</div>
+      <div>${q.explain}</div>
+      <div class="small" style="margin-top:8px">Prochaine question dans 1 seconde…</div>
+    `);
+
+    setTimeout(renderQuestion, 1000);
+  }
+
+  // ---------- EVENTS ----------
+  inputModeEl.addEventListener("change", renderQuestion);
+  modeEl.addEventListener("change", renderQuestion);
+  levelEl.addEventListener("change", renderQuestion);
+
+  btnCheck.addEventListener("click", () => checkAnswer(userAnswer.value));
+  userAnswer.addEventListener("keydown", (e) => {
+    if(e.key === "Enter") checkAnswer(userAnswer.value);
+  });
+
+  $("btnSkip").addEventListener("click", () => renderQuestion());
+
+  $("btnReset").addEventListener("click", () => {
+    state.score = 0; state.done = 0; state.streak = 0;
+    state.startTs = Date.now();
+    updateStats();
+    clearFeedback();
+    renderQuestion();
+  });
+
+  // ---------- TIMER ----------
+  function startTimer(){
+    if(state.timer) clearInterval(state.timer);
+    state.timer = setInterval(() => {
+      timeEl.textContent = formatTime(Date.now() - state.startTs);
+    }, 250);
+  }
+
+  // ---------- INIT ----------
+  updateStats();
+  startTimer();
+  renderQuestion();
+})();
+</script>
 </body>
-</html>
-    
-  </body>
-  
 </html>

@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>REBOND — Puzzle (Prototype)</title>
+<style>
+  :root{
+    --teal:#14786c;
+    --amber:#edb01a;
+    --ink:#0f172a;
+    --muted:#475569;
+    --bg:#f7faf9;
+    --card:#ffffff;
+    --line:rgba(15, 23, 42, .12);
+    --good:rgba(20,120,108,.12);
+    --bad:rgba(220, 38, 38, .10);
+    --info:rgba(2, 132, 199, .10);
+    --shadow: 0 10px 28px rgba(2,6,23,.08);
+    --radius:18px;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+    background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+    color:var(--ink);
+  }
+
+  /* Digiforma-friendly wrapper */
+  .outer-container{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    padding:22px 14px 34px;
+  }
+  .app{
+    width:min(980px, 100%);
+    background: var(--card);
+    border:1px solid var(--line);
+    border-radius: calc(var(--radius) + 6px);
+    box-shadow: var(--shadow);
+    overflow:hidden;
+  }
+
+  header{
+    padding:18px 18px 14px;
+    background:
+      radial-gradient(900px 240px at 20% 0%, rgba(20,120,108,.16), transparent 55%),
+      radial-gradient(900px 240px at 85% 10%, rgba(237,176,26,.20), transparent 55%),
+      linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.85));
+    border-bottom:1px solid var(--line);
+  }
+  .topline{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+  .brand{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .brand h1{
+    font-size:22px;
+    letter-spacing:.2px;
+    line-height:1.15;
+  }
+  .brand .sub{
+    color:var(--muted);
+    font-size:13px;
+  }
+  .pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:999px;
+    background:rgba(255,255,255,.75);
+    font-size:12px;
+    color:var(--muted);
+  }
+  .dot{
+    width:10px;height:10px;border-radius:999px;
+    background: conic-gradient(from 0deg, var(--teal), var(--amber), var(--teal));
+  }
+
+  .content{
+    padding:16px 18px 20px;
+  }
+
+  /* Progress */
+  .steps{
+    display:grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .step{
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:10px 10px;
+    background:#fff;
+    display:flex;
+    gap:8px;
+    align-items:center;
+    min-height:44px;
+  }
+  .step .n{
+    width:24px;height:24px;border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;
+    font-size:12px;
+    border:1px solid var(--line);
+    background:rgba(15,23,42,.03);
+    color:var(--muted);
+    flex:0 0 auto;
+  }
+  .step .t{
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.2;
+  }
+  .step.active{
+    border-color:rgba(20,120,108,.35);
+    box-shadow: 0 10px 18px rgba(20,120,108,.10);
+  }
+  .step.active .n{
+    background:rgba(20,120,108,.10);
+    border-color:rgba(20,120,108,.30);
+    color:var(--teal);
+  }
+  .step.done .n{
+    background:rgba(20,120,108,.14);
+    border-color:rgba(20,120,108,.30);
+    color:var(--teal);
+  }
+
+  /* Panels */
+  .panel{
+    border:1px solid var(--line);
+    border-radius: var(--radius);
+    padding:14px;
+    background: #fff;
+  }
+  .panel + .panel{ margin-top:12px; }
+
+  .panel h2{
+    font-size:16px;
+    margin-bottom:6px;
+  }
+  .hint{
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.45;
+  }
+
+  .card-big{
+    margin-top:12px;
+    border:1px solid rgba(20,120,108,.25);
+    background: rgba(20,120,108,.06);
+    border-radius: var(--radius);
+    padding:14px;
+    position:relative;
+    overflow:hidden;
+  }
+  .card-big:before{
+    content:"";
+    position:absolute; inset:-40px -40px auto auto;
+    width:160px; height:160px;
+    border-radius:999px;
+    background: radial-gradient(circle at 35% 35%, rgba(237,176,26,.35), transparent 55%);
+    filter: blur(0px);
+    pointer-events:none;
+  }
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 10px;
+    border-radius:999px;
+    border:1px solid rgba(20,120,108,.25);
+    background: rgba(255,255,255,.6);
+    color:var(--teal);
+    font-weight:700;
+    font-size:12px;
+  }
+  .card-text{
+    margin-top:10px;
+    font-size:16px;
+    line-height:1.5;
+  }
+
+  .grid{
+    margin-top:12px;
+    display:grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap:10px;
+  }
+  @media (max-width: 840px){
+    .steps{ grid-template-columns: 1fr; }
+    .grid{ grid-template-columns: 1fr; }
+  }
+
+  .choice{
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:12px;
+    background:#fff;
+    cursor:pointer;
+    transition: transform .08s ease, box-shadow .08s ease, border-color .08s ease;
+    user-select:none;
+  }
+  .choice:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(2,6,23,.06);
+  }
+  .choice.selected{
+    border-color: rgba(20,120,108,.45);
+    background: rgba(20,120,108,.06);
+  }
+
+  .choice .title{
+    font-weight:700;
+    font-size:14px;
+    line-height:1.25;
+    margin-bottom:6px;
+  }
+  .choice .desc{
+    font-size:12.5px;
+    line-height:1.4;
+    color:var(--muted);
+  }
+
+  .actions{
+    margin-top:12px;
+    display:flex;
+    gap:10px;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+  }
+  button{
+    appearance:none;
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:14px;
+    padding:10px 12px;
+    font-weight:700;
+    cursor:pointer;
+    transition: transform .08s ease, box-shadow .08s ease, border-color .08s ease;
+  }
+  button:hover{ transform: translateY(-1px); box-shadow: 0 10px 18px rgba(2,6,23,.06); }
+  button:disabled{ opacity:.5; cursor:not-allowed; transform:none; box-shadow:none; }
+  .primary{
+    border-color: rgba(20,120,108,.35);
+    background: linear-gradient(180deg, rgba(20,120,108,.10), rgba(20,120,108,.06));
+    color: var(--teal);
+  }
+  .ghost{
+    background: #fff;
+    color: var(--muted);
+  }
+  .danger{
+    border-color: rgba(220, 38, 38, .28);
+    background: rgba(220, 38, 38, .06);
+    color: rgb(185, 28, 28);
+  }
+
+  .feedback{
+    margin-top:12px;
+    border-radius:16px;
+    border:1px solid var(--line);
+    padding:12px;
+    background:#fff;
+  }
+  .fb-row{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:8px 10px;
+    border-radius:14px;
+  }
+  .fb-row + .fb-row{ margin-top:6px; }
+  .tag{
+    font-size:11px;
+    font-weight:800;
+    padding:4px 8px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    flex:0 0 auto;
+  }
+  .ok{ background: var(--good); border-color: rgba(20,120,108,.25); color: var(--teal); }
+  .no{ background: var(--bad); border-color: rgba(220,38,38,.22); color: rgb(185,28,28); }
+  .info{ background: var(--info); border-color: rgba(2,132,199,.22); color: rgb(2,132,199); }
+
+  .small{
+    font-size:12.5px;
+    color:var(--muted);
+    line-height:1.45;
+  }
+
+  .footer-note{
+    margin-top:14px;
+    padding:12px 14px;
+    border-top:1px solid var(--line);
+    background: linear-gradient(180deg, rgba(255,255,255,.6), rgba(247,250,249,.9));
+    color: var(--muted);
+    font-size:12.5px;
+    line-height:1.45;
+  }
+  .k{
+    display:inline-flex;align-items:center;gap:8px;
+    font-weight:800;color:var(--ink);
+  }
+  .k b{ color:var(--teal); }
+  a{ color:inherit; }
+</style>
+</head>
+
+<body>
+  <div class="outer-container">
+    <div class="app" role="application" aria-label="Jeu REBOND - Prototype puzzle">
+      <header>
+        <div class="topline">
+          <div class="brand">
+            <h1>🧩 REBOND — Puzzle « Reconnaître & agir »</h1>
+            <div class="sub">Prototype e-learning (1 situation). Outil de discussion — pas un test.</div>
+          </div>
+          <div class="pill" title="Prototype">
+            <span class="dot" aria-hidden="true"></span>
+            <span>Progression guidée • Multi-sélection</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- Progress -->
+        <div class="steps" aria-label="Étapes">
+          <div class="step" id="step-0"><div class="n">0</div><div class="t">Cadre</div></div>
+          <div class="step" id="step-1"><div class="n">1</div><div class="t">Situation</div></div>
+          <div class="step" id="step-2"><div class="n">2</div><div class="t">Type(s) de violences</div></div>
+          <div class="step" id="step-3"><div class="n">3</div><div class="t">Qualification pénale</div></div>
+          <div class="step" id="step-4"><div class="n">4</div><div class="t">Obligations & réactions</div></div>
+        </div>
+
+        <!-- Screen: intro -->
+        <section class="panel" id="screen-intro">
+          <h2>Cadre de travail</h2>
+          <p class="hint">
+            Nous travaillons à partir d’une <b>situation fictive</b>. Il ne s’agit pas de juger des personnes,
+            mais d’apprendre à <b>repérer</b>, <b>nommer</b> et <b>protéger</b>.
+            <br/>Personne n’est obligé de partager une expérience personnelle.
+          </p>
+
+          <div class="card-big" style="margin-top:12px;">
+            <span class="badge">🧠 Rappel</span>
+            <div class="card-text">
+              Le rôle d’un encadrant n’est pas d’enquêter, mais de <b>protéger</b> et d’<b>orienter</b>.
+              En cas de doute, on privilégie toujours la protection du mineur.
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="primary" id="btn-start">Commencer</button>
+          </div>
+        </section>
+
+        <!-- Screen: situation -->
+        <section class="panel" id="screen-situation" hidden>
+          <h2>🟥 Carte SITUATION</h2>
+          <p class="hint">Lecture puis question au groupe : <b>« Que se passe-t-il ? Est-ce normal ? »</b></p>
+
+          <div class="card-big" aria-label="Carte situation">
+            <span class="badge" id="situation-id">S1</span>
+            <div class="card-text" id="situation-text"></div>
+          </div>
+
+          <div class="actions">
+            <button class="ghost" id="btn-restart-1">Revenir au cadre</button>
+            <button class="primary" id="btn-to-violences">Identifier la / les violences</button>
+          </div>
+        </section>
+
+        <!-- Screen: violences -->
+        <section class="panel" id="screen-violences" hidden>
+          <h2>🟧 Pièce 1/3 — Type(s) de violences</h2>
+          <p class="hint">
+            Sélection multiple. Objectif : <b>nommer ce qui n’est pas normal</b>.
+          </p>
+
+          <div class="grid" id="violences-grid" aria-label="Choix types de violences"></div>
+
+          <div class="actions">
+            <button class="ghost" id="btn-back-to-situation">Retour</button>
+            <button class="primary" id="btn-check-violences" disabled>Valider</button>
+          </div>
+
+          <div class="feedback" id="violences-feedback" hidden aria-live="polite"></div>
+
+          <div class="actions" style="margin-top:10px;">
+            <button class="primary" id="btn-to-penal" disabled>Continuer : qualification pénale</button>
+          </div>
+        </section>
+
+        <!-- Screen: penal -->
+        <section class="panel" id="screen-penal" hidden>
+          <h2>🟨 Pièce 2/3 — Qualification pénale</h2>
+          <p class="hint">
+            Sélection multiple possible. Rappel : une situation peut relever de <b>plusieurs</b> infractions.
+          </p>
+
+          <div class="grid" id="penal-grid" aria-label="Choix qualifications pénales"></div>
+
+          <div class="actions">
+            <button class="ghost" id="btn-back-to-violences">Retour</button>
+            <button class="primary" id="btn-check-penal" disabled>Valider</button>
+          </div>
+
+          <div class="feedback" id="penal-feedback" hidden aria-live="polite"></div>
+
+          <div class="actions" style="margin-top:10px;">
+            <button class="primary" id="btn-to-reactions" disabled>Continuer : réactions attendues</button>
+          </div>
+        </section>
+
+        <!-- Screen: reactions -->
+        <section class="panel" id="screen-reactions" hidden>
+          <h2>🟩 Pièce 3/3 — Obligations & réactions</h2>
+          <p class="hint">
+            Objectif : passer de la reconnaissance à l’action.
+            <br/><b>On protège, on trace, on oriente / signale.</b> On n’enquête pas.
+          </p>
+
+          <div class="grid" id="reactions-grid" aria-label="Choix obligations et réactions"></div>
+
+          <div class="actions">
+            <button class="ghost" id="btn-back-to-penal">Retour</button>
+            <button class="primary" id="btn-check-reactions" disabled>Valider</button>
+          </div>
+
+          <div class="feedback" id="reactions-feedback" hidden aria-live="polite"></div>
+
+          <div class="actions" style="margin-top:10px;">
+            <button class="primary" id="btn-finish" disabled>Terminer : carte Vrai/Faux</button>
+          </div>
+        </section>
+
+        <!-- Screen: vrai/faux -->
+        <section class="panel" id="screen-vf" hidden>
+          <h2>🟦 Carte VRAI / FAUX</h2>
+          <p class="hint">Lecture collective puis ancrage du message clé.</p>
+
+          <div class="card-big">
+            <span class="badge">Vrai / Faux</span>
+            <div class="card-text" id="vf-text"></div>
+          </div>
+
+          <div class="panel" style="margin-top:12px;">
+            <h2 style="font-size:14px;">Ta réponse</h2>
+            <div class="actions" style="justify-content:flex-start;margin-top:10px;">
+              <button class="primary" id="btn-vrai">VRAI</button>
+              <button class="primary" id="btn-faux">FAUX</button>
+            </div>
+
+            <div class="feedback" id="vf-feedback" hidden aria-live="polite"></div>
+          </div>
+
+          <div class="actions">
+            <button class="ghost" id="btn-replay">Rejouer (même situation)</button>
+          </div>
+        </section>
+
+      </div>
+
+      <div class="footer-note">
+        <span class="k">📌 Message final : <b>protéger</b> un mineur est une obligation légale et morale — <b>signaler</b>, c’est protéger.</span><br/>
+        Numéros utiles : 119 • 17 • 3018
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  // ---------------------------
+  // DATA (prototype : 1 situation)
+  // ---------------------------
+  const SITUATION = {
+    id: "S1",
+    texte: "Un entraîneur crie régulièrement sur un jeune sportif et l’insulte devant le groupe en cas d’erreur."
+  };
+
+  // Types de violences (subset + définitions)
+  const VIOLENCES = [
+    {
+      id: "vp",
+      title: "Violence psychologique",
+      desc: "Comportements (cris, dénigrement, pression) qui atteignent l’équilibre et la sécurité émotionnelle.",
+      verdict: "ok",
+      why: "Les insultes et la répétition d’un climat humiliant relèvent d’une violence psychologique."
+    },
+    {
+      id: "hum",
+      title: "Humiliation",
+      desc: "Rabaisser publiquement, ridiculiser, dévaloriser une personne.",
+      verdict: "ok",
+      why: "Insulter devant le groupe met en scène une humiliation, souvent très impactante pour un mineur."
+    },
+    {
+      id: "int",
+      title: "Intimidation",
+      desc: "Instaurer la peur pour obtenir obéissance ou contrôle.",
+      verdict: "info",
+      why: "Selon le contexte, les cris peuvent instaurer un climat de peur ; cela peut relever de l’intimidation."
+    },
+    {
+      id: "phys",
+      title: "Violence physique",
+      desc: "Atteintes corporelles (coups, contraintes physiques, douleur infligée).",
+      verdict: "no",
+      why: "Ici, il n’y a pas d’atteinte corporelle décrite : on est sur de la violence verbale/psychologique."
+    },
+    {
+      id: "hs",
+      title: "Harcèlement sexuel",
+      desc: "Propos/comportements sexuels ou sexistes répétés imposés, créant une situation intimidante/hostile.",
+      verdict: "no",
+      why: "Cette situation ne décrit pas de propos ou comportements à connotation sexuelle."
+    },
+    {
+      id: "aau",
+      title: "Abus d’autorité",
+      desc: "Utiliser sa position d’adulte/encadrant pour imposer, faire taire, contrôler, humilier.",
+      verdict: "info",
+      why: "Souvent associé : l’encadrant use de sa position pour imposer une domination (à discuter avec le groupe)."
+    }
+  ];
+
+  // Qualifications pénales (subset + repères)
+  const PENAL = [
+    {
+      id: "harc_m",
+      title: "Harcèlement moral — Art. 222-16-2-2 CP",
+      desc: "Agissements répétés entraînant une dégradation des conditions de vie/santé (selon contexte).",
+      verdict: "info",
+      why: "La répétition est un indice. La qualification dépendra des éléments (durée, conséquences, etc.)."
+    },
+    {
+      id: "viol",
+      title: "Violences volontaires — Art. 222-7 à 222-14-2 CP",
+      desc: "Peut inclure des violences non physiques selon circonstances (à manier avec prudence).",
+      verdict: "info",
+      why: "À discuter : selon la situation, certains faits peuvent relever de violences (notamment si menaces/contraintes)."
+    },
+    {
+      id: "men",
+      title: "Menaces — Art. 222-16 CP",
+      desc: "Menaces de commettre un crime/délit contre une personne (éléments précis requis).",
+      verdict: "no",
+      why: "Ici, aucune menace explicite n’est décrite ; plutôt des insultes/humiliations."
+    },
+    {
+      id: "hs",
+      title: "Harcèlement sexuel — Art. 222-33-2-2 CP",
+      desc: "Propos/comportements à connotation sexuelle ou sexiste répétés.",
+      verdict: "no",
+      why: "Aucun élément sexuel/sexiste n’est décrit dans cette situation."
+    },
+    {
+      id: "multi",
+      title: "Infractions multiples possibles",
+      desc: "Rappel pédagogique : plusieurs qualifications peuvent se cumuler selon les faits.",
+      verdict: "ok",
+      why: "Bon réflexe : ne pas réduire la situation à une seule lecture — et ne pas « juger » soi-même."
+    }
+  ];
+
+  // Obligations & réactions (subset + repères)
+  const REACTIONS = [
+    {
+      id: "prot",
+      title: "Obligation de protection du mineur",
+      desc: "Priorité : sécurité, prévention, mise à l’abri si besoin.",
+      verdict: "ok",
+      why: "Le premier réflexe est de protéger et d’éviter la poursuite des faits."
+    },
+    {
+      id: "ecoute",
+      title: "Écoute sans jugement",
+      desc: "Accueillir la parole sans minimiser ni contester.",
+      verdict: "ok",
+      why: "Une posture d’écoute favorise la parole et réduit le risque d’isolement."
+    },
+    {
+      id: "trace",
+      title: "Traçabilité des alertes",
+      desc: "Noter date, lieu, faits rapportés, témoins éventuels, éléments objectifs.",
+      verdict: "ok",
+      why: "Tracer aide à sécuriser la suite (sans enquêter) et à transmettre aux personnes compétentes."
+    },
+    {
+      id: "secret",
+      title: "Ne pas promettre le secret",
+      desc: "Expliquer qu’on cherchera de l’aide pour protéger.",
+      verdict: "ok",
+      why: "Promettre le secret peut empêcher la protection et vous mettre en difficulté."
+    },
+    {
+      id: "confr",
+      title: "Confronter l’entraîneur sur le moment",
+      desc: "Face-à-face direct avec la personne mise en cause.",
+      verdict: "no",
+      why: "Éviter la confrontation directe : risque d’escalade, de pressions, de représailles."
+    },
+    {
+      id: "enquete",
+      title: "Mener sa propre enquête",
+      desc: "Chercher des preuves / interroger tout le monde pour établir les faits.",
+      verdict: "no",
+      why: "Le rôle n’est pas d’enquêter : on protège, on oriente, on signale selon procédures."
+    },
+    {
+      id: "orient",
+      title: "Se tourner vers une personne formée / référent",
+      desc: "Référent intégrité, direction, personnes habilitées.",
+      verdict: "info",
+      why: "Bon réflexe organisationnel, en complément de la protection et du signalement si nécessaire."
+    }
+  ];
+
+  // Vrai/Faux (1 carte prototype)
+  const VF = {
+    text: "« La performance justifie tout »",
+    answer: false,
+    explanation:
+      "FAUX. La performance ne justifie jamais des insultes, humiliations ou violences. Le cadre sportif n’est pas un espace hors-la-loi : la protection des mineurs prime."
+  };
+
+  // ---------------------------
+  // STATE
+  // ---------------------------
+  const state = {
+    step: 0,
+    selectedViolences: new Set(),
+    selectedPenal: new Set(),
+    selectedReactions: new Set(),
+    checked: { v:false, p:false, r:false },
+    vfAnswered: false
+  };
+
+  // ---------------------------
+  // HELPERS
+  // ---------------------------
+  const $ = (id) => document.getElementById(id);
+
+  function setStep(n){
+    state.step = n;
+
+    // screens
+    $("screen-intro").hidden = n !== 0;
+    $("screen-situation").hidden = n !== 1;
+    $("screen-violences").hidden = n !== 2;
+    $("screen-penal").hidden = n !== 3;
+    $("screen-reactions").hidden = n !== 4;
+    $("screen-vf").hidden = n !== 5;
+
+    // step UI
+    for(let i=0;i<=4;i++){
+      const el = $("step-" + i);
+      el.classList.remove("active");
+      el.classList.remove("done");
+      if(i === n) el.classList.add("active");
+      if(i < n) el.classList.add("done");
+    }
+  }
+
+  function makeChoiceCard(item, group, selectedSet){
+    const div = document.createElement("div");
+    div.className = "choice";
+    div.setAttribute("role","button");
+    div.setAttribute("tabindex","0");
+    div.dataset.id = item.id;
+
+    const title = document.createElement("div");
+    title.className = "title";
+    title.textContent = item.title;
+
+    const desc = document.createElement("div");
+    desc.className = "desc";
+    desc.textContent = item.desc;
+
+    div.appendChild(title);
+    div.appendChild(desc);
+
+    function toggle(){
+      if(selectedSet.has(item.id)) selectedSet.delete(item.id);
+      else selectedSet.add(item.id);
+      div.classList.toggle("selected", selectedSet.has(item.id));
+      updateValidateButtons();
+    }
+
+    div.addEventListener("click", toggle);
+    div.addEventListener("keydown", (e) => {
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault();
+        toggle();
+      }
+    });
+
+    return div;
+  }
+
+  function renderGrid(gridEl, items, selectedSet){
+    gridEl.innerHTML = "";
+    items.forEach(it => {
+      gridEl.appendChild(makeChoiceCard(it, gridEl.id, selectedSet));
+    });
+  }
+
+  function feedbackBlock(items, selectedSet){
+    const wrap = document.createElement("div");
+
+    // show selected first, then missed "ok" that could be useful
+    const selectedItems = items.filter(it => selectedSet.has(it.id));
+    const missedOk = items.filter(it => it.verdict === "ok" && !selectedSet.has(it.id));
+
+    function row(tagClass, tagText, title, why){
+      const r = document.createElement("div");
+      r.className = "fb-row";
+      const tag = document.createElement("div");
+      tag.className = "tag " + tagClass;
+      tag.textContent = tagText;
+
+      const txt = document.createElement("div");
+      const t = document.createElement("div");
+      t.style.fontWeight = "800";
+      t.style.fontSize = "13px";
+      t.textContent = title;
+
+      const p = document.createElement("div");
+      p.className = "small";
+      p.textContent = why;
+
+      txt.appendChild(t);
+      txt.appendChild(p);
+
+      r.appendChild(tag);
+      r.appendChild(txt);
+      return r;
+    }
+
+    if(selectedItems.length === 0){
+      wrap.appendChild(row("info","INFO","Aucune sélection", "Sélectionne au moins une carte pour avancer."));
+      return wrap;
+    }
+
+    selectedItems.forEach(it => {
+      if(it.verdict === "ok") wrap.appendChild(row("ok","OK", it.title, it.why));
+      else if(it.verdict === "no") wrap.appendChild(row("no","À REVOIR", it.title, it.why));
+      else wrap.appendChild(row("info","À DISCUTER", it.title, it.why));
+    });
+
+    if(missedOk.length){
+      missedOk.forEach(it => {
+        wrap.appendChild(row("info","SUGGESTION", it.title, "Vous pouvez aussi l’envisager : " + it.why));
+      });
+    }
+
+    return wrap;
+  }
+
+  function updateValidateButtons(){
+    $("btn-check-violences").disabled = state.selectedViolences.size === 0;
+    $("btn-check-penal").disabled = state.selectedPenal.size === 0;
+    $("btn-check-reactions").disabled = state.selectedReactions.size === 0;
+  }
+
+  function resetAll(){
+    state.step = 0;
+    state.selectedViolences.clear();
+    state.selectedPenal.clear();
+    state.selectedReactions.clear();
+    state.checked = { v:false, p:false, r:false };
+    state.vfAnswered = false;
+
+    $("violences-feedback").hidden = true;
+    $("penal-feedback").hidden = true;
+    $("reactions-feedback").hidden = true;
+    $("vf-feedback").hidden = true;
+
+    $("btn-to-penal").disabled = true;
+    $("btn-to-reactions").disabled = true;
+    $("btn-finish").disabled = true;
+
+    // rerender
+    $("situation-id").textContent = SITUATION.id;
+    $("situation-text").textContent = SITUATION.texte;
+
+    renderGrid($("violences-grid"), VIOLENCES, state.selectedViolences);
+    renderGrid($("penal-grid"), PENAL, state.selectedPenal);
+    renderGrid($("reactions-grid"), REACTIONS, state.selectedReactions);
+
+    $("vf-text").textContent = VF.text;
+    updateValidateButtons();
+    setStep(0);
+  }
+
+  // ---------------------------
+  // EVENTS
+  // ---------------------------
+  $("btn-start").addEventListener("click", () => setStep(1));
+  $("btn-restart-1").addEventListener("click", () => setStep(0));
+
+  $("btn-to-violences").addEventListener("click", () => setStep(2));
+  $("btn-back-to-situation").addEventListener("click", () => setStep(1));
+
+  $("btn-back-to-violences").addEventListener("click", () => setStep(2));
+  $("btn-back-to-penal").addEventListener("click", () => setStep(3));
+
+  $("btn-check-violences").addEventListener("click", () => {
+    const fb = $("violences-feedback");
+    fb.innerHTML = "";
+    fb.appendChild(feedbackBlock(VIOLENCES, state.selectedViolences));
+    fb.hidden = false;
+    state.checked.v = true;
+    $("btn-to-penal").disabled = false;
+  });
+
+  $("btn-to-penal").addEventListener("click", () => setStep(3));
+
+  $("btn-check-penal").addEventListener("click", () => {
+    const fb = $("penal-feedback");
+    fb.innerHTML = "";
+    fb.appendChild(feedbackBlock(PENAL, state.selectedPenal));
+    fb.hidden = false;
+    state.checked.p = true;
+    $("btn-to-reactions").disabled = false;
+  });
+
+  $("btn-to-reactions").addEventListener("click", () => setStep(4));
+
+  $("btn-check-reactions").addEventListener("click", () => {
+    const fb = $("reactions-feedback");
+    fb.innerHTML = "";
+    fb.appendChild(feedbackBlock(REACTIONS, state.selectedReactions));
+    fb.hidden = false;
+    state.checked.r = true;
+    $("btn-finish").disabled = false;
+  });
+
+  $("btn-finish").addEventListener("click", () => setStep(5));
+
+  function answerVF(val){
+    if(state.vfAnswered) return;
+    state.vfAnswered = true;
+
+    const fb = $("vf-feedback");
+    fb.hidden = false;
+    fb.innerHTML = "";
+
+    const correct = (val === VF.answer);
+    const row = document.createElement("div");
+    row.className = "fb-row";
+    const tag = document.createElement("div");
+    tag.className = "tag " + (correct ? "ok" : "info");
+    tag.textContent = correct ? "OK" : "À RETENIR";
+
+    const txt = document.createElement("div");
+    const t = document.createElement("div");
+    t.style.fontWeight = "900";
+    t.style.fontSize = "13px";
+    t.textContent = VF.explanation;
+
+    const p = document.createElement("div");
+    p.className = "small";
+    p.textContent = "Message clé : protéger un mineur prime. Signaler, ce n’est pas accuser — c’est protéger.";
+
+    txt.appendChild(t);
+    txt.appendChild(p);
+    row.appendChild(tag);
+    row.appendChild(txt);
+    fb.appendChild(row);
+
+    // disable buttons
+    $("btn-vrai").disabled = true;
+    $("btn-faux").disabled = true;
+  }
+
+  $("btn-vrai").addEventListener("click", () => answerVF(true));
+  $("btn-faux").addEventListener("click", () => answerVF(false));
+
+  $("btn-replay").addEventListener("click", () => {
+    // keep the same situation, reset selections only
+    $("btn-vrai").disabled = false;
+    $("btn-faux").disabled = false;
+    resetAll();
+    setStep(1);
+  });
+
+  // init
+  resetAll();
+})();
+</script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

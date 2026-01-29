@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mosaïque – Version stable originale</title>
 
+<!-- 🔗 BASE GITHUB PAGES (INDISPENSABLE POUR CODEPEN) -->
+<base href="https://avantpost-cpu.github.io/depot-quiz/infra/" />
+
 <style>
   html, body {
     margin:0;
@@ -19,7 +22,7 @@
   }
 
   .wrapper{
-    transform-origin:center center; /* ✔ valeur qui marchait avant */
+    transform-origin:center center;
     transition:transform .3s ease;
   }
 
@@ -29,7 +32,6 @@
     align-items:flex-start;
     gap:0;
     width:1600px;
-    height:auto;
   }
 
   .col{
@@ -58,11 +60,12 @@
     opacity:0;
     transition:opacity .25s ease;
   }
+
   .hoverable:hover::after{ opacity:1; }
 
   .img1::after  {background-image:url("1b.png")}
   .img2::after  {background-image:url("2b.png")}
-  .img3::after  {background-image:url("3b.png")}
+  .img3::after  {background-image:url("3b.png")} /* bizutage: vignette au survol */
   .img4::after  {background-image:url("4b.png")}
   .img5::after  {background-image:url("5b.png")}
   .img7::after  {background-image:url("7b.png")}
@@ -91,7 +94,10 @@
 
   .mosaic:has(.img1:hover)  .img0::after{background-image:url("1c.png"); opacity:1;}
   .mosaic:has(.img2:hover)  .img0::after{background-image:url("2c.png"); opacity:1;}
-  .mosaic:has(.img3:hover)  .img0::after{background-image:url("3c.png"); opacity:1;}
+
+  /* ✅ bizutage : au survol de 3.png, l'image centrale devient bizutagec.png */
+  .mosaic:has(.img3:hover)  .img0::after{background-image:url("bizutagec.png"); opacity:1;}
+
   .mosaic:has(.img4:hover)  .img0::after{background-image:url("4c.png"); opacity:1;}
   .mosaic:has(.img5:hover)  .img0::after{background-image:url("5c.png"); opacity:1;}
   .mosaic:has(.img7:hover)  .img0::after{background-image:url("7c.png"); opacity:1;}
@@ -110,26 +116,26 @@
   <div class="mosaic">
 
     <div class="col">
-      <div class="hoverable img1"><img src="1.png"></div>
-      <div class="hoverable img2"><img src="2.png"></div>
-      <div class="hoverable img3"><img src="3.png"></div>
-      <div class="hoverable img4"><img src="4.png"></div>
-      <div class="hoverable img5"><img src="5.png"></div>
+      <div class="hoverable img1"><img src="1.png" alt=""></div>
+      <div class="hoverable img2"><img src="2.png" alt=""></div>
+      <div class="hoverable img3"><img src="3.png" alt=""></div>
+      <div class="hoverable img4"><img src="4.png" alt=""></div>
+      <div class="hoverable img5"><img src="5.png" alt=""></div>
     </div>
 
     <div class="col center">
-      <img src="6.png">
-      <div class="img0"><img src="0.png"></div>
+      <img src="6.png" alt="">
+      <div class="img0"><img src="0.png" alt=""></div>
     </div>
 
     <div class="col">
-      <div class="hoverable img7"><img src="7.png"></div>
-      <div class="hoverable img8"><img src="8.png"></div>
-      <div class="hoverable img9"><img src="9.png"></div>
-      <div class="hoverable img10"><img src="10.png"></div>
-      <div class="hoverable img11"><img src="11.png"></div>
-      <div class="hoverable img12"><img src="12.png"></div>
-      <div class="hoverable img13"><img src="13.png"></div>
+      <div class="hoverable img7"><img src="7.png" alt=""></div>
+      <div class="hoverable img8"><img src="8.png" alt=""></div>
+      <div class="hoverable img9"><img src="9.png" alt=""></div>
+      <div class="hoverable img10"><img src="10.png" alt=""></div>
+      <div class="hoverable img11"><img src="11.png" alt=""></div>
+      <div class="hoverable img12"><img src="12.png" alt=""></div>
+      <div class="hoverable img13"><img src="13.png" alt=""></div>
     </div>
 
   </div>
@@ -141,7 +147,6 @@ function adjustScale(){
   const mosaic = document.querySelector('.mosaic');
   const scaleW = window.innerWidth / mosaic.offsetWidth;
   const scaleH = window.innerHeight / mosaic.offsetHeight;
-
   const scale = Math.min(scaleW, scaleH) * 0.95;
   wrapper.style.transform = `scale(${scale})`;
 }

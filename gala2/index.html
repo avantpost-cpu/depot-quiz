@@ -1,15 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!doctype html>
+<!doctype html>
 <html lang="fr">
 <head>
 <meta charset="utf-8" />
@@ -17,24 +6,115 @@
 <title>Un musée imaginaire</title>
 
 <style>
-/* RESET */
+/* =========================
+   Base
+   ========================= */
+:root{
+  --bg: #f0f0f3;
+  --txt: #111;
+  --muted: rgba(17,17,17,.62);
+  --hair: rgba(17,17,17,.12);
+  --maxW: 1100px;
+  --scale: .8;
+}
+
 html, body{
   margin:0;
   padding:0;
   height:100%;
-  background:#f0f0f3;
+  background:var(--bg);
+  color:var(--txt);
   display:block;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-/* CONTENEUR GLOBAL */
+/* =========================
+   Header (menu design, très discret)
+   ========================= */
+.header{
+  position:sticky; /* joli en scroll si tu ajoutes ensuite du contenu */
+  top:0;
+  z-index:10;
+  background:linear-gradient(to bottom, rgba(240,240,243,.92), rgba(240,240,243,.76));
+  backdrop-filter: blur(8px);
+  border-bottom:1px solid var(--hair);
+}
+
+.header-inner{
+  max-width:var(--maxW);
+  margin:0 auto;
+  padding:14px 16px;
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:18px;
+}
+
+.brand{
+  font-size:14px;
+  font-weight:600;
+  letter-spacing:.22px;
+  text-decoration:none;
+  color:inherit;
+}
+
+.nav{
+  display:flex;
+  gap:16px;
+  font-size:13px;
+  letter-spacing:.18px;
+}
+
+.nav a, .nav button{
+  appearance:none;
+  border:0;
+  background:none;
+  padding:0;
+  margin:0;
+  cursor:pointer;
+
+  color:var(--muted);
+  text-decoration:none;
+  font: inherit;
+}
+
+.nav a:hover, .nav button:hover{ color:var(--txt); }
+.nav a:focus-visible, .nav button:focus-visible{
+  outline:2px solid rgba(0,0,0,.25);
+  outline-offset:3px;
+  border-radius:6px;
+}
+
+/* petit indicateur état */
+.state{
+  font-size:12px;
+  color:rgba(17,17,17,.5);
+  letter-spacing:.15px;
+  white-space:nowrap;
+}
+
+/* =========================
+   Scène (mosaïque + overlays)
+   ========================= */
 .stage{
-  min-height:100vh;
   width:100%;
   display:flex;
   justify-content:center;
-  align-items:flex-start;      /* collé en haut */
+  align-items:flex-start;
   padding-top:0;
   box-sizing:border-box;
+}
+
+.scene{
+  position:relative;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  overflow:hidden;
+
+  perspective: 1900px;
+  perspective-origin: 50% 18%;
 }
 
 /* MOSAÏQUE */
@@ -46,21 +126,17 @@ html, body{
   background:#fff;
   overflow:hidden;
 
-  transform: scale(0.8);
+  transform: scale(var(--scale));
   transform-origin: top center;
+
+  transition:
+    transform 1.25s cubic-bezier(.22, 1, .36, 1),
+    opacity   1.25s cubic-bezier(.22, 1, .36, 1),
+    filter    1.25s cubic-bezier(.22, 1, .36, 1);
+  will-change: transform, opacity, filter;
 }
 
-/* --- IMAGES / TILES --- */
-.tile{
-  position:relative;
-  display:block;
-  line-height:0;
-  overflow:hidden;
-  text-decoration:none;
-  color:inherit;
-}
-
-.tile img{
+.mosaic img{
   display:block;
   width:100%;
   height:auto;
@@ -69,108 +145,330 @@ html, body{
   border:0;
 }
 
-/* POSITIONNEMENT */
 .top{ grid-column: 1 / -1; }
 
-/* =========================
-   SWIPE OVERLAY (i2)
-   ========================= */
-.tile.swipe::after{
-  content:"";
+.cell2, .cell4{
+  position:relative;
+  overflow:hidden;
+}
+
+/* zone cliquable/transparente */
+.hotspot{
   position:absolute;
   inset:0;
-  transform:translateX(-101%);
-  transition:transform .45s cubic-bezier(.2,.8,.2,1);
-  /* overlay couleur (modifie si besoin) */
-  background:rgba(0,0,0,.28);
-  pointer-events:none;
+  display:block;
+  background:transparent;
+  cursor:pointer;
 }
 
-/* Un petit titre (optionnel) */
-.tile.swipe .label{
+/* OVERLAYS */
+.overlay{
   position:absolute;
-  left:14px;
-  bottom:14px;
-  font-size:14px;
-  letter-spacing:.2px;
-  padding:8px 10px;
-  border-radius:999px;
-  background:rgba(255,255,255,.85);
-  transform:translateX(-140%);
-  transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  top:0;
+  left:50%;
+  transform-origin: top center;
+
+  opacity:0;
+  filter: blur(3px);
   pointer-events:none;
+
+  transition:
+    transform 1.35s cubic-bezier(.22, 1, .36, 1),
+    opacity   1.35s cubic-bezier(.22, 1, .36, 1),
+    filter    1.35s cubic-bezier(.22, 1, .36, 1);
+  will-change: transform, opacity, filter;
 }
 
-/* Déclenchement au survol */
-.tile.swipe:hover::after,
-.tile.swipe:focus-visible::after{
-  transform:translateX(0);
-}
-.tile.swipe:hover .label,
-.tile.swipe:focus-visible .label{
-  transform:translateX(0);
+/* un léger délai rend l’arrivée plus “loin / timidement” */
+.scene.preview-couleurs #couleurs,
+.scene.preview-photos #photos,
+.scene.lock-couleurs #couleurs,
+.scene.lock-photos #photos{
+  transition-delay: 90ms, 90ms, 90ms;
 }
 
-/* Accessibilité focus clavier */
-.tile:focus-visible{
-  outline:3px solid rgba(0,0,0,.35);
-  outline-offset:-3px;
+.overlay img{
+  display:block;
+  width:min(92vw, var(--maxW));
+  height:auto;
+}
+
+/* départ plus loin */
+#couleurs{
+  transform:
+    translateX(-50%)
+    translateX(-46%)
+    rotateY(18deg)
+    translateZ(-120px)
+    scale(calc(var(--scale) * 0.88));
+}
+
+#photos{
+  transform:
+    translateX(-50%)
+    translateX(46%)
+    rotateY(-18deg)
+    translateZ(-120px)
+    scale(calc(var(--scale) * 0.88));
+}
+
+/* PREVIEW (hover) */
+.scene.preview-couleurs .mosaic{
+  transform:
+    translateX(30%)
+    rotateY(-14deg)
+    translateZ(-60px)
+    scale(calc(var(--scale) * 0.96));
+  opacity:0;
+  filter: blur(2px);
+}
+
+.scene.preview-couleurs #couleurs{
+  transform:
+    translateX(-50%)
+    translateX(0%)
+    rotateY(0deg)
+    translateZ(0px)
+    scale(var(--scale));
+  opacity:1;
+  filter: blur(0px);
+}
+
+.scene.preview-photos .mosaic{
+  transform:
+    translateX(-30%)
+    rotateY(14deg)
+    translateZ(-60px)
+    scale(calc(var(--scale) * 0.96));
+  opacity:0;
+  filter: blur(2px);
+}
+
+.scene.preview-photos #photos{
+  transform:
+    translateX(-50%)
+    translateX(0%)
+    rotateY(0deg)
+    translateZ(0px)
+    scale(var(--scale));
+  opacity:1;
+  filter: blur(0px);
+}
+
+/* LOCK (clic) */
+.scene.lock-couleurs .mosaic,
+.scene.lock-photos .mosaic{
+  opacity:0;
+  filter: blur(2px);
+}
+
+.scene.lock-couleurs .mosaic{
+  transform:
+    translateX(30%)
+    rotateY(-14deg)
+    translateZ(-60px)
+    scale(calc(var(--scale) * 0.96));
+}
+
+.scene.lock-photos .mosaic{
+  transform:
+    translateX(-30%)
+    rotateY(14deg)
+    translateZ(-60px)
+    scale(calc(var(--scale) * 0.96));
+}
+
+.scene.lock-couleurs #couleurs{
+  transform:
+    translateX(-50%)
+    translateX(0%)
+    rotateY(0deg)
+    translateZ(0px)
+    scale(var(--scale));
+  opacity:1;
+  filter: blur(0px);
+  pointer-events:auto;
+}
+
+.scene.lock-photos #photos{
+  transform:
+    translateX(-50%)
+    translateX(0%)
+    rotateY(0deg)
+    translateZ(0px)
+    scale(var(--scale));
+  opacity:1;
+  filter: blur(0px);
+  pointer-events:auto;
+}
+
+/* un petit espace visuel entre header et œuvre */
+.spacer{
+  height:10px;
 }
 </style>
 </head>
 
 <body>
 
+<header class="header">
+  <div class="header-inner">
+    <a class="brand" href="#" id="homeLink">Un musée imaginaire</a>
+
+    <nav class="nav" aria-label="Navigation">
+      <button type="button" id="navHome">Accueil</button>
+      <button type="button" id="navCouleurs">Couleurs</button>
+      <button type="button" id="navPhotos">Photos</button>
+    </nav>
+
+    <div class="state" id="stateTxt">Accueil</div>
+  </div>
+</header>
+
+<div class="spacer"></div>
+
 <div class="stage">
-  <div class="mosaic" id="mosaic">
+  <div class="scene" id="scene">
 
-    <!-- intro1 (haut) -->
-    <a class="tile top" href="page2.html" aria-label="Entrer dans la galerie">
-      <img id="i1" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro1.jpg" alt="">
-    </a>
+    <!-- MOSAÏQUE -->
+    <div class="mosaic" id="mosaic">
+      <img class="top" id="i1"
+           src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro1.jpg" alt="">
 
-    <!-- intro2 (swipe depuis la gauche au hover) -->
-    <a class="tile swipe" id="t2" href="page2.html" aria-label="Aller à la page 2">
-      <img id="i2" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro2.jpg" alt="">
-      <span class="label">Série 1</span>
-    </a>
+      <div class="cell2" id="cell2">
+        <img id="i2" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro2.jpg" alt="">
+        <a class="hotspot" href="#" aria-label="Afficher Couleurs" onclick="return false;"></a>
+      </div>
 
-    <!-- intro3 -->
-    <a class="tile" id="t3" href="page3.html" aria-label="Aller à la page 3">
       <img id="i3" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro3.jpg" alt="">
-    </a>
 
-    <!-- intro4 -->
-    <a class="tile" id="t4" href="page4.html" aria-label="Aller à la page 4">
-      <img id="i4" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro4.jpg" alt="">
-    </a>
+      <div class="cell4" id="cell4">
+        <img id="i4" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro4.jpg" alt="">
+        <a class="hotspot" href="#" aria-label="Afficher Photos" onclick="return false;"></a>
+      </div>
+    </div>
+
+    <!-- OVERLAY COULEURS -->
+    <div class="overlay" id="couleurs">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/gala2/couleurs.png" alt="Couleurs">
+    </div>
+
+    <!-- OVERLAY PHOTOS -->
+    <div class="overlay" id="photos">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/gala2/photos.png" alt="Photos">
+    </div>
 
   </div>
 </div>
 
 <script>
-/*
-  Calage automatique des colonnes selon les largeurs réelles
-  des 3 images du bas, pour recomposer naturellement l'image source.
-*/
+/* Calage colonnes sur largeurs réelles (recomposition parfaite) */
 const mosaic = document.getElementById("mosaic");
 const ids = ["i2","i3","i4"];
 
 function setColumns(){
   const imgs = ids.map(id => document.getElementById(id));
   if (imgs.some(img => !img.complete || !img.naturalWidth)) return;
-
   const w = imgs.map(img => img.naturalWidth);
   mosaic.style.gridTemplateColumns = `${w[0]}fr ${w[1]}fr ${w[2]}fr`;
 }
-
 window.addEventListener("load", setColumns);
 ids.forEach(id => document.getElementById(id).addEventListener("load", setColumns));
+
+/* Preview (hover) + Lock (clic) + Menu */
+const scene = document.getElementById("scene");
+const cell2 = document.getElementById("cell2");
+const cell4 = document.getElementById("cell4");
+const stateTxt = document.getElementById("stateTxt");
+
+const navHome = document.getElementById("navHome");
+const navCouleurs = document.getElementById("navCouleurs");
+const navPhotos = document.getElementById("navPhotos");
+const homeLink = document.getElementById("homeLink");
+
+let lock = null; // null | "couleurs" | "photos"
+
+function setStateLabel(){
+  stateTxt.textContent = lock === "couleurs" ? "Couleurs"
+                     : lock === "photos"   ? "Photos"
+                     : "Accueil";
+}
+setStateLabel();
+
+function setPreview(kind){
+  if (lock) return;
+  scene.classList.toggle("preview-couleurs", kind === "couleurs");
+  scene.classList.toggle("preview-photos",   kind === "photos");
+}
+
+function clearPreview(){
+  if (lock) return;
+  scene.classList.remove("preview-couleurs","preview-photos");
+}
+
+function setLock(kind){
+  lock = kind;
+  scene.classList.remove("preview-couleurs","preview-photos");
+  scene.classList.toggle("lock-couleurs", kind === "couleurs");
+  scene.classList.toggle("lock-photos",   kind === "photos");
+  setStateLabel();
+}
+
+function clearLock(){
+  lock = null;
+  scene.classList.remove("lock-couleurs","lock-photos");
+  clearPreview();
+  setStateLabel();
+}
+
+/* Hover = preview */
+cell2.addEventListener("mouseenter", () => setPreview("couleurs"));
+cell2.addEventListener("mouseleave", clearPreview);
+
+cell4.addEventListener("mouseenter", () => setPreview("photos"));
+cell4.addEventListener("mouseleave", clearPreview);
+
+/* Clic sur zones = lock */
+cell2.querySelector(".hotspot").addEventListener("click", (e) => {
+  e.preventDefault();
+  setLock("couleurs");
+});
+cell4.querySelector(".hotspot").addEventListener("click", (e) => {
+  e.preventDefault();
+  setLock("photos");
+});
+
+/* Menu = navigation d’état */
+function stop(e){ e.preventDefault(); }
+navHome.addEventListener("click", () => clearLock());
+navCouleurs.addEventListener("click", () => setLock("couleurs"));
+navPhotos.addEventListener("click", () => setLock("photos"));
+homeLink.addEventListener("click", (e) => { stop(e); clearLock(); });
+
+/* Esc = retour accueil */
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && lock) clearLock();
+});
+
+/* Access clavier : focus sur hotspot */
+function makeKeyboard(cell, kind){
+  const hs = cell.querySelector(".hotspot");
+  hs.addEventListener("focus", () => setPreview(kind));
+  hs.addEventListener("blur",  clearPreview);
+  hs.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " "){
+      e.preventDefault();
+      setLock(kind);
+    }
+    if (e.key === "Escape"){
+      e.preventDefault();
+      clearLock();
+    }
+  });
+}
+makeKeyboard(cell2, "couleurs");
+makeKeyboard(cell4, "photos");
 </script>
 
 </body>
-</html>
-    
-  </body>
-  
 </html>

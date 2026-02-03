@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Un musée imaginaire</title>
+
+<style>
+/* RESET */
+html, body{
+  margin:0;
+  padding:0;
+  height:100%;
+  background:#f0f0f3;
+  display:block;
+}
+
+/* CONTENEUR GLOBAL */
+.stage{
+  min-height:100vh;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;      /* collé en haut */
+  padding-top:0;
+  box-sizing:border-box;
+}
+
+/* MOSAÏQUE */
+.mosaic{
+  display:grid;
+  gap:0;
+  line-height:0;
+  font-size:0;
+  background:#fff;
+  overflow:hidden;
+
+  transform: scale(0.8);
+  transform-origin: top center;
+}
+
+/* --- IMAGES / TILES --- */
+.tile{
+  position:relative;
+  display:block;
+  line-height:0;
+  overflow:hidden;
+  text-decoration:none;
+  color:inherit;
+}
+
+.tile img{
+  display:block;
+  width:100%;
+  height:auto;
+  margin:0;
+  padding:0;
+  border:0;
+}
+
+/* POSITIONNEMENT */
+.top{ grid-column: 1 / -1; }
+
+/* =========================
+   SWIPE OVERLAY (i2)
+   ========================= */
+.tile.swipe::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  transform:translateX(-101%);
+  transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  /* overlay couleur (modifie si besoin) */
+  background:rgba(0,0,0,.28);
+  pointer-events:none;
+}
+
+/* Un petit titre (optionnel) */
+.tile.swipe .label{
+  position:absolute;
+  left:14px;
+  bottom:14px;
+  font-size:14px;
+  letter-spacing:.2px;
+  padding:8px 10px;
+  border-radius:999px;
+  background:rgba(255,255,255,.85);
+  transform:translateX(-140%);
+  transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  pointer-events:none;
+}
+
+/* Déclenchement au survol */
+.tile.swipe:hover::after,
+.tile.swipe:focus-visible::after{
+  transform:translateX(0);
+}
+.tile.swipe:hover .label,
+.tile.swipe:focus-visible .label{
+  transform:translateX(0);
+}
+
+/* Accessibilité focus clavier */
+.tile:focus-visible{
+  outline:3px solid rgba(0,0,0,.35);
+  outline-offset:-3px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="stage">
+  <div class="mosaic" id="mosaic">
+
+    <!-- intro1 (haut) -->
+    <a class="tile top" href="page2.html" aria-label="Entrer dans la galerie">
+      <img id="i1" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro1.jpg" alt="">
+    </a>
+
+    <!-- intro2 (swipe depuis la gauche au hover) -->
+    <a class="tile swipe" id="t2" href="page2.html" aria-label="Aller à la page 2">
+      <img id="i2" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro2.jpg" alt="">
+      <span class="label">Série 1</span>
+    </a>
+
+    <!-- intro3 -->
+    <a class="tile" id="t3" href="page3.html" aria-label="Aller à la page 3">
+      <img id="i3" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro3.jpg" alt="">
+    </a>
+
+    <!-- intro4 -->
+    <a class="tile" id="t4" href="page4.html" aria-label="Aller à la page 4">
+      <img id="i4" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro4.jpg" alt="">
+    </a>
+
+  </div>
+</div>
+
+<script>
+/*
+  Calage automatique des colonnes selon les largeurs réelles
+  des 3 images du bas, pour recomposer naturellement l'image source.
+*/
+const mosaic = document.getElementById("mosaic");
+const ids = ["i2","i3","i4"];
+
+function setColumns(){
+  const imgs = ids.map(id => document.getElementById(id));
+  if (imgs.some(img => !img.complete || !img.naturalWidth)) return;
+
+  const w = imgs.map(img => img.naturalWidth);
+  mosaic.style.gridTemplateColumns = `${w[0]}fr ${w[1]}fr ${w[2]}fr`;
+}
+
+window.addEventListener("load", setColumns);
+ids.forEach(id => document.getElementById(id).addEventListener("load", setColumns));
+</script>
+
+</body>
+</html>
+    
+  </body>
+  
+</html>

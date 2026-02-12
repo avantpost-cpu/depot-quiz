@@ -32,7 +32,7 @@ html, body{
    Header (menu design, très discret)
    ========================= */
 .header{
-  position:sticky; /* joli en scroll si tu ajoutes ensuite du contenu */
+  position:sticky;
   top:0;
   z-index:10;
   background:linear-gradient(to bottom, rgba(240,240,243,.92), rgba(240,240,243,.76));
@@ -117,7 +117,7 @@ html, body{
   perspective-origin: 50% 18%;
 }
 
-/* MOSAÏQUE */
+/* MOSAÏQUE INTRO (accueil) */
 .mosaic{
   display:grid;
   gap:0;
@@ -161,7 +161,7 @@ html, body{
   cursor:pointer;
 }
 
-/* OVERLAYS */
+/* OVERLAYS (Couleurs / Photos) */
 .overlay{
   position:absolute;
   top:0;
@@ -185,12 +185,6 @@ html, body{
 .scene.lock-couleurs #couleurs,
 .scene.lock-photos #photos{
   transition-delay: 90ms, 90ms, 90ms;
-}
-
-.overlay img{
-  display:block;
-  width:min(92vw, var(--maxW));
-  height:auto;
 }
 
 /* départ plus loin */
@@ -303,8 +297,157 @@ html, body{
 }
 
 /* un petit espace visuel entre header et œuvre */
-.spacer{
-  height:10px;
+.spacer{ height:10px; }
+
+/* =========================
+   PAGE COULEURS = mosaïque Obra_1..19
+   -> bord franc, aucun effet, aucun crop
+   ========================= */
+#couleurs .obra-grid{
+  width:min(92vw, var(--maxW));
+  display:grid;
+  gap:0;                 /* bord franc */
+  padding:0;
+  background:transparent;
+  border:0;
+  border-radius:0;
+
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+}
+
+#couleurs .obra-tile{
+  position:relative;
+  border-radius:0;
+  overflow:visible;
+  background:transparent;
+  box-shadow:none;
+}
+
+#couleurs .obra-tile img{
+  display:block;
+  width:100%;
+  height:auto;           /* ratio naturel */
+  object-fit:contain;    /* sécurité */
+  margin:0;
+  border:0;
+}
+
+/* accessibilité focus */
+#couleurs .obra-tile a{
+  position:absolute;
+  inset:0;
+  display:block;
+  text-indent:-9999px;
+}
+#couleurs .obra-tile a:focus-visible{
+  outline:2px solid rgba(0,0,0,.35);
+  outline-offset:-2px;
+}
+
+/* =========================
+   Lightbox (zoom image) — filet maigre
+   ========================= */
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:999;
+  display:none;
+  pointer-events:none;
+}
+
+.lightbox.open{
+  display:block;
+  pointer-events:auto;
+}
+
+.lb-backdrop{
+  position:absolute;
+  inset:0;
+  background: rgba(240,240,243,.78);
+  backdrop-filter: blur(10px);
+}
+
+.lb-figure{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0;
+  padding:36px 64px;
+  box-sizing:border-box;
+}
+
+#lbImg{
+  max-width: min(92vw, 1300px);
+  max-height: 86vh;
+  width:auto;
+  height:auto;
+  display:block;
+  object-fit: contain; /* aucun crop */
+  box-shadow:none;
+}
+
+/* Boutons (croix + nav) */
+.lb-close,
+.lb-nav{
+  position:absolute;
+  border:0;
+  background:transparent;
+  padding:10px;
+  cursor:pointer;
+  color: rgba(17,17,17,.75);
+}
+
+.lb-close:hover,
+.lb-nav:hover{
+  color: rgba(17,17,17,1);
+}
+
+.lb-close{
+  top:18px;
+  right:18px;
+}
+
+.lb-nav{
+  top:50%;
+  transform: translateY(-50%);
+}
+
+.lb-prev{ left:16px; }
+.lb-next{ right:16px; }
+
+/* SVG filet maigre */
+.lb-close svg,
+.lb-nav svg{
+  width:22px;
+  height:22px;
+  display:block;
+}
+
+.lb-close svg path,
+.lb-nav svg path{
+  fill:none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* focus clavier */
+.lb-close:focus-visible,
+.lb-nav:focus-visible{
+  outline:2px solid rgba(0,0,0,.25);
+  outline-offset:3px;
+  border-radius:10px;
+}
+
+/* Mobile */
+@media (max-width: 560px){
+  .lb-figure{ padding:26px 46px; }
+  .lb-prev{ left:8px; }
+  .lb-next{ right:8px; }
+  .lb-close{ top:10px; right:10px; }
 }
 </style>
 </head>
@@ -330,7 +473,7 @@ html, body{
 <div class="stage">
   <div class="scene" id="scene">
 
-    <!-- MOSAÏQUE -->
+    <!-- MOSAÏQUE (ACCUEIL) -->
     <div class="mosaic" id="mosaic">
       <img class="top" id="i1"
            src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro1.jpg" alt="">
@@ -348,12 +491,41 @@ html, body{
       </div>
     </div>
 
-    <!-- OVERLAY COULEURS -->
-    <div class="overlay" id="couleurs">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/gala2/couleurs.png" alt="Couleurs">
+    <!-- OVERLAY COULEURS (mosaïque + lightbox) -->
+    <div class="overlay" id="couleurs" aria-label="Couleurs">
+      <div class="obra-grid" id="obraGrid" aria-label="Mosaïque des œuvres"></div>
+
+      <!-- LIGHTBOX -->
+      <div class="lightbox" id="lightbox" aria-hidden="true">
+        <div class="lb-backdrop" id="lbBackdrop"></div>
+
+        <figure class="lb-figure" role="dialog" aria-modal="true" aria-label="Agrandissement">
+          <img id="lbImg" alt="">
+
+          <!-- Close (croix filet maigre) -->
+          <button class="lb-close" id="lbClose" type="button" aria-label="Fermer">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 6 L18 18 M18 6 L6 18"></path>
+            </svg>
+          </button>
+
+          <!-- Prev / Next (pyramides filet maigre) -->
+          <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Image précédente">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M15 5 L7 12 L15 19"></path>
+            </svg>
+          </button>
+
+          <button class="lb-nav lb-next" id="lbNext" type="button" aria-label="Image suivante">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M9 5 L17 12 L9 19"></path>
+            </svg>
+          </button>
+        </figure>
+      </div>
     </div>
 
-    <!-- OVERLAY PHOTOS -->
+    <!-- OVERLAY PHOTOS (inchangé) -->
     <div class="overlay" id="photos">
       <img src="https://avantpost-cpu.github.io/depot-quiz/gala2/photos.png" alt="Photos">
     </div>
@@ -374,6 +546,100 @@ function setColumns(){
 }
 window.addEventListener("load", setColumns);
 ids.forEach(id => document.getElementById(id).addEventListener("load", setColumns));
+
+/* =========================
+   Génération page Couleurs = Obra_1..19
+   ========================= */
+const obraGrid = document.getElementById("obraGrid");
+const OBRA_BASE = "https://avantpost-cpu.github.io/depot-quiz/gala2/";
+const OBRA_COUNT = 19;
+
+function obraUrl(i){
+  return `${OBRA_BASE}Obra_${i}_bdf.jpg`;
+}
+
+function buildObraGrid(){
+  const frag = document.createDocumentFragment();
+  for (let i = 1; i <= OBRA_COUNT; i++){
+    const tile = document.createElement("div");
+    tile.className = "obra-tile";
+    tile.dataset.index = String(i);
+
+    const img = document.createElement("img");
+    img.src = obraUrl(i);
+    img.alt = `Œuvre ${i}`;
+    img.loading = "lazy";
+
+    const a = document.createElement("a");
+    a.href = "#";
+    a.setAttribute("aria-label", `Agrandir Œuvre ${i}`);
+    a.addEventListener("click", (e) => {
+      e.preventDefault();
+      openLightbox(i);
+    });
+
+    tile.appendChild(img);
+    tile.appendChild(a);
+    frag.appendChild(tile);
+  }
+  obraGrid.innerHTML = "";
+  obraGrid.appendChild(frag);
+}
+buildObraGrid();
+
+/* =========================
+   Lightbox logic
+   ========================= */
+const lightbox = document.getElementById("lightbox");
+const lbBackdrop = document.getElementById("lbBackdrop");
+const lbImg = document.getElementById("lbImg");
+const lbClose = document.getElementById("lbClose");
+const lbPrev = document.getElementById("lbPrev");
+const lbNext = document.getElementById("lbNext");
+
+let lbIndex = 1; // 1..OBRA_COUNT
+
+function isLightboxOpen(){
+  return lightbox.classList.contains("open");
+}
+
+function setLbImage(index){
+  lbIndex = index;
+  lbImg.src = obraUrl(lbIndex);
+  lbImg.alt = `Œuvre ${lbIndex}`;
+}
+
+function openLightbox(index){
+  // uniquement si Couleurs est bien ouverte
+  if (lock !== "couleurs") return;
+
+  setLbImage(index);
+  lightbox.classList.add("open");
+  lightbox.setAttribute("aria-hidden", "false");
+  lbClose.focus({ preventScroll:true });
+}
+
+function closeLightbox(){
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden", "true");
+  lbImg.removeAttribute("src");
+}
+
+function prevImage(){
+  const next = lbIndex - 1 < 1 ? OBRA_COUNT : lbIndex - 1;
+  setLbImage(next);
+}
+
+function nextImage(){
+  const next = lbIndex + 1 > OBRA_COUNT ? 1 : lbIndex + 1;
+  setLbImage(next);
+}
+
+/* Actions */
+lbClose.addEventListener("click", closeLightbox);
+lbBackdrop.addEventListener("click", closeLightbox);
+lbPrev.addEventListener("click", prevImage);
+lbNext.addEventListener("click", nextImage);
 
 /* Preview (hover) + Lock (clic) + Menu */
 const scene = document.getElementById("scene");
@@ -408,6 +674,10 @@ function clearPreview(){
 
 function setLock(kind){
   lock = kind;
+
+  // si on quitte Couleurs, on ferme la lightbox
+  if (kind !== "couleurs" && isLightboxOpen()) closeLightbox();
+
   scene.classList.remove("preview-couleurs","preview-photos");
   scene.classList.toggle("lock-couleurs", kind === "couleurs");
   scene.classList.toggle("lock-photos",   kind === "photos");
@@ -416,12 +686,13 @@ function setLock(kind){
 
 function clearLock(){
   lock = null;
+  if (isLightboxOpen()) closeLightbox();
   scene.classList.remove("lock-couleurs","lock-photos");
   clearPreview();
   setStateLabel();
 }
 
-/* Hover = preview */
+/* Hover = preview (zones intro2 / intro4) */
 cell2.addEventListener("mouseenter", () => setPreview("couleurs"));
 cell2.addEventListener("mouseleave", clearPreview);
 
@@ -445,9 +716,28 @@ navCouleurs.addEventListener("click", () => setLock("couleurs"));
 navPhotos.addEventListener("click", () => setLock("photos"));
 homeLink.addEventListener("click", (e) => { stop(e); clearLock(); });
 
-/* Esc = retour accueil */
+/* Clavier : lightbox prioritaire, sinon retour accueil */
 window.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && lock) clearLock();
+  if (isLightboxOpen()){
+    if (e.key === "Escape"){
+      e.preventDefault();
+      closeLightbox();
+    }
+    if (e.key === "ArrowLeft"){
+      e.preventDefault();
+      prevImage();
+    }
+    if (e.key === "ArrowRight"){
+      e.preventDefault();
+      nextImage();
+    }
+    return;
+  }
+
+  if (e.key === "Escape" && lock){
+    e.preventDefault();
+    clearLock();
+  }
 });
 
 /* Access clavier : focus sur hotspot */

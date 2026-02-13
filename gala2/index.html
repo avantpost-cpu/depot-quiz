@@ -10,7 +10,8 @@
    Base
    ========================= */
 :root{
-  --bg: #f0f0f3;
+  --bg: #f0f0f3;          /* fond accueil */
+  --bgCouleurs: #e1e0dc;  /* ✅ fond Couleurs */
   --txt: #111;
   --muted: rgba(17,17,17,.62);
   --hair: rgba(17,17,17,.12);
@@ -26,6 +27,14 @@ html, body{
   color:var(--txt);
   display:block;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* ✅ transition douce du fond */
+  transition: background-color 900ms cubic-bezier(.22, 1, .36, 1);
+}
+
+/* ✅ fond appliqué au BODY quand Couleurs est locké */
+body.bg-couleurs{
+  background: var(--bgCouleurs);
 }
 
 /* =========================
@@ -38,6 +47,14 @@ html, body{
   background:linear-gradient(to bottom, rgba(240,240,243,.92), rgba(240,240,243,.76));
   backdrop-filter: blur(8px);
   border-bottom:1px solid var(--hair);
+
+  /* ✅ transition cohérente avec le fond */
+  transition: background 900ms cubic-bezier(.22, 1, .36, 1);
+}
+
+/* ✅ header adapté quand fond Couleurs */
+body.bg-couleurs .header{
+  background:linear-gradient(to bottom, rgba(225,224,220,.92), rgba(225,224,220,.76));
 }
 
 .header-inner{
@@ -312,7 +329,7 @@ html, body{
   border:0;
   border-radius:0;
 
-  /* ✅ 5 colonnes fixes (donc 20 images = 4 lignes) */
+  /* 5 colonnes fixes (20 images = 4 lignes) */
   grid-template-columns: repeat(5, 1fr);
 }
 
@@ -377,6 +394,12 @@ html, body{
   inset:0;
   background: rgba(240,240,243,.78);
   backdrop-filter: blur(10px);
+
+  /* ✅ fond cohérent avec Couleurs quand ouvert */
+  transition: background-color 900ms cubic-bezier(.22, 1, .36, 1);
+}
+body.bg-couleurs .lb-backdrop{
+  background: rgba(225,224,220,.82);
 }
 
 .lb-figure{
@@ -564,7 +587,7 @@ ids.forEach(id => document.getElementById(id).addEventListener("load", setColumn
    ========================= */
 const obraGrid = document.getElementById("obraGrid");
 const OBRA_BASE = "https://avantpost-cpu.github.io/depot-quiz/gala2/";
-const OBRA_COUNT = 20; // ✅ on ajoute Obra_20_bdf.jpg
+const OBRA_COUNT = 20;
 
 function obraUrl(i){
   return `${OBRA_BASE}Obra_${i}_bdf.jpg`;
@@ -665,6 +688,7 @@ const navPhotos = document.getElementById("navPhotos");
 const homeLink = document.getElementById("homeLink");
 
 let lock = null; // null | "couleurs" | "photos"
+const bodyEl = document.body; // ✅ pour changer le fond
 
 function setStateLabel(){
   stateTxt.textContent = lock === "couleurs" ? "Couleurs"
@@ -672,6 +696,11 @@ function setStateLabel(){
                      : "Accueil";
 }
 setStateLabel();
+
+/* ✅ applique la bonne couleur de fond selon l'état */
+function syncBodyBg(){
+  bodyEl.classList.toggle("bg-couleurs", lock === "couleurs");
+}
 
 function setPreview(kind){
   if (lock) return;
@@ -693,7 +722,9 @@ function setLock(kind){
   scene.classList.remove("preview-couleurs","preview-photos");
   scene.classList.toggle("lock-couleurs", kind === "couleurs");
   scene.classList.toggle("lock-photos",   kind === "photos");
+
   setStateLabel();
+  syncBodyBg(); // ✅ fond doux
 }
 
 function clearLock(){
@@ -702,6 +733,7 @@ function clearLock(){
   scene.classList.remove("lock-couleurs","lock-photos");
   clearPreview();
   setStateLabel();
+  syncBodyBg(); // ✅ retour fond accueil
 }
 
 /* Hover = preview (zones intro2 / intro4) */
@@ -770,6 +802,9 @@ function makeKeyboard(cell, kind){
 }
 makeKeyboard(cell2, "couleurs");
 makeKeyboard(cell4, "photos");
+
+/* init */
+syncBodyBg();
 </script>
 
 </body>

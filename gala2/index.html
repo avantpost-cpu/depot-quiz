@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Un musée imaginaire</title>
+<title>Un museu imaginari</title>
 
 <style>
 :root{
@@ -188,7 +188,7 @@ html.preview-couleurs .header{
 }
 
 /* =========================
-   Overlays (Couleurs / Esculturas / Photos)
+   Overlays
    ========================= */
 .overlay{
   position:absolute;
@@ -218,7 +218,7 @@ html.preview-couleurs .header{
     scale(calc(var(--couleursFit) * .92));
 }
 
-/* ✅ Esculturas : apparition verticale (slide vers le bas) */
+/* Esculturas : slide vertical */
 #esculturas{
   width: min(96vw, var(--maxW));
   transform:
@@ -292,7 +292,7 @@ html.preview-couleurs .header{
   filter: blur(0);
 }
 
-/* ✅ PREVIEW — Esculturas (vertical) */
+/* PREVIEW — Esculturas (vertical) */
 .scene.preview-esculturas .mosaic{
   transform:
     translateY(24%)
@@ -441,7 +441,7 @@ html.preview-couleurs .header{
 }
 
 /* =========================
-   Couleurs : grille 5x4 (20)
+   Couleurs : grille 5x4
    ========================= */
 #couleurs .obra-grid{
   width:100%;
@@ -473,7 +473,7 @@ html.preview-couleurs .header{
 #couleurs .obra-tile.is-hidden{ display:none; }
 
 /* =========================
-   ✅ Esculturas : grille 4x4 (16)
+   Esculturas : grille 4x4
    ========================= */
 #esculturas .esc-grid{
   width:100%;
@@ -505,7 +505,7 @@ html.preview-couleurs .header{
 #esculturas .esc-tile.is-hidden{ display:none; }
 
 /* =========================
-   Lightbox + swipe mobile
+   Lightbox
    ========================= */
 .lightbox{
   position:fixed; inset:0;
@@ -607,7 +607,7 @@ html.preview-couleurs .lb-backdrop{
 
 <header class="header" id="header">
   <div class="header-inner">
-    <a class="brand" href="#" id="homeLink">Un musée imaginaire</a>
+    <a class="brand" href="#" id="homeLink">Un museu imaginari</a>
 
     <nav class="nav" aria-label="Navigation">
       <button type="button" id="navHome">Accueil</button>
@@ -633,7 +633,6 @@ html.preview-couleurs .lb-backdrop{
         <a class="hotspot" href="#" aria-label="Afficher Couleurs" onclick="return false;"></a>
       </div>
 
-      <!-- ✅ intro3 = hover/clic Esculturas -->
       <div class="cell3" id="cell3">
         <img id="i3" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro3.jpg" alt="">
         <a class="hotspot" href="#" aria-label="Afficher Esculturas" onclick="return false;"></a>
@@ -656,7 +655,7 @@ html.preview-couleurs .lb-backdrop{
       <div class="obra-grid" id="obraGrid" aria-label="Mosaïque des œuvres"></div>
     </div>
 
-    <!-- ✅ OVERLAY ESCULTURAS -->
+    <!-- OVERLAY ESCULTURAS -->
     <div class="overlay" id="esculturas" aria-label="Esculturas">
       <div class="esculturas-ui" aria-label="Exposition thématique">
         <button class="pill" id="escAll" type="button" aria-pressed="true">Tous</button>
@@ -672,7 +671,7 @@ html.preview-couleurs .lb-backdrop{
       <img src="https://avantpost-cpu.github.io/depot-quiz/gala2/photos.png" alt="Photos">
     </div>
 
-    <!-- ✅ LIGHTBOX unique (Couleurs + Esculturas) -->
+    <!-- LIGHTBOX unique (Couleurs + Esculturas) -->
     <div class="lightbox" id="lightbox" aria-hidden="true">
       <div class="lb-backdrop" id="lbBackdrop"></div>
 
@@ -705,6 +704,17 @@ html.preview-couleurs .lb-backdrop{
 </div>
 
 <script>
+/* =========================
+   ✅ 0) Libellés centralisés (changer ici suffit)
+   ========================= */
+const LABELS = {
+  home: "Accueil",
+  couleurs: "Dibuixos i colors",
+  esculturas: "Esculturas",
+  photos: "Fotos",
+  fullscreen: "Plein écran"
+};
+
 /* =========================
    1) Calage colonnes accueil sur largeurs réelles
    ========================= */
@@ -761,11 +771,16 @@ function buildObraGrid(){
 buildObraGrid();
 
 /* =========================
-   ✅ 2b) Esculturas = 16 PNG (4x4) depuis /esculturas/
+   2b) Esculturas = 16 PNG (4x4) depuis /esculturas/
    NOMS EXACTS fournis
    ========================= */
 const escGrid = document.getElementById("escGrid");
-const ESC_BASE = "https://avantpost-cpu.github.io/depot-quiz/gala2/Esculturas/";
+
+/* ⚠️ IMPORTANT :
+   tu avais écrit "https://.../gala2/Esculturas/" (avec majuscule + dans gala2)
+   or tu m'avais dit dossier /esculturas à la racine.
+   ✅ Je remets la version correcte : /esculturas/ (minuscule) */
+const ESC_BASE = "https://avantpost-cpu.github.io/depot-quiz/esculturas/";
 
 const ESC_FILES = [
   "Statuette_8_bdf.png",
@@ -852,7 +867,7 @@ thA.addEventListener("click",   ()=>{ setPressed(thA,   [thAll,thA,thB]); applyT
 thB.addEventListener("click",   ()=>{ setPressed(thB,   [thAll,thA,thB]); applyThemeCouleurs("B"); });
 
 /* =========================
-   ✅ 2ter) Exposition thématique (Esculturas)
+   2ter) Exposition thématique (Esculturas)
    ========================= */
 const escAll = document.getElementById("escAll");
 const escA   = document.getElementById("escA");
@@ -874,7 +889,7 @@ escA.addEventListener("click",   ()=>{ setPressed(escA,   [escAll,escA,escB]); a
 escB.addEventListener("click",   ()=>{ setPressed(escB,   [escAll,escA,escB]); applyThemeEsculturas("B"); });
 
 /* =========================
-   3) Lightbox + swipe mobile (unique pour 2 galeries)
+   3) Lightbox + swipe mobile (unique)
    ========================= */
 const lightbox   = document.getElementById("lightbox");
 const lbBackdrop = document.getElementById("lbBackdrop");
@@ -969,12 +984,24 @@ const esculturasEl = document.getElementById("esculturas");
 
 let lock = null; // null | "couleurs" | "esculturas" | "photos"
 
+/* ✅ applique les libellés (changer LABELS suffit) */
+navHome.textContent = LABELS.home;
+navCouleurs.textContent = LABELS.couleurs;
+navEsculturas.textContent = LABELS.esculturas;
+navPhotos.textContent = LABELS.photos;
+navFull.textContent = LABELS.fullscreen;
+
+/* ✅ met à jour aussi les aria-labels des hotspots (pour cohérence) */
+cell2.querySelector(".hotspot")?.setAttribute("aria-label", `Afficher ${LABELS.couleurs}`);
+cell3.querySelector(".hotspot")?.setAttribute("aria-label", `Afficher ${LABELS.esculturas}`);
+cell4.querySelector(".hotspot")?.setAttribute("aria-label", `Afficher ${LABELS.photos}`);
+
 function setStateLabel(){
   stateTxt.textContent =
-    lock === "couleurs"    ? "Couleurs"
-  : lock === "esculturas"  ? "Esculturas"
-  : lock === "photos"      ? "Photos"
-  : "Accueil";
+    lock === "couleurs"    ? LABELS.couleurs
+  : lock === "esculturas"  ? LABELS.esculturas
+  : lock === "photos"      ? LABELS.photos
+  : LABELS.home;
 }
 
 function syncBg(previewCouleurs=false){

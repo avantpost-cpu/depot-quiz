@@ -6,65 +6,68 @@
 <title>Un musée imaginaire</title>
 
 <style>
-/* =========================
-   Base
-   ========================= */
 :root{
-  --bg: #f0f0f3;          /* fond accueil */
-  --bgCouleurs: #e1e0dc;  /* ✅ fond Couleurs */
-  --txt: #111;
-  --muted: rgba(17,17,17,.62);
-  --hair: rgba(17,17,17,.12);
-  --maxW: 1100px;
-  --scale: .8;
+  --bg:#f0f0f3;
+  --bgCouleurs:#e1e0dc;
+  --txt:#111;
+  --muted:rgba(17,17,17,.62);
+  --hair:rgba(17,17,17,.12);
+  --maxW:1100px;
+
+  --scale:clamp(.70, 1vw + .62, .84);
+  --ease:cubic-bezier(.22, 1, .36, 1);
+  --tBg:900ms;
 }
 
-html, body{
-  margin:0;
-  padding:0;
-  height:100%;
+*{ box-sizing:border-box; }
+
+/* ✅ IMPORTANT: le fond doit être porté par html ET body
+   pour éviter “le bas redevient blanc” sur certains navigateurs. */
+html{
+  min-height:100%;
   background:var(--bg);
   color:var(--txt);
-  display:block;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-
-  /* ✅ transition douce du fond */
-  transition: background-color 900ms cubic-bezier(.22, 1, .36, 1);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  transition:background-color var(--tBg) var(--ease);
 }
 
-/* ✅ fond appliqué au BODY quand Couleurs est locké */
-body.bg-couleurs{
-  background: var(--bgCouleurs);
+body{
+  margin:0;
+  padding:0;
+  min-height:100vh;      /* ✅ couvre toujours toute la hauteur viewport */
+  background:inherit;    /* ✅ suit le background de html */
+  color:inherit;
 }
+
+/* état Couleurs : on applique à html et body */
+html.bg-couleurs{ background:var(--bgCouleurs); }
+body.bg-couleurs{ background:inherit; }
 
 /* =========================
-   Header (menu design, très discret)
+   Header
    ========================= */
 .header{
   position:sticky;
   top:0;
   z-index:10;
   background:linear-gradient(to bottom, rgba(240,240,243,.92), rgba(240,240,243,.76));
-  backdrop-filter: blur(8px);
+  backdrop-filter:blur(8px);
   border-bottom:1px solid var(--hair);
-
-  /* ✅ transition cohérente avec le fond */
-  transition: background 900ms cubic-bezier(.22, 1, .36, 1);
+  transition:background var(--tBg) var(--ease);
+  padding-top:env(safe-area-inset-top, 0px);
 }
-
-/* ✅ header adapté quand fond Couleurs */
-body.bg-couleurs .header{
+html.bg-couleurs .header{
   background:linear-gradient(to bottom, rgba(225,224,220,.92), rgba(225,224,220,.76));
 }
 
 .header-inner{
   max-width:var(--maxW);
   margin:0 auto;
-  padding:14px 16px;
+  padding:12px 14px;
   display:flex;
-  align-items:baseline;
+  align-items:center;
   justify-content:space-between;
-  gap:18px;
+  gap:12px;
 }
 
 .brand{
@@ -73,36 +76,33 @@ body.bg-couleurs .header{
   letter-spacing:.22px;
   text-decoration:none;
   color:inherit;
+  white-space:nowrap;
 }
 
 .nav{
   display:flex;
-  gap:16px;
+  gap:14px;
   font-size:13px;
   letter-spacing:.18px;
+  align-items:center;
 }
-
-.nav a, .nav button{
+.nav button{
   appearance:none;
   border:0;
   background:none;
-  padding:0;
+  padding:8px 6px;
   margin:0;
   cursor:pointer;
-
   color:var(--muted);
-  text-decoration:none;
-  font: inherit;
+  font:inherit;
+  border-radius:10px;
 }
-
-.nav a:hover, .nav button:hover{ color:var(--txt); }
-.nav a:focus-visible, .nav button:focus-visible{
+.nav button:hover{ color:var(--txt); }
+.nav button:focus-visible{
   outline:2px solid rgba(0,0,0,.25);
-  outline-offset:3px;
-  border-radius:6px;
+  outline-offset:2px;
 }
 
-/* petit indicateur état */
 .state{
   font-size:12px;
   color:rgba(17,17,17,.5);
@@ -110,16 +110,21 @@ body.bg-couleurs .header{
   white-space:nowrap;
 }
 
+@media (max-width:560px){
+  .header-inner{ flex-wrap:wrap; gap:8px 10px; }
+  .state{ order:3; width:100%; }
+}
+
 /* =========================
-   Scène (mosaïque + overlays)
+   Scène
    ========================= */
+.spacer{ height:10px; }
+
 .stage{
   width:100%;
   display:flex;
   justify-content:center;
   align-items:flex-start;
-  padding-top:0;
-  box-sizing:border-box;
 }
 
 .scene{
@@ -129,12 +134,11 @@ body.bg-couleurs .header{
   justify-content:center;
   align-items:flex-start;
   overflow:hidden;
-
-  perspective: 1900px;
-  perspective-origin: 50% 18%;
+  perspective:1900px;
+  perspective-origin:50% 18%;
 }
 
-/* MOSAÏQUE INTRO (accueil) */
+/* MOSAÏQUE INTRO */
 .mosaic{
   display:grid;
   gap:0;
@@ -142,15 +146,16 @@ body.bg-couleurs .header{
   font-size:0;
   background:#fff;
   overflow:hidden;
+  max-width:100vw;
 
-  transform: scale(var(--scale));
-  transform-origin: top center;
+  transform:scale(var(--scale));
+  transform-origin:top center;
 
   transition:
-    transform 1.25s cubic-bezier(.22, 1, .36, 1),
-    opacity   1.25s cubic-bezier(.22, 1, .36, 1),
-    filter    1.25s cubic-bezier(.22, 1, .36, 1);
-  will-change: transform, opacity, filter;
+    transform 1.25s var(--ease),
+    opacity   1.25s var(--ease),
+    filter    1.25s var(--ease);
+  will-change:transform,opacity,filter;
 }
 
 .mosaic img{
@@ -162,219 +167,169 @@ body.bg-couleurs .header{
   border:0;
 }
 
-.top{ grid-column: 1 / -1; }
+.top{ grid-column:1 / -1; }
 
-.cell2, .cell4{
-  position:relative;
-  overflow:hidden;
-}
+.cell2,.cell4{ position:relative; overflow:hidden; }
 
-/* zone cliquable/transparente */
 .hotspot{
   position:absolute;
   inset:0;
   display:block;
   background:transparent;
   cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
 }
 
-/* OVERLAYS (Couleurs / Photos) */
+/* =========================
+   OVERLAYS (centrés)
+   ========================= */
 .overlay{
   position:absolute;
   top:0;
-  left:50%;
-  transform-origin: top center;
+  left:0;
+  right:0;
+  margin:0 auto;
+
+  width:min(96vw, var(--maxW));
+  transform-origin:top center;
 
   opacity:0;
-  filter: blur(3px);
+  filter:blur(3px);
   pointer-events:none;
 
   transition:
-    transform 1.35s cubic-bezier(.22, 1, .36, 1),
-    opacity   1.35s cubic-bezier(.22, 1, .36, 1),
-    filter    1.35s cubic-bezier(.22, 1, .36, 1);
-  will-change: transform, opacity, filter;
+    transform 1.35s var(--ease),
+    opacity   1.35s var(--ease),
+    filter    1.35s var(--ease);
+  will-change:transform,opacity,filter;
 }
 
-/* un léger délai rend l’arrivée plus “loin / timidement” */
 .scene.preview-couleurs #couleurs,
 .scene.preview-photos #photos,
 .scene.lock-couleurs #couleurs,
 .scene.lock-photos #photos{
-  transition-delay: 90ms, 90ms, 90ms;
+  transition-delay:90ms,90ms,90ms;
 }
 
-/* départ plus loin */
 #couleurs{
   transform:
-    translateX(-50%)
     translateX(-46%)
     rotateY(18deg)
     translateZ(-120px)
     scale(calc(var(--scale) * 0.88));
 }
-
 #photos{
   transform:
-    translateX(-50%)
     translateX(46%)
     rotateY(-18deg)
     translateZ(-120px)
     scale(calc(var(--scale) * 0.88));
 }
+#photos img{ width:100%; height:auto; display:block; }
 
-/* PREVIEW (hover) */
+/* PREVIEW */
 .scene.preview-couleurs .mosaic{
-  transform:
-    translateX(30%)
-    rotateY(-14deg)
-    translateZ(-60px)
-    scale(calc(var(--scale) * 0.96));
+  transform: translateX(30%) rotateY(-14deg) translateZ(-60px) scale(calc(var(--scale) * 0.96));
   opacity:0;
-  filter: blur(2px);
+  filter:blur(2px);
 }
-
 .scene.preview-couleurs #couleurs{
-  transform:
-    translateX(-50%)
-    translateX(0%)
-    rotateY(0deg)
-    translateZ(0px)
-    scale(var(--scale));
+  transform: translateX(0%) rotateY(0deg) translateZ(0px) scale(var(--scale));
   opacity:1;
-  filter: blur(0px);
+  filter:blur(0);
 }
 
 .scene.preview-photos .mosaic{
-  transform:
-    translateX(-30%)
-    rotateY(14deg)
-    translateZ(-60px)
-    scale(calc(var(--scale) * 0.96));
+  transform: translateX(-30%) rotateY(14deg) translateZ(-60px) scale(calc(var(--scale) * 0.96));
   opacity:0;
-  filter: blur(2px);
+  filter:blur(2px);
 }
-
 .scene.preview-photos #photos{
-  transform:
-    translateX(-50%)
-    translateX(0%)
-    rotateY(0deg)
-    translateZ(0px)
-    scale(var(--scale));
+  transform: translateX(0%) rotateY(0deg) translateZ(0px) scale(var(--scale));
   opacity:1;
-  filter: blur(0px);
+  filter:blur(0);
 }
 
-/* LOCK (clic) */
+/* LOCK */
 .scene.lock-couleurs .mosaic,
 .scene.lock-photos .mosaic{
   opacity:0;
-  filter: blur(2px);
+  filter:blur(2px);
 }
-
 .scene.lock-couleurs .mosaic{
-  transform:
-    translateX(30%)
-    rotateY(-14deg)
-    translateZ(-60px)
-    scale(calc(var(--scale) * 0.96));
+  transform: translateX(30%) rotateY(-14deg) translateZ(-60px) scale(calc(var(--scale) * 0.96));
 }
-
 .scene.lock-photos .mosaic{
-  transform:
-    translateX(-30%)
-    rotateY(14deg)
-    translateZ(-60px)
-    scale(calc(var(--scale) * 0.96));
+  transform: translateX(-30%) rotateY(14deg) translateZ(-60px) scale(calc(var(--scale) * 0.96));
 }
 
 .scene.lock-couleurs #couleurs{
-  transform:
-    translateX(-50%)
-    translateX(0%)
-    rotateY(0deg)
-    translateZ(0px)
-    scale(var(--scale));
+  transform: translateX(0%) rotateY(0deg) translateZ(0px) scale(var(--scale));
   opacity:1;
-  filter: blur(0px);
+  filter:blur(0);
   pointer-events:auto;
 }
-
 .scene.lock-photos #photos{
-  transform:
-    translateX(-50%)
-    translateX(0%)
-    rotateY(0deg)
-    translateZ(0px)
-    scale(var(--scale));
+  transform: translateX(0%) rotateY(0deg) translateZ(0px) scale(var(--scale));
   opacity:1;
-  filter: blur(0px);
+  filter:blur(0);
   pointer-events:auto;
 }
 
-/* un petit espace visuel entre header et œuvre */
-.spacer{ height:10px; }
+/* Mobile : 3D adoucie */
+@media (max-width:560px){
+  .scene{ perspective:1200px; }
+  .scene.preview-couleurs .mosaic,
+  .scene.lock-couleurs .mosaic{
+    transform: translateX(22%) rotateY(-10deg) translateZ(-40px) scale(calc(var(--scale) * 0.98));
+  }
+  .scene.preview-photos .mosaic,
+  .scene.lock-photos .mosaic{
+    transform: translateX(-22%) rotateY(10deg) translateZ(-40px) scale(calc(var(--scale) * 0.98));
+  }
+  #couleurs{
+    transform: translateX(-38%) rotateY(12deg) translateZ(-90px) scale(calc(var(--scale) * 0.90));
+  }
+  #photos{
+    transform: translateX(38%) rotateY(-12deg) translateZ(-90px) scale(calc(var(--scale) * 0.90));
+  }
+}
 
 /* =========================
-   PAGE COULEURS = mosaïque Obra_1..20
-   -> 5 colonnes x 4 lignes, bord franc, aucun effet, aucun crop
+   PAGE COULEURS (5x4)
    ========================= */
 #couleurs .obra-grid{
-  width:min(92vw, var(--maxW));
+  width:100%;
   display:grid;
-  gap:0;                 /* bord franc */
+  gap:0;
   padding:0;
-  background:transparent;
-  border:0;
-  border-radius:0;
-
-  /* 5 colonnes fixes (20 images = 4 lignes) */
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns:repeat(5, 1fr);
 }
-
-#couleurs .obra-tile{
-  position:relative;
-  border-radius:0;
-  overflow:visible;
-  background:transparent;
-  box-shadow:none;
-}
-
+#couleurs .obra-tile{ position:relative; }
 #couleurs .obra-tile img{
   display:block;
   width:100%;
-  height:auto;           /* ratio naturel */
-  object-fit:contain;    /* sécurité */
-  margin:0;
-  border:0;
+  height:auto;
+  object-fit:contain;
 }
-
-/* accessibilité focus */
 #couleurs .obra-tile a{
   position:absolute;
   inset:0;
   display:block;
   text-indent:-9999px;
+  -webkit-tap-highlight-color:transparent;
 }
 #couleurs .obra-tile a:focus-visible{
   outline:2px solid rgba(0,0,0,.35);
   outline-offset:-2px;
 }
 
-/* Mobile : on réduit proprement le nombre de colonnes */
-@media (max-width: 980px){
-  #couleurs .obra-grid{ grid-template-columns: repeat(4, 1fr); }
-}
-@media (max-width: 720px){
-  #couleurs .obra-grid{ grid-template-columns: repeat(3, 1fr); }
-}
-@media (max-width: 520px){
-  #couleurs .obra-grid{ grid-template-columns: repeat(2, 1fr); }
-}
+@media (max-width:980px){ #couleurs .obra-grid{ grid-template-columns:repeat(4, 1fr); } }
+@media (max-width:720px){ #couleurs .obra-grid{ grid-template-columns:repeat(3, 1fr); } }
+@media (max-width:520px){ #couleurs .obra-grid{ grid-template-columns:repeat(2, 1fr); } }
 
 /* =========================
-   Lightbox (zoom image) — filet maigre
+   Lightbox
    ========================= */
 .lightbox{
   position:fixed;
@@ -383,24 +338,16 @@ body.bg-couleurs .header{
   display:none;
   pointer-events:none;
 }
-
-.lightbox.open{
-  display:block;
-  pointer-events:auto;
-}
+.lightbox.open{ display:block; pointer-events:auto; }
 
 .lb-backdrop{
   position:absolute;
   inset:0;
-  background: rgba(240,240,243,.78);
-  backdrop-filter: blur(10px);
-
-  /* ✅ fond cohérent avec Couleurs quand ouvert */
-  transition: background-color 900ms cubic-bezier(.22, 1, .36, 1);
+  background:rgba(240,240,243,.78);
+  backdrop-filter:blur(10px);
+  transition:background-color var(--tBg) var(--ease);
 }
-body.bg-couleurs .lb-backdrop{
-  background: rgba(225,224,220,.82);
-}
+html.bg-couleurs .lb-backdrop{ background:rgba(225,224,220,.82); }
 
 .lb-figure{
   position:absolute;
@@ -409,80 +356,69 @@ body.bg-couleurs .lb-backdrop{
   align-items:center;
   justify-content:center;
   margin:0;
-  padding:36px 64px;
-  box-sizing:border-box;
+  padding:
+    calc(28px + env(safe-area-inset-top, 0px))
+    calc(52px + env(safe-area-inset-right, 0px))
+    calc(28px + env(safe-area-inset-bottom, 0px))
+    calc(52px + env(safe-area-inset-left, 0px));
 }
 
 #lbImg{
-  max-width: min(92vw, 1300px);
-  max-height: 86vh;
+  max-width:min(94vw, 1400px);
+  max-height:86vh;
   width:auto;
   height:auto;
   display:block;
-  object-fit: contain; /* aucun crop */
-  box-shadow:none;
+  object-fit:contain;
 }
 
-/* Boutons (croix + nav) */
-.lb-close,
-.lb-nav{
+.lb-close,.lb-nav{
   position:absolute;
   border:0;
   background:transparent;
-  padding:10px;
+  padding:14px;
   cursor:pointer;
-  color: rgba(17,17,17,.75);
+  color:rgba(17,17,17,.75);
+  border-radius:14px;
+  -webkit-tap-highlight-color:transparent;
 }
-
-.lb-close:hover,
-.lb-nav:hover{
-  color: rgba(17,17,17,1);
-}
+.lb-close:hover,.lb-nav:hover{ color:rgba(17,17,17,1); }
 
 .lb-close{
-  top:18px;
-  right:18px;
+  top:calc(10px + env(safe-area-inset-top, 0px));
+  right:calc(10px + env(safe-area-inset-right, 0px));
 }
+.lb-nav{ top:50%; transform:translateY(-50%); }
+.lb-prev{ left:calc(6px + env(safe-area-inset-left, 0px)); }
+.lb-next{ right:calc(6px + env(safe-area-inset-right, 0px)); }
 
-.lb-nav{
-  top:50%;
-  transform: translateY(-50%);
-}
-
-.lb-prev{ left:16px; }
-.lb-next{ right:16px; }
-
-/* SVG filet maigre */
-.lb-close svg,
-.lb-nav svg{
-  width:22px;
-  height:22px;
-  display:block;
-}
-
-.lb-close svg path,
-.lb-nav svg path{
+.lb-close svg,.lb-nav svg{ width:22px; height:22px; display:block; }
+.lb-close svg path,.lb-nav svg path{
   fill:none;
-  stroke: currentColor;
-  stroke-width: 1.2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+  stroke:currentColor;
+  stroke-width:1.2;
+  stroke-linecap:round;
+  stroke-linejoin:round;
 }
 
-/* focus clavier */
-.lb-close:focus-visible,
-.lb-nav:focus-visible{
+.lb-close:focus-visible,.lb-nav:focus-visible{
   outline:2px solid rgba(0,0,0,.25);
   outline-offset:3px;
-  border-radius:10px;
 }
 
-/* Mobile */
-@media (max-width: 560px){
-  .lb-figure{ padding:26px 46px; }
-  .lb-prev{ left:8px; }
-  .lb-next{ right:8px; }
-  .lb-close{ top:10px; right:10px; }
+@media (max-width:560px){
+  .lb-figure{
+    padding:
+      calc(18px + env(safe-area-inset-top, 0px))
+      calc(44px + env(safe-area-inset-right, 0px))
+      calc(18px + env(safe-area-inset-bottom, 0px))
+      calc(44px + env(safe-area-inset-left, 0px));
+  }
+  #lbImg{ max-height:82vh; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{ transition:none !important; }
 }
 </style>
 </head>
@@ -510,23 +446,19 @@ body.bg-couleurs .lb-backdrop{
 
     <!-- MOSAÏQUE (ACCUEIL) -->
     <div class="mosaic" id="mosaic">
-      <img class="top" id="i1"
-           src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro1.jpg" alt="">
-
+      <img class="top" id="i1" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro1.jpg" alt="">
       <div class="cell2" id="cell2">
         <img id="i2" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro2.jpg" alt="">
         <a class="hotspot" href="#" aria-label="Afficher Couleurs" onclick="return false;"></a>
       </div>
-
       <img id="i3" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro3.jpg" alt="">
-
       <div class="cell4" id="cell4">
         <img id="i4" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro4.jpg" alt="">
         <a class="hotspot" href="#" aria-label="Afficher Photos" onclick="return false;"></a>
       </div>
     </div>
 
-    <!-- OVERLAY COULEURS (mosaïque + lightbox) -->
+    <!-- OVERLAY COULEURS -->
     <div class="overlay" id="couleurs" aria-label="Couleurs">
       <div class="obra-grid" id="obraGrid" aria-label="Mosaïque des œuvres"></div>
 
@@ -537,14 +469,12 @@ body.bg-couleurs .lb-backdrop{
         <figure class="lb-figure" role="dialog" aria-modal="true" aria-label="Agrandissement">
           <img id="lbImg" alt="">
 
-          <!-- Close (croix filet maigre) -->
           <button class="lb-close" id="lbClose" type="button" aria-label="Fermer">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M6 6 L18 18 M18 6 L6 18"></path>
             </svg>
           </button>
 
-          <!-- Prev / Next (pyramides filet maigre) -->
           <button class="lb-nav lb-prev" id="lbPrev" type="button" aria-label="Image précédente">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M15 5 L7 12 L15 19"></path>
@@ -560,8 +490,8 @@ body.bg-couleurs .lb-backdrop{
       </div>
     </div>
 
-    <!-- OVERLAY PHOTOS (inchangé) -->
-    <div class="overlay" id="photos">
+    <!-- OVERLAY PHOTOS -->
+    <div class="overlay" id="photos" aria-label="Photos">
       <img src="https://avantpost-cpu.github.io/depot-quiz/gala2/photos.png" alt="Photos">
     </div>
 
@@ -583,15 +513,13 @@ window.addEventListener("load", setColumns);
 ids.forEach(id => document.getElementById(id).addEventListener("load", setColumns));
 
 /* =========================
-   Génération page Couleurs = Obra_1..20
+   Génération Couleurs = Obra_1..20
    ========================= */
 const obraGrid = document.getElementById("obraGrid");
 const OBRA_BASE = "https://avantpost-cpu.github.io/depot-quiz/gala2/";
 const OBRA_COUNT = 20;
 
-function obraUrl(i){
-  return `${OBRA_BASE}Obra_${i}_bdf.jpg`;
-}
+function obraUrl(i){ return `${OBRA_BASE}Obra_${i}_bdf.jpg`; }
 
 function buildObraGrid(){
   const frag = document.createDocumentFragment();
@@ -604,6 +532,7 @@ function buildObraGrid(){
     img.src = obraUrl(i);
     img.alt = `Œuvre ${i}`;
     img.loading = "lazy";
+    img.decoding = "async";
 
     const a = document.createElement("a");
     a.href = "#";
@@ -623,7 +552,7 @@ function buildObraGrid(){
 buildObraGrid();
 
 /* =========================
-   Lightbox logic
+   Lightbox
    ========================= */
 const lightbox = document.getElementById("lightbox");
 const lbBackdrop = document.getElementById("lbBackdrop");
@@ -632,12 +561,9 @@ const lbClose = document.getElementById("lbClose");
 const lbPrev = document.getElementById("lbPrev");
 const lbNext = document.getElementById("lbNext");
 
-let lbIndex = 1; // 1..OBRA_COUNT
+let lbIndex = 1;
 
-function isLightboxOpen(){
-  return lightbox.classList.contains("open");
-}
-
+function isLightboxOpen(){ return lightbox.classList.contains("open"); }
 function setLbImage(index){
   lbIndex = index;
   lbImg.src = obraUrl(lbIndex);
@@ -645,69 +571,69 @@ function setLbImage(index){
 }
 
 function openLightbox(index){
-  // uniquement si Couleurs est bien ouverte
   if (lock !== "couleurs") return;
-
   setLbImage(index);
   lightbox.classList.add("open");
-  lightbox.setAttribute("aria-hidden", "false");
+  lightbox.setAttribute("aria-hidden","false");
+  document.documentElement.style.overflow="hidden";
+  document.body.style.overflow="hidden";
   lbClose.focus({ preventScroll:true });
 }
 
 function closeLightbox(){
   lightbox.classList.remove("open");
-  lightbox.setAttribute("aria-hidden", "true");
+  lightbox.setAttribute("aria-hidden","true");
   lbImg.removeAttribute("src");
+  document.documentElement.style.overflow="";
+  document.body.style.overflow="";
 }
 
 function prevImage(){
   const next = lbIndex - 1 < 1 ? OBRA_COUNT : lbIndex - 1;
   setLbImage(next);
 }
-
 function nextImage(){
   const next = lbIndex + 1 > OBRA_COUNT ? 1 : lbIndex + 1;
   setLbImage(next);
 }
 
-/* Actions */
 lbClose.addEventListener("click", closeLightbox);
 lbBackdrop.addEventListener("click", closeLightbox);
 lbPrev.addEventListener("click", prevImage);
 lbNext.addEventListener("click", nextImage);
 
-/* Preview (hover) + Lock (clic) + Menu */
+/* =========================
+   Preview + Lock + Menu + fond
+   ========================= */
 const scene = document.getElementById("scene");
 const cell2 = document.getElementById("cell2");
 const cell4 = document.getElementById("cell4");
 const stateTxt = document.getElementById("stateTxt");
-
 const navHome = document.getElementById("navHome");
 const navCouleurs = document.getElementById("navCouleurs");
 const navPhotos = document.getElementById("navPhotos");
 const homeLink = document.getElementById("homeLink");
 
-let lock = null; // null | "couleurs" | "photos"
-const bodyEl = document.body; // ✅ pour changer le fond
+let lock = null;
 
 function setStateLabel(){
   stateTxt.textContent = lock === "couleurs" ? "Couleurs"
                      : lock === "photos"   ? "Photos"
                      : "Accueil";
 }
-setStateLabel();
 
-/* ✅ applique la bonne couleur de fond selon l'état */
-function syncBodyBg(){
-  bodyEl.classList.toggle("bg-couleurs", lock === "couleurs");
+/* ✅ applique le fond à html + body */
+function syncBg(){
+  document.documentElement.classList.toggle("bg-couleurs", lock === "couleurs");
+  document.body.classList.toggle("bg-couleurs", lock === "couleurs");
 }
+setStateLabel(); syncBg();
 
 function setPreview(kind){
   if (lock) return;
   scene.classList.toggle("preview-couleurs", kind === "couleurs");
   scene.classList.toggle("preview-photos",   kind === "photos");
 }
-
 function clearPreview(){
   if (lock) return;
   scene.classList.remove("preview-couleurs","preview-photos");
@@ -715,8 +641,6 @@ function clearPreview(){
 
 function setLock(kind){
   lock = kind;
-
-  // si on quitte Couleurs, on ferme la lightbox
   if (kind !== "couleurs" && isLightboxOpen()) closeLightbox();
 
   scene.classList.remove("preview-couleurs","preview-photos");
@@ -724,7 +648,7 @@ function setLock(kind){
   scene.classList.toggle("lock-photos",   kind === "photos");
 
   setStateLabel();
-  syncBodyBg(); // ✅ fond doux
+  syncBg();
 }
 
 function clearLock(){
@@ -733,78 +657,49 @@ function clearLock(){
   scene.classList.remove("lock-couleurs","lock-photos");
   clearPreview();
   setStateLabel();
-  syncBodyBg(); // ✅ retour fond accueil
+  syncBg();
 }
 
-/* Hover = preview (zones intro2 / intro4) */
+/* Hover desktop */
 cell2.addEventListener("mouseenter", () => setPreview("couleurs"));
 cell2.addEventListener("mouseleave", clearPreview);
-
 cell4.addEventListener("mouseenter", () => setPreview("photos"));
 cell4.addEventListener("mouseleave", clearPreview);
 
-/* Clic sur zones = lock */
-cell2.querySelector(".hotspot").addEventListener("click", (e) => {
-  e.preventDefault();
-  setLock("couleurs");
-});
-cell4.querySelector(".hotspot").addEventListener("click", (e) => {
-  e.preventDefault();
-  setLock("photos");
-});
+/* Clic zones */
+cell2.querySelector(".hotspot").addEventListener("click", (e)=>{ e.preventDefault(); setLock("couleurs"); });
+cell4.querySelector(".hotspot").addEventListener("click", (e)=>{ e.preventDefault(); setLock("photos"); });
 
-/* Menu = navigation d’état */
+/* Menu */
 function stop(e){ e.preventDefault(); }
-navHome.addEventListener("click", () => clearLock());
-navCouleurs.addEventListener("click", () => setLock("couleurs"));
-navPhotos.addEventListener("click", () => setLock("photos"));
-homeLink.addEventListener("click", (e) => { stop(e); clearLock(); });
+navHome.addEventListener("click", clearLock);
+navCouleurs.addEventListener("click", ()=>setLock("couleurs"));
+navPhotos.addEventListener("click", ()=>setLock("photos"));
+homeLink.addEventListener("click", (e)=>{ stop(e); clearLock(); });
 
-/* Clavier : lightbox prioritaire, sinon retour accueil */
+/* Clavier */
 window.addEventListener("keydown", (e) => {
   if (isLightboxOpen()){
-    if (e.key === "Escape"){
-      e.preventDefault();
-      closeLightbox();
-    }
-    if (e.key === "ArrowLeft"){
-      e.preventDefault();
-      prevImage();
-    }
-    if (e.key === "ArrowRight"){
-      e.preventDefault();
-      nextImage();
-    }
+    if (e.key === "Escape"){ e.preventDefault(); closeLightbox(); }
+    if (e.key === "ArrowLeft"){ e.preventDefault(); prevImage(); }
+    if (e.key === "ArrowRight"){ e.preventDefault(); nextImage(); }
     return;
   }
-
-  if (e.key === "Escape" && lock){
-    e.preventDefault();
-    clearLock();
-  }
+  if (e.key === "Escape" && lock){ e.preventDefault(); clearLock(); }
 });
 
-/* Access clavier : focus sur hotspot */
+/* Access clavier hotspots */
 function makeKeyboard(cell, kind){
   const hs = cell.querySelector(".hotspot");
   hs.addEventListener("focus", () => setPreview(kind));
   hs.addEventListener("blur",  clearPreview);
   hs.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" || e.key === " "){
-      e.preventDefault();
-      setLock(kind);
-    }
-    if (e.key === "Escape"){
-      e.preventDefault();
-      clearLock();
-    }
+    if (e.key === "Enter" || e.key === " "){ e.preventDefault(); setLock(kind); }
+    if (e.key === "Escape"){ e.preventDefault(); clearLock(); }
   });
 }
 makeKeyboard(cell2, "couleurs");
 makeKeyboard(cell4, "photos");
-
-/* init */
-syncBodyBg();
 </script>
 
 </body>

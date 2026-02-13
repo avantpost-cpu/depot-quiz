@@ -23,7 +23,7 @@
 
   --pad:12px;
 
-  /* micro-parallax (valeurs mises à jour en JS) */
+  /* micro-parallax (JS) */
   --parX: 0px;
   --parY: 0px;
   --tiltX: 0deg;
@@ -44,9 +44,7 @@ body{
   height:100%;
   background:inherit;
   color:inherit;
-
-  /* ✅ pas d’ascenseur : tout doit tenir via scale */
-  overflow:hidden;
+  overflow:hidden; /* ✅ pas d’ascenseur */
 }
 
 /* fond Couleurs (lock + preview hover) */
@@ -65,7 +63,6 @@ html.bg-couleurs, html.preview-couleurs{ background:var(--bgCouleurs); }
   transition:background var(--tBg) var(--ease);
   padding-top:env(safe-area-inset-top, 0px);
 }
-
 html.bg-couleurs .header,
 html.preview-couleurs .header{
   background:linear-gradient(to bottom, rgba(225,224,220,.92), rgba(225,224,220,.76));
@@ -98,7 +95,6 @@ html.preview-couleurs .header{
   align-items:center;
   flex-wrap:wrap;
 }
-
 .nav button{
   appearance:none;
   border:0;
@@ -129,7 +125,7 @@ html.preview-couleurs .header{
 }
 
 /* =========================
-   Scène : occupe exactement la place sous le header
+   Scène : occupe exactement sous header
    ========================= */
 .stage{
   width:100%;
@@ -151,7 +147,7 @@ html.preview-couleurs .header{
   perspective:1900px;
   perspective-origin:50% 18%;
 
-  /* micro-parallax (subtil) */
+  /* ✅ micro-parallax (safe, amplitude auto en JS) */
   transform:
     translate3d(var(--parX), var(--parY), 0)
     rotateX(var(--tiltX))
@@ -161,7 +157,7 @@ html.preview-couleurs .header{
 }
 
 /* =========================
-   Accueil (mosaïque) — ✅ fit viewport
+   Accueil (mosaïque) — fit viewport
    ========================= */
 .mosaic{
   display:grid;
@@ -190,7 +186,7 @@ html.preview-couleurs .header{
 }
 
 /* =========================
-   Overlays (Couleurs / Photos) — centrés
+   Overlays (Couleurs / Photos)
    ========================= */
 .overlay{
   position:absolute;
@@ -209,7 +205,7 @@ html.preview-couleurs .header{
   will-change:transform,opacity,filter;
 }
 
-/* ✅ Couleurs : on “fit” aussi (pas de scroll) */
+/* Couleurs : fit (pas de scroll) */
 #couleurs{
   width: min(96vw, var(--maxW));
   transform:
@@ -346,8 +342,7 @@ html.preview-couleurs .header{
 }
 
 /* =========================
-   Couleurs : barre “exposition thématique”
-   (visible uniquement quand Couleurs est lock)
+   Couleurs : “exposition thématique”
    ========================= */
 .couleurs-ui{
   display:flex;
@@ -386,12 +381,11 @@ html.preview-couleurs .header{
   width:100%;
   display:grid;
   gap:0;
-  grid-template-columns: repeat(5, 1fr); /* 5 x 4 */
+  grid-template-columns: repeat(5, 1fr);
   line-height:0;
   font-size:0;
   background:transparent;
 }
-
 #couleurs .obra-tile{ position:relative; }
 #couleurs .obra-tile img{
   display:block;
@@ -399,7 +393,6 @@ html.preview-couleurs .header{
   height:auto;
   object-fit:contain;
 }
-
 #couleurs .obra-tile a{
   position:absolute;
   inset:0;
@@ -411,12 +404,10 @@ html.preview-couleurs .header{
   outline:2px solid rgba(0,0,0,.35);
   outline-offset:-2px;
 }
-
-/* tiles masquées (thèmes) */
 #couleurs .obra-tile.is-hidden{ display:none; }
 
 /* =========================
-   Lightbox + swipe mobile (défilement)
+   Lightbox + swipe mobile
    ========================= */
 .lightbox{
   position:fixed; inset:0;
@@ -536,8 +527,7 @@ html.preview-couleurs .lb-backdrop{
 
     <!-- MOSAÏQUE (ACCUEIL) -->
     <div class="mosaic" id="mosaic">
-      <img class="top" id="i1"
-           src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro1.jpg" alt="">
+      <img class="top" id="i1" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro1.jpg" alt="">
 
       <div class="cell2" id="cell2">
         <img id="i2" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro2.jpg" alt="">
@@ -554,12 +544,10 @@ html.preview-couleurs .lb-backdrop{
 
     <!-- OVERLAY COULEURS -->
     <div class="overlay" id="couleurs" aria-label="Couleurs">
-
-      <!-- ✅ mini “exposition thématique” -->
       <div class="couleurs-ui" aria-label="Exposition thématique">
-        <button class="pill" id="thAll"   type="button" aria-pressed="true">Tous</button>
-        <button class="pill" id="thA"     type="button" aria-pressed="false">Série A</button>
-        <button class="pill" id="thB"     type="button" aria-pressed="false">Série B</button>
+        <button class="pill" id="thAll" type="button" aria-pressed="true">Tous</button>
+        <button class="pill" id="thA" type="button" aria-pressed="false">Série A</button>
+        <button class="pill" id="thB" type="button" aria-pressed="false">Série B</button>
       </div>
 
       <div class="obra-grid" id="obraGrid" aria-label="Mosaïque des œuvres"></div>
@@ -659,14 +647,11 @@ function buildObraGrid(){
 buildObraGrid();
 
 /* =========================
-   2bis) Exposition thématique (simple)
-   - Tous : 1..20
-   - Série A : impairs
-   - Série B : pairs
+   2bis) Exposition thématique
    ========================= */
 const thAll = document.getElementById("thAll");
-const thA = document.getElementById("thA");
-const thB = document.getElementById("thB");
+const thA   = document.getElementById("thA");
+const thB   = document.getElementById("thB");
 
 function setPressed(btn){
   [thAll, thA, thB].forEach(b => b.setAttribute("aria-pressed", String(b === btn)));
@@ -680,22 +665,22 @@ function applyTheme(mode){
     if (mode === "B") show = (idx % 2 === 0);
     t.classList.toggle("is-hidden", !show);
   });
-  fitAll(); // refit car dimensions changent
+  fitAll();
 }
 thAll.addEventListener("click", ()=>{ setPressed(thAll); applyTheme("ALL"); });
-thA.addEventListener("click", ()=>{ setPressed(thA); applyTheme("A"); });
-thB.addEventListener("click", ()=>{ setPressed(thB); applyTheme("B"); });
+thA.addEventListener("click",   ()=>{ setPressed(thA);   applyTheme("A"); });
+thB.addEventListener("click",   ()=>{ setPressed(thB);   applyTheme("B"); });
 
 /* =========================
    3) Lightbox + swipe mobile
    ========================= */
-const lightbox = document.getElementById("lightbox");
+const lightbox   = document.getElementById("lightbox");
 const lbBackdrop = document.getElementById("lbBackdrop");
-const lbImg = document.getElementById("lbImg");
-const lbSwipe = document.getElementById("lbSwipe");
-const lbClose = document.getElementById("lbClose");
-const lbPrev = document.getElementById("lbPrev");
-const lbNext = document.getElementById("lbNext");
+const lbImg      = document.getElementById("lbImg");
+const lbSwipe    = document.getElementById("lbSwipe");
+const lbClose    = document.getElementById("lbClose");
+const lbPrev     = document.getElementById("lbPrev");
+const lbNext     = document.getElementById("lbNext");
 
 let lbIndex = 1;
 
@@ -749,15 +734,21 @@ lbSwipe.addEventListener("touchend", (e)=>{
 /* =========================
    4) Preview + Lock + Menu + fond
    ========================= */
-const scene = document.getElementById("scene");
-const cell2 = document.getElementById("cell2");
-const cell4 = document.getElementById("cell4");
+const scene    = document.getElementById("scene");
+const stageEl  = document.getElementById("stage");
+const headerEl = document.getElementById("header");
+
+const cell2    = document.getElementById("cell2");
+const cell4    = document.getElementById("cell4");
+
 const stateTxt = document.getElementById("stateTxt");
-const navHome = document.getElementById("navHome");
+const navHome  = document.getElementById("navHome");
 const navCouleurs = document.getElementById("navCouleurs");
-const navPhotos = document.getElementById("navPhotos");
+const navPhotos   = document.getElementById("navPhotos");
 const homeLink = document.getElementById("homeLink");
-const navFull = document.getElementById("navFull");
+const navFull  = document.getElementById("navFull");
+
+const couleursEl = document.getElementById("couleurs");
 
 let lock = null;
 
@@ -843,12 +834,8 @@ window.addEventListener("keydown", (e) => {
 });
 
 /* =========================
-   5) ✅ FIT RESPONSIVE (aucun scroll)
+   5) FIT RESPONSIVE (aucun scroll)
    ========================= */
-const headerEl = document.getElementById("header");
-const stageEl  = document.getElementById("stage");
-const couleursEl = document.getElementById("couleurs");
-
 function px(n){ return Math.max(0, Math.floor(n)); }
 
 function setHeaderH(){
@@ -870,7 +857,6 @@ function fitElementToStage(el, cssVarName, extraPad=0){
 
   const w = r.width;
   const h = r.height;
-
   if (!w || !h || !availW || !availH) return;
 
   let s = Math.min(availW / w, availH / h);
@@ -883,7 +869,10 @@ function fitAll(){
   setHeaderH();
   fitElementToStage(mosaic, "--homeFit", 0);
 
-  const showCouleurs = scene.classList.contains("preview-couleurs") || scene.classList.contains("lock-couleurs");
+  const showCouleurs =
+    scene.classList.contains("preview-couleurs") ||
+    scene.classList.contains("lock-couleurs");
+
   if (showCouleurs){
     fitElementToStage(couleursEl, "--couleursFit", 0);
   }
@@ -910,20 +899,23 @@ obraGrid.addEventListener("load", (e)=>{
 }, true);
 
 /* =========================
-   6) Micro-parallax + “inertie organique”
-   (suivi doux du pointeur / gyroscope)
+   6) Micro-parallax + inertie (✅ amplitude auto = safe responsive)
    ========================= */
 const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
-let tx=0, ty=0, cx=0, cy=0;     // target -> current
+let tx=0, ty=0, cx=0, cy=0;
 let tTiltX=0, tTiltY=0, cTiltX=0, cTiltY=0;
 
 function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
 
+/* ✅ amplitude auto (si écran petit, parallax quasi nul) */
 function setTargetsFromNormalized(nx, ny){
-  // nx, ny dans [-1..1]
-  const maxShift = 10;  // px
-  const maxTilt  = 1.2; // deg
+  const r = stageEl.getBoundingClientRect();
+  const minSide = Math.min(r.width, r.height);
+
+  const factor = Math.max(0, Math.min(1, (minSide - 420) / 480));
+  const maxShift = 10 * factor;     // px
+  const maxTilt  = 1.2 * factor;    // deg
 
   tx = nx * maxShift;
   ty = ny * maxShift;
@@ -933,8 +925,8 @@ function setTargetsFromNormalized(nx, ny){
 
 function animateParallax(){
   if (prefersReduced) return;
-  // easing inertie
   const k = 0.08;
+
   cx += (tx - cx) * k;
   cy += (ty - cy) * k;
   cTiltX += (tTiltX - cTiltX) * k;
@@ -949,14 +941,18 @@ function animateParallax(){
 }
 requestAnimationFrame(animateParallax);
 
-// pointeur (desktop)
+/* pointeur (desktop) */
 stageEl.addEventListener("mousemove", (e)=>{
   if (prefersReduced) return;
   const r = stageEl.getBoundingClientRect();
-  const x = (e.clientX - r.left) / r.width;   // 0..1
-  const y = (e.clientY - r.top) / r.height;  // 0..1
+  const x = (e.clientX - r.left) / r.width;
+  const y = (e.clientY - r.top)  / r.height;
   const nx = clamp((x - 0.5) * 2, -1, 1);
   const ny = clamp((y - 0.5) * 2, -1, 1);
+
+  /* ✅ option “lecture” : parallax off quand Couleurs est lock */
+  if (lock === "couleurs") { setTargetsFromNormalized(0,0); return; }
+
   setTargetsFromNormalized(nx, ny);
 },{passive:true});
 
@@ -965,22 +961,21 @@ stageEl.addEventListener("mouseleave", ()=>{
   setTargetsFromNormalized(0, 0);
 },{passive:true});
 
-// gyroscope (mobile) — optionnel, auto si dispo
+/* gyroscope (mobile) */
 window.addEventListener("deviceorientation", (e)=>{
   if (prefersReduced) return;
-  // beta: front/back, gamma: left/right
+  if (lock === "couleurs") { setTargetsFromNormalized(0,0); return; }
+
   const g = clamp((e.gamma || 0) / 25, -1, 1);
   const b = clamp((e.beta  || 0) / 25, -1, 1);
-  // mélange léger
   setTargetsFromNormalized(g, b * 0.6);
 },{passive:true});
 
 /* =========================
    7) Plein écran immersif
    ========================= */
-function isFullscreen(){
-  return !!document.fullscreenElement;
-}
+function isFullscreen(){ return !!document.fullscreenElement; }
+
 async function toggleFullscreen(){
   try{
     if (!isFullscreen()){
@@ -988,9 +983,7 @@ async function toggleFullscreen(){
     }else{
       await document.exitFullscreen();
     }
-  }catch(err){
-    // silencieux (certains navigateurs bloquent)
-  }
+  }catch(_){}
 }
 navFull.addEventListener("click", toggleFullscreen);
 

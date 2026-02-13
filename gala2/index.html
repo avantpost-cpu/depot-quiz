@@ -300,8 +300,8 @@ html, body{
 .spacer{ height:10px; }
 
 /* =========================
-   PAGE COULEURS = mosaïque Obra_1..19
-   -> bord franc, aucun effet, aucun crop
+   PAGE COULEURS = mosaïque Obra_1..20
+   -> 5 colonnes x 4 lignes, bord franc, aucun effet, aucun crop
    ========================= */
 #couleurs .obra-grid{
   width:min(92vw, var(--maxW));
@@ -312,7 +312,8 @@ html, body{
   border:0;
   border-radius:0;
 
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  /* ✅ 5 colonnes fixes (donc 20 images = 4 lignes) */
+  grid-template-columns: repeat(5, 1fr);
 }
 
 #couleurs .obra-tile{
@@ -342,6 +343,17 @@ html, body{
 #couleurs .obra-tile a:focus-visible{
   outline:2px solid rgba(0,0,0,.35);
   outline-offset:-2px;
+}
+
+/* Mobile : on réduit proprement le nombre de colonnes */
+@media (max-width: 980px){
+  #couleurs .obra-grid{ grid-template-columns: repeat(4, 1fr); }
+}
+@media (max-width: 720px){
+  #couleurs .obra-grid{ grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 520px){
+  #couleurs .obra-grid{ grid-template-columns: repeat(2, 1fr); }
 }
 
 /* =========================
@@ -548,11 +560,11 @@ window.addEventListener("load", setColumns);
 ids.forEach(id => document.getElementById(id).addEventListener("load", setColumns));
 
 /* =========================
-   Génération page Couleurs = Obra_1..19
+   Génération page Couleurs = Obra_1..20
    ========================= */
 const obraGrid = document.getElementById("obraGrid");
 const OBRA_BASE = "https://avantpost-cpu.github.io/depot-quiz/gala2/";
-const OBRA_COUNT = 19;
+const OBRA_COUNT = 20; // ✅ on ajoute Obra_20_bdf.jpg
 
 function obraUrl(i){
   return `${OBRA_BASE}Obra_${i}_bdf.jpg`;

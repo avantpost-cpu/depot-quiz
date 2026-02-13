@@ -218,7 +218,7 @@ html.preview-couleurs .header{
     scale(calc(var(--couleursFit) * .92));
 }
 
-/* ✅ Esculturas : fit (pas de scroll) — apparition VERTICALE (slide) */
+/* ✅ Esculturas : apparition verticale (slide vers le bas) */
 #esculturas{
   width: min(96vw, var(--maxW));
   transform:
@@ -292,7 +292,7 @@ html.preview-couleurs .header{
   filter: blur(0);
 }
 
-/* ✅ PREVIEW — Esculturas (slide VERS LE BAS) */
+/* ✅ PREVIEW — Esculturas (vertical) */
 .scene.preview-esculturas .mosaic{
   transform:
     translateY(24%)
@@ -334,7 +334,6 @@ html.preview-couleurs .header{
     translateZ(-60px)
     scale(calc(var(--homeFit) * .98));
 }
-/* ✅ LOCK — Esculturas (même direction verticale) */
 .scene.lock-esculturas .mosaic{
   transform:
     translateY(24%)
@@ -407,7 +406,7 @@ html.preview-couleurs .header{
 }
 
 /* =========================
-   Couleurs : “exposition thématique”
+   UI “exposition”
    ========================= */
 .couleurs-ui,
 .esculturas-ui{
@@ -442,7 +441,7 @@ html.preview-couleurs .header{
 }
 
 /* =========================
-   Couleurs : grille 5x4 (20 obras)
+   Couleurs : grille 5x4 (20)
    ========================= */
 #couleurs .obra-grid{
   width:100%;
@@ -506,7 +505,7 @@ html.preview-couleurs .header{
 #esculturas .esc-tile.is-hidden{ display:none; }
 
 /* =========================
-   Lightbox + swipe mobile (réutilisé pour Couleurs)
+   Lightbox + swipe mobile
    ========================= */
 .lightbox{
   position:fixed; inset:0;
@@ -634,7 +633,7 @@ html.preview-couleurs .lb-backdrop{
         <a class="hotspot" href="#" aria-label="Afficher Couleurs" onclick="return false;"></a>
       </div>
 
-      <!-- ✅ intro3 devient une cellule cliquable (hover Esculturas) -->
+      <!-- ✅ intro3 = hover/clic Esculturas -->
       <div class="cell3" id="cell3">
         <img id="i3" src="https://avantpost-cpu.github.io/depot-quiz/gala2/intro3.jpg" alt="">
         <a class="hotspot" href="#" aria-label="Afficher Esculturas" onclick="return false;"></a>
@@ -673,7 +672,7 @@ html.preview-couleurs .lb-backdrop{
       <img src="https://avantpost-cpu.github.io/depot-quiz/gala2/photos.png" alt="Photos">
     </div>
 
-    <!-- ✅ LIGHTBOX unique (utilisée pour Couleurs + Esculturas) -->
+    <!-- ✅ LIGHTBOX unique (Couleurs + Esculturas) -->
     <div class="lightbox" id="lightbox" aria-hidden="true">
       <div class="lb-backdrop" id="lbBackdrop"></div>
 
@@ -762,27 +761,48 @@ function buildObraGrid(){
 buildObraGrid();
 
 /* =========================
-   ✅ 2b) Esculturas = 16 images (4x4) depuis /esculturas/
-   ⚠️ adapte le pattern si tes fichiers n'ont pas ce nom.
+   ✅ 2b) Esculturas = 16 PNG (4x4) depuis /esculturas/
+   NOMS EXACTS fournis
    ========================= */
 const escGrid = document.getElementById("escGrid");
-const ESC_BASE = "https://avantpost-cpu.github.io/depot-quiz/esculturas/";
-const ESC_COUNT = 16;
+const ESC_BASE = "https://avantpost-cpu.github.io/depot-quiz/gala2/Esculturas/";
 
-/* Par défaut : Escultura_1.jpg ... Escultura_16.jpg
-   👉 si tes fichiers s'appellent autrement (ex: esc_01.jpg),
-   change uniquement cette fonction. */
-function escUrl(i){ return `${ESC_BASE}Escultura_${i}.jpg`; }
+const ESC_FILES = [
+  "Statuette_8_bdf.png",
+  "Statuette_8_2_bdf.png",
+  "Statuette_7_bdf.png",
+  "Statuette_7_4_bdf.png",
+  "Statuette_7_3_bdf.png",
+  "Statuette_7_2_bdf.png",
+  "Statuette_6_bdf.png",
+  "Statuette_6_3_bdf.png",
+  "Statuette_6_2_bdf.png",
+  "Statuette_4_bdf.png",
+  "Statuette_4_2_bdf.png",
+  "Statuette_3_bdf.png",
+  "Statuette_3_3_bdf.png",
+  "Statuette_3_2_bdf.png",
+  "Statuette_2_bdf.png",
+  "Statuette_2_2_bdf.png"
+];
+const ESC_COUNT = ESC_FILES.length;
+
+function escUrl(i){
+  return ESC_BASE + ESC_FILES[i - 1]; // i=1..16
+}
 
 function buildEscGrid(){
   const frag = document.createDocumentFragment();
-  for (let i = 1; i <= ESC_COUNT; i++){
+
+  ESC_FILES.forEach((file, idx) => {
+    const i = idx + 1;
+
     const tile = document.createElement("div");
     tile.className = "esc-tile";
     tile.dataset.index = String(i);
 
     const img = document.createElement("img");
-    img.src = escUrl(i);
+    img.src = ESC_BASE + file;
     img.alt = `Sculpture ${i}`;
     img.loading = "lazy";
     img.decoding = "async";
@@ -799,7 +819,8 @@ function buildEscGrid(){
     tile.appendChild(img);
     tile.appendChild(a);
     frag.appendChild(tile);
-  }
+  });
+
   escGrid.innerHTML = "";
   escGrid.appendChild(frag);
 }
@@ -830,7 +851,9 @@ thAll.addEventListener("click", ()=>{ setPressed(thAll, [thAll,thA,thB]); applyT
 thA.addEventListener("click",   ()=>{ setPressed(thA,   [thAll,thA,thB]); applyThemeCouleurs("A"); });
 thB.addEventListener("click",   ()=>{ setPressed(thB,   [thAll,thA,thB]); applyThemeCouleurs("B"); });
 
-/* ✅ 2ter) Exposition thématique (Esculturas) */
+/* =========================
+   ✅ 2ter) Exposition thématique (Esculturas)
+   ========================= */
 const escAll = document.getElementById("escAll");
 const escA   = document.getElementById("escA");
 const escB   = document.getElementById("escB");
@@ -851,7 +874,7 @@ escA.addEventListener("click",   ()=>{ setPressed(escA,   [escAll,escA,escB]); a
 escB.addEventListener("click",   ()=>{ setPressed(escB,   [escAll,escA,escB]); applyThemeEsculturas("B"); });
 
 /* =========================
-   3) Lightbox + swipe mobile (unique, pour 2 galeries)
+   3) Lightbox + swipe mobile (unique pour 2 galeries)
    ========================= */
 const lightbox   = document.getElementById("lightbox");
 const lbBackdrop = document.getElementById("lbBackdrop");
@@ -948,9 +971,9 @@ let lock = null; // null | "couleurs" | "esculturas" | "photos"
 
 function setStateLabel(){
   stateTxt.textContent =
-    lock === "couleurs"   ? "Couleurs"
-  : lock === "esculturas" ? "Esculturas"
-  : lock === "photos"     ? "Photos"
+    lock === "couleurs"    ? "Couleurs"
+  : lock === "esculturas"  ? "Esculturas"
+  : lock === "photos"      ? "Photos"
   : "Accueil";
 }
 
@@ -966,11 +989,9 @@ syncBg(false);
 
 function setPreview(kind){
   if (lock) return;
-
   scene.classList.toggle("preview-couleurs",   kind === "couleurs");
   scene.classList.toggle("preview-esculturas", kind === "esculturas");
   scene.classList.toggle("preview-photos",     kind === "photos");
-
   syncBg(kind === "couleurs");
   fitAll();
 }
@@ -1001,7 +1022,6 @@ function clearLock(){
 
   scene.classList.remove("lock-couleurs","lock-esculturas","lock-photos");
   scene.classList.remove("preview-couleurs","preview-esculturas","preview-photos");
-
   setStateLabel();
   syncBg(false);
   fitAll();
@@ -1010,10 +1030,8 @@ function clearLock(){
 /* Hover desktop */
 cell2.addEventListener("mouseenter", () => setPreview("couleurs"));
 cell2.addEventListener("mouseleave", clearPreview);
-
 cell3.addEventListener("mouseenter", () => setPreview("esculturas"));
 cell3.addEventListener("mouseleave", clearPreview);
-
 cell4.addEventListener("mouseenter", () => setPreview("photos"));
 cell4.addEventListener("mouseleave", clearPreview);
 
@@ -1108,7 +1126,6 @@ window.addEventListener("orientationchange", ()=>setTimeout(fitAll, 120));
   const im = document.getElementById(id);
   im?.addEventListener("load", ()=>fitAll());
 });
-/* images des deux grilles */
 obraGrid.addEventListener("load", (e)=>{
   if (e.target && e.target.tagName === "IMG") fitAll();
 }, true);
@@ -1117,7 +1134,7 @@ escGrid.addEventListener("load", (e)=>{
 }, true);
 
 /* =========================
-   6) Micro-parallax + inertie (✅ amplitude auto = safe responsive)
+   6) Micro-parallax + inertie
    ========================= */
 const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
@@ -1126,7 +1143,6 @@ let tTiltX=0, tTiltY=0, cTiltX=0, cTiltY=0;
 
 function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
 
-/* ✅ amplitude auto (si écran petit, parallax quasi nul) */
 function setTargetsFromNormalized(nx, ny){
   const r = stageEl.getBoundingClientRect();
   const minSide = Math.min(r.width, r.height);
@@ -1159,7 +1175,6 @@ function animateParallax(){
 }
 requestAnimationFrame(animateParallax);
 
-/* pointeur (desktop) */
 stageEl.addEventListener("mousemove", (e)=>{
   if (prefersReduced) return;
   const r = stageEl.getBoundingClientRect();
@@ -1168,9 +1183,7 @@ stageEl.addEventListener("mousemove", (e)=>{
   const nx = clamp((x - 0.5) * 2, -1, 1);
   const ny = clamp((y - 0.5) * 2, -1, 1);
 
-  /* ✅ option “lecture” : parallax off quand Couleurs ou Esculturas est lock */
   if (lock === "couleurs" || lock === "esculturas") { setTargetsFromNormalized(0,0); return; }
-
   setTargetsFromNormalized(nx, ny);
 },{passive:true});
 
@@ -1179,7 +1192,6 @@ stageEl.addEventListener("mouseleave", ()=>{
   setTargetsFromNormalized(0, 0);
 },{passive:true});
 
-/* gyroscope (mobile) */
 window.addEventListener("deviceorientation", (e)=>{
   if (prefersReduced) return;
   if (lock === "couleurs" || lock === "esculturas") { setTargetsFromNormalized(0,0); return; }

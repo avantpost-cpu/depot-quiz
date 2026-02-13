@@ -14,9 +14,9 @@
   --hair:rgba(17,17,17,.12);
   --maxW:1100px;
 
-  /* ✅ échelles séparées */
-  --homeScale:.78;
-  --couleursScale:.76; /* ✅ plus petit (réduction nette mosaïque Couleurs) */
+  /* scales fluides */
+  --homeScale: clamp(.56, 1vw + .52, .78);
+  --couleursScale: clamp(.62, 1vw + .55, .78); /* ✅ mosaïque Couleurs plus petite */
 
   --ease:cubic-bezier(.22, 1, .36, 1);
   --tBg:900ms;
@@ -24,7 +24,6 @@
 
 *{ box-sizing:border-box; }
 
-/* ✅ fond géré par html + transition douce */
 html{
   min-height:100%;
   background:var(--bg);
@@ -39,13 +38,9 @@ body{
   color:inherit;
 }
 
-/* ✅ états fond (lock) */
-html.bg-couleurs{ background:var(--bgCouleurs); }
-body.bg-couleurs{ background:inherit; }
-
-/* ✅ état fond (preview hover) */
-html.preview-couleurs{ background:var(--bgCouleurs); }
-body.preview-couleurs{ background:inherit; }
+/* fond Couleurs (lock + preview hover) */
+html.bg-couleurs, html.preview-couleurs{ background:var(--bgCouleurs); }
+body.bg-couleurs, body.preview-couleurs{ background:inherit; }
 
 /* =========================
    Header
@@ -138,7 +133,11 @@ html.preview-couleurs .header{
   display:flex;
   justify-content:center;
   align-items:flex-start;
+
+  /* ✅ Important : on laisse hidden en accueil,
+     mais on autorise le scroll interne de l’overlay quand Couleurs est lock */
   overflow:hidden;
+
   perspective:1900px;
   perspective-origin:50% 18%;
 }
@@ -174,14 +173,6 @@ html.preview-couleurs .header{
   -webkit-tap-highlight-color:transparent;
 }
 
-/* accueil plus petit sur mobile */
-@media (max-width:560px){
-  :root{
-    --homeScale:.62;
-    --couleursScale:.72; /* aussi un poil plus petit sur mobile */
-  }
-}
-
 /* =========================
    OVERLAYS (centrés)
    ========================= */
@@ -205,7 +196,7 @@ html.preview-couleurs .header{
   will-change:transform,opacity,filter;
 }
 
-/* mobile: full width + padding */
+/* mobile : full width + padding */
 @media (max-width:560px){
   .overlay{ width:100vw; padding:0 12px; }
 }
@@ -264,9 +255,27 @@ html.preview-couleurs .header{
   pointer-events:auto;
 }
 
+/* ✅ RESPONSIVE crucial :
+   Quand Couleurs est lock, on rend l’overlay scrollable (sinon “on ne voit pas tout”) */
+.scene.lock-couleurs{ overflow:visible; }
+.scene.lock-couleurs #couleurs{
+  max-height: calc(100dvh - 86px); /* header + spacer environ */
+  overflow:auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 18px;
+}
+
+/* Sur desktop, on garde un scroll interne discret si besoin */
+@media (min-width: 561px){
+  .scene.lock-couleurs #couleurs{
+    max-height: calc(100vh - 86px);
+  }
+}
+
 /* mobile : 3D adoucie */
 @media (max-width:560px){
   .scene{ perspective:1200px; }
+
   #couleurs{ transform: translateX(-28%) rotateY(10deg) translateZ(-70px) scale(.95); }
   #photos{   transform: translateX(28%)  rotateY(-10deg) translateZ(-70px) scale(.95); }
 
@@ -282,7 +291,7 @@ html.preview-couleurs .header{
 
 /* =========================
    PAGE COULEURS
-   ✅ réduction nette + centrée
+   ✅ mosaïque réduite + responsive
    ========================= */
 #couleurs .couleurs-wrap{
   width:100%;
@@ -290,6 +299,10 @@ html.preview-couleurs .header{
   transform-origin: top center;
 }
 
+/* ✅ Grid vraiment responsive :
+   - 5 colonnes sur large écran
+   - 4 / 3 / 2 automatiquement via breakpoints
+*/
 #couleurs .obra-grid{
   width:100%;
   display:grid;
@@ -297,6 +310,10 @@ html.preview-couleurs .header{
   padding:0;
   grid-template-columns:repeat(5, 1fr);
 }
+
+@media (max-width:1100px){ #couleurs .obra-grid{ grid-template-columns:repeat(4, 1fr); } }
+@media (max-width:820px){  #couleurs .obra-grid{ grid-template-columns:repeat(3, 1fr); } }
+@media (max-width:560px){  #couleurs .obra-grid{ grid-template-columns:repeat(2, 1fr); } }
 
 #couleurs .obra-tile{ position:relative; }
 #couleurs .obra-tile img{
@@ -310,18 +327,9 @@ html.preview-couleurs .header{
   display:block; text-indent:-9999px;
   -webkit-tap-highlight-color:transparent;
 }
-#couleurs .obra-tile a:focus-visible{
-  outline:2px solid rgba(0,0,0,.35);
-  outline-offset:-2px;
-}
-
-/* breakpoints */
-@media (max-width:1100px){ #couleurs .obra-grid{ grid-template-columns:repeat(4, 1fr); } }
-@media (max-width:820px){  #couleurs .obra-grid{ grid-template-columns:repeat(3, 1fr); } }
-@media (max-width:560px){  #couleurs .obra-grid{ grid-template-columns:repeat(2, 1fr); } }
 
 /* =========================
-   Lightbox (swipe)
+   Lightbox + swipe (défilement obras)
    ========================= */
 .lightbox{
   position:fixed; inset:0;
@@ -355,14 +363,14 @@ html.preview-couleurs .lb-backdrop{
     calc(52px + env(safe-area-inset-left, 0px));
 }
 
-/* ✅ swipe zone */
+/* ✅ zone swipe : capte le geste sur mobile */
 .lb-swipe{
   width:100%;
   height:100%;
   display:flex;
   align-items:center;
   justify-content:center;
-  touch-action: pan-y;
+  touch-action: pan-y; /* permet scroll vertical, swipe horizontal pour next/prev */
 }
 
 #lbImg{
@@ -542,7 +550,14 @@ function buildObraGrid(){
     a.setAttribute("aria-label", `Agrandir Œuvre ${i}`);
     a.addEventListener("click", (e) => {
       e.preventDefault();
-      openLightbox(i);
+
+      /* ✅ IMPORTANT :
+         si tu es juste en mouse-over (preview) et pas en lock,
+         on lock automatiquement puis on ouvre la lightbox.
+      */
+      if (lock !== "couleurs") setLock("couleurs");
+      // on laisse une micro-tick pour que l’état soit en place
+      requestAnimationFrame(() => openLightbox(i));
     });
 
     tile.appendChild(img);
@@ -555,7 +570,7 @@ function buildObraGrid(){
 buildObraGrid();
 
 /* =========================
-   Lightbox + swipe (mobile)
+   Lightbox + défilement (swipe + flèches)
    ========================= */
 const lightbox = document.getElementById("lightbox");
 const lbBackdrop = document.getElementById("lbBackdrop");
@@ -577,7 +592,9 @@ function prevImage(){ setLbImage(lbIndex - 1 < 1 ? OBRA_COUNT : lbIndex - 1); }
 function nextImage(){ setLbImage(lbIndex + 1 > OBRA_COUNT ? 1 : lbIndex + 1); }
 
 function openLightbox(index){
+  // Couleurs doit être actif (lock) — désormais auto-lock au clic vignette
   if (lock !== "couleurs") return;
+
   setLbImage(index);
   lightbox.classList.add("open");
   lightbox.setAttribute("aria-hidden","false");
@@ -598,7 +615,7 @@ lbBackdrop.addEventListener("click", closeLightbox);
 lbPrev.addEventListener("click", prevImage);
 lbNext.addEventListener("click", nextImage);
 
-/* ✅ swipe horizontal sur mobile (défilement images agrandies) */
+/* ✅ Swipe horizontal sur mobile : défiler les obras */
 let sx = null, sy = null;
 
 lbSwipe.addEventListener("touchstart", (e) => {
@@ -616,11 +633,11 @@ lbSwipe.addEventListener("touchend", (e) => {
   const dy = t.clientY - sy;
   sx = sy = null;
 
+  // si geste plutôt vertical, on ignore (scroll)
   if (Math.abs(dy) > Math.abs(dx)) return;
-  if (Math.abs(dx) < 40) return;
 
-  if (dx > 0) prevImage();
-  else nextImage();
+  if (Math.abs(dx) < 40) return;
+  if (dx > 0) prevImage(); else nextImage();
 }, { passive:true });
 
 /* =========================
@@ -643,15 +660,16 @@ function setStateLabel(){
                      : "Accueil";
 }
 
-/* ✅ fond : lock + preview (hover) */
+/* fond : lock + preview hover */
 function syncBg(previewCouleurs=false){
-  const isCouleurs = (lock === "couleurs") || previewCouleurs;
+  const lockedCouleurs = (lock === "couleurs");
+  const wantsCouleurs = lockedCouleurs || previewCouleurs;
 
-  document.documentElement.classList.toggle("bg-couleurs", lock === "couleurs");
-  document.body.classList.toggle("bg-couleurs", lock === "couleurs");
+  document.documentElement.classList.toggle("bg-couleurs", lockedCouleurs);
+  document.body.classList.toggle("bg-couleurs", lockedCouleurs);
 
-  document.documentElement.classList.toggle("preview-couleurs", isCouleurs && lock !== "couleurs");
-  document.body.classList.toggle("preview-couleurs", isCouleurs && lock !== "couleurs");
+  document.documentElement.classList.toggle("preview-couleurs", wantsCouleurs && !lockedCouleurs);
+  document.body.classList.toggle("preview-couleurs", wantsCouleurs && !lockedCouleurs);
 }
 
 setStateLabel();
@@ -661,11 +679,8 @@ function setPreview(kind){
   if (lock) return;
   scene.classList.toggle("preview-couleurs", kind === "couleurs");
   scene.classList.toggle("preview-photos",   kind === "photos");
-
-  /* ✅ fond qui change aussi au mouseover de l’accueil */
   syncBg(kind === "couleurs");
 }
-
 function clearPreview(){
   if (lock) return;
   scene.classList.remove("preview-couleurs","preview-photos");
@@ -674,6 +689,7 @@ function clearPreview(){
 
 function setLock(kind){
   lock = kind;
+
   if (kind !== "couleurs" && isLightboxOpen()) closeLightbox();
 
   scene.classList.remove("preview-couleurs","preview-photos");
@@ -681,7 +697,7 @@ function setLock(kind){
   scene.classList.toggle("lock-photos",   kind === "photos");
 
   setStateLabel();
-  syncBg(false); /* lock géré dans bg-couleurs */
+  syncBg(false);
 }
 
 function clearLock(){
@@ -696,7 +712,6 @@ function clearLock(){
 /* Hover desktop */
 cell2.addEventListener("mouseenter", () => setPreview("couleurs"));
 cell2.addEventListener("mouseleave", clearPreview);
-
 cell4.addEventListener("mouseenter", () => setPreview("photos"));
 cell4.addEventListener("mouseleave", clearPreview);
 

@@ -31,6 +31,8 @@
 
       --ok:#1f8a5b;
       --rev:#de5103;
+      --corr:#275e72; /* CORRECTION */
+
 
       --tiltA:-2.2deg;
 
@@ -402,7 +404,8 @@
     }
     .tag.ok{ background: #1f8a5b; }
     .tag.rev{ background: #d07a1d; }
-    .tag.corr{ background: #d07a1d; }
+    .tag.corr{ background: var(--corr); }
+
 
     .corrText{ font-size: 13.5px; line-height: 1.5; color: var(--ink); max-width: 78ch; }
 
@@ -943,7 +946,7 @@
 
         const bWhy = document.createElement("div");
         bWhy.className = "corrBlock";
-        bWhy.innerHTML = `<div class="corrHead"><div class="tag corr">CORRECTION</div><div class="h">Explications</div></div>`;
+        bWhy.innerHTML = `<div class="corrHead"><div class="h"><b>Explications</div></div><b>`;
         const why = document.createElement("div");
         why.className = "corrText";
 

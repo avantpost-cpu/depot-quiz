@@ -32,16 +32,17 @@
       --ok:#1f8a5b;
       --rev:#d07a1d;
 
+      /* tilts */
       --tiltA:-2.2deg;
+      --tiltB:-6.8deg;
+      --tiltC:-13.6deg;
+      --tiltD:-20.4deg;
 
-      /* ✅ 80% dès l’apparition */
+      /* taille cartes pile */
       --stackScale:.80;
 
-      /* ✅ marge interne pile : plus large à gauche pour éviter tout rognage */
-      --clipPadT:22px;
-      --clipPadR:10px;
-      --clipPadB:10px;
-      --clipPadL:64px;  /* <-- avant 18px */
+      /* ✅ décalage pile vers la droite */
+      --stackShiftX: 46px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -57,6 +58,7 @@
     .outer{ width:100%; display:flex; justify-content:center; padding: clamp(16px, 3vw, 30px); }
     .app{ width:min(var(--maxW), 100%); padding: var(--pad); position:relative; }
 
+    /* top bar */
     .top{
       display:flex; align-items:center; justify-content:space-between;
       gap:14px; flex-wrap:wrap; margin-bottom: 16px;
@@ -76,6 +78,7 @@
     }
     .fsBtn:hover{ border-color: rgba(18,20,23,.35); transform: translateY(-1px); }
 
+    /* steps */
     .steps{
       display:grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -84,6 +87,8 @@
       border-top: 1px solid var(--hair);
       border-bottom: 1px solid var(--hair);
       margin-bottom: 18px;
+      position:relative;
+      z-index: 20; /* ✅ toujours au-dessus de la pile */
     }
     .stepTop{ display:flex; gap:10px; align-items:baseline; line-height:1.1; user-select:none; }
     .step .n{ font-weight:800; font-size:12px; letter-spacing:.02em; color:var(--muted); min-width:14px; }
@@ -111,10 +116,10 @@
     .step[data-step="4"].active .t::before{ background: var(--c4); }
     .step[data-step="5"].active .t::before{ background: var(--c5); }
 
+    /* content */
     .content{
-      padding-bottom: 78px; /* ✅ moins de réserve : la barre remonte visuellement */
       position:relative;
-      min-height: calc(100vh - 220px);
+      z-index: 10;
     }
 
     .panel{ padding:0; margin-top:6px; }
@@ -151,6 +156,7 @@
       margin-top: 12px;
     }
 
+    /* intro backs */
     .backs{
       margin-top: 20px;
       display:grid;
@@ -169,6 +175,7 @@
     .back img{ width:100%; height:100%; object-fit: contain; display:block; }
     .back:hover{ transform: rotate(-2.2deg) translateY(-2px); }
 
+    /* deal */
     .dealWrap{ margin-top: 10px; }
     .dealRow{
       position:relative;
@@ -193,31 +200,39 @@
     .dealCard.ready{ opacity:1; pointer-events:auto; }
     .dealCard:hover{ transform: rotate(-1.6deg) translateY(-2px); }
 
+    /* reveal layout */
     .reveal{
-      margin-top: 14px;
+      margin-top: 28px; /* ✅ évite toute collision visuelle avec le menu */
       width: 100%;
       display:grid;
       grid-template-columns: 410px 1fr;
       gap: 18px;
       align-items:start;
       justify-content:start;
+      position:relative;
+      z-index: 1;
     }
 
-    /* ✅✅✅ FIX rognage gauche : plus de padding à gauche */
+    /* ✅ ZÉRO CLIPPING GARANTI :
+       - on supprime overflow hidden
+       - la pile n’est JAMAIS rognée
+       - on s’assure qu’elle reste sous le menu (z-index + margin-top)
+    */
     .stackClip{
       position:relative;
       width: 410px;
       aspect-ratio: 3 / 4;
-      overflow:hidden;
-      isolation:isolate;
+      overflow: visible;   /* ✅ plus aucune coupe */
       justify-self:start;
-      padding: var(--clipPadT) var(--clipPadR) var(--clipPadB) var(--clipPadL);
+      transform: translateX(var(--stackShiftX)); /* ✅ décale vers la droite */
+      z-index: 1;
     }
     .stackInner{
       position:absolute;
-      inset: var(--clipPadT) var(--clipPadR) var(--clipPadB) var(--clipPadL);
+      inset: 0;
       transform: scale(var(--stackScale));
       transform-origin: 0% 0%;
+      overflow: visible; /* ✅ */
     }
 
     .cardLayer{
@@ -225,6 +240,7 @@
       inset:0;
       transform-origin: 0% 100%;
       pointer-events:none;
+      overflow: visible; /* ✅ */
     }
     .cardLayer img{
       width:100%;
@@ -237,6 +253,7 @@
       transform: rotate(var(--tiltA)) translate(6px, 8px);
     }
 
+    /* overlay texte sur carte */
     .cardOverlay{
       position:absolute;
       inset: 14% 12%;
@@ -251,14 +268,18 @@
       font-size: clamp(22px, 2.6vw, 30px);
       line-height: 1.15;
       color: #111;
+      font-weight: 400;
     }
 
+    /* right column */
     .revealSide{
       display:flex;
       flex-direction:column;
       gap: 12px;
       align-items:flex-start;
       min-height: 260px;
+      position:relative;
+      z-index: 2;
     }
 
     .sectionHeader{
@@ -287,13 +308,14 @@
     .sectionPrompt{
       font-weight: 800;
       letter-spacing:.02em;
-      font-size: 17px;
+      font-size: 18px;
       line-height: 1.35;
       color: var(--ink);
       margin-top: 2px;
       max-width: 78ch;
     }
 
+    /* selectable buttons */
     .chips{
       margin-top: 2px;
       display:grid;
@@ -340,6 +362,7 @@
     .chip.selected .label small{ color: rgba(255,255,255,.88); }
     .chip.selected .label::before{ background: var(--selColor); }
 
+    /* correction */
     .corrWrap{
       width: min(820px, 100%);
       display:flex;
@@ -367,7 +390,7 @@
     }
     .tag.ok{ background: var(--ok); }
     .tag.rev{ background: var(--rev); }
-    .tag.corr{ background: var(--rev); }
+    .tag.corr{ background: var(--rev); } /* cartouche orange */
 
     .corrText{ font-size: 13.5px; line-height: 1.5; color: var(--ink); max-width: 78ch; }
 
@@ -381,33 +404,34 @@
       line-height: 1;
     }
 
-    /* ✅ barre bleue remontée */
+    /* ✅ Barre bleue : juste sous les cartes (pas sticky) */
     .footerBar{
-      position: sticky;
-      bottom: 12px;                 /* <-- remonte */
-      border: 1px solid rgba(255,255,255,.35);
+      margin-top: 16px;                /* ✅ colle visuellement sous la zone cartes */
+      border-top: 1px solid var(--hair);
       background: var(--logoC);
       color: #fff;
-      font-size: 16px;              /* un peu plus grand */
+      font-size: 16px;
       line-height: 1.45;
       padding: 14px 16px;
-      z-index: 5;
 
-      /* plus “luxe” : aligné dans la mise en page, pas collé plein bord */
-      border-radius: 0;
+      /* même largeur que l’app (filet au-dessus déjà) */
+      width: 100%;
     }
     .footerBar b{ color:#fff; }
 
+    /* responsive */
     @media (max-width: 980px){
       .steps{ grid-template-columns: 1fr; gap:10px; }
       .backs{ grid-template-columns: 1fr 1fr; }
       .reveal{ grid-template-columns: 1fr; }
-      .stackClip{ width: min(410px, 92%); }
+      .stackClip{
+        width: min(410px, 92%);
+        transform: translateX(20px); /* ✅ toujours un peu vers la droite */
+      }
       .chips{ grid-template-columns: 1fr; }
       .dealRow{ height: 110px; }
       .dealCard{ width: 56px; }
-      .content{ padding-bottom: 90px; }
-      :root{ --clipPadL: 56px; }
+      :root{ --stackScale: .78; }
     }
     @media (max-width: 520px){
       .backs{ grid-template-columns: 1fr; }
@@ -416,10 +440,7 @@
       .sectionPrompt{ font-size: 16px; }
       .dealRow{ height: 100px; }
       .dealCard{ width: 52px; }
-      :root{
-        --stackScale: .78;
-        --clipPadL: 52px;
-      }
+      :root{ --stackScale: .76; }
     }
 
     [hidden]{ display:none !important; }
@@ -446,6 +467,7 @@
       </div>
 
       <div class="content">
+        <!-- INTRO -->
         <section class="panel" id="screen-intro">
           <h2>Cadre de travail</h2>
           <p class="hint">
@@ -477,6 +499,7 @@
           </div>
         </section>
 
+        <!-- GAME -->
         <section class="panel" id="screen-game" hidden>
           <div id="step1" class="dealWrap">
             <h2>Situation(s)</h2>
@@ -508,8 +531,10 @@
                     <div class="sectionPrompt" id="violTitle">Choisissez un ou plusieurs type(s) de violence auquel correspond la situation</div>
                   </div>
                 </div>
+
                 <div class="chips" id="violChips"></div>
                 <div class="corrWrap" id="violCorr" hidden></div>
+
                 <div class="navBar">
                   <button id="violBack">Retour</button>
                   <button id="violContinue">Continuer</button>
@@ -524,8 +549,10 @@
                     <div class="sectionPrompt" id="penalTitle">Choisissez une ou plusieurs qualification(s) pénale(s) possible(s)</div>
                   </div>
                 </div>
+
                 <div class="chips" id="penalChips"></div>
                 <div class="corrWrap" id="penalCorr" hidden></div>
+
                 <div class="navBar">
                   <button id="penalBack">Retour</button>
                   <button id="penalContinue">Continuer</button>
@@ -540,8 +567,10 @@
                     <div class="sectionPrompt" id="obligTitle">Choisissez les réactions attendues (et évitez celles à risque)</div>
                   </div>
                 </div>
+
                 <div class="chips" id="obligChips"></div>
                 <div class="corrWrap" id="obligCorr" hidden></div>
+
                 <div class="navBar">
                   <button id="obligBack">Retour</button>
                   <button id="obligContinue">Continuer</button>
@@ -549,10 +578,17 @@
               </div>
             </div>
           </div>
+
+          <!-- ✅ barre bleue juste sous les cartes -->
+          <div class="footerBar" id="footerBar" hidden>
+            <b>protéger</b> un mineur est une obligation légale et morale — <b>signaler</b>, c’est protéger.<br/>
+            Numéros utiles : 119 • 17 • 3018
+          </div>
         </section>
       </div>
 
-      <div class="footerBar">
+      <!-- barre sur intro (sous tout) -->
+      <div class="footerBar" id="footerIntro">
         <b>protéger</b> un mineur est une obligation légale et morale — <b>signaler</b>, c’est protéger.<br/>
         Numéros utiles : 119 • 17 • 3018
       </div>
@@ -636,18 +672,19 @@
         correct:{ v:new Set(), p:new Set(), o:new Set() }
       };
 
-      /* ✅ rotations / translations derrière : moins “à gauche” pour éviter le rognage */
-      const TILTS = { B:-6.8, C:-13.6, D:-20.4 };
+      // ✅ cartes derrière : on évite le “trop à gauche”
       const SHIFTS = {
-        B:{x:-8,  y:-14},  /* <-- avant -18 */
-        C:{x:-14, y:-22},  /* <-- avant -30 */
-        D:{x:-20, y:-30},  /* <-- avant -42 */
+        B:{x:  8, y:-14},
+        C:{x: 14, y:-22},
+        D:{x: 20, y:-30},
       };
 
-      const setScreen = (which) => {
+      function setScreen(which){
         $("screen-intro").hidden = which !== "intro";
         $("screen-game").hidden  = which !== "game";
-      };
+        $("footerIntro").hidden  = which !== "intro";
+        $("footerBar").hidden    = which !== "game";
+      }
 
       function setActiveStep(n){
         for(let i=1;i<=5;i++) $("step-"+i).classList.remove("active");
@@ -780,6 +817,11 @@
         $("step1").hidden = true;
         $("reveal").hidden = false;
         showStep(2);
+
+        // ✅ barre bleue juste sous la zone cartes (screen-game)
+        requestAnimationFrame(() => {
+          $("footerBar").scrollIntoView({block:"nearest"});
+        });
       }
 
       function ensureLayer(elId, imgSrc, rotationDeg, translateX, translateY){
@@ -1017,6 +1059,7 @@
         }, 120);
       });
 
+      // init
       setScreen("intro");
       setActiveStep(1);
     })();

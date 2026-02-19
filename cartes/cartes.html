@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>REBOND — Puzzle</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Schoolbell&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#9ecbd9;
+      --ink:#121417;
+      --muted:rgba(18,20,23,.68);
+      --hair:rgba(18,20,23,.18);
+
+      --maxW:1100px;
+      --pad:26px;
+
+      --school:"Schoolbell", cursive;
+
+      --c1:#275c6d; /* Situation(s) */
+      --c2:#33a0a2; /* Type(s) de violences */
+      --c3:#d5b11c; /* Qualification pénale */
+      --c4:#c57e31; /* Obligations & réactions */
+      --c5:#c57e31; /* Vrai/Faux */
+
+      --logoC: var(--c1);
+
+      --ok:#1f8a5b;
+      --rev:#d07a1d;
+
+      --tiltA:-2.2deg;
+
+      /* ✅ 80% dès l’apparition */
+      --stackScale:.80;
+
+      /* ✅ marge interne pile : plus large à gauche pour éviter tout rognage */
+      --clipPadT:22px;
+      --clipPadR:10px;
+      --clipPadB:10px;
+      --clipPadL:64px;  /* <-- avant 18px */
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x:hidden;
+    }
+
+    .outer{ width:100%; display:flex; justify-content:center; padding: clamp(16px, 3vw, 30px); }
+    .app{ width:min(var(--maxW), 100%); padding: var(--pad); position:relative; }
+
+    .top{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:14px; flex-wrap:wrap; margin-bottom: 16px;
+    }
+    .brand img{ display:block; height:84px; width:auto; object-fit:contain; }
+    .fsBtn{
+      appearance:none;
+      border:1px solid var(--hair);
+      background:transparent;
+      padding:8px 10px;
+      font-weight:800;
+      letter-spacing:.08em;
+      text-transform:uppercase;
+      font-size:11px;
+      cursor:pointer;
+      transition: transform .16s ease, border-color .16s ease;
+    }
+    .fsBtn:hover{ border-color: rgba(18,20,23,.35); transform: translateY(-1px); }
+
+    .steps{
+      display:grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 14px;
+      padding: 14px 0 18px;
+      border-top: 1px solid var(--hair);
+      border-bottom: 1px solid var(--hair);
+      margin-bottom: 18px;
+    }
+    .stepTop{ display:flex; gap:10px; align-items:baseline; line-height:1.1; user-select:none; }
+    .step .n{ font-weight:800; font-size:12px; letter-spacing:.02em; color:var(--muted); min-width:14px; }
+    .step .t{
+      font-size:12.5px; letter-spacing:.01em;
+      position:relative; display:inline-block;
+      padding: 6px 10px;
+      z-index:1;
+      color: var(--ink);
+      transition: color .2s ease;
+    }
+    .step .t::before{
+      content:"";
+      position:absolute;
+      left:-6px; right:-6px;
+      top:-6px; bottom:-6px;
+      background: transparent;
+      z-index:-1;
+      transition: background .22s ease;
+    }
+    .step.active .t{ color:#fff; }
+    .step[data-step="1"].active .t::before{ background: var(--c1); }
+    .step[data-step="2"].active .t::before{ background: var(--c2); }
+    .step[data-step="3"].active .t::before{ background: var(--c3); }
+    .step[data-step="4"].active .t::before{ background: var(--c4); }
+    .step[data-step="5"].active .t::before{ background: var(--c5); }
+
+    .content{
+      padding-bottom: 78px; /* ✅ moins de réserve : la barre remonte visuellement */
+      position:relative;
+      min-height: calc(100vh - 220px);
+    }
+
+    .panel{ padding:0; margin-top:6px; }
+    h2{ font-size:16px; letter-spacing:.02em; font-weight:750; margin-bottom:10px; }
+    .hint{ font-size:13.5px; line-height:1.55; color:var(--muted); max-width:78ch; }
+    .hint b{ color:var(--ink); }
+
+    .rappel{ margin-top:18px; padding-left:14px; border-left:1px solid var(--hair); }
+    .rappel .label{ font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:11px; color:var(--ink); margin-bottom:8px; }
+    .rappel .txt{ font-size:15px; line-height:1.55; color:var(--ink); max-width:78ch; }
+
+    button{
+      appearance:none;
+      border: 1px solid var(--hair);
+      background: transparent;
+      color: var(--ink);
+      padding: 10px 14px;
+      font-weight: 750;
+      letter-spacing:.06em;
+      text-transform: uppercase;
+      font-size: 11.5px;
+      cursor:pointer;
+      transition: border-color .16s ease, transform .16s ease, opacity .16s ease;
+    }
+    button:hover{ border-color: rgba(18,20,23,.35); transform: translateY(-1px); }
+    button:disabled{ opacity:.45; cursor:not-allowed; transform:none; }
+
+    .navBar{
+      width: min(820px, 100%);
+      display:flex;
+      justify-content:center;
+      gap: 10px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+
+    .backs{
+      margin-top: 20px;
+      display:grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+      align-items: start;
+    }
+    .back{
+      width:100%;
+      aspect-ratio: 3 / 4;
+      transform: rotate(-2.2deg);
+      transform-origin: 0% 100%;
+      transition: transform .22s ease;
+      cursor:pointer;
+    }
+    .back img{ width:100%; height:100%; object-fit: contain; display:block; }
+    .back:hover{ transform: rotate(-2.2deg) translateY(-2px); }
+
+    .dealWrap{ margin-top: 10px; }
+    .dealRow{
+      position:relative;
+      height: 120px;
+      width: 100%;
+      max-width: 980px;
+      overflow: visible;
+      margin-top: 10px;
+    }
+    .dealCard{
+      position:absolute;
+      top: 10px;
+      width: 64px;
+      transform: rotate(-1.6deg);
+      transform-origin: 0% 100%;
+      opacity: 0;
+      pointer-events: none;
+      transition: left .45s ease, opacity .18s ease, transform .18s ease;
+      cursor:pointer;
+    }
+    .dealCard img{ width:100%; height:auto; display:block; object-fit:contain; }
+    .dealCard.ready{ opacity:1; pointer-events:auto; }
+    .dealCard:hover{ transform: rotate(-1.6deg) translateY(-2px); }
+
+    .reveal{
+      margin-top: 14px;
+      width: 100%;
+      display:grid;
+      grid-template-columns: 410px 1fr;
+      gap: 18px;
+      align-items:start;
+      justify-content:start;
+    }
+
+    /* ✅✅✅ FIX rognage gauche : plus de padding à gauche */
+    .stackClip{
+      position:relative;
+      width: 410px;
+      aspect-ratio: 3 / 4;
+      overflow:hidden;
+      isolation:isolate;
+      justify-self:start;
+      padding: var(--clipPadT) var(--clipPadR) var(--clipPadB) var(--clipPadL);
+    }
+    .stackInner{
+      position:absolute;
+      inset: var(--clipPadT) var(--clipPadR) var(--clipPadB) var(--clipPadL);
+      transform: scale(var(--stackScale));
+      transform-origin: 0% 0%;
+    }
+
+    .cardLayer{
+      position:absolute;
+      inset:0;
+      transform-origin: 0% 100%;
+      pointer-events:none;
+    }
+    .cardLayer img{
+      width:100%;
+      height:100%;
+      object-fit: contain;
+      display:block;
+    }
+
+    .layerA{
+      transform: rotate(var(--tiltA)) translate(6px, 8px);
+    }
+
+    .cardOverlay{
+      position:absolute;
+      inset: 14% 12%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      pointer-events:none;
+    }
+    .cardOverlay .txt{
+      font-family: var(--school);
+      font-size: clamp(22px, 2.6vw, 30px);
+      line-height: 1.15;
+      color: #111;
+    }
+
+    .revealSide{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+      align-items:flex-start;
+      min-height: 260px;
+    }
+
+    .sectionHeader{
+      display:flex;
+      align-items:flex-start;
+      gap: 12px;
+      max-width: 78ch;
+    }
+    .sectionHeader img{
+      width: 54px;
+      height: auto;
+      object-fit: contain;
+      transform: rotate(-2.2deg);
+      transform-origin: 0% 100%;
+      flex: 0 0 auto;
+    }
+    .sectionK{
+      font-weight: 850;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      font-size: 11px;
+      line-height: 1.2;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+    .sectionPrompt{
+      font-weight: 800;
+      letter-spacing:.02em;
+      font-size: 17px;
+      line-height: 1.35;
+      color: var(--ink);
+      margin-top: 2px;
+      max-width: 78ch;
+    }
+
+    .chips{
+      margin-top: 2px;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      width: min(820px, 100%);
+    }
+    .chip{
+      appearance:none;
+      border: 1px solid var(--hair);
+      background: transparent;
+      padding: 10px 12px;
+      cursor:pointer;
+      text-align:left;
+      position:relative;
+    }
+    .chip .label{
+      position:relative;
+      display:block;
+      padding: 10px 10px;
+      z-index:1;
+      color: var(--ink);
+      transition: color .18s ease;
+      font-weight: 750;
+      line-height: 1.2;
+    }
+    .chip .label small{
+      display:block;
+      margin-top: 6px;
+      font-size: 11px;
+      color: rgba(18,20,23,.62);
+      transition: color .18s ease;
+    }
+    .chip .label::before{
+      content:"";
+      position:absolute;
+      left:2px; right:2px;
+      top:2px; bottom:2px;
+      background: transparent;
+      z-index:-1;
+      transition: background .18s ease;
+    }
+    .chip.selected .label{ color:#fff; }
+    .chip.selected .label small{ color: rgba(255,255,255,.88); }
+    .chip.selected .label::before{ background: var(--selColor); }
+
+    .corrWrap{
+      width: min(820px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      margin-top: 6px;
+    }
+    .corrBlock{
+      border-top: 1px solid var(--hair);
+      padding-top: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+    }
+    .corrHead{ display:flex; gap:10px; align-items:center; }
+    .tag{
+      display:inline-block;
+      padding: 6px 10px;
+      font-weight: 900;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color:#fff;
+      line-height: 1;
+    }
+    .tag.ok{ background: var(--ok); }
+    .tag.rev{ background: var(--rev); }
+    .tag.corr{ background: var(--rev); }
+
+    .corrText{ font-size: 13.5px; line-height: 1.5; color: var(--ink); max-width: 78ch; }
+
+    .chipsInline{ display:flex; flex-wrap:wrap; gap: 8px; }
+    .chipsInline span{
+      display:inline-block;
+      padding: 6px 10px;
+      border: 1px solid var(--hair);
+      background: rgba(255,255,255,.12);
+      font-size: 13px;
+      line-height: 1;
+    }
+
+    /* ✅ barre bleue remontée */
+    .footerBar{
+      position: sticky;
+      bottom: 12px;                 /* <-- remonte */
+      border: 1px solid rgba(255,255,255,.35);
+      background: var(--logoC);
+      color: #fff;
+      font-size: 16px;              /* un peu plus grand */
+      line-height: 1.45;
+      padding: 14px 16px;
+      z-index: 5;
+
+      /* plus “luxe” : aligné dans la mise en page, pas collé plein bord */
+      border-radius: 0;
+    }
+    .footerBar b{ color:#fff; }
+
+    @media (max-width: 980px){
+      .steps{ grid-template-columns: 1fr; gap:10px; }
+      .backs{ grid-template-columns: 1fr 1fr; }
+      .reveal{ grid-template-columns: 1fr; }
+      .stackClip{ width: min(410px, 92%); }
+      .chips{ grid-template-columns: 1fr; }
+      .dealRow{ height: 110px; }
+      .dealCard{ width: 56px; }
+      .content{ padding-bottom: 90px; }
+      :root{ --clipPadL: 56px; }
+    }
+    @media (max-width: 520px){
+      .backs{ grid-template-columns: 1fr; }
+      .brand img{ height: 72px; }
+      .sectionHeader img{ width: 48px; }
+      .sectionPrompt{ font-size: 16px; }
+      .dealRow{ height: 100px; }
+      .dealCard{ width: 52px; }
+      :root{
+        --stackScale: .78;
+        --clipPadL: 52px;
+      }
+    }
+
+    [hidden]{ display:none !important; }
+  </style>
+</head>
+
+<body>
+  <div class="outer">
+    <div class="app" role="application" aria-label="REBOND — Puzzle">
+
+      <div class="top">
+        <div class="brand">
+          <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/logo.png" alt="REBOND">
+        </div>
+        <button class="fsBtn" id="btn-fs">Plein écran</button>
+      </div>
+
+      <div class="steps" aria-label="Étapes">
+        <div class="step" id="step-1" data-step="1"><div class="stepTop"><div class="n">1</div><div class="t">Situation(s)</div></div></div>
+        <div class="step" id="step-2" data-step="2"><div class="stepTop"><div class="n">2</div><div class="t">Type(s) de violences</div></div></div>
+        <div class="step" id="step-3" data-step="3"><div class="stepTop"><div class="n">3</div><div class="t">Qualification pénale</div></div></div>
+        <div class="step" id="step-4" data-step="4"><div class="stepTop"><div class="n">4</div><div class="t">Obligations & réactions</div></div></div>
+        <div class="step" id="step-5" data-step="5"><div class="stepTop"><div class="n">5</div><div class="t">Vrai/Faux</div></div></div>
+      </div>
+
+      <div class="content">
+        <section class="panel" id="screen-intro">
+          <h2>Cadre de travail</h2>
+          <p class="hint">
+            Nous travaillons à partir d’une <b>situation fictive</b>. Il ne s’agit pas de juger des personnes,
+            mais d’apprendre à <b>repérer</b>, <b>nommer</b> et <b>protéger</b>.<br/>
+            Personne n’est obligé de partager une expérience personnelle.
+          </p>
+
+          <div class="rappel" aria-label="Rappel">
+            <div class="label">Rappel</div>
+            <div class="txt">
+              Le rôle d’un encadrant n’est pas d’enquêter, mais de <b>protéger</b> et d’<b>orienter</b>.
+              En cas de doute, on privilégie toujours la protection du mineur.
+            </div>
+          </div>
+
+          <div class="backs" aria-label="Dos des cartes">
+            <div class="back" id="start-by-card" title="Commencer (carte Situation)">
+              <img alt="Dos carte — Situation" src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png">
+            </div>
+            <div class="back"><img alt="Dos carte — Type(s) de violences" src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png"></div>
+            <div class="back"><img alt="Dos carte — Qualification pénale" src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png"></div>
+            <div class="back"><img alt="Dos carte — Obligations" src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png"></div>
+            <div class="back"><img alt="Dos carte — Vrai/Faux" src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png"></div>
+          </div>
+
+          <div class="navBar" style="margin-top:18px;">
+            <button id="btn-start">Commencer</button>
+          </div>
+        </section>
+
+        <section class="panel" id="screen-game" hidden>
+          <div id="step1" class="dealWrap">
+            <h2>Situation(s)</h2>
+            <div class="dealRow" id="dealRow" aria-label="Cartes (distribution)"></div>
+          </div>
+
+          <div class="reveal" id="reveal" hidden aria-label="Carte tirée">
+            <div class="stackClip" aria-label="Pile de cartes">
+              <div class="stackInner">
+                <div class="cardLayer" id="layerD" hidden></div>
+                <div class="cardLayer" id="layerC" hidden></div>
+                <div class="cardLayer" id="layerB" hidden></div>
+
+                <div class="cardLayer layerA" id="layerA">
+                  <img id="frontImg" src="https://avantpost-cpu.github.io/depot-quiz/cartes/a1.png" alt="Carte tirée">
+                  <div class="cardOverlay" aria-hidden="true">
+                    <div class="txt" id="overlayText"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="revealSide">
+              <div id="ui-violences" hidden>
+                <div class="sectionHeader">
+                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png" alt="Carte — Violences">
+                  <div>
+                    <div class="sectionK">Type(s) de violences</div>
+                    <div class="sectionPrompt" id="violTitle">Choisissez un ou plusieurs type(s) de violence auquel correspond la situation</div>
+                  </div>
+                </div>
+                <div class="chips" id="violChips"></div>
+                <div class="corrWrap" id="violCorr" hidden></div>
+                <div class="navBar">
+                  <button id="violBack">Retour</button>
+                  <button id="violContinue">Continuer</button>
+                </div>
+              </div>
+
+              <div id="ui-penal" hidden>
+                <div class="sectionHeader">
+                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png" alt="Carte — Qualification pénale">
+                  <div>
+                    <div class="sectionK">Qualification pénale</div>
+                    <div class="sectionPrompt" id="penalTitle">Choisissez une ou plusieurs qualification(s) pénale(s) possible(s)</div>
+                  </div>
+                </div>
+                <div class="chips" id="penalChips"></div>
+                <div class="corrWrap" id="penalCorr" hidden></div>
+                <div class="navBar">
+                  <button id="penalBack">Retour</button>
+                  <button id="penalContinue">Continuer</button>
+                </div>
+              </div>
+
+              <div id="ui-oblig" hidden>
+                <div class="sectionHeader">
+                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png" alt="Carte — Obligations & réactions">
+                  <div>
+                    <div class="sectionK">Obligations & réactions</div>
+                    <div class="sectionPrompt" id="obligTitle">Choisissez les réactions attendues (et évitez celles à risque)</div>
+                  </div>
+                </div>
+                <div class="chips" id="obligChips"></div>
+                <div class="corrWrap" id="obligCorr" hidden></div>
+                <div class="navBar">
+                  <button id="obligBack">Retour</button>
+                  <button id="obligContinue">Continuer</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="footerBar">
+        <b>protéger</b> un mineur est une obligation légale et morale — <b>signaler</b>, c’est protéger.<br/>
+        Numéros utiles : 119 • 17 • 3018
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const $ = (id) => document.getElementById(id);
+
+      const IMG = {
+        aBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/a.png",
+        aFront:"https://avantpost-cpu.github.io/depot-quiz/cartes/a1.png",
+        bBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/b.png",
+        cBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/c.png",
+        dBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/d.png",
+      };
+
+      const SITUATIONS = [
+        "Un encadrant crie et insulte un jeune sportif devant le groupe après une erreur.",
+        "Un adulte ridiculise régulièrement un enfant en disant qu’il est “nul” devant les autres.",
+        "Un entraîneur impose des exercices supplémentaires comme “punition” et se moque si l’enfant pleure.",
+        "Un jeune est mis à l’écart du groupe sans explication et subit des remarques humiliantes.",
+        "On force un enfant à continuer malgré une douleur, en disant “tu simules”.",
+        "Un encadrant menace si l’enfant parle de ce qui se passe à l’entraînement.",
+        "Un adulte commente le corps d’un adolescent de façon déplacée devant l’équipe.",
+        "On oblige un mineur à se changer en public alors qu’il demande de l’intimité.",
+        "Un encadrant envoie des messages privés insistants à un jeune en dehors des horaires.",
+        "Un adulte touche un enfant “pour corriger un geste” alors que ce n’est pas nécessaire.",
+        "Un jeune est filmé sans consentement et la vidéo circule dans le club.",
+        "On demande à un mineur de garder un “secret” sur ce qui se passe au vestiaire.",
+        "Un encadrant punit par des exercices douloureux et se moque.",
+        "Un adulte interdit au mineur de parler à ses parents de ce qu’il vit.",
+        "Un mineur reçoit des messages la nuit de la part d’un encadrant.",
+        "Un encadrant utilise sa position pour obtenir de la docilité par la peur.",
+        "On force un enfant à accepter une “blague” humiliante devant le groupe.",
+        "Un mineur est isolé et culpabilisé (“c’est ta faute si l’équipe perd”).",
+        "Un coach bouscule “pour corriger” (sans nécessité).",
+        "Un encadrant dit : “si tu parles, tu détruis le club”."
+      ];
+
+      const VIOLENCE_ITEMS = [
+        { id:"vp",  label:"Violence psychologique" },
+        { id:"hum", label:"Humiliation" },
+        { id:"int", label:"Intimidation" },
+        { id:"phys",label:"Violence physique" },
+        { id:"hm",  label:"Harcèlement moral" },
+        { id:"hs",  label:"Harcèlement sexuel" },
+        { id:"aa",  label:"Abus d’autorité" },
+        { id:"neg", label:"Mise en danger / négligence" }
+      ];
+
+      const PENAL_ITEMS = [
+        { id:"p_hm",   label:"Harcèlement moral",   art:"222-33-2" },
+        { id:"p_hs",   label:"Harcèlement sexuel", art:"222-33"   },
+        { id:"p_men",  label:"Menaces",            art:"222-17"   },
+        { id:"p_inj",  label:"Injures",            art:"R621-2"   },
+        { id:"p_diff", label:"Diffamation",        art:"R621-1"   },
+        { id:"p_viol", label:"Violences",          art:"222-7+"   },
+        { id:"p_multi",label:"Cumul possible",     art:"—"        }
+      ];
+
+      const OBLIG_ITEMS = [
+        { id:"o_prot",   label:"Protéger / mettre à l’abri" },
+        { id:"o_ecoute", label:"Écouter sans juger" },
+        { id:"o_trace",  label:"Tracer les faits (date/lieu)" },
+        { id:"o_orient", label:"Alerter / référent / direction" },
+        { id:"o_119",    label:"Appeler / orienter vers 119" },
+        { id:"o_secret", label:"Ne pas promettre le secret" },
+        { id:"o_confr",  label:"Confronter l’adulte seul" },
+        { id:"o_enq",    label:"Mener sa propre enquête" }
+      ];
+
+      const state = {
+        step: 1,
+        dealt:false,
+        situationText:"",
+        selected:{ v:new Set(), p:new Set(), o:new Set() },
+        locked:{ v:false, p:false, o:false },
+        correct:{ v:new Set(), p:new Set(), o:new Set() }
+      };
+
+      /* ✅ rotations / translations derrière : moins “à gauche” pour éviter le rognage */
+      const TILTS = { B:-6.8, C:-13.6, D:-20.4 };
+      const SHIFTS = {
+        B:{x:-8,  y:-14},  /* <-- avant -18 */
+        C:{x:-14, y:-22},  /* <-- avant -30 */
+        D:{x:-20, y:-30},  /* <-- avant -42 */
+      };
+
+      const setScreen = (which) => {
+        $("screen-intro").hidden = which !== "intro";
+        $("screen-game").hidden  = which !== "game";
+      };
+
+      function setActiveStep(n){
+        for(let i=1;i<=5;i++) $("step-"+i).classList.remove("active");
+        $("step-"+n).classList.add("active");
+      }
+
+      async function toggleFullscreen(){
+        try{
+          if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+          else await document.exitFullscreen();
+        }catch(e){ alert("Plein écran indisponible."); }
+      }
+
+      function computeCorrectionsFromSituation(text){
+        const t = (text||"").toLowerCase();
+
+        const v = new Set(["aa"]);
+        if(t.includes("insulte") || t.includes("nul") || t.includes("ridicul") || t.includes("humili") || t.includes("moque")){
+          v.add("vp"); v.add("hum");
+        }
+        if(t.includes("réguli") || t.includes("souvent") || t.includes("répét")){
+          v.add("hm");
+        }
+        if(t.includes("menace") || t.includes("si tu parles") || t.includes("peur") || t.includes("détruis le club")){
+          v.add("int");
+        }
+        if(t.includes("douleur") || t.includes("bouscule") || t.includes("touche") || t.includes("douloureux")){
+          v.add("phys");
+        }
+        if(t.includes("corps") || t.includes("se changer") || t.includes("vestiaire") || t.includes("messages privés")){
+          v.add("hs");
+        }
+        if(t.includes("continuer malgré") || t.includes("simules") || t.includes("mise en danger")){
+          v.add("neg");
+        }
+
+        const p = new Set(["p_multi"]);
+        if(v.has("hm")) p.add("p_hm");
+        if(v.has("hs")) p.add("p_hs");
+        if(v.has("int")) p.add("p_men");
+        if(v.has("phys")) p.add("p_viol");
+        if(v.has("hum") || t.includes("insulte")) p.add("p_inj");
+        if(t.includes("diffam") || t.includes("rumeur")) p.add("p_diff");
+
+        const o = new Set(["o_prot","o_ecoute","o_trace","o_orient","o_secret"]);
+        if(v.has("phys") || v.has("hs") || t.includes("secret") || t.includes("menace")) o.add("o_119");
+
+        state.correct.v = v; state.correct.p = p; state.correct.o = o;
+      }
+
+      function resetGame(){
+        state.step = 1;
+        state.dealt = false;
+        state.situationText = "";
+
+        state.selected.v.clear(); state.selected.p.clear(); state.selected.o.clear();
+        state.locked = { v:false, p:false, o:false };
+
+        $("dealRow").innerHTML = "";
+        $("step1").hidden = false;
+        $("reveal").hidden = true;
+
+        $("ui-violences").hidden = true;
+        $("ui-penal").hidden = true;
+        $("ui-oblig").hidden = true;
+
+        $("violTitle").textContent = "Choisissez un ou plusieurs type(s) de violence auquel correspond la situation";
+        $("penalTitle").textContent = "Choisissez une ou plusieurs qualification(s) pénale(s) possible(s)";
+        $("obligTitle").textContent = "Choisissez les réactions attendues (et évitez celles à risque)";
+
+        $("violChips").hidden = false; $("violCorr").hidden = true; $("violCorr").innerHTML = "";
+        $("penalChips").hidden = false; $("penalCorr").hidden = true; $("penalCorr").innerHTML = "";
+        $("obligChips").hidden = false; $("obligCorr").hidden = true; $("obligCorr").innerHTML = "";
+
+        $("layerB").hidden = true; $("layerB").innerHTML = "";
+        $("layerC").hidden = true; $("layerC").innerHTML = "";
+        $("layerD").hidden = true; $("layerD").innerHTML = "";
+
+        setActiveStep(1);
+      }
+
+      function buildDealRow(){
+        const row = $("dealRow");
+        row.innerHTML = "";
+
+        const total = 16;
+        const rowW = row.clientWidth || 900;
+        const cardW = window.matchMedia("(max-width:520px)").matches ? 52
+                    : window.matchMedia("(max-width:980px)").matches ? 56
+                    : 64;
+
+        const maxSpread = Math.min(rowW - cardW, (total-1) * (cardW * 0.78));
+        const stepX = maxSpread / (total-1);
+
+        for(let i=0;i<total;i++){
+          const d = document.createElement("div");
+          d.className = "dealCard";
+          d.style.left = "0px";
+          d.style.zIndex = String(i+1);
+
+          const img = document.createElement("img");
+          img.src = IMG.aBack;
+          img.alt = "Dos de carte";
+          d.appendChild(img);
+
+          d.addEventListener("click", () => {
+            if(!d.classList.contains("ready")) return;
+            pickSituation();
+          });
+
+          row.appendChild(d);
+
+          setTimeout(() => {
+            d.classList.add("ready");
+            d.style.left = (i * stepX) + "px";
+          }, 90 * i);
+        }
+        state.dealt = true;
+      }
+
+      function pickSituation(){
+        const idx = Math.floor(Math.random() * SITUATIONS.length);
+        state.situationText = SITUATIONS[idx];
+
+        $("frontImg").src = IMG.aFront;
+        $("overlayText").textContent = state.situationText;
+
+        computeCorrectionsFromSituation(state.situationText);
+
+        $("step1").hidden = true;
+        $("reveal").hidden = false;
+        showStep(2);
+      }
+
+      function ensureLayer(elId, imgSrc, rotationDeg, translateX, translateY){
+        const el = $(elId);
+        el.hidden = false;
+        el.innerHTML = "";
+        const img = document.createElement("img");
+        img.src = imgSrc;
+        img.alt = "Carte (dos)";
+        el.appendChild(img);
+        el.style.transformOrigin = "0% 100%";
+        el.style.transform = `rotate(${rotationDeg}deg) translate(${translateX}px, ${translateY}px)`;
+      }
+
+      function renderChips(containerId, items, selectedSet, selColor, lockedGetter, withArticle){
+        const wrap = $(containerId);
+        wrap.innerHTML = "";
+        items.forEach(it => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "chip";
+          btn.dataset.id = it.id;
+          btn.style.setProperty("--selColor", selColor);
+
+          const span = document.createElement("span");
+          span.className = "label";
+          if(withArticle){
+            span.innerHTML = `${it.label}<small>Art. ${it.art}</small>`;
+          }else{
+            span.textContent = it.label;
+          }
+          btn.appendChild(span);
+
+          btn.addEventListener("click", () => {
+            if(lockedGetter()) return;
+            const on = selectedSet.has(it.id)
+              ? (selectedSet.delete(it.id), false)
+              : (selectedSet.add(it.id), true);
+            btn.classList.toggle("selected", on);
+          });
+
+          wrap.appendChild(btn);
+        });
+      }
+
+      function inlineChips(ids, items){
+        const map = new Map(items.map(x => [x.id, x]));
+        const wrap = document.createElement("div");
+        wrap.className = "chipsInline";
+        ids.forEach(id => {
+          const it = map.get(id);
+          const s = document.createElement("span");
+          if(!it){ s.textContent = id; }
+          else{
+            const extra = it.art && it.art !== "—" ? ` (art. ${it.art})` : "";
+            s.textContent = it.label + extra;
+          }
+          wrap.appendChild(s);
+        });
+        return wrap;
+      }
+
+      function buildCorrection(corrEl, chosenSet, correctSet, items, mode){
+        const chosen = Array.from(chosenSet);
+        const okChosen = chosen.filter(id => correctSet.has(id));
+        const badChosen = chosen.filter(id => !correctSet.has(id));
+        const correctArr = Array.from(correctSet);
+
+        corrEl.innerHTML = "";
+
+        if(chosen.length){
+          if(okChosen.length){
+            const b = document.createElement("div");
+            b.className = "corrBlock";
+            b.innerHTML = `<div class="corrHead"><div class="tag ok">OK</div><div class="h">Choix pertinents</div></div>`;
+            b.appendChild(inlineChips(okChosen, items));
+            corrEl.appendChild(b);
+          }
+          if(badChosen.length){
+            const b = document.createElement("div");
+            b.className = "corrBlock";
+            b.innerHTML = `<div class="corrHead"><div class="tag rev">À REVOIR</div><div class="h">Choix à discuter / à risque</div></div>`;
+            b.appendChild(inlineChips(badChosen, items));
+            corrEl.appendChild(b);
+          }
+        } else {
+          const b = document.createElement("div");
+          b.className = "corrBlock";
+          b.innerHTML = `
+            <div class="corrHead"><div class="tag rev">À REVOIR</div><div class="h">Aucune sélection</div></div>
+            <div class="corrText">Sélectionnez au moins un choix pour comparer avec la correction.</div>
+          `;
+          corrEl.appendChild(b);
+        }
+
+        const title =
+          mode === "viol" ? "Correction attendue (types les plus probables)" :
+          mode === "penal" ? "Correction attendue (pistes les plus probables)" :
+          "Correction attendue (réactions attendues)";
+
+        const bCorr = document.createElement("div");
+        bCorr.className = "corrBlock";
+        bCorr.innerHTML = `<div class="corrHead"><div class="tag corr">CORRECTION</div><div class="h">${title}</div></div>`;
+        bCorr.appendChild(inlineChips(correctArr, items));
+        corrEl.appendChild(bCorr);
+
+        const bWhy = document.createElement("div");
+        bWhy.className = "corrBlock";
+        bWhy.innerHTML = `<div class="corrHead"><div class="tag corr">CORRECTION</div><div class="h">Explications</div></div>`;
+        const why = document.createElement("div");
+        why.className = "corrText";
+
+        if(mode === "viol"){
+          why.innerHTML = "On retient surtout ce qui décrit <b>l’atteinte</b> (humiliation, pression, intimidation…) et sa <b>répétition</b> éventuelle.";
+        } else if(mode === "penal"){
+          why.innerHTML = "Les articles proposés sont des <b>pistes pédagogiques</b>. L’important : <b>protéger</b>, <b>tracer</b>, <b>orienter / signaler</b>.";
+        } else {
+          why.innerHTML = "Les bons réflexes : <b>protéger</b>, <b>écouter</b>, <b>tracer</b>, <b>orienter / alerter</b>. À éviter : confrontation, enquête personnelle, promesse de secret.";
+        }
+        bWhy.appendChild(why);
+        corrEl.appendChild(bWhy);
+      }
+
+      function syncStepUI(prefix, locked){
+        if(prefix === "viol"){
+          $("violChips").hidden = locked;
+          $("violCorr").hidden = !locked;
+          $("violTitle").textContent = locked ? "Correction" : "Choisissez un ou plusieurs type(s) de violence auquel correspond la situation";
+        }
+        if(prefix === "penal"){
+          $("penalChips").hidden = locked;
+          $("penalCorr").hidden = !locked;
+          $("penalTitle").textContent = locked ? "Correction" : "Choisissez une ou plusieurs qualification(s) pénale(s) possible(s)";
+        }
+        if(prefix === "oblig"){
+          $("obligChips").hidden = locked;
+          $("obligCorr").hidden = !locked;
+          $("obligTitle").textContent = locked ? "Correction" : "Choisissez les réactions attendues (et évitez celles à risque)";
+        }
+      }
+
+      function showStep(n){
+        state.step = n;
+
+        $("ui-violences").hidden = n !== 2;
+        $("ui-penal").hidden = n !== 3;
+        $("ui-oblig").hidden = n !== 4;
+
+        setActiveStep(n);
+
+        if(n >= 3){
+          ensureLayer("layerB", IMG.bBack, -6.8, SHIFTS.B.x, SHIFTS.B.y);
+        }
+        if(n >= 4){
+          ensureLayer("layerC", IMG.cBack, -13.6, SHIFTS.C.x, SHIFTS.C.y);
+        }
+
+        if(n === 2){
+          renderChips("violChips", VIOLENCE_ITEMS, state.selected.v, "var(--c2)", () => state.locked.v, false);
+          syncStepUI("viol", state.locked.v);
+        }
+        if(n === 3){
+          renderChips("penalChips", PENAL_ITEMS, state.selected.p, "var(--c3)", () => state.locked.p, true);
+          syncStepUI("penal", state.locked.p);
+        }
+        if(n === 4){
+          renderChips("obligChips", OBLIG_ITEMS, state.selected.o, "var(--c4)", () => state.locked.o, false);
+          syncStepUI("oblig", state.locked.o);
+        }
+      }
+
+      function violencesContinue(){
+        if(!state.locked.v){
+          state.locked.v = true;
+          buildCorrection($("violCorr"), state.selected.v, state.correct.v, VIOLENCE_ITEMS, "viol");
+          syncStepUI("viol", true);
+          return;
+        }
+        showStep(3);
+      }
+      function violencesBack(){
+        resetGame();
+        requestAnimationFrame(() => buildDealRow());
+      }
+
+      function penalContinue(){
+        if(!state.locked.p){
+          state.locked.p = true;
+          buildCorrection($("penalCorr"), state.selected.p, state.correct.p, PENAL_ITEMS, "penal");
+          syncStepUI("penal", true);
+          return;
+        }
+        showStep(4);
+      }
+      function penalBack(){ showStep(2); }
+
+      function obligContinue(){
+        if(!state.locked.o){
+          state.locked.o = true;
+          buildCorrection($("obligCorr"), state.selected.o, state.correct.o, OBLIG_ITEMS, "oblig");
+          syncStepUI("oblig", true);
+          return;
+        }
+        ensureLayer("layerD", IMG.dBack, -20.4, SHIFTS.D.x, SHIFTS.D.y);
+        alert("Étape suivante : Vrai/Faux (à intégrer ensuite).");
+      }
+      function obligBack(){ showStep(3); }
+
+      function start(){
+        setScreen("game");
+        resetGame();
+        requestAnimationFrame(buildDealRow);
+      }
+
+      $("btn-fs").addEventListener("click", toggleFullscreen);
+      $("btn-start").addEventListener("click", start);
+      $("start-by-card").addEventListener("click", start);
+
+      $("violBack").addEventListener("click", violencesBack);
+      $("violContinue").addEventListener("click", violencesContinue);
+
+      $("penalBack").addEventListener("click", penalBack);
+      $("penalContinue").addEventListener("click", penalContinue);
+
+      $("obligBack").addEventListener("click", obligBack);
+      $("obligContinue").addEventListener("click", obligContinue);
+
+      let resizeT = null;
+      window.addEventListener("resize", () => {
+        if(resizeT) clearTimeout(resizeT);
+        resizeT = setTimeout(() => {
+          if(!$("screen-game").hidden && state.step === 1 && state.dealt){
+            buildDealRow();
+          }
+        }, 120);
+      });
+
+      setScreen("intro");
+      setActiveStep(1);
+    })();
+  </script>
+</body>
+</html>

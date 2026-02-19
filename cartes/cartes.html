@@ -12,9 +12,11 @@
   <style>
     :root{
       --bg:#9ecbd9;
-      --ink:#121417;
-      --muted:rgba(18,20,23,.68);
-      --hair:rgba(18,20,23,.18);
+
+      /* ✅ textes + filets en blanc */
+      --ink:#ffffff;
+      --muted:rgba(255,255,255,.78);
+      --hair:rgba(255,255,255,.28);
 
       --maxW:1100px;
       --pad:26px;
@@ -27,23 +29,21 @@
       --c4:#c57e31;
       --c5:#c57e31;
 
-      --logoC: var(--c1);
-
       --ok:#1f8a5b;
       --rev:#de5103;
-      --corr:#275e72; /* CORRECTION */
+      --corr:#275e72;
 
       --tiltA:-2.2deg;
 
       --stackScale:.80;
       --stackShiftX: 46px;
-
-      /* ✅ safe zone pour empêcher les cartes de passer sous le menu */
       --stackSafeTop: 36px;
 
-      /* ✅ tailles top */
-      --logoH:84px;          /* logo */
-      --angeH:120px;         /* ange */
+      --logoH:84px;
+      --angeH:120px;
+
+      /* ✅ capsule */
+      --boardRadius: 28px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -53,11 +53,43 @@
       color: var(--ink);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      overflow-x:hidden;
+      overflow:hidden; /* ✅ pas de scroll page */
     }
 
-    .outer{ width:100%; display:flex; justify-content:center; padding: clamp(16px, 3vw, 30px); }
-    .app{ width:min(var(--maxW), 100%); padding: var(--pad); position:relative; }
+    /* ✅ plein écran (capsule) */
+    .outer{
+      width:100%;
+      height:100dvh;         /* ✅ stable mobile */
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding: 20px;
+    }
+
+    .app{
+      width:100%;
+      height:100%;
+      max-width: var(--maxW);
+      display:flex;
+      flex-direction:column;
+    }
+
+    .board{
+      width:100%;
+      height:100%;
+      border-radius: var(--boardRadius);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+
+      background:
+        url("https://avantpost-cpu.github.io/depot-quiz/cartes/tapis.png")
+        center center / 120% no-repeat;
+
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.18),
+        0 12px 30px rgba(0,0,0,.18);
+    }
 
     /* top bar */
     .top{
@@ -66,12 +98,10 @@
       justify-content:space-between;
       gap:14px;
       flex-wrap:nowrap;
-      margin-bottom: 16px;
+      padding: var(--pad) var(--pad) 0;
     }
-
     .brand img{ display:block; height:var(--logoH); width:auto; object-fit:contain; }
 
-    /* ange au centre */
     .mid-ange{
       display:flex;
       justify-content:center;
@@ -101,18 +131,19 @@
       transition: transform .16s ease, border-color .16s ease;
       flex: 0 0 auto;
       white-space:nowrap;
+      color: var(--ink);
     }
-    .fsBtn:hover{ border-color: rgba(18,20,23,.35); transform: translateY(-1px); }
+    .fsBtn:hover{ border-color: rgba(255,255,255,.45); transform: translateY(-1px); }
 
     /* steps */
     .steps{
       display:grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
-      padding: 14px 0 18px;
+      padding: 14px var(--pad) 18px;
       border-top: 1px solid var(--hair);
       border-bottom: 1px solid var(--hair);
-      margin-bottom: 18px;
+      margin: 16px var(--pad) 0;
       position:relative;
       z-index: 20;
     }
@@ -142,10 +173,19 @@
     .step[data-step="4"].active .t::before{ background: var(--c4); }
     .step[data-step="5"].active .t::before{ background: var(--c5); }
 
-    .content{ position:relative; z-index:10; }
+    /* content area fills remaining height */
+    .content{
+      flex: 1;
+      overflow:hidden; /* ✅ pas de scroll */
+      padding: 0 var(--pad) var(--pad);
+      position:relative;
+      z-index:10;
+      display:flex;
+      flex-direction:column;
+    }
 
-    .panel{ padding:0; margin-top:6px; }
-    h2{ font-size:16px; letter-spacing:.02em; font-weight:750; margin-bottom:10px; }
+    .panel{ padding:0; margin-top:16px; }
+    h2{ font-size:16px; letter-spacing:.02em; font-weight:750; margin-bottom:10px; color: var(--ink); }
     .hint{ font-size:13.5px; line-height:1.55; color:var(--muted); max-width:78ch; }
     .hint b{ color:var(--ink); }
 
@@ -156,7 +196,7 @@
     button{
       appearance:none;
       border: 1px solid var(--hair);
-      background: transparent;
+      background: rgba(255,255,255,.06);
       color: var(--ink);
       padding: 10px 14px;
       font-weight: 750;
@@ -165,8 +205,9 @@
       font-size: 11.5px;
       cursor:pointer;
       transition: border-color .16s ease, transform .16s ease, opacity .16s ease;
+      backdrop-filter: blur(2px);
     }
-    button:hover{ border-color: rgba(18,20,23,.35); transform: translateY(-1px); }
+    button:hover{ border-color: rgba(255,255,255,.45); transform: translateY(-1px); }
     button:disabled{ opacity:.45; cursor:not-allowed; transform:none; }
 
     .navBar{
@@ -198,7 +239,7 @@
     .back:hover{ transform: rotate(-2.2deg) translateY(-2px); }
 
     /* deal */
-    .dealWrap{ margin-top: 10px; }
+    .dealWrap{ margin-top: 6px; }
     .dealRow{
       position:relative;
       height: 120px;
@@ -224,18 +265,18 @@
 
     /* reveal layout */
     .reveal{
-      margin-top: 28px;
+      margin-top: 12px;
       width: 100%;
       display:grid;
-      grid-template-columns: 410px 1fr;
+      grid-template-columns: 420px 1fr;
       gap: 18px;
       align-items:start;
       justify-content:start;
       position:relative;
       z-index: 1;
+      overflow: visible;
     }
 
-    /* zero clipping + shift right */
     .stackClip{
       position:relative;
       width: 410px;
@@ -266,7 +307,6 @@
       object-fit: contain;
       display:block;
     }
-
     .layerA{ transform: rotate(var(--tiltA)) translate(6px, 8px); }
 
     .cardOverlay{
@@ -282,9 +322,10 @@
       font-family: var(--school);
       font-size: clamp(22px, 2.6vw, 30px);
       line-height: 1.15;
-      color: #111;
+      color: #426576;
       font-weight: 400;
       white-space: pre-wrap;
+      text-shadow: 0 1px 0 rgba(0,0,0,.25);
     }
 
     /* right column */
@@ -296,6 +337,7 @@
       min-height: 260px;
       position:relative;
       z-index: 2;
+      overflow:hidden;
     }
 
     .sectionHeader{
@@ -328,7 +370,7 @@
       font-weight: 900;
       letter-spacing:.08em;
       font-size: 10.5px;
-      color: rgba(18,20,23,.62);
+      color: rgba(255,255,255,.82);
       text-transform: uppercase;
       white-space:nowrap;
     }
@@ -342,7 +384,79 @@
       max-width: 78ch;
     }
 
-    /* ✅ V/F progress: 2 lignes de 10 cercles */
+    /* chips */
+    .chips{
+      margin-top: 2px;
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      width: min(820px, 100%);
+    }
+    .chip{
+      appearance:none;
+      border: 1px solid var(--hair);
+      background: rgba(255,255,255,.06);
+      padding: 10px 12px;
+      cursor:pointer;
+      text-align:left;
+      position:relative;
+      backdrop-filter: blur(2px);
+    }
+    .chip .label{
+      position:relative;
+      display:block;
+      padding: 10px 10px;
+      z-index:1;
+      color: var(--ink);
+      transition: color .18s ease;
+      font-weight: 750;
+      line-height: 1.2;
+    }
+    .chip .label::before{
+      content:"";
+      position:absolute;
+      left:2px; right:2px;
+      top:2px; bottom:2px;
+      background: transparent;
+      z-index:-1;
+      transition: background .18s ease;
+    }
+    .chip.selected .label{ color:#fff; }
+    .chip.selected .label::before{ background: var(--selColor); }
+
+    /* correction */
+    .corrWrap{
+      width: min(820px, 100%);
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      margin-top: 6px;
+      overflow:hidden;
+    }
+    .corrBlock{
+      border-top: 1px solid var(--hair);
+      padding-top: 12px;
+      display:flex;
+      flex-direction:column;
+      gap: 8px;
+    }
+    .corrHead{ display:flex; gap:10px; align-items:center; color: var(--ink); }
+    .tag{
+      display:inline-block;
+      padding: 6px 10px;
+      font-weight: 900;
+      letter-spacing:.08em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color:#fff;
+      line-height: 1;
+    }
+    .tag.ok{ background: #1f8a5b; }
+    .tag.rev{ background: #d07a1d; }
+    .tag.corr{ background: var(--corr); }
+    .corrText{ font-size: 13.5px; line-height: 1.5; color: var(--ink); max-width: 78ch; }
+
+    /* V/F progress */
     .vfProgress{
       margin-top: 10px;
       display: grid;
@@ -358,129 +472,19 @@
       width: 10px;
       height: 10px;
       border-radius: 999px;
-      border: 1px solid rgba(18,20,23,.38); /* filet maigre */
+      border: 1px solid rgba(255,255,255,.62);
       background: transparent;
     }
-    .vfP.ok{
-      border-color: rgba(31,138,91,.95);
-      background: rgba(31,138,91,.16);
-    }
-    .vfP.bad{
-      border-color: rgba(222,81,3,.95);
-      background: rgba(222,81,3,.16);
-    }
-    .vfP.cur{
-      border-color: rgba(18,20,23,.65);
-      background: rgba(255,255,255,.14);
-    }
+    .vfP.ok{ border-color: rgba(31,138,91,.98); background: rgba(31,138,91,.20); }
+    .vfP.bad{ border-color: rgba(222,81,3,.98); background: rgba(222,81,3,.20); }
+    .vfP.cur{ border-color: rgba(255,255,255,.92); background: rgba(255,255,255,.16); }
 
-    /* selectable buttons */
-    .chips{
-      margin-top: 2px;
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      width: min(820px, 100%);
-    }
-    .chip{
-      appearance:none;
-      border: 1px solid var(--hair);
-      background: transparent;
-      padding: 10px 12px;
-      cursor:pointer;
-      text-align:left;
-      position:relative;
-    }
-    .chip .label{
-      position:relative;
-      display:block;
-      padding: 10px 10px;
-      z-index:1;
-      color: var(--ink);
-      transition: color .18s ease;
-      font-weight: 750;
-      line-height: 1.2;
-    }
-    .chip .label small{
-      display:block;
-      margin-top: 6px;
-      font-size: 11px;
-      color: rgba(18,20,23,.62);
-      transition: color .18s ease;
-    }
-    .chip .label::before{
-      content:"";
-      position:absolute;
-      left:2px; right:2px;
-      top:2px; bottom:2px;
-      background: transparent;
-      z-index:-1;
-      transition: background .18s ease;
-    }
-    .chip.selected .label{ color:#fff; }
-    .chip.selected .label small{ color: rgba(255,255,255,.88); }
-    .chip.selected .label::before{ background: var(--selColor); }
-
-    /* correction */
-    .corrWrap{
-      width: min(820px, 100%);
-      display:flex;
-      flex-direction:column;
-      gap: 14px;
-      margin-top: 6px;
-    }
-    .corrBlock{
-      border-top: 1px solid var(--hair);
-      padding-top: 12px;
-      display:flex;
-      flex-direction:column;
-      gap: 8px;
-    }
-    .corrHead{ display:flex; gap:10px; align-items:center; }
-    .tag{
-      display:inline-block;
-      padding: 6px 10px;
-      font-weight: 900;
-      letter-spacing:.08em;
-      text-transform: uppercase;
-      font-size: 11px;
-      color:#fff;
-      line-height: 1;
-    }
-    .tag.ok{ background: #1f8a5b; }
-    .tag.rev{ background: #d07a1d; }
-    .tag.corr{ background: var(--corr); }
-
-    .corrText{ font-size: 13.5px; line-height: 1.5; color: var(--ink); max-width: 78ch; }
-
-    /* footer bar */
-    .footerBar{
-      margin-top: 16px;
-      border-top: 1px solid var(--hair);
-      background: var(--logoC);
-      color: #fff;
-      font-size: 16px;
-      line-height: 1.45;
-      padding: 14px 16px;
-      width: 100%;
-    }
-    .footerBar b{ color:#fff; }
-
-    /* responsive top (logo + ange + button) */
-    @media (max-width: 820px){
-      .top{ flex-wrap:wrap; }
-      .mid-ange{ order: 3; width:100%; justify-content:flex-start; padding: 6px 0 0; }
-      .mid-ange img{ height: 82px; }
-    }
-
+    /* responsive */
     @media (max-width: 980px){
       .steps{ grid-template-columns: 1fr; gap:10px; }
       .backs{ grid-template-columns: 1fr 1fr; }
       .reveal{ grid-template-columns: 1fr; }
-      .stackClip{
-        width: min(410px, 92%);
-        transform: translateX(20px);
-      }
+      .stackClip{ width: min(410px, 92%); transform: translateX(20px); }
       .chips{ grid-template-columns: 1fr; }
       .dealRow{ height: 110px; }
       .dealCard{ width: 56px; }
@@ -507,179 +511,169 @@
 <body>
   <div class="outer">
     <div class="app" role="application" aria-label="REBOND — Puzzle">
+      <div class="board">
 
-      <div class="top">
-        <div class="brand">
-          <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/logo.png" alt="REBOND">
+        <div class="top">
+          <div class="brand">
+            <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/logo.png" alt="REBOND">
+          </div>
+
+          <div class="mid-ange" aria-hidden="true">
+            <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/ange.png" alt="">
+          </div>
+
+          <button class="fsBtn" id="btn-fs">Plein écran</button>
         </div>
 
-        <div class="mid-ange" aria-hidden="true">
-          <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/ange.png" alt="">
+        <div class="steps" aria-label="Étapes">
+          <div class="step" id="step-1" data-step="1"><div class="stepTop"><div class="n">1</div><div class="t">Situation(s)</div></div></div>
+          <div class="step" id="step-2" data-step="2"><div class="stepTop"><div class="n">2</div><div class="t">Type(s) de violences</div></div></div>
+          <div class="step" id="step-3" data-step="3"><div class="stepTop"><div class="n">3</div><div class="t">Qualification pénale</div></div></div>
+          <div class="step" id="step-4" data-step="4"><div class="stepTop"><div class="n">4</div><div class="t">Obligations & réactions</div></div></div>
+          <div class="step" id="step-5" data-step="5"><div class="stepTop"><div class="n">5</div><div class="t">Vrai/Faux</div></div></div>
         </div>
 
-        <button class="fsBtn" id="btn-fs">Plein écran</button>
-      </div>
+        <div class="content">
+          <section class="panel" id="screen-intro">
+            <h2>Cadre de travail</h2>
+            <p class="hint">
+              Nous travaillons à partir d’une <b>situation fictive</b>. Il ne s’agit pas de juger des personnes,
+              mais d’apprendre à <b>repérer</b>, <b>nommer</b> et <b>protéger</b>.<br/>
+              Personne n’est obligé de partager une expérience personnelle.
+            </p>
 
-      <div class="steps" aria-label="Étapes">
-        <div class="step" id="step-1" data-step="1"><div class="stepTop"><div class="n">1</div><div class="t">Situation(s)</div></div></div>
-        <div class="step" id="step-2" data-step="2"><div class="stepTop"><div class="n">2</div><div class="t">Type(s) de violences</div></div></div>
-        <div class="step" id="step-3" data-step="3"><div class="stepTop"><div class="n">3</div><div class="t">Qualification pénale</div></div></div>
-        <div class="step" id="step-4" data-step="4"><div class="stepTop"><div class="n">4</div><div class="t">Obligations & réactions</div></div></div>
-        <div class="step" id="step-5" data-step="5"><div class="stepTop"><div class="n">5</div><div class="t">Vrai/Faux</div></div></div>
-      </div>
-
-      <div class="content">
-        <section class="panel" id="screen-intro">
-          <h2>Cadre de travail</h2>
-          <p class="hint">
-            Nous travaillons à partir d’une <b>situation fictive</b>. Il ne s’agit pas de juger des personnes,
-            mais d’apprendre à <b>repérer</b>, <b>nommer</b> et <b>protéger</b>.<br/>
-            Personne n’est obligé de partager une expérience personnelle.
-          </p>
-
-          <div class="rappel" aria-label="Rappel">
-            <div class="label">Rappel</div>
-            <div class="txt">
-              Le rôle d’un encadrant n’est pas d’enquêter, mais de <b>protéger</b> et d’<b>orienter</b>.
-              En cas de doute, on privilégie toujours la protection du mineur.
-            </div>
-          </div>
-
-          <div class="backs" aria-label="Dos des cartes">
-            <div class="back" id="start-by-card" title="Commencer (carte Situation)">
-              <img alt="Dos carte — Situation" src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png">
-            </div>
-            <div class="back"><img alt="Dos carte — Type(s) de violences" src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png"></div>
-            <div class="back"><img alt="Dos carte — Qualification pénale" src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png"></div>
-            <div class="back"><img alt="Dos carte — Obligations" src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png"></div>
-            <div class="back"><img alt="Dos carte — Vrai/Faux" src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png"></div>
-          </div>
-
-          <div class="navBar" style="margin-top:18px;">
-            <button id="btn-start">Commencer</button>
-          </div>
-        </section>
-
-        <section class="panel" id="screen-game" hidden>
-          <div id="step1" class="dealWrap">
-            <h2>Situation(s)</h2>
-            <div class="dealRow" id="dealRow" aria-label="Cartes (distribution)"></div>
-          </div>
-
-          <div class="reveal" id="reveal" hidden aria-label="Carte tirée">
-            <div class="stackClip" aria-label="Pile de cartes">
-              <div class="stackInner">
-                <div class="cardLayer" id="layerD" hidden></div>
-                <div class="cardLayer" id="layerC" hidden></div>
-                <div class="cardLayer" id="layerB" hidden></div>
-
-                <div class="cardLayer layerA" id="layerA">
-                  <img id="frontImg" src="https://avantpost-cpu.github.io/depot-quiz/cartes/a1.png" alt="Carte tirée">
-                  <div class="cardOverlay" aria-hidden="true">
-                    <div class="txt" id="overlayText"></div>
-                  </div>
-                </div>
+            <div class="rappel" aria-label="Rappel">
+              <div class="label">Rappel</div>
+              <div class="txt">
+                Le rôle d’un encadrant n’est pas d’enquêter, mais de <b>protéger</b> et d’<b>orienter</b>.
+                En cas de doute, on privilégie toujours la protection du mineur.
               </div>
             </div>
 
-            <div class="revealSide">
-              <div id="ui-violences" hidden>
-                <div class="sectionHeader">
-                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png" alt="Carte — Violences">
-                  <div>
-                    <div class="sectionK">Type(s) de violences</div>
-                    <div class="sectionPrompt" id="violTitle">Choisissez un ou plusieurs type(s) de violence auquel correspond la situation</div>
-                  </div>
-                </div>
-
-                <div class="chips" id="violChips"></div>
-                <div class="corrWrap" id="violCorr" hidden></div>
-
-                <div class="navBar">
-                  <button id="violBack">Retour</button>
-                  <button id="violContinue">Continuer</button>
-                </div>
+            <div class="backs" aria-label="Dos des cartes">
+              <div class="back" id="start-by-card" title="Commencer (carte Situation)">
+                <img alt="Dos carte — Situation" src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png">
               </div>
+              <div class="back"><img alt="Dos carte — Type(s) de violences" src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png"></div>
+              <div class="back"><img alt="Dos carte — Qualification pénale" src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png"></div>
+              <div class="back"><img alt="Dos carte — Obligations" src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png"></div>
+              <div class="back"><img alt="Dos carte — Vrai/Faux" src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png"></div>
+            </div>
 
-              <div id="ui-penal" hidden>
-                <div class="sectionHeader">
-                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png" alt="Carte — Qualification pénale">
-                  <div>
-                    <div class="sectionK">Qualification pénale</div>
-                    <div class="sectionPrompt" id="penalTitle">Choisissez une ou plusieurs qualification(s) pénale(s) possible(s)</div>
-                  </div>
-                </div>
+            <div class="navBar" style="margin-top:18px;">
+              <button id="btn-start">Commencer</button>
+            </div>
+          </section>
 
-                <div class="chips" id="penalChips"></div>
-                <div class="corrWrap" id="penalCorr" hidden></div>
+          <section class="panel" id="screen-game" hidden>
+            <div id="step1" class="dealWrap">
+              <h2>Situation(s)</h2>
+              <div class="dealRow" id="dealRow" aria-label="Cartes (distribution)"></div>
+            </div>
 
-                <div class="navBar">
-                  <button id="penalBack">Retour</button>
-                  <button id="penalContinue">Continuer</button>
-                </div>
-              </div>
+            <div class="reveal" id="reveal" hidden aria-label="Carte tirée">
+              <div class="stackClip" aria-label="Pile de cartes">
+                <div class="stackInner">
+                  <div class="cardLayer" id="layerD" hidden></div>
+                  <div class="cardLayer" id="layerC" hidden></div>
+                  <div class="cardLayer" id="layerB" hidden></div>
 
-              <div id="ui-oblig" hidden>
-                <div class="sectionHeader">
-                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png" alt="Carte — Obligations & réactions">
-                  <div>
-                    <div class="sectionK">Obligations & réactions</div>
-                    <div class="sectionPrompt" id="obligTitle">Choisissez les réactions attendues (et évitez celles à risque)</div>
-                  </div>
-                </div>
-
-                <div class="chips" id="obligChips"></div>
-                <div class="corrWrap" id="obligCorr" hidden></div>
-
-                <div class="navBar">
-                  <button id="obligBack">Retour</button>
-                  <button id="obligContinue">Continuer</button>
-                </div>
-              </div>
-
-              <!-- ÉTAPE 5 : VRAI/FAUX -->
-              <div id="ui-vf" hidden>
-                <div class="sectionHeader">
-                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png" alt="Carte — Vrai/Faux">
-                  <div>
-                    <div class="sectionK">
-                      Vrai / Faux
-                      <span class="miniCounter" id="vfCounter">0/20</span>
-                    </div>
-                    <div class="sectionPrompt" id="vfTitle">Question 1 / 20 — Vrai ou Faux ?</div>
-
-                    <!-- ✅ cercles sous la question (colonne droite) -->
-                    <div class="vfProgress" aria-label="Progression Vrai/Faux">
-                      <div class="vfRow" id="vfRow1"></div>
-                      <div class="vfRow" id="vfRow2"></div>
+                  <div class="cardLayer layerA" id="layerA">
+                    <img id="frontImg" src="https://avantpost-cpu.github.io/depot-quiz/cartes/a1.png" alt="Carte tirée">
+                    <div class="cardOverlay" aria-hidden="true">
+                      <div class="txt" id="overlayText"></div>
                     </div>
                   </div>
                 </div>
-
-                <div class="chips" id="vfChips"></div>
-                <div class="corrWrap" id="vfCorr" hidden></div>
-
-                <div class="navBar">
-                  <button id="vfBack">Retour</button>
-                  <button id="vfContinue">Valider</button>
-                </div>
               </div>
 
+              <div class="revealSide">
+                <div id="ui-violences" hidden>
+                  <div class="sectionHeader">
+                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png" alt="Carte — Violences">
+                    <div>
+                      <div class="sectionK">Type(s) de violences</div>
+                      <div class="sectionPrompt" id="violTitle">Choisissez un ou plusieurs type(s) de violence auquel correspond la situation</div>
+                    </div>
+                  </div>
+
+                  <div class="chips" id="violChips"></div>
+                  <div class="corrWrap" id="violCorr" hidden></div>
+
+                  <div class="navBar">
+                    <button id="violBack">Retour</button>
+                    <button id="violContinue">Continuer</button>
+                  </div>
+                </div>
+
+                <div id="ui-penal" hidden>
+                  <div class="sectionHeader">
+                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png" alt="Carte — Qualification pénale">
+                    <div>
+                      <div class="sectionK">Qualification pénale</div>
+                      <div class="sectionPrompt" id="penalTitle">Choisissez une ou plusieurs qualification(s) pénale(s) possible(s)</div>
+                    </div>
+                  </div>
+
+                  <div class="chips" id="penalChips"></div>
+                  <div class="corrWrap" id="penalCorr" hidden></div>
+
+                  <div class="navBar">
+                    <button id="penalBack">Retour</button>
+                    <button id="penalContinue">Continuer</button>
+                  </div>
+                </div>
+
+                <div id="ui-oblig" hidden>
+                  <div class="sectionHeader">
+                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png" alt="Carte — Obligations & réactions">
+                    <div>
+                      <div class="sectionK">Obligations & réactions</div>
+                      <div class="sectionPrompt" id="obligTitle">Choisissez les réactions attendues (et évitez celles à risque)</div>
+                    </div>
+                  </div>
+
+                  <div class="chips" id="obligChips"></div>
+                  <div class="corrWrap" id="obligCorr" hidden></div>
+
+                  <div class="navBar">
+                    <button id="obligBack">Retour</button>
+                    <button id="obligContinue">Continuer</button>
+                  </div>
+                </div>
+
+                <div id="ui-vf" hidden>
+                  <div class="sectionHeader">
+                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png" alt="Carte — Vrai/Faux">
+                    <div>
+                      <div class="sectionK">
+                        Vrai / Faux
+                        <span class="miniCounter" id="vfCounter">0/20</span>
+                      </div>
+                      <div class="sectionPrompt" id="vfTitle">Question 1 / 20 — Vrai ou Faux ?</div>
+
+                      <div class="vfProgress" aria-label="Progression Vrai/Faux">
+                        <div class="vfRow" id="vfRow1"></div>
+                        <div class="vfRow" id="vfRow2"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="chips" id="vfChips"></div>
+                  <div class="corrWrap" id="vfCorr" hidden></div>
+
+                  <div class="navBar">
+                    <button id="vfBack">Retour</button>
+                    <button id="vfContinue">Valider</button>
+                  </div>
+                </div>
+
+              </div>
             </div>
-          </div>
+          </section>
+        </div>
 
-          <div class="footerBar" id="footerBar" hidden>
-            <b>protéger</b> un mineur est une obligation légale et morale — <b>signaler</b>, c’est protéger.<br/>
-            Numéros utiles : 119 • 17 • 3018
-          </div>
-        </section>
       </div>
-
-      <div class="footerBar" id="footerIntro">
-        <b>protéger</b> un mineur est une obligation légale et morale — <b>signaler</b>, c’est protéger.<br/>
-        Numéros utiles : 119 • 17 • 3018
-      </div>
-
     </div>
   </div>
 
@@ -752,28 +746,27 @@
         { id:"o_enq",    label:"Mener sa propre enquête" }
       ];
 
-      /* ✅ Remplace par tes 20 questions (a: true/false) */
       const VF_Q = [
         { q:"Un encadrant doit mener une enquête avant d’alerter.", a:false, exp:"Non. On protège, on trace, on oriente/alerte." },
         { q:"On peut appeler le 119 pour un doute concernant un mineur.", a:true, exp:"Oui. Le 119 sert aussi à demander conseil et être orienté." },
         { q:"Promettre le secret à un mineur est une bonne pratique.", a:false, exp:"Non. On écoute et on explique qu’on peut devoir partager pour protéger." },
-        { q:"Une intimidation (“si tu parles…”) peut relever de menaces.", a:true, exp:"Oui, c’est une piste possible. L’important reste de protéger et d’alerter." },
-        { q:"Confronter l’adulte seul est recommandé.", a:false, exp:"Non. Risque d’escalade / d’entrave. On suit la procédure (référent, direction, signalement)." },
-        { q:"Tracer les faits (date/lieu/propos) est utile.", a:true, exp:"Oui, c’est un bon réflexe : faits, dates, mots exacts." },
-        { q:"Un message privé insistant à un mineur peut être problématique.", a:true, exp:"Oui. Cela peut relever d’emprise, harcèlement, ou risque sexuel selon le contexte." },
-        { q:"Un mineur doit toujours rester seul avec un encadrant pour parler.", a:false, exp:"Non. On veille à un cadre sécurisé (lieu visible, protocole du club)." },
-        { q:"On doit privilégier la protection du mineur en cas de doute.", a:true, exp:"Oui. La sécurité du mineur prime." },
-        { q:"Le 3018 est un numéro utile pour cyberharcèlement.", a:true, exp:"Oui, notamment pour les situations en ligne." },
-        { q:"L’humiliation répétée peut être du harcèlement moral.", a:true, exp:"Oui, si répétition/atteinte/pression." },
-        { q:"Filmer un mineur et diffuser sans consentement est anodin.", a:false, exp:"Non. Cela peut être une atteinte grave, surtout si humiliant." },
-        { q:"On doit promettre au mineur que rien ne sera dit.", a:false, exp:"Non. On explique qu’on peut devoir partager pour protéger." },
-        { q:"Écouter sans juger est une bonne pratique.", a:true, exp:"Oui. Accueil, écoute, neutralité, protection." },
-        { q:"Mener sa propre enquête est attendu.", a:false, exp:"Non. Ce n’est pas le rôle : on alerte et on oriente." },
-        { q:"Une bousculade “pour corriger” peut être une violence.", a:true, exp:"Oui, si non nécessaire / non proportionné." },
-        { q:"Un encadrant peut demander un “secret” à un mineur.", a:false, exp:"Non. C’est un signal d’alerte." },
-        { q:"On peut alerter un référent / la direction.", a:true, exp:"Oui. Procédure interne + protection." },
-        { q:"La honte empêche parfois de parler.", a:true, exp:"Oui. D’où l’importance d’un climat sécurisant." },
-        { q:"Si on signale, on “détruit le club”.", a:false, exp:"Non. Signaler, c’est protéger. Le club se protège aussi en agissant." },
+        { q:"Une intimidation (“si tu parles…”) peut relever de menaces.", a:true, exp:"Oui, piste possible selon le contexte." },
+        { q:"Confronter l’adulte seul est recommandé.", a:false, exp:"Non. On suit la procédure (référent, direction, signalement)." },
+        { q:"Tracer les faits (date/lieu/propos) est utile.", a:true, exp:"Oui." },
+        { q:"Un message privé insistant à un mineur peut être problématique.", a:true, exp:"Oui." },
+        { q:"Un mineur doit toujours rester seul avec un encadrant pour parler.", a:false, exp:"Non." },
+        { q:"En cas de doute, la protection du mineur prime.", a:true, exp:"Oui." },
+        { q:"Le 3018 est un numéro utile pour cyberharcèlement.", a:true, exp:"Oui." },
+        { q:"L’humiliation répétée peut être du harcèlement moral.", a:true, exp:"Oui." },
+        { q:"Filmer un mineur et diffuser sans consentement est anodin.", a:false, exp:"Non." },
+        { q:"On doit promettre au mineur que rien ne sera dit.", a:false, exp:"Non." },
+        { q:"Écouter sans juger est une bonne pratique.", a:true, exp:"Oui." },
+        { q:"Mener sa propre enquête est attendu.", a:false, exp:"Non." },
+        { q:"Une bousculade “pour corriger” peut être une violence.", a:true, exp:"Oui." },
+        { q:"Un encadrant peut demander un “secret” à un mineur.", a:false, exp:"Non." },
+        { q:"On peut alerter un référent / la direction.", a:true, exp:"Oui." },
+        { q:"La honte empêche parfois de parler.", a:true, exp:"Oui." },
+        { q:"Si on signale, on “détruit le club”.", a:false, exp:"Non. Signaler, c’est protéger." },
       ];
 
       const state = {
@@ -783,21 +776,14 @@
         selected:{ v:new Set(), p:new Set(), o:new Set() },
         locked:{ v:false, p:false, o:false },
         correct:{ v:new Set(), p:new Set(), o:new Set() },
-
-        vf: { idx:0, selected:null, locked:false, score:0, marks: Array(20).fill(null) } // null | true | false
+        vf: { idx:0, selected:null, locked:false, score:0, marks: Array(20).fill(null) }
       };
 
-      const SHIFTS = {
-        B:{x:  8, y:-14},
-        C:{x: 14, y:-22},
-        D:{x: 20, y:-30},
-      };
+      const SHIFTS = { B:{x:8,y:-14}, C:{x:14,y:-22}, D:{x:20,y:-30} };
 
       function setScreen(which){
         $("screen-intro").hidden = which !== "intro";
         $("screen-game").hidden  = which !== "game";
-        $("footerIntro").hidden  = which !== "intro";
-        $("footerBar").hidden    = which !== "game";
       }
 
       function setActiveStep(n){
@@ -884,7 +870,6 @@
         setActiveStep(1);
       }
 
-      /* ✅ centre la ligne de cartes (distribution) */
       function buildDealRow(){
         const row = $("dealRow");
         row.innerHTML = "";
@@ -953,7 +938,7 @@
         el.style.transform = `rotate(${rotationDeg}deg) translate(${translateX}px, ${translateY}px)`;
       }
 
-      function renderChips(containerId, items, selectedSet, selColor, lockedGetter, withArticle){
+      function renderChips(containerId, items, selectedSet, selColor, lockedGetter, withArticle=false){
         const wrap = $(containerId);
         wrap.innerHTML = "";
         items.forEach(it => {
@@ -965,11 +950,7 @@
 
           const span = document.createElement("span");
           span.className = "label";
-          if(withArticle){
-            span.innerHTML = `${it.label}<small>Art. ${it.art}</small>`;
-          }else{
-            span.textContent = it.label;
-          }
+          span.textContent = withArticle ? `${it.label} (Art. ${it.art})` : it.label;
           btn.appendChild(span);
 
           btn.addEventListener("click", () => {
@@ -991,7 +972,7 @@
         const correctArr = Array.from(correctSet);
 
         const map = new Map(items.map(x => [x.id, x]));
-        const pill = (ids) => {
+        const pills = (ids) => {
           const w = document.createElement("div");
           w.style.display = "flex";
           w.style.flexWrap = "wrap";
@@ -1002,9 +983,10 @@
             s.style.display="inline-block";
             s.style.padding="6px 10px";
             s.style.border="1px solid var(--hair)";
-            s.style.background="rgba(255,255,255,.12)";
+            s.style.background="rgba(255,255,255,.10)";
             s.style.fontSize="13px";
-            s.textContent = it ? (it.label + (it.art && it.art!=="—" ? ` (art. ${it.art})` : "")) : id;
+            s.style.color="var(--ink)";
+            s.textContent = it ? (it.label + (it.art ? ` (Art. ${it.art})` : "")) : id;
             w.appendChild(s);
           });
           return w;
@@ -1016,21 +998,21 @@
           const b = document.createElement("div");
           b.className = "corrBlock";
           b.innerHTML = `<div class="corrHead"><div class="tag ok">OK</div><div class="h">Choix pertinents</div></div>`;
-          b.appendChild(pill(okChosen));
+          b.appendChild(pills(okChosen));
           corrEl.appendChild(b);
         }
         if(badChosen.length){
           const b = document.createElement("div");
           b.className = "corrBlock";
           b.innerHTML = `<div class="corrHead"><div class="tag rev">À REVOIR</div><div class="h">Choix à discuter / à risque</div></div>`;
-          b.appendChild(pill(badChosen));
+          b.appendChild(pills(badChosen));
           corrEl.appendChild(b);
         }
 
         const bCorr = document.createElement("div");
         bCorr.className = "corrBlock";
         bCorr.innerHTML = `<div class="corrHead"><div class="tag corr">CORRECTION</div><div class="h">Correction attendue</div></div>`;
-        bCorr.appendChild(pill(correctArr));
+        bCorr.appendChild(pills(correctArr));
         corrEl.appendChild(bCorr);
       }
 
@@ -1048,7 +1030,7 @@
           ensureLayer("layerB", IMG.bBack, -6.8, SHIFTS.B.x, SHIFTS.B.y);
           $("layerC").hidden = true; $("layerC").innerHTML = "";
           $("layerD").hidden = true; $("layerD").innerHTML = "";
-          renderChips("violChips", VIOLENCE_ITEMS, state.selected.v, "var(--c2)", () => state.locked.v, false);
+          renderChips("violChips", VIOLENCE_ITEMS, state.selected.v, "var(--c2)", () => state.locked.v);
         }
 
         if(n === 3){
@@ -1062,11 +1044,10 @@
           ensureLayer("layerB", IMG.bBack, -6.8, SHIFTS.B.x, SHIFTS.B.y);
           ensureLayer("layerC", IMG.cBack, -13.6, SHIFTS.C.x, SHIFTS.C.y);
           ensureLayer("layerD", IMG.dBack, -20.4, SHIFTS.D.x, SHIFTS.D.y);
-          renderChips("obligChips", OBLIG_ITEMS, state.selected.o, "var(--c4)", () => state.locked.o, false);
+          renderChips("obligChips", OBLIG_ITEMS, state.selected.o, "var(--c4)", () => state.locked.o);
         }
 
         if(n === 5){
-          // V/F : une seule carte derrière e1 => e.png
           $("layerC").hidden = true; $("layerC").innerHTML = "";
           $("layerD").hidden = true; $("layerD").innerHTML = "";
           ensureLayer("layerB", IMG.eBack, -6.8, SHIFTS.B.x, SHIFTS.B.y);
@@ -1074,27 +1055,20 @@
         }
       }
 
-      /* ======= VRAI/FAUX : cercles + score evolutif ======= */
       function updateVFDots(){
         const r1 = $("vfRow1");
         const r2 = $("vfRow2");
-        if(!r1 || !r2) return;
-
         r1.innerHTML = "";
         r2.innerHTML = "";
-
         for(let i=0;i<20;i++){
           const d = document.createElement("div");
           d.className = "vfP";
-
-          const mark = state.vf.marks[i]; // null | true | false
+          const mark = state.vf.marks[i];
           if(mark === true) d.classList.add("ok");
           if(mark === false) d.classList.add("bad");
           if(state.vf.idx === i && mark === null) d.classList.add("cur");
-
           (i < 10 ? r1 : r2).appendChild(d);
         }
-
         $("vfCounter").textContent = `${state.vf.score}/20`;
       }
 
@@ -1115,7 +1089,6 @@
 
       function renderVF(){
         const qObj = VF_Q[state.vf.idx] || null;
-
         updateVFDots();
 
         if(!qObj){
@@ -1149,27 +1122,22 @@
           const btn = document.createElement("button");
           btn.type = "button";
           btn.className = "chip";
-          btn.dataset.id = id;
           btn.style.setProperty("--selColor", "var(--c5)");
-
           const span = document.createElement("span");
           span.className = "label";
           span.textContent = label;
           btn.appendChild(span);
-
           btn.addEventListener("click", () => {
             if(state.vf.locked) return;
             state.vf.selected = (id === "true");
             Array.from(wrap.querySelectorAll(".chip")).forEach(x => x.classList.remove("selected"));
             btn.classList.add("selected");
           });
-
           return btn;
         };
 
         wrap.appendChild(mk("true", "Vrai"));
         wrap.appendChild(mk("false","Faux"));
-
         $("vfContinue").textContent = state.vf.locked ? "Suivante" : "Valider";
       }
 
@@ -1192,17 +1160,13 @@
 
           const isOk = (state.vf.selected === qObj.a);
           if(isOk) state.vf.score++;
-
-          // mark le cercle courant
           state.vf.marks[state.vf.idx] = isOk;
 
           updateVFDots();
-
           $("vfChips").hidden = true;
 
-          const corr = $("vfCorr");
-          corr.hidden = false;
-          corr.innerHTML = `
+          $("vfCorr").hidden = false;
+          $("vfCorr").innerHTML = `
             <div class="corrBlock">
               <div class="corrHead">
                 <div class="tag ${isOk ? "ok" : "rev"}">${isOk ? "OK" : "À REVOIR"}</div>
@@ -1212,10 +1176,9 @@
             </div>
             <div class="corrBlock">
               <div class="corrHead"><div class="tag corr">CORRECTION</div><div class="h">Explication</div></div>
-              <div class="corrText">${(qObj.exp||"")}</div>
+              <div class="corrText">${qObj.exp || ""}</div>
             </div>
           `;
-
           $("vfContinue").textContent = "Suivante";
           return;
         }
@@ -1237,7 +1200,6 @@
         requestAnimationFrame(buildDealRow);
       }
 
-      /* events */
       $("btn-fs").addEventListener("click", toggleFullscreen);
       $("btn-start").addEventListener("click", start);
       $("start-by-card").addEventListener("click", start);

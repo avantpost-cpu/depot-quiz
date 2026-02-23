@@ -13,14 +13,11 @@
     :root{
       --bg:#9ecbd9;
 
-      /* ✅ textes + filets en blanc */
       --ink:#ffffff;
       --muted:rgba(255,255,255,.78);
       --hair:rgba(255,255,255,.28);
 
-      --maxW:1100px;
       --pad:26px;
-
       --school:"Schoolbell", cursive;
 
       --c1:#275c6d;
@@ -35,18 +32,35 @@
 
       --tiltA:-2.2deg;
 
-      --stackScale:.80;
-      --stackShiftX: 46px;
-      --stackSafeTop: 36px;
-
       --logoH:84px;
       --angeH:120px;
 
+      --boardRadius: 28px;
+      --lift: -18px;
+
+      /* ✅ pile : plus petite (ne passe pas sous le menu) */
+      --stackScale:.74;
+      --stackSafeTop: 52px;
+
+      /* ✅ LE RÉGLAGE QUI COMPTE (décalage global de la pile) */
+      --stackX: 84px; /* augmente => va à droite / diminue => va à gauche */
+
+      /* ✅ éventail : pas de translations négatives (sinon ça sort à gauche) */
+      --fan2Rot:-12deg; --fan2X:  8px; --fan2Y: 10px;
+      --fan3Rot: -7deg; --fan3X: 14px; --fan3Y:  2px;
+      --fan4Rot: -3deg; --fan4X: 20px; --fan4Y: -6px;
+
+      /* ✅ ombre capsule comme la capture */
+      --boardStroke: 0 0 0 1px rgba(255,255,255,.14);
+      --boardShadow2: 0 12px 26px rgba(0,0,0,.22);
+      --boardShadow1: 0 28px 56px rgba(0,0,0,.34);
+
+      /* ✅ calage optique colonnes */
+      --leftColW: 480px;
+      --gapCols: 22px;
+
       /* ✅ capsule */
       --boardRadius: 28px;
-
-      /* ✅ ajustement vertical global (remonte tout) */
-      --lift: -18px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -57,7 +71,6 @@
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       overflow:hidden;
-
       min-height: 100vh;
       display: grid;
       place-items: center;
@@ -70,7 +83,6 @@
       align-items:center;
       padding: 20px;
     }
-
     .app{
       width: auto;
       height: auto;
@@ -83,30 +95,24 @@
     .board{
       width:1100px;
       height:820px;
-
       border-radius: var(--boardRadius);
       overflow:hidden;
+      position:relative;
       display:flex;
       flex-direction:column;
-
       background:
         url("https://avantpost-cpu.github.io/depot-quiz/cartes/tapis.png")
         center center / 120% no-repeat;
-
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.18),
-        0 12px 30px rgba(0,0,0,.18);
+      box-shadow: var(--boardStroke), var(--boardShadow2), var(--boardShadow1);
     }
 
-    /* top bar */
     .top{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:14px;
-      flex-wrap:nowrap;
-      padding: calc(var(--pad) + 6px) var(--pad) 0; /* ✅ un peu plus haut visuellement */
-      transform: translateY(var(--lift));          /* ✅ remonte l'ensemble */
+      padding: calc(var(--pad) + 6px) var(--pad) 0;
+      transform: translateY(var(--lift));
     }
     .brand img{ display:block; height:var(--logoH); width:auto; object-fit:contain; }
 
@@ -137,30 +143,30 @@
       font-size:11px;
       cursor:pointer;
       transition: transform .16s ease, border-color .16s ease;
-      flex: 0 0 auto;
       white-space:nowrap;
       color: var(--ink);
     }
     .fsBtn:hover{ border-color: rgba(255,255,255,.45); transform: translateY(-1px); }
 
-    /* steps */
     .steps{
       display:grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
-      padding: 12px var(--pad) 16px;            /* ✅ un peu moins de hauteur */
+      padding: 12px var(--pad) 16px;
       border-top: 1px solid var(--hair);
       border-bottom: 1px solid var(--hair);
-      margin: 10px var(--pad) 0;                /* ✅ remonte les steps */
+      margin: 10px var(--pad) 0;
       position:relative;
       z-index: 20;
-      transform: translateY(var(--lift));       /* ✅ remonte l'ensemble */
+      transform: translateY(var(--lift));
     }
     .stepTop{ display:flex; gap:10px; align-items:baseline; line-height:1.1; user-select:none; }
     .step .n{ font-weight:800; font-size:12px; letter-spacing:.02em; color:var(--muted); min-width:14px; }
     .step .t{
-      font-size:12.5px; letter-spacing:.01em;
-      position:relative; display:inline-block;
+      font-size:12.5px;
+      letter-spacing:.01em;
+      position:relative;
+      display:inline-block;
       padding: 6px 10px;
       z-index:1;
       color: var(--ink);
@@ -190,16 +196,15 @@
       z-index:10;
       display:flex;
       flex-direction:column;
-      transform: translateY(var(--lift)); /* ✅ remonte tout le contenu */
+      transform: translateY(var(--lift));
     }
 
-    .panel{ padding:0; margin-top:10px; } /* ✅ réduit pour remonter */
+    .panel{ padding:0; margin-top:10px; }
     h2{ font-size:16px; letter-spacing:.02em; font-weight:750; margin-bottom:10px; color: var(--ink); }
     .hint{ font-size:13.5px; line-height:1.55; color:var(--muted); max-width:78ch; }
     .hint b{ color:var(--ink); }
 
     .rappel{ margin-top:14px; padding-left:14px; border-left:1px solid var(--hair); }
-
     .rappel .label{ font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:11px; color:var(--ink); margin-bottom:8px; }
     .rappel .txt{ font-size:15px; line-height:1.55; color:var(--ink); max-width:78ch; }
 
@@ -223,19 +228,14 @@
     .navBar{
       width: min(820px, 100%);
       display:flex;
-      justify-content:center; /* ✅ centre */
+      justify-content:center;
       align-items:center;
       gap: 10px;
       flex-wrap:wrap;
       margin-top: 14px;
     }
+    .navBar.start{ margin-top:16px; }
 
-    /* ✅ bouton Commencer : centré et sans marge inline */
-    .navBar.start{
-      margin-top:16px;
-    }
-
-    /* intro backs */
     .backs{
       margin-top: 16px;
       display:grid;
@@ -254,7 +254,6 @@
     .back img{ width:100%; height:100%; object-fit: contain; display:block; }
     .back:hover{ transform: rotate(-2.2deg) translateY(-2px); }
 
-    /* deal */
     .dealWrap{ margin-top: 2px; }
     .dealRow{
       position:relative;
@@ -279,35 +278,37 @@
     .dealCard.ready{ opacity:1; pointer-events:auto; }
     .dealCard:hover{ transform: rotate(-1.6deg) translateY(-2px); }
 
-    /* reveal layout */
+    /* ✅ reveal layout */
     .reveal{
-      margin-top: 8px; /* ✅ remonte */
+      margin-top: 8px;
       width: 100%;
       display:grid;
-      grid-template-columns: 420px 1fr;
-      gap: 18px;
+      grid-template-columns: var(--leftColW) 1fr;
+      gap: var(--gapCols);
       align-items:start;
       justify-content:start;
       position:relative;
       z-index: 1;
-      overflow: visible;
+      overflow: hidden;
     }
 
+    /* ✅ IMPORTANT: le clipping est ici, et la pile est déplacée avec --stackX */
     .stackClip{
       position:relative;
-      width: 410px;
+      width: 100%;
       aspect-ratio: 3 / 4;
-      overflow: visible;
-      justify-self:start;
-      transform: translateX(var(--stackShiftX));
-      z-index: 1;
+      overflow: hidden;     /* ✅ ne doit PAS sortir */
+      border-radius: 18px;
     }
+
     .stackInner{
       position:absolute;
       inset: 0;
-      transform: translateY(var(--stackSafeTop)) scale(var(--stackScale));
+      transform:
+        translateX(var(--stackX))
+        translateY(var(--stackSafeTop))
+        scale(var(--stackScale));
       transform-origin: 0% 0%;
-      overflow: visible;
     }
 
     .cardLayer{
@@ -316,6 +317,7 @@
       transform-origin: 0% 100%;
       pointer-events:none;
       overflow: visible;
+      filter: drop-shadow(0 18px 18px rgba(0,0,0,.22));
     }
     .cardLayer img{
       width:100%;
@@ -323,8 +325,13 @@
       object-fit: contain;
       display:block;
     }
-    .layerA{ transform: rotate(var(--tiltA)) translate(6px, 8px); }
 
+    .layerA{ transform: rotate(var(--tiltA)) translate(6px, 8px); }
+    .layerFan2{ transform: rotate(var(--fan2Rot)) translate(var(--fan2X), var(--fan2Y)); }
+    .layerFan3{ transform: rotate(var(--fan3Rot)) translate(var(--fan3X), var(--fan3Y)); }
+    .layerFan4{ transform: rotate(var(--fan4Rot)) translate(var(--fan4X), var(--fan4Y)); }
+
+    /* ✅ OVERLAY TEXTE SUR a1.png (remis) */
     .cardOverlay{
       position:absolute;
       inset: 14% 12%;
@@ -344,7 +351,6 @@
       text-shadow: 0 1px 0 rgba(0,0,0,.25);
     }
 
-    /* right column */
     .revealSide{
       display:flex;
       flex-direction:column;
@@ -354,6 +360,7 @@
       position:relative;
       z-index: 2;
       overflow:hidden;
+      padding-top: 4px;
     }
 
     .sectionHeader{
@@ -392,7 +399,6 @@
       max-width: 78ch;
     }
 
-    /* chips */
     .chips{
       margin-top: 2px;
       display:grid;
@@ -432,7 +438,6 @@
     .chip.selected .label{ color:#fff; }
     .chip.selected .label::before{ background: var(--selColor); }
 
-    /* correction */
     .corrWrap{
       width: min(820px, 100%);
       display:flex;
@@ -473,18 +478,28 @@
     }
 
     @media (max-width: 980px){
-      :root{ --lift: -14px; }
+      :root{
+        --lift: -14px;
+        --leftColW: 1fr;
+        --gapCols: 14px;
+        --stackScale: .70;
+        --stackSafeTop: 44px;
+        --stackX: 26px;
+      }
       .steps{ grid-template-columns: 1fr; gap:10px; }
       .backs{ grid-template-columns: 1fr 1fr; }
       .reveal{ grid-template-columns: 1fr; }
-      .stackClip{ width: min(410px, 92%); transform: translateX(20px); }
       .chips{ grid-template-columns: 1fr; }
       .dealRow{ height: 110px; }
       .dealCard{ width: 56px; }
-      :root{ --stackScale: .78; --stackSafeTop: 34px; }
     }
     @media (max-width: 520px){
-      :root{ --lift: -10px; }
+      :root{
+        --lift: -10px;
+        --stackScale: .68;
+        --stackSafeTop: 40px;
+        --stackX: 18px;
+      }
       .backs{ grid-template-columns: 1fr; }
       .brand img{ height: 72px; }
       .mid-ange img{ height: 78px; }
@@ -492,7 +507,6 @@
       .sectionPrompt{ font-size: 16px; }
       .dealRow{ height: 100px; }
       .dealCard{ width: 52px; }
-      :root{ --stackScale: .76; --stackSafeTop: 32px; }
     }
 
     [hidden]{ display:none !important; }
@@ -564,9 +578,9 @@
             <div class="reveal" id="reveal" hidden aria-label="Carte tirée">
               <div class="stackClip" aria-label="Pile de cartes">
                 <div class="stackInner">
-                  <div class="cardLayer" id="layerD" hidden></div>
-                  <div class="cardLayer" id="layerC" hidden></div>
-                  <div class="cardLayer" id="layerB" hidden></div>
+                  <div class="cardLayer layerFan2" id="layerB" hidden></div>
+                  <div class="cardLayer layerFan3" id="layerC" hidden></div>
+                  <div class="cardLayer layerFan4" id="layerD" hidden></div>
 
                   <div class="cardLayer layerA" id="layerA">
                     <img id="frontImg" src="https://avantpost-cpu.github.io/depot-quiz/cartes/a1.png" alt="Carte tirée">
@@ -633,10 +647,9 @@
                   </div>
                 </div>
 
-                <!-- ✅ CONCLUSION (sans étape 1) -->
                 <div id="ui-conclu" hidden>
                   <div class="sectionHeader">
-                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png" alt="Carte — Conclusion">
+                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png" alt="Conclusion">
                     <div>
                       <div class="sectionK">Conclusion</div>
                       <div class="sectionPrompt">Correction idéale — récapitulatif par étape</div>
@@ -740,8 +753,6 @@
         correct:{ v:new Set(), p:new Set(), o:new Set() }
       };
 
-      const SHIFTS = { B:{x:8,y:-14}, C:{x:14,y:-22}, D:{x:20,y:-30} };
-
       function setScreen(which){
         $("screen-intro").hidden = which !== "intro";
         $("screen-game").hidden  = which !== "game";
@@ -818,9 +829,10 @@
         $("obligChips").hidden = false; $("obligCorr").hidden = true; $("obligCorr").innerHTML = "";
         $("concluWrap").innerHTML = "";
 
-        $("layerB").hidden = true; $("layerB").innerHTML = "";
-        $("layerC").hidden = true; $("layerC").innerHTML = "";
-        $("layerD").hidden = true; $("layerD").innerHTML = "";
+        ["layerB","layerC","layerD"].forEach(id => { $(id).hidden = true; $(id).innerHTML = ""; });
+
+        $("frontImg").src = IMG.aFront;
+        $("overlayText").textContent = "";
 
         $("obligContinue").textContent = "Continuer";
 
@@ -883,7 +895,7 @@
         showStep(2);
       }
 
-      function ensureLayer(elId, imgSrc, rotationDeg, translateX, translateY){
+      function ensureLayer(elId, imgSrc){
         const el = $(elId);
         el.hidden = false;
         el.innerHTML = "";
@@ -891,8 +903,6 @@
         img.src = imgSrc;
         img.alt = "Carte (dos)";
         el.appendChild(img);
-        el.style.transformOrigin = "0% 100%";
-        el.style.transform = `rotate(${rotationDeg}deg) translate(${translateX}px, ${translateY}px)`;
       }
 
       function renderChips(containerId, items, selectedSet, selColor, lockedGetter, withArticle=false){
@@ -1012,35 +1022,9 @@
           return block;
         };
 
-        // ✅ Étape 2 : violences (idéal)
-        wrap.appendChild(
-          buildIdealBlock("Type(s) de violences — lecture attendue", "ÉTAPE 2", "var(--c2)", state.correct.v, VIOLENCE_ITEMS)
-        );
-
-        // ✅ Étape 3 : qualification pénale (idéal)
-        wrap.appendChild(
-          buildIdealBlock("Qualification pénale — pistes possibles", "ÉTAPE 3", "var(--c3)", state.correct.p, PENAL_ITEMS)
-        );
-
-        // ✅ Étape 4 : obligations & réactions (idéal)
-        wrap.appendChild(
-          buildIdealBlock("Obligations & réactions — priorités", "ÉTAPE 4", "var(--c4)", state.correct.o, OBLIG_ITEMS)
-        );
-
-        // ✅ Clôture : rappel simple
-        const b5 = document.createElement("div");
-        b5.className = "corrBlock";
-        b5.innerHTML = `
-          <div class="corrHead">
-            <div class="tag ok">RAPPEL</div>
-            <div class="h">Ce qu’on retient</div>
-          </div>
-          <div class="corrText">
-            On ne mène pas d’enquête : on <b>protège</b>, on <b>trace</b>, on <b>alerte/oriente</b>.
-            En cas de doute, la <b>protection du mineur</b> prime.
-          </div>
-        `;
-        wrap.appendChild(b5);
+        wrap.appendChild(buildIdealBlock("Type(s) de violences — lecture attendue", "ÉTAPE 2", "var(--c2)", state.correct.v, VIOLENCE_ITEMS));
+        wrap.appendChild(buildIdealBlock("Qualification pénale — pistes possibles", "ÉTAPE 3", "var(--c3)", state.correct.p, PENAL_ITEMS));
+        wrap.appendChild(buildIdealBlock("Obligations & réactions — priorités", "ÉTAPE 4", "var(--c4)", state.correct.o, OBLIG_ITEMS));
       }
 
       function showStep(n){
@@ -1053,32 +1037,24 @@
 
         setActiveStep(n);
 
-        if(n === 2){
-          ensureLayer("layerB", IMG.bBack, -6.8, SHIFTS.B.x, SHIFTS.B.y);
-          $("layerC").hidden = true; $("layerC").innerHTML = "";
-          $("layerD").hidden = true; $("layerD").innerHTML = "";
-          renderChips("violChips", VIOLENCE_ITEMS, state.selected.v, "var(--c2)", () => state.locked.v);
-        }
+        ["layerB","layerC","layerD"].forEach(id => { $(id).hidden = true; $(id).innerHTML = ""; });
 
-        if(n === 3){
-          ensureLayer("layerB", IMG.bBack, -6.8, SHIFTS.B.x, SHIFTS.B.y);
-          ensureLayer("layerC", IMG.cBack, -13.6, SHIFTS.C.x, SHIFTS.C.y);
-          $("layerD").hidden = true; $("layerD").innerHTML = "";
-          renderChips("penalChips", PENAL_ITEMS, state.selected.p, "var(--c3)", () => state.locked.p, true);
-        }
-
-        if(n === 4){
-          ensureLayer("layerB", IMG.bBack, -6.8, SHIFTS.B.x, SHIFTS.B.y);
-          ensureLayer("layerC", IMG.cBack, -13.6, SHIFTS.C.x, SHIFTS.C.y);
-          ensureLayer("layerD", IMG.dBack, -20.4, SHIFTS.D.x, SHIFTS.D.y);
-          renderChips("obligChips", OBLIG_ITEMS, state.selected.o, "var(--c4)", () => state.locked.o);
-        }
+        if(n >= 2) ensureLayer("layerB", IMG.bBack);
+        if(n >= 3) ensureLayer("layerC", IMG.cBack);
+        if(n >= 4) ensureLayer("layerD", IMG.dBack);
 
         if(n === 5){
-          ensureLayer("layerB", IMG.bBack, -6.8, SHIFTS.B.x, SHIFTS.B.y);
-          ensureLayer("layerC", IMG.cBack, -13.6, SHIFTS.C.x, SHIFTS.C.y);
-          ensureLayer("layerD", IMG.dBack, -20.4, SHIFTS.D.x, SHIFTS.D.y);
           renderConclusion();
+        }
+
+        if(n === 2){
+          renderChips("violChips", VIOLENCE_ITEMS, state.selected.v, "var(--c2)", () => state.locked.v);
+        }
+        if(n === 3){
+          renderChips("penalChips", PENAL_ITEMS, state.selected.p, "var(--c3)", () => state.locked.p, true);
+        }
+        if(n === 4){
+          renderChips("obligChips", OBLIG_ITEMS, state.selected.o, "var(--c4)", () => state.locked.o);
         }
       }
 
@@ -1139,7 +1115,6 @@
         }, 120);
       });
 
-      // init
       setScreen("intro");
       setActiveStep(1);
     })();

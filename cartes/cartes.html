@@ -44,6 +44,9 @@
 
       /* ✅ capsule */
       --boardRadius: 28px;
+
+      /* ✅ ajustement vertical global (remonte tout) */
+      --lift: -18px;
     }
 
     *{ box-sizing:border-box; margin:0; padding:0; }
@@ -53,15 +56,13 @@
       color: var(--ink);
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      overflow:hidden; /* ✅ pas de scroll page */
+      overflow:hidden;
 
-      /* ✅ CENTRAGE PARFAIT DU PLATEAU */
       min-height: 100vh;
       display: grid;
       place-items: center;
     }
 
-    /* ✅ capsule fixée + centrée (ne PAS mettre width/height ici) */
     .outer{
       width: 100%;
       display:flex;
@@ -71,15 +72,14 @@
     }
 
     .app{
-      width: auto;           /* ✅ suit la capsule */
-      height: auto;          /* ✅ suit la capsule */
-      max-width: none;       /* ✅ évite conflits */
+      width: auto;
+      height: auto;
+      max-width: none;
       display:flex;
       flex-direction:column;
       align-items:center;
     }
 
-    /* ✅ LA TAILLE FIXE EST ICI (UNE SEULE FOIS) */
     .board{
       width:1100px;
       height:820px;
@@ -105,7 +105,8 @@
       justify-content:space-between;
       gap:14px;
       flex-wrap:nowrap;
-      padding: var(--pad) var(--pad) 0;
+      padding: calc(var(--pad) + 6px) var(--pad) 0; /* ✅ un peu plus haut visuellement */
+      transform: translateY(var(--lift));          /* ✅ remonte l'ensemble */
     }
     .brand img{ display:block; height:var(--logoH); width:auto; object-fit:contain; }
 
@@ -147,12 +148,13 @@
       display:grid;
       grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
-      padding: 14px var(--pad) 18px;
+      padding: 12px var(--pad) 16px;            /* ✅ un peu moins de hauteur */
       border-top: 1px solid var(--hair);
       border-bottom: 1px solid var(--hair);
-      margin: 16px var(--pad) 0;
+      margin: 10px var(--pad) 0;                /* ✅ remonte les steps */
       position:relative;
       z-index: 20;
+      transform: translateY(var(--lift));       /* ✅ remonte l'ensemble */
     }
     .stepTop{ display:flex; gap:10px; align-items:baseline; line-height:1.1; user-select:none; }
     .step .n{ font-weight:800; font-size:12px; letter-spacing:.02em; color:var(--muted); min-width:14px; }
@@ -180,23 +182,24 @@
     .step[data-step="4"].active .t::before{ background: var(--c4); }
     .step[data-step="5"].active .t::before{ background: var(--c5); }
 
-    /* content area fills remaining height */
     .content{
       flex: 1;
-      overflow:hidden; /* ✅ pas de scroll */
+      overflow:hidden;
       padding: 0 var(--pad) var(--pad);
       position:relative;
       z-index:10;
       display:flex;
       flex-direction:column;
+      transform: translateY(var(--lift)); /* ✅ remonte tout le contenu */
     }
 
-    .panel{ padding:0; margin-top:16px; }
+    .panel{ padding:0; margin-top:10px; } /* ✅ réduit pour remonter */
     h2{ font-size:16px; letter-spacing:.02em; font-weight:750; margin-bottom:10px; color: var(--ink); }
     .hint{ font-size:13.5px; line-height:1.55; color:var(--muted); max-width:78ch; }
     .hint b{ color:var(--ink); }
 
-    .rappel{ margin-top:18px; padding-left:14px; border-left:1px solid var(--hair); }
+    .rappel{ margin-top:14px; padding-left:14px; border-left:1px solid var(--hair); }
+
     .rappel .label{ font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:11px; color:var(--ink); margin-bottom:8px; }
     .rappel .txt{ font-size:15px; line-height:1.55; color:var(--ink); max-width:78ch; }
 
@@ -220,17 +223,23 @@
     .navBar{
       width: min(820px, 100%);
       display:flex;
-      justify-content:center;
+      justify-content:center; /* ✅ centre */
+      align-items:center;
       gap: 10px;
       flex-wrap:wrap;
-      margin-top: 12px;
+      margin-top: 14px;
+    }
+
+    /* ✅ bouton Commencer : centré et sans marge inline */
+    .navBar.start{
+      margin-top:16px;
     }
 
     /* intro backs */
     .backs{
-      margin-top: 20px;
+      margin-top: 16px;
       display:grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
       align-items: start;
     }
@@ -246,7 +255,7 @@
     .back:hover{ transform: rotate(-2.2deg) translateY(-2px); }
 
     /* deal */
-    .dealWrap{ margin-top: 6px; }
+    .dealWrap{ margin-top: 2px; }
     .dealRow{
       position:relative;
       height: 120px;
@@ -272,7 +281,7 @@
 
     /* reveal layout */
     .reveal{
-      margin-top: 12px;
+      margin-top: 8px; /* ✅ remonte */
       width: 100%;
       display:grid;
       grid-template-columns: 420px 1fr;
@@ -339,7 +348,7 @@
     .revealSide{
       display:flex;
       flex-direction:column;
-      gap: 12px;
+      gap: 10px;
       align-items:flex-start;
       min-height: 260px;
       position:relative;
@@ -372,14 +381,6 @@
       display:flex;
       align-items:baseline;
       gap:10px;
-    }
-    .miniCounter{
-      font-weight: 900;
-      letter-spacing:.08em;
-      font-size: 10.5px;
-      color: rgba(255,255,255,.82);
-      text-transform: uppercase;
-      white-space:nowrap;
     }
     .sectionPrompt{
       font-weight: 800;
@@ -463,31 +464,16 @@
     .tag.corr{ background: var(--corr); }
     .corrText{ font-size: 13.5px; line-height: 1.5; color: var(--ink); max-width: 78ch; }
 
-    /* V/F progress */
-    .vfProgress{
-      margin-top: 10px;
-      display: grid;
-      gap: 8px;
-      width: min(320px, 100%);
+    .concluIntro{
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--muted);
+      max-width: 78ch;
+      margin-top: 2px;
     }
-    .vfRow{
-      display: grid;
-      grid-template-columns: repeat(10, 12px);
-      gap: 8px;
-    }
-    .vfP{
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,.62);
-      background: transparent;
-    }
-    .vfP.ok{ border-color: rgba(31,138,91,.98); background: rgba(31,138,91,.20); }
-    .vfP.bad{ border-color: rgba(222,81,3,.98); background: rgba(222,81,3,.20); }
-    .vfP.cur{ border-color: rgba(255,255,255,.92); background: rgba(255,255,255,.16); }
 
-    /* responsive */
     @media (max-width: 980px){
+      :root{ --lift: -14px; }
       .steps{ grid-template-columns: 1fr; gap:10px; }
       .backs{ grid-template-columns: 1fr 1fr; }
       .reveal{ grid-template-columns: 1fr; }
@@ -498,6 +484,7 @@
       :root{ --stackScale: .78; --stackSafeTop: 34px; }
     }
     @media (max-width: 520px){
+      :root{ --lift: -10px; }
       .backs{ grid-template-columns: 1fr; }
       .brand img{ height: 72px; }
       .mid-ange img{ height: 78px; }
@@ -506,9 +493,6 @@
       .dealRow{ height: 100px; }
       .dealCard{ width: 52px; }
       :root{ --stackScale: .76; --stackSafeTop: 32px; }
-      .vfProgress{ width: min(280px, 100%); }
-      .vfRow{ gap: 7px; grid-template-columns: repeat(10, 11px); }
-      .vfP{ width: 9px; height: 9px; }
     }
 
     [hidden]{ display:none !important; }
@@ -537,7 +521,7 @@
           <div class="step" id="step-2" data-step="2"><div class="stepTop"><div class="n">2</div><div class="t">Type(s) de violences</div></div></div>
           <div class="step" id="step-3" data-step="3"><div class="stepTop"><div class="n">3</div><div class="t">Qualification pénale</div></div></div>
           <div class="step" id="step-4" data-step="4"><div class="stepTop"><div class="n">4</div><div class="t">Obligations & réactions</div></div></div>
-          <div class="step" id="step-5" data-step="5"><div class="stepTop"><div class="n">5</div><div class="t">Vrai/Faux</div></div></div>
+          <div class="step" id="step-5" data-step="5"><div class="stepTop"><div class="n">5</div><div class="t">Conclusion</div></div></div>
         </div>
 
         <div class="content">
@@ -564,10 +548,9 @@
               <div class="back"><img alt="Dos carte — Type(s) de violences" src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png"></div>
               <div class="back"><img alt="Dos carte — Qualification pénale" src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png"></div>
               <div class="back"><img alt="Dos carte — Obligations" src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png"></div>
-              <div class="back"><img alt="Dos carte — Vrai/Faux" src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png"></div>
             </div>
 
-            <div class="navBar" style="margin-top:18px;">
+            <div class="navBar start">
               <button id="btn-start">Commencer</button>
             </div>
           </section>
@@ -595,6 +578,7 @@
               </div>
 
               <div class="revealSide">
+
                 <div id="ui-violences" hidden>
                   <div class="sectionHeader">
                     <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png" alt="Carte — Violences">
@@ -649,29 +633,25 @@
                   </div>
                 </div>
 
-                <div id="ui-vf" hidden>
+                <!-- ✅ CONCLUSION (sans étape 1) -->
+                <div id="ui-conclu" hidden>
                   <div class="sectionHeader">
-                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/e.png" alt="Carte — Vrai/Faux">
+                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png" alt="Carte — Conclusion">
                     <div>
-                      <div class="sectionK">
-                        Vrai / Faux
-                        <span class="miniCounter" id="vfCounter">0/20</span>
-                      </div>
-                      <div class="sectionPrompt" id="vfTitle">Question 1 / 20 — Vrai ou Faux ?</div>
-
-                      <div class="vfProgress" aria-label="Progression Vrai/Faux">
-                        <div class="vfRow" id="vfRow1"></div>
-                        <div class="vfRow" id="vfRow2"></div>
-                      </div>
+                      <div class="sectionK">Conclusion</div>
+                      <div class="sectionPrompt">Correction idéale — récapitulatif par étape</div>
                     </div>
                   </div>
 
-                  <div class="chips" id="vfChips"></div>
-                  <div class="corrWrap" id="vfCorr" hidden></div>
+                  <p class="concluIntro">
+                    Voici la <b>lecture attendue</b> pour cette situation, par étape (à adapter selon le contexte réel).
+                  </p>
+
+                  <div class="corrWrap" id="concluWrap"></div>
 
                   <div class="navBar">
-                    <button id="vfBack">Retour</button>
-                    <button id="vfContinue">Valider</button>
+                    <button id="concluBack">Retour</button>
+                    <button id="concluNew">Nouvelle situation</button>
                   </div>
                 </div>
 
@@ -694,8 +674,6 @@
         bBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/b.png",
         cBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/c.png",
         dBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/d.png",
-        eBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/e.png",
-        eFront:"https://avantpost-cpu.github.io/depot-quiz/cartes/e1.png",
       };
 
       const SITUATIONS = [
@@ -753,37 +731,13 @@
         { id:"o_enq",    label:"Mener sa propre enquête" }
       ];
 
-      const VF_Q = [
-        { q:"Un encadrant doit mener une enquête avant d’alerter.", a:false, exp:"Non. On protège, on trace, on oriente/alerte." },
-        { q:"On peut appeler le 119 pour un doute concernant un mineur.", a:true, exp:"Oui. Le 119 sert aussi à demander conseil et être orienté." },
-        { q:"Promettre le secret à un mineur est une bonne pratique.", a:false, exp:"Non. On écoute et on explique qu’on peut devoir partager pour protéger." },
-        { q:"Une intimidation (“si tu parles…”) peut relever de menaces.", a:true, exp:"Oui, piste possible selon le contexte." },
-        { q:"Confronter l’adulte seul est recommandé.", a:false, exp:"Non. On suit la procédure (référent, direction, signalement)." },
-        { q:"Tracer les faits (date/lieu/propos) est utile.", a:true, exp:"Oui." },
-        { q:"Un message privé insistant à un mineur peut être problématique.", a:true, exp:"Oui." },
-        { q:"Un mineur doit toujours rester seul avec un encadrant pour parler.", a:false, exp:"Non." },
-        { q:"En cas de doute, la protection du mineur prime.", a:true, exp:"Oui." },
-        { q:"Le 3018 est un numéro utile pour cyberharcèlement.", a:true, exp:"Oui." },
-        { q:"L’humiliation répétée peut être du harcèlement moral.", a:true, exp:"Oui." },
-        { q:"Filmer un mineur et diffuser sans consentement est anodin.", a:false, exp:"Non." },
-        { q:"On doit promettre au mineur que rien ne sera dit.", a:false, exp:"Non." },
-        { q:"Écouter sans juger est une bonne pratique.", a:true, exp:"Oui." },
-        { q:"Mener sa propre enquête est attendu.", a:false, exp:"Non." },
-        { q:"Une bousculade “pour corriger” peut être une violence.", a:true, exp:"Oui." },
-        { q:"Un encadrant peut demander un “secret” à un mineur.", a:false, exp:"Non." },
-        { q:"On peut alerter un référent / la direction.", a:true, exp:"Oui." },
-        { q:"La honte empêche parfois de parler.", a:true, exp:"Oui." },
-        { q:"Si on signale, on “détruit le club”.", a:false, exp:"Non. Signaler, c’est protéger." },
-      ];
-
       const state = {
         step: 1,
         dealt:false,
         situationText:"",
         selected:{ v:new Set(), p:new Set(), o:new Set() },
         locked:{ v:false, p:false, o:false },
-        correct:{ v:new Set(), p:new Set(), o:new Set() },
-        vf: { idx:0, selected:null, locked:false, score:0, marks: Array(20).fill(null) }
+        correct:{ v:new Set(), p:new Set(), o:new Set() }
       };
 
       const SHIFTS = { B:{x:8,y:-14}, C:{x:14,y:-22}, D:{x:20,y:-30} };
@@ -850,8 +804,6 @@
         state.selected.v.clear(); state.selected.p.clear(); state.selected.o.clear();
         state.locked = { v:false, p:false, o:false };
 
-        state.vf = { idx:0, selected:null, locked:false, score:0, marks: Array(20).fill(null) };
-
         $("dealRow").innerHTML = "";
         $("step1").hidden = false;
         $("reveal").hidden = true;
@@ -859,20 +811,18 @@
         $("ui-violences").hidden = true;
         $("ui-penal").hidden = true;
         $("ui-oblig").hidden = true;
-        $("ui-vf").hidden = true;
-
-        $("vfCounter").textContent = "0/20";
-        $("vfRow1").innerHTML = "";
-        $("vfRow2").innerHTML = "";
+        $("ui-conclu").hidden = true;
 
         $("violChips").hidden = false; $("violCorr").hidden = true; $("violCorr").innerHTML = "";
         $("penalChips").hidden = false; $("penalCorr").hidden = true; $("penalCorr").innerHTML = "";
         $("obligChips").hidden = false; $("obligCorr").hidden = true; $("obligCorr").innerHTML = "";
-        $("vfChips").hidden = false; $("vfCorr").hidden = true; $("vfCorr").innerHTML = "";
+        $("concluWrap").innerHTML = "";
 
         $("layerB").hidden = true; $("layerB").innerHTML = "";
         $("layerC").hidden = true; $("layerC").innerHTML = "";
         $("layerD").hidden = true; $("layerD").innerHTML = "";
+
+        $("obligContinue").textContent = "Continuer";
 
         setActiveStep(1);
       }
@@ -1023,13 +973,83 @@
         corrEl.appendChild(bCorr);
       }
 
+      function renderConclusion(){
+        const wrap = $("concluWrap");
+        wrap.innerHTML = "";
+
+        const buildIdealBlock = (title, tagTxt, color, correctSet, items) => {
+          const map = new Map(items.map(x => [x.id, x]));
+          const ids = Array.from(correctSet);
+
+          const block = document.createElement("div");
+          block.className = "corrBlock";
+          block.innerHTML = `
+            <div class="corrHead">
+              <div class="tag corr" style="background:${color}">${tagTxt}</div>
+              <div class="h">${title}</div>
+            </div>
+          `;
+
+          const pills = document.createElement("div");
+          pills.style.display = "flex";
+          pills.style.flexWrap = "wrap";
+          pills.style.gap = "8px";
+
+          ids.forEach(id => {
+            const it = map.get(id);
+            const s = document.createElement("span");
+            s.style.display="inline-block";
+            s.style.padding="6px 10px";
+            s.style.border="1px solid var(--hair)";
+            s.style.background="rgba(255,255,255,.10)";
+            s.style.fontSize="13px";
+            s.style.color="var(--ink)";
+            s.textContent = it ? (it.label + (it.art ? ` (Art. ${it.art})` : "")) : id;
+            pills.appendChild(s);
+          });
+
+          block.appendChild(pills);
+          return block;
+        };
+
+        // ✅ Étape 2 : violences (idéal)
+        wrap.appendChild(
+          buildIdealBlock("Type(s) de violences — lecture attendue", "ÉTAPE 2", "var(--c2)", state.correct.v, VIOLENCE_ITEMS)
+        );
+
+        // ✅ Étape 3 : qualification pénale (idéal)
+        wrap.appendChild(
+          buildIdealBlock("Qualification pénale — pistes possibles", "ÉTAPE 3", "var(--c3)", state.correct.p, PENAL_ITEMS)
+        );
+
+        // ✅ Étape 4 : obligations & réactions (idéal)
+        wrap.appendChild(
+          buildIdealBlock("Obligations & réactions — priorités", "ÉTAPE 4", "var(--c4)", state.correct.o, OBLIG_ITEMS)
+        );
+
+        // ✅ Clôture : rappel simple
+        const b5 = document.createElement("div");
+        b5.className = "corrBlock";
+        b5.innerHTML = `
+          <div class="corrHead">
+            <div class="tag ok">RAPPEL</div>
+            <div class="h">Ce qu’on retient</div>
+          </div>
+          <div class="corrText">
+            On ne mène pas d’enquête : on <b>protège</b>, on <b>trace</b>, on <b>alerte/oriente</b>.
+            En cas de doute, la <b>protection du mineur</b> prime.
+          </div>
+        `;
+        wrap.appendChild(b5);
+      }
+
       function showStep(n){
         state.step = n;
 
         $("ui-violences").hidden = n !== 2;
         $("ui-penal").hidden = n !== 3;
         $("ui-oblig").hidden = n !== 4;
-        $("ui-vf").hidden = n !== 5;
+        $("ui-conclu").hidden = n !== 5;
 
         setActiveStep(n);
 
@@ -1055,150 +1075,11 @@
         }
 
         if(n === 5){
-          $("layerC").hidden = true; $("layerC").innerHTML = "";
-          $("layerD").hidden = true; $("layerD").innerHTML = "";
-          ensureLayer("layerB", IMG.eBack, -6.8, SHIFTS.B.x, SHIFTS.B.y);
-          startVraiFaux();
+          ensureLayer("layerB", IMG.bBack, -6.8, SHIFTS.B.x, SHIFTS.B.y);
+          ensureLayer("layerC", IMG.cBack, -13.6, SHIFTS.C.x, SHIFTS.C.y);
+          ensureLayer("layerD", IMG.dBack, -20.4, SHIFTS.D.x, SHIFTS.D.y);
+          renderConclusion();
         }
-      }
-
-      function updateVFDots(){
-        const r1 = $("vfRow1");
-        const r2 = $("vfRow2");
-        r1.innerHTML = "";
-        r2.innerHTML = "";
-        for(let i=0;i<20;i++){
-          const d = document.createElement("div");
-          d.className = "vfP";
-          const mark = state.vf.marks[i];
-          if(mark === true) d.classList.add("ok");
-          if(mark === false) d.classList.add("bad");
-          if(state.vf.idx === i && mark === null) d.classList.add("cur");
-          (i < 10 ? r1 : r2).appendChild(d);
-        }
-        $("vfCounter").textContent = `${state.vf.score}/20`;
-      }
-
-      function startVraiFaux(){
-        $("frontImg").src = IMG.eFront;
-        $("vfCorr").innerHTML = "";
-        $("vfCorr").hidden = true;
-        $("vfChips").hidden = false;
-
-        state.vf.idx = 0;
-        state.vf.selected = null;
-        state.vf.locked = false;
-        state.vf.score = 0;
-        state.vf.marks = Array(20).fill(null);
-
-        renderVF();
-      }
-
-      function renderVF(){
-        const qObj = VF_Q[state.vf.idx] || null;
-        updateVFDots();
-
-        if(!qObj){
-          $("overlayText").textContent = "Fin du Vrai/Faux";
-          $("vfChips").innerHTML = "";
-          $("vfChips").hidden = true;
-
-          $("vfCorr").hidden = false;
-          $("vfCorr").innerHTML = `
-            <div class="corrBlock">
-              <div class="corrHead">
-                <div class="tag ok">TERMINÉ</div>
-                <div class="h">Score</div>
-              </div>
-              <div class="corrText"><b>${state.vf.score}</b> / <b>20</b> bonnes réponses.</div>
-            </div>
-          `;
-          $("vfTitle").textContent = "Terminé";
-          $("vfContinue").textContent = "Nouvelle situation";
-          state.vf.locked = true;
-          return;
-        }
-
-        $("overlayText").textContent = qObj.q;
-        $("vfTitle").textContent = `Question ${state.vf.idx + 1} / 20 — Vrai ou Faux ?`;
-
-        const wrap = $("vfChips");
-        wrap.innerHTML = "";
-
-        const mk = (id, label) => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "chip";
-          btn.style.setProperty("--selColor", "var(--c5)");
-          const span = document.createElement("span");
-          span.className = "label";
-          span.textContent = label;
-          btn.appendChild(span);
-          btn.addEventListener("click", () => {
-            if(state.vf.locked) return;
-            state.vf.selected = (id === "true");
-            Array.from(wrap.querySelectorAll(".chip")).forEach(x => x.classList.remove("selected"));
-            btn.classList.add("selected");
-          });
-          return btn;
-        };
-
-        wrap.appendChild(mk("true", "Vrai"));
-        wrap.appendChild(mk("false","Faux"));
-        $("vfContinue").textContent = state.vf.locked ? "Suivante" : "Valider";
-      }
-
-      function vfContinue(){
-        const qObj = VF_Q[state.vf.idx] || null;
-
-        if(!qObj){
-          resetGame();
-          requestAnimationFrame(buildDealRow);
-          return;
-        }
-
-        if(!state.vf.locked){
-          if(state.vf.selected === null){
-            alert("Choisissez Vrai ou Faux.");
-            return;
-          }
-
-          state.vf.locked = true;
-
-          const isOk = (state.vf.selected === qObj.a);
-          if(isOk) state.vf.score++;
-          state.vf.marks[state.vf.idx] = isOk;
-
-          updateVFDots();
-          $("vfChips").hidden = true;
-
-          $("vfCorr").hidden = false;
-          $("vfCorr").innerHTML = `
-            <div class="corrBlock">
-              <div class="corrHead">
-                <div class="tag ${isOk ? "ok" : "rev"}">${isOk ? "OK" : "À REVOIR"}</div>
-                <div class="h">${isOk ? "Bonne réponse" : "Réponse incorrecte"}</div>
-              </div>
-              <div class="corrText">Correction : <b>${qObj.a ? "Vrai" : "Faux"}</b>.</div>
-            </div>
-            <div class="corrBlock">
-              <div class="corrHead"><div class="tag corr">CORRECTION</div><div class="h">Explication</div></div>
-              <div class="corrText">${qObj.exp || ""}</div>
-            </div>
-          `;
-          $("vfContinue").textContent = "Suivante";
-          return;
-        }
-
-        state.vf.idx++;
-        state.vf.selected = null;
-        state.vf.locked = false;
-
-        $("vfCorr").hidden = true;
-        $("vfCorr").innerHTML = "";
-        $("vfChips").hidden = false;
-
-        renderVF();
       }
 
       function start(){
@@ -1239,13 +1120,14 @@
           state.locked.o = true;
           buildCorrectionSimple($("obligCorr"), state.selected.o, state.correct.o, OBLIG_ITEMS);
           $("obligChips").hidden = true; $("obligCorr").hidden = false;
+          $("obligContinue").textContent = "Conclusion";
           return;
         }
         showStep(5);
       });
 
-      $("vfBack").addEventListener("click", () => showStep(4));
-      $("vfContinue").addEventListener("click", vfContinue);
+      $("concluBack").addEventListener("click", () => showStep(4));
+      $("concluNew").addEventListener("click", () => { resetGame(); requestAnimationFrame(buildDealRow); });
 
       let resizeT = null;
       window.addEventListener("resize", () => {

@@ -572,27 +572,60 @@
     (() => {
       const $ = (id) => document.getElementById(id);
 
+      /* ✅ Questions + réponses + précisions = PDF */
       const VF_Q = [
-        { q:"Un encadrant doit mener une enquête avant d’alerter.", a:false, exp:"Non. On protège, on trace, on oriente/alerte selon la procédure." },
-        { q:"On peut appeler le 119 pour un doute concernant un mineur.", a:true, exp:"Oui. Le 119 sert aussi à demander conseil et être orienté." },
-        { q:"Promettre le secret à un mineur est une bonne pratique.", a:false, exp:"Non. On écoute et on explique qu’on peut devoir partager pour protéger." },
-        { q:"Une intimidation (“si tu parles…”) peut relever de menaces.", a:true, exp:"Oui, piste possible selon le contexte." },
-        { q:"Confronter l’adulte seul est recommandé.", a:false, exp:"Non. On suit la procédure (référent, direction, signalement)." },
-        { q:"Tracer les faits (date/lieu/propos) est utile.", a:true, exp:"Oui. Un écrit factuel aide à protéger et orienter correctement." },
-        { q:"Un message privé insistant à un mineur peut être problématique.", a:true, exp:"Oui. Cela peut être un signal d’alerte (cadre, consentement, emprise)." },
-        { q:"Un mineur doit toujours rester seul avec un encadrant pour parler.", a:false, exp:"Non. On privilégie un cadre sécurisé (procédure, tiers, lieux adaptés)." },
-        { q:"En cas de doute, la protection du mineur prime.", a:true, exp:"Oui." },
-        { q:"Le 3018 est un numéro utile pour cyberharcèlement.", a:true, exp:"Oui." },
-        { q:"L’humiliation répétée peut être du harcèlement moral.", a:true, exp:"Oui." },
-        { q:"Filmer un mineur et diffuser sans consentement est anodin.", a:false, exp:"Non. C’est problématique et peut relever d’atteintes à la vie privée / infractions selon le cas." },
-        { q:"On doit promettre au mineur que rien ne sera dit.", a:false, exp:"Non. On explique qu’on peut devoir transmettre pour protéger." },
-        { q:"Écouter sans juger est une bonne pratique.", a:true, exp:"Oui." },
-        { q:"Mener sa propre enquête est attendu.", a:false, exp:"Non. On n’enquête pas : on protège et on oriente." },
-        { q:"Une bousculade “pour corriger” peut être une violence.", a:true, exp:"Oui." },
-        { q:"Un encadrant peut demander un “secret” à un mineur.", a:false, exp:"Non. C’est un signal d’alerte." },
-        { q:"On peut alerter un référent / la direction.", a:true, exp:"Oui." },
-        { q:"La honte empêche parfois de parler.", a:true, exp:"Oui." },
-        { q:"Si on signale, on “détruit le club”.", a:false, exp:"Non. Signaler, c’est protéger." },
+        { q:"La performance\njustifie tout", a:false, exp:"" },
+        { q:"Un mineur\npeut consentir\njuridiquement", a:false, exp:"" },
+        { q:"Sans plainte,\nil n’y a pas\nd’infraction", a:false, exp:"" },
+        { q:"Le silence\nprotège", a:false, exp:"" },
+        { q:"Un encadrant\npeut être\nresponsable\npénalement", a:true, exp:"" },
+        { q:"Le club peut être\npoursuivi", a:true, exp:"" },
+        { q:"Une situation\npeut relever\nde plusieurs\ninfractions", a:true, exp:"" },
+        { q:"Signaler,\nce n’est pas\naccuser/dénoncer", a:true, exp:"" },
+        { q:"Les violences\net leurs\nconséquences ne\nsont pas toujours\nvisibles", a:true, exp:"" },
+        { q:"Le sport doit être\nun espace sécurisé\net bienveillant", a:true, exp:"" },
+        { q:"En France\n1 enfant est victime\nde violences\nsexuelles toutes\nles trois minutes", a:true, exp:"" },
+        { q:"1 enfant sur 7\nest victime de\nviolences sexuelles\ndans le sport", a:true, exp:"" },
+        {
+          q:"Dans 3 cas sur 10,\nla victime connaît\nson agresseur",
+          a:false,
+          exp:"La bonne réponse :\nDans 9 cas sur 10, la victime connaît son agresseur."
+        },
+        {
+          q:"1 enfant sur 10 est\nvictime de violences\ndans sa vie\n(tous types de violences\nconfondus)",
+          a:false,
+          exp:"La bonne réponse :\n1 enfant sur 5."
+        },
+        {
+          q:"Depuis le lancement de la\ncellule Signal-Sports en\n2020, 1284 personnes\nont été mises en cause,\ndonnant lieu à 624\nmesures administratives",
+          a:true,
+          exp:""
+        },
+        {
+          q:"1 père sur 2\ncautionne\nles violences dans\nle sport",
+          a:true,
+          exp:""
+        },
+        {
+          q:"Dans le cadre\nsportif, 80% des\nagresseurs se\ntrouvent parmi les\nentraîneurs",
+          a:true,
+          exp:""
+        },
+        {
+          q:"10% des femmes\nautistes sont victimes\nde violences sexuelles\nau cours de leur vie",
+          a:false,
+          exp:"La bonne réponse :\n80%."
+        },
+        {
+          q:"1 sportif de haut niveau\nsur 7 est victime\nde violences sexuelles\nau cours de sa carrière\nsportive",
+          a:false,
+          exp:"La bonne réponse :\n1 sportif de haut niveau sur 3."
+        },
+        {
+          q:"31% des parents\ndéclarent que leur enfant\na été au moins une fois\nvictime de cyber-violence\nau cours de sa vie\nnumérique (2022).",
+          a:true,
+          exp:""
+        },
       ];
 
       const state = {
@@ -718,6 +751,16 @@
 
         updateDots();
 
+        const exp = (qObj.exp || "").trim();
+        const expBlock = exp
+          ? `
+            <div class="corrBlock">
+              <div class="corrHead"><div class="tag corr">PRÉCISION</div><div class="h">Détail</div></div>
+              <div class="corrText">${exp.replace(/\n/g,"<br/>")}</div>
+            </div>
+          `
+          : "";
+
         $("vfCorr").hidden = false;
         $("vfCorr").innerHTML = `
           <div class="corrBlock">
@@ -727,10 +770,7 @@
             </div>
             <div class="corrText">Correction : <b>${qObj.a ? "Vrai" : "Faux"}</b>.</div>
           </div>
-          <div class="corrBlock">
-            <div class="corrHead"><div class="tag corr">CORRECTION</div><div class="h">Explication</div></div>
-            <div class="corrText">${qObj.exp || ""}</div>
-          </div>
+          ${expBlock}
         `;
 
         $("nextWrap").hidden = false;

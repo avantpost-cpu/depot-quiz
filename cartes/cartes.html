@@ -723,14 +723,80 @@
         { id:"neg", label:"Mise en danger / négligence" }
       ];
 
+      /* ✅ Qualification pénale — textes du PDF */
       const PENAL_ITEMS = [
-        { id:"p_hm",   label:"Harcèlement moral",   art:"222-33-2" },
-        { id:"p_hs",   label:"Harcèlement sexuel", art:"222-33"   },
-        { id:"p_men",  label:"Menaces",            art:"222-17"   },
-        { id:"p_inj",  label:"Injures",            art:"R621-2"   },
-        { id:"p_diff", label:"Diffamation",        art:"R621-1"   },
-        { id:"p_viol", label:"Violences",          art:"222-7+"   },
-        { id:"p_multi",label:"Cumul possible",     art:"—"        }
+        {
+          id:"p_hm",
+          label:"Harcèlement moral",
+          art:"222-32-2-2 CP",
+          desc:"Propos ou comportements répétés qui dégradent les conditions de vie et la santé d’une personne. Peut être caractérisé en groupe ou en ligne."
+        },
+        {
+          id:"p_viol",
+          label:"Violences volontaires",
+          art:"222-7 et suivants CP",
+          desc:"Acte intentionnel causant une atteinte physique ou psychologique. Sanction variable selon la gravité (ITT, mutilation, mort…)."
+        },
+        {
+          id:"p_men",
+          label:"Menaces",
+          art:"222-17 / 222-18 CP",
+          desc:"Annonce d’un crime ou délit pour inquiéter ou faire pression. Pas besoin de passer à l’acte."
+        },
+        {
+          id:"p_attsex",
+          label:"Atteinte sexuelle",
+          art:"227-25 / 227-27 CP",
+          desc:"Acte sexuel d’un majeur sur un mineur, même sans violence. Protection automatique des moins de 15 ans."
+        },
+        {
+          id:"p_agrsex",
+          label:"Agression sexuelle",
+          art:"222-22 CP",
+          desc:"Acte sexuel sans consentement (hors pénétration). Le silence ne vaut jamais accord. Protection renforcée pour les mineurs."
+        },
+        {
+          id:"p_hs",
+          label:"Harcèlement sexuel",
+          art:"222-33 CP",
+          desc:"Propos ou comportements sexuels répétés portant atteinte à la dignité ou créant un climat intimidant. Une seule fois suffit si pression pour obtenir une faveur sexuelle."
+        },
+        {
+          id:"p_hscol",
+          label:"Harcèlement scolaire",
+          art:"222-33-2-3 CP",
+          desc:"Moqueries, humiliations ou mises à l’écart répétées entre élèves ou par un adulte de l’établissement. Peut être commis en ligne."
+        },
+        {
+          id:"p_medang",
+          label:"Mise en danger",
+          art:"223-1 CP",
+          desc:"Exposer volontairement autrui à un risque grave et immédiat sans qu’un dommage soit nécessaire."
+        },
+        {
+          id:"p_nonden",
+          label:"Non-dénonciation",
+          art:"434-1 / 434-3 CP",
+          desc:"Ne pas signaler un crime ou des faits graves sur mineur/personne vulnérable alors qu’il est encore possible d’agir."
+        },
+        {
+          id:"p_comp",
+          label:"Complicité",
+          art:"121-7 CP",
+          desc:"Aider, faciliter ou provoquer la commission d’une infraction."
+        },
+        {
+          id:"p_seq",
+          label:"Séquestration",
+          art:"224-1 à 224-5-2 CP",
+          desc:"Retenir une personne contre sa volonté, sans base légale, en l’empêchant de partir ou en la maintenant enfermée. Atteinte grave à la liberté individuelle."
+        },
+        {
+          id:"p_biz",
+          label:"Bizutage",
+          art:"225-16-1 CP",
+          desc:"Imposer à une personne, même avec son accord apparent, des actes humiliants, dégradants ou dangereux, ou une consommation excessive d’alcool, dans un cadre scolaire, sportif ou collectif."
+        }
       ];
 
       const OBLIG_ITEMS = [
@@ -786,20 +852,33 @@
         if(t.includes("douleur") || t.includes("bouscule") || t.includes("touche") || t.includes("douloureux")){
           v.add("phys");
         }
-        if(t.includes("corps") || t.includes("se changer") || t.includes("vestiaire") || t.includes("messages privés")){
+        if(t.includes("corps") || t.includes("se changer") || t.includes("vestiaire") || t.includes("messages privés") || t.includes("messages")){
           v.add("hs");
         }
         if(t.includes("continuer malgré") || t.includes("simules") || t.includes("mise en danger")){
           v.add("neg");
         }
 
-        const p = new Set(["p_multi"]);
+        /* ✅ Qualification pénale (mise à jour — IDs du PDF) */
+        const p = new Set();
+
         if(v.has("hm")) p.add("p_hm");
         if(v.has("hs")) p.add("p_hs");
         if(v.has("int")) p.add("p_men");
         if(v.has("phys")) p.add("p_viol");
-        if(v.has("hum") || t.includes("insulte")) p.add("p_inj");
-        if(t.includes("diffam") || t.includes("rumeur")) p.add("p_diff");
+        if(v.has("neg")) p.add("p_medang");
+
+        // indices sexualisés/vestiaire/messages => harcèlement sexuel a minima
+        if(t.includes("vestiaire") || t.includes("se changer") || t.includes("corps") || t.includes("messages")){
+          p.add("p_hs");
+        }
+
+        // scénarios d’étouffement / pression pour ne pas parler => non-dénonciation (piste)
+        if(t.includes("détruis le club") || t.includes("ne rien dire") || t.includes("étouffer") || t.includes("couvrir")){
+          p.add("p_nonden");
+        }
+
+        if(p.size === 0) p.add("p_hm");
 
         const o = new Set(["o_prot","o_ecoute","o_trace","o_orient","o_secret"]);
         if(v.has("phys") || v.has("hs") || t.includes("secret") || t.includes("menace")) o.add("o_119");
@@ -905,7 +984,8 @@
         el.appendChild(img);
       }
 
-      function renderChips(containerId, items, selectedSet, selColor, lockedGetter, withArticle=false){
+      /* ✅ Chips : article affiché + définition en tooltip (title) */
+      function renderChips(containerId, items, selectedSet, selColor, lockedGetter){
         const wrap = $(containerId);
         wrap.innerHTML = "";
         items.forEach(it => {
@@ -917,7 +997,15 @@
 
           const span = document.createElement("span");
           span.className = "label";
-          span.textContent = withArticle ? `${it.label} (Art. ${it.art})` : it.label;
+
+          if(it.art){
+            span.textContent = `${it.label} (Art. ${it.art})`;
+          }else{
+            span.textContent = it.label;
+          }
+
+          if(it.desc) btn.title = it.desc;
+
           btn.appendChild(span);
 
           btn.addEventListener("click", () => {
@@ -932,6 +1020,7 @@
         });
       }
 
+      /* ✅ Correction : pour le pénal, on affiche aussi la définition */
       function buildCorrectionSimple(corrEl, chosenSet, correctSet, items){
         const chosen = Array.from(chosenSet);
         const okChosen = chosen.filter(id => correctSet.has(id));
@@ -953,7 +1042,15 @@
             s.style.background="rgba(255,255,255,.10)";
             s.style.fontSize="13px";
             s.style.color="var(--ink)";
-            s.textContent = it ? (it.label + (it.art ? ` (Art. ${it.art})` : "")) : id;
+
+            if(it){
+              const art = it.art ? ` (Art. ${it.art})` : "";
+              const desc = it.desc ? ` — ${it.desc}` : "";
+              s.textContent = `${it.label}${art}${desc}`;
+            }else{
+              s.textContent = id;
+            }
+
             w.appendChild(s);
           });
           return w;
@@ -1014,7 +1111,11 @@
             s.style.background="rgba(255,255,255,.10)";
             s.style.fontSize="13px";
             s.style.color="var(--ink)";
-            s.textContent = it ? (it.label + (it.art ? ` (Art. ${it.art})` : "")) : id;
+
+            const art = it?.art ? ` (Art. ${it.art})` : "";
+            const desc = it?.desc ? ` — ${it.desc}` : "";
+            s.textContent = it ? `${it.label}${art}${desc}` : id;
+
             pills.appendChild(s);
           });
 
@@ -1051,7 +1152,7 @@
           renderChips("violChips", VIOLENCE_ITEMS, state.selected.v, "var(--c2)", () => state.locked.v);
         }
         if(n === 3){
-          renderChips("penalChips", PENAL_ITEMS, state.selected.p, "var(--c3)", () => state.locked.p, true);
+          renderChips("penalChips", PENAL_ITEMS, state.selected.p, "var(--c3)", () => state.locked.p);
         }
         if(n === 4){
           renderChips("obligChips", OBLIG_ITEMS, state.selected.o, "var(--c4)", () => state.locked.o);

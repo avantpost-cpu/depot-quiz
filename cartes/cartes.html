@@ -1,581 +1,90 @@
-<!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>REBOND — Puzzle</title>
+<div class="outer">
+  <div class="app" role="application" aria-label="REBOND — Puzzle">
+    <div class="board">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Schoolbell&display=swap" rel="stylesheet">
-
-  <style>
-    :root{
-      --bg:#9ecbd9;
-
-      --ink:#ffffff;
-      --muted:rgba(255,255,255,.78);
-      --hair:rgba(255,255,255,.28);
-
-      --pad:26px;
-      --school:"Schoolbell", cursive;
-
-      --c1:#275c6d;
-      --c2:#33a0a2;
-      --c3:#d5b11c;
-      --c4:#c57e31;
-      --c5:#c57e31;
-
-      --ok:#1f8a5b;
-      --rev:#de5103;
-      --corr:#275e72;
-
-      --tiltA:-2.2deg;
-
-      --logoH:84px;
-      --angeH:120px;
-
-      --boardRadius: 28px;
-      --lift: -18px;
-
-      /* ✅ pile : plus petite (ne passe pas sous le menu) */
-      --stackScale:.74;
-      --stackSafeTop: 52px;
-
-      /* ✅ LE RÉGLAGE QUI COMPTE (décalage global de la pile) */
-      --stackX: 84px; /* augmente => va à droite / diminue => va à gauche */
-
-      /* ✅ éventail : pas de translations négatives (sinon ça sort à gauche) */
-      --fan2Rot:-12deg; --fan2X:  8px; --fan2Y: 10px;
-      --fan3Rot: -7deg; --fan3X: 14px; --fan3Y:  2px;
-      --fan4Rot: -3deg; --fan4X: 20px; --fan4Y: -6px;
-
-      /* ✅ ombre capsule comme la capture */
-      --boardStroke: 0 0 0 0px rgba(255,255,255,.14);
-      --boardShadow2: 0 20px 18px rgba(0,0,0,.22);
-      --boardShadow1: -8px 14px 26px rgba(0,0,0,.84);
-
-      /* ✅ calage optique colonnes */
-      --leftColW: 480px;
-      --gapCols: 22px;
-
-      /* ✅ capsule */
-      --boardRadius: 28px;
-    }
-
-    *{ box-sizing:border-box; margin:0; padding:0; }
-    body{
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background: var(--bg);
-      color: var(--ink);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      overflow:hidden;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-    }
-
-    .outer{
-      width: 100%;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding: 20px;
-    }
-    .app{
-      width: auto;
-      height: auto;
-      max-width: none;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-    }
-
-    .board{
-      width:1100px;
-      height:820px;
-      border-radius: var(--boardRadius);
-      overflow:hidden;
-      position:relative;
-      display:flex;
-      flex-direction:column;
-      background:
-        url("https://avantpost-cpu.github.io/depot-quiz/cartes/tapis.png")
-        center center / 120% no-repeat;
-      box-shadow: var(--boardStroke), var(--boardShadow2), var(--boardShadow1);
-    }
-
-    .top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      padding: calc(var(--pad) + 6px) var(--pad) 0;
-      transform: translateY(var(--lift));
-    }
-    .brand img{ display:block; height:var(--logoH); width:auto; object-fit:contain; }
-
-    .mid-ange{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      flex: 1 1 auto;
-      min-width: 0;
-      padding: 0 10px;
-    }
-    .mid-ange img{
-      display:block;
-      height: var(--angeH);
-      width:auto;
-      object-fit:contain;
-      max-width: 100%;
-    }
-
-    .fsBtn{
-      appearance:none;
-      border:1px solid var(--hair);
-      background:transparent;
-      padding:8px 10px;
-      font-weight:800;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      font-size:11px;
-      cursor:pointer;
-      transition: transform .16s ease, border-color .16s ease;
-      white-space:nowrap;
-      color: var(--ink);
-    }
-    .fsBtn:hover{ border-color: rgba(255,255,255,.45); transform: translateY(-1px); }
-
-    .steps{
-      display:grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 14px;
-      padding: 12px var(--pad) 16px;
-      border-top: 1px solid var(--hair);
-      border-bottom: 1px solid var(--hair);
-      margin: 10px var(--pad) 0;
-      position:relative;
-      z-index: 20;
-      transform: translateY(var(--lift));
-    }
-    .stepTop{ display:flex; gap:10px; align-items:baseline; line-height:1.1; user-select:none; }
-    .step .n{ font-weight:800; font-size:12px; letter-spacing:.02em; color:var(--muted); min-width:14px; }
-    .step .t{
-      font-size:12.5px;
-      letter-spacing:.01em;
-      position:relative;
-      display:inline-block;
-      padding: 6px 10px;
-      z-index:1;
-      color: var(--ink);
-      transition: color .2s ease;
-    }
-    .step .t::before{
-      content:"";
-      position:absolute;
-      left:-6px; right:-6px;
-      top:-6px; bottom:-6px;
-      background: transparent;
-      z-index:-1;
-      transition: background .22s ease;
-    }
-    .step.active .t{ color:#fff; }
-    .step[data-step="1"].active .t::before{ background: var(--c1); }
-    .step[data-step="2"].active .t::before{ background: var(--c2); }
-    .step[data-step="3"].active .t::before{ background: var(--c3); }
-    .step[data-step="4"].active .t::before{ background: var(--c4); }
-    .step[data-step="5"].active .t::before{ background: var(--c5); }
-
-    .content{
-      flex: 1;
-      overflow:hidden;
-      padding: 0 var(--pad) var(--pad);
-      position:relative;
-      z-index:10;
-      display:flex;
-      flex-direction:column;
-      transform: translateY(var(--lift));
-    }
-
-    .panel{ padding:0; margin-top:10px; }
-    h2{ font-size:16px; letter-spacing:.02em; font-weight:750; margin-bottom:10px; color: var(--ink); }
-    .hint{ font-size:13.5px; line-height:1.55; color:var(--muted); max-width:78ch; }
-    .hint b{ color:var(--ink); }
-
-    .rappel{ margin-top:14px; padding-left:14px; border-left:1px solid var(--hair); }
-    .rappel .label{ font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:11px; color:var(--ink); margin-bottom:8px; }
-    .rappel .txt{ font-size:15px; line-height:1.55; color:var(--ink); max-width:78ch; }
-
-    button{
-      appearance:none;
-      border: 1px solid var(--hair);
-      background: rgba(255,255,255,.06);
-      color: var(--ink);
-      padding: 10px 14px;
-      font-weight: 750;
-      letter-spacing:.06em;
-      text-transform: uppercase;
-      font-size: 11.5px;
-      cursor:pointer;
-      transition: border-color .16s ease, transform .16s ease, opacity .16s ease;
-      backdrop-filter: blur(2px);
-    }
-    button:hover{ border-color: rgba(255,255,255,.45); transform: translateY(-1px); }
-    button:disabled{ opacity:.45; cursor:not-allowed; transform:none; }
-
-    .navBar{
-      width: min(820px, 100%);
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      gap: 10px;
-      flex-wrap:wrap;
-      margin-top: 14px;
-    }
-    .navBar.start{ margin-top:16px; }
-
-    .backs{
-      margin-top: 16px;
-      display:grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      align-items: start;
-    }
-    .back{
-      width:100%;
-      aspect-ratio: 3 / 4;
-      transform: rotate(-2.2deg);
-      transform-origin: 0% 100%;
-      transition: transform .22s ease;
-      cursor:pointer;
-    }
-    .back img{ width:100%; height:100%; object-fit: contain; display:block; }
-    .back:hover{ transform: rotate(-2.2deg) translateY(-2px); }
-
-    .dealWrap{ margin-top: 2px; }
-    .dealRow{
-      position:relative;
-      height: 120px;
-      width: 100%;
-      max-width: 980px;
-      overflow: visible;
-      margin-top: 10px;
-    }
-    .dealCard{
-      position:absolute;
-      top: 10px;
-      width: 64px;
-      transform: rotate(-1.6deg);
-      transform-origin: 0% 100%;
-      opacity: 0;
-      pointer-events: none;
-      transition: left .45s ease, opacity .18s ease, transform .18s ease;
-      cursor:pointer;
-    }
-    .dealCard img{ width:100%; height:auto; display:block; object-fit:contain; }
-    .dealCard.ready{ opacity:1; pointer-events:auto; }
-    .dealCard:hover{ transform: rotate(-1.6deg) translateY(-2px); }
-
-    /* ✅ reveal layout */
-    .reveal{
-      margin-top: 8px;
-      width: 100%;
-      display:grid;
-      grid-template-columns: var(--leftColW) 1fr;
-      gap: var(--gapCols);
-      align-items:start;
-      justify-content:start;
-      position:relative;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    /* ✅ IMPORTANT: le clipping est ici, et la pile est déplacée avec --stackX */
-    .stackClip{
-      position:relative;
-      width: 100%;
-      aspect-ratio: 3 / 4;
-      overflow: hidden;     /* ✅ ne doit PAS sortir */
-      border-radius: 18px;
-    }
-
-    .stackInner{
-      position:absolute;
-      inset: 0;
-      transform:
-        translateX(var(--stackX))
-        translateY(var(--stackSafeTop))
-        scale(var(--stackScale));
-      transform-origin: 0% 0%;
-    }
-
-    .cardLayer{
-      position:absolute;
-      inset:0;
-      transform-origin: 0% 100%;
-      pointer-events:none;
-      overflow: visible;
-      filter: drop-shadow(0 18px 18px rgba(0,0,0,.22));
-    }
-    .cardLayer img{
-      width:100%;
-      height:100%;
-      object-fit: contain;
-      display:block;
-    }
-
-    .layerA{ transform: rotate(var(--tiltA)) translate(6px, 8px); }
-    .layerFan2{ transform: rotate(var(--fan2Rot)) translate(var(--fan2X), var(--fan2Y)); }
-    .layerFan3{ transform: rotate(var(--fan3Rot)) translate(var(--fan3X), var(--fan3Y)); }
-    .layerFan4{ transform: rotate(var(--fan4Rot)) translate(var(--fan4X), var(--fan4Y)); }
-
-    /* ✅ OVERLAY TEXTE SUR a1.png (remis) */
-    .cardOverlay{
-      position:absolute;
-      inset: 14% 12%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      text-align:center;
-      pointer-events:none;
-    }
-    .cardOverlay .txt{
-      font-family: var(--school);
-      font-size: clamp(22px, 2.6vw, 30px);
-      line-height: 1.15;
-      color: #426576;
-      font-weight: 400;
-      white-space: pre-wrap;
-      text-shadow: 0 1px 0 rgba(0,0,0,.25);
-    }
-
-    .revealSide{
-      display:flex;
-      flex-direction:column;
-      gap: 10px;
-      align-items:flex-start;
-      min-height: 260px;
-      position:relative;
-      z-index: 2;
-      overflow:hidden;
-      padding-top: 4px;
-    }
-
-    .sectionHeader{
-      display:flex;
-      align-items:flex-start;
-      gap: 12px;
-      max-width: 78ch;
-    }
-    .sectionHeader img{
-      width: 54px;
-      height: auto;
-      object-fit: contain;
-      transform: rotate(-2.2deg);
-      transform-origin: 0% 100%;
-      flex: 0 0 auto;
-    }
-    .sectionK{
-      font-weight: 850;
-      letter-spacing:.08em;
-      text-transform: uppercase;
-      font-size: 11px;
-      line-height: 1.2;
-      color: var(--muted);
-      margin-top: 6px;
-      display:flex;
-      align-items:baseline;
-      gap:10px;
-    }
-    .sectionPrompt{
-      font-weight: 800;
-      letter-spacing:.02em;
-      font-size: 18px;
-      line-height: 1.35;
-      color: var(--ink);
-      margin-top: 2px;
-      max-width: 78ch;
-    }
-
-    .chips{
-      margin-top: 2px;
-      display:grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      width: min(820px, 100%);
-    }
-    .chip{
-      appearance:none;
-      border: 1px solid var(--hair);
-      background: rgba(255,255,255,.06);
-      padding: 10px 12px;
-      cursor:pointer;
-      text-align:left;
-      position:relative;
-      backdrop-filter: blur(2px);
-    }
-    .chip .label{
-      position:relative;
-      display:block;
-      padding: 10px 10px;
-      z-index:1;
-      color: var(--ink);
-      transition: color .18s ease;
-      font-weight: 750;
-      line-height: 1.2;
-    }
-    .chip .label::before{
-      content:"";
-      position:absolute;
-      left:2px; right:2px;
-      top:2px; bottom:2px;
-      background: transparent;
-      z-index:-1;
-      transition: background .18s ease;
-    }
-    .chip.selected .label{ color:#fff; }
-    .chip.selected .label::before{ background: var(--selColor); }
-
-    .corrWrap{
-      width: min(820px, 100%);
-      display:flex;
-      flex-direction:column;
-      gap: 14px;
-      margin-top: 6px;
-      overflow:hidden;
-    }
-    .corrBlock{
-      border-top: 1px solid var(--hair);
-      padding-top: 12px;
-      display:flex;
-      flex-direction:column;
-      gap: 8px;
-    }
-    .corrHead{ display:flex; gap:10px; align-items:center; color: var(--ink); }
-    .tag{
-      display:inline-block;
-      padding: 6px 10px;
-      font-weight: 900;
-      letter-spacing:.08em;
-      text-transform: uppercase;
-      font-size: 11px;
-      color:#fff;
-      line-height: 1;
-    }
-    .tag.ok{ background: #1f8a5b; }
-    .tag.rev{ background: #d07a1d; }
-    .tag.corr{ background: var(--corr); }
-    .corrText{ font-size: 13.5px; line-height: 1.5; color: var(--ink); max-width: 78ch; }
-
-    .concluIntro{
-      font-size: 13.5px;
-      line-height: 1.55;
-      color: var(--muted);
-      max-width: 78ch;
-      margin-top: 2px;
-    }
-
-    @media (max-width: 980px){
-      :root{
-        --lift: -14px;
-        --leftColW: 1fr;
-        --gapCols: 14px;
-        --stackScale: .70;
-        --stackSafeTop: 44px;
-        --stackX: 26px;
-      }
-      .steps{ grid-template-columns: 1fr; gap:10px; }
-      .backs{ grid-template-columns: 1fr 1fr; }
-      .reveal{ grid-template-columns: 1fr; }
-      .chips{ grid-template-columns: 1fr; }
-      .dealRow{ height: 110px; }
-      .dealCard{ width: 56px; }
-    }
-    @media (max-width: 520px){
-      :root{
-        --lift: -10px;
-        --stackScale: .68;
-        --stackSafeTop: 40px;
-        --stackX: 18px;
-      }
-      .backs{ grid-template-columns: 1fr; }
-      .brand img{ height: 72px; }
-      .mid-ange img{ height: 78px; }
-      .sectionHeader img{ width: 48px; }
-      .sectionPrompt{ font-size: 16px; }
-      .dealRow{ height: 100px; }
-      .dealCard{ width: 52px; }
-    }
-
-    [hidden]{ display:none !important; }
-  </style>
-</head>
-
-<body>
-  <div class="outer">
-    <div class="app" role="application" aria-label="REBOND — Puzzle">
-      <div class="board">
-
-        <div class="top">
-          <div class="brand">
-            <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/logo.png" alt="REBOND">
-          </div>
-
-          <div class="mid-ange" aria-hidden="true">
-            <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/ange.png" alt="">
-          </div>
-
-          <button class="fsBtn" id="btn-fs">Plein écran</button>
+      <div class="top">
+        <div class="brand">
+          <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/logo.png" alt="REBOND">
         </div>
 
-        <div class="steps" aria-label="Étapes">
-          <div class="step" id="step-1" data-step="1"><div class="stepTop"><div class="n">1</div><div class="t">Situation(s)</div></div></div>
-          <div class="step" id="step-2" data-step="2"><div class="stepTop"><div class="n">2</div><div class="t">Type(s) de violences</div></div></div>
-          <div class="step" id="step-3" data-step="3"><div class="stepTop"><div class="n">3</div><div class="t">Qualification pénale</div></div></div>
-          <div class="step" id="step-4" data-step="4"><div class="stepTop"><div class="n">4</div><div class="t">Obligations & réactions</div></div></div>
-          <div class="step" id="step-5" data-step="5"><div class="stepTop"><div class="n">5</div><div class="t">Conclusion</div></div></div>
+        <div class="mid-ange" aria-hidden="true">
+          <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/ange.png" alt="">
         </div>
 
-        <div class="content">
-          <section class="panel" id="screen-intro">
-            <h2>Cadre de travail</h2>
-            <p class="hint">
-              Nous travaillons à partir d’une <b>situation fictive</b>. Il ne s’agit pas de juger des personnes,
-              mais d’apprendre à <b>repérer</b>, <b>nommer</b> et <b>protéger</b>.<br/>
-              Personne n’est obligé de partager une expérience personnelle.
-            </p>
+        <button class="fsBtn" id="btn-fs">Plein écran</button>
+      </div>
 
-            <div class="rappel" aria-label="Rappel">
-              <div class="label">Rappel</div>
-              <div class="txt">
-                Le rôle d’un encadrant n’est pas d’enquêter, mais de <b>protéger</b> et d’<b>orienter</b>.
-                En cas de doute, on privilégie toujours la protection du mineur.
-              </div>
+      <div class="steps" aria-label="Étapes">
+        <div class="step" id="step-1" data-step="1">
+          <div class="stepTop">
+            <div class="n">1</div>
+            <div class="t">Situation(s)</div>
+          </div>
+        </div>
+
+        <div class="step" id="step-2" data-step="2">
+          <div class="stepTop">
+            <div class="n">2</div>
+            <div class="t">Type(s) de V.</div>
+          </div>
+        </div>
+
+        <div class="step" id="step-3" data-step="3">
+          <div class="stepTop">
+            <div class="n">3</div>
+            <div class="t">Qualification pénale</div>
+          </div>
+        </div>
+
+        <div class="step" id="step-4" data-step="4">
+          <div class="stepTop">
+            <div class="n">4</div>
+            <div class="t">Obligations & réactions</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <section class="panel" id="screen-intro">
+          <h2>Cadre de travail</h2>
+          <p class="hint">
+            Nous travaillons à partir d’une <b>situation fictive</b>. Il ne s’agit pas de juger des personnes,
+            mais d’apprendre à <b>repérer</b>, <b>nommer</b> et <b>protéger</b>.<br>
+            Personne n’est obligé de partager une expérience personnelle.
+          </p>
+
+          <div class="rappel" aria-label="Rappel">
+            <div class="label">Rappel</div>
+            <div class="txt">
+              Le rôle d’un encadrant n’est pas d’enquêter, mais de <b>protéger</b> et d’<b>orienter</b>.
+              En cas de doute, on privilégie toujours la protection du mineur.
             </div>
+          </div>
 
-            <div class="backs" aria-label="Dos des cartes">
-              <div class="back" id="start-by-card" title="Commencer (carte Situation)">
-                <img alt="Dos carte — Situation" src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png">
-              </div>
-              <div class="back"><img alt="Dos carte — Type(s) de violences" src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png"></div>
-              <div class="back"><img alt="Dos carte — Qualification pénale" src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png"></div>
-              <div class="back"><img alt="Dos carte — Obligations" src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png"></div>
+          <div class="backs" aria-label="Dos des cartes">
+            <div class="back" id="start-by-card" title="Commencer (carte Situation)">
+              <img alt="Dos carte — Situation" src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png">
             </div>
-
-            <div class="navBar start">
-              <button id="btn-start">Commencer</button>
+            <div class="back">
+              <img alt="Dos carte — Type(s) de V." src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png">
             </div>
-          </section>
-
-          <section class="panel" id="screen-game" hidden>
-            <div id="step1" class="dealWrap">
-              <h2>Situation(s)</h2>
-              <div class="dealRow" id="dealRow" aria-label="Cartes (distribution)"></div>
+            <div class="back">
+              <img alt="Dos carte — Qualification pénale" src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png">
             </div>
+            <div class="back">
+              <img alt="Dos carte — Obligations" src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png">
+            </div>
+          </div>
 
-            <div class="reveal" id="reveal" hidden aria-label="Carte tirée">
+          <div class="navBar start">
+            <button id="btn-start">Commencer</button>
+          </div>
+        </section>
+
+        <section class="panel" id="screen-game" hidden>
+          <div class="gameLayout" id="gameLayout">
+
+            <div class="leftRail" id="leftRail">
               <div class="stackClip" aria-label="Pile de cartes">
                 <div class="stackInner">
                   <div class="cardLayer layerFan2" id="layerB" hidden></div>
@@ -591,644 +100,1502 @@
                 </div>
               </div>
 
-              <div class="revealSide">
-
-                <div id="ui-violences" hidden>
-                  <div class="sectionHeader">
-                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png" alt="Carte — Violences">
-                    <div>
-                      <div class="sectionK">Type(s) de violences</div>
-                      <div class="sectionPrompt" id="violTitle">Choisissez un ou plusieurs type(s) de violence auquel correspond la situation</div>
-                    </div>
-                  </div>
-
-                  <div class="chips" id="violChips"></div>
-                  <div class="corrWrap" id="violCorr" hidden></div>
-
-                  <div class="navBar">
-                    <button id="violBack">Retour</button>
-                    <button id="violContinue">Continuer</button>
-                  </div>
+              <div class="leftLog" id="leftLog">
+                <div class="logBlock step1" id="logSituation" hidden>
+                  <div class="logK">Étape 1 — Situation piochée</div>
+                  <div class="logText" id="logSituationText"></div>
                 </div>
 
-                <div id="ui-penal" hidden>
-                  <div class="sectionHeader">
-                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png" alt="Carte — Qualification pénale">
-                    <div>
-                      <div class="sectionK">Qualification pénale</div>
-                      <div class="sectionPrompt" id="penalTitle">Choisissez une ou plusieurs qualification(s) pénale(s) possible(s)</div>
-                    </div>
-                  </div>
-
-                  <div class="chips" id="penalChips"></div>
-                  <div class="corrWrap" id="penalCorr" hidden></div>
-
-                  <div class="navBar">
-                    <button id="penalBack">Retour</button>
-                    <button id="penalContinue">Continuer</button>
-                  </div>
+                <div class="logBlock step2" id="logViol" hidden>
+                  <div class="logK">Étape 2 — Type(s) de V.</div>
+                  <div class="logPills" id="logViolPills"></div>
                 </div>
 
-                <div id="ui-oblig" hidden>
-                  <div class="sectionHeader">
-                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png" alt="Carte — Obligations & réactions">
-                    <div>
-                      <div class="sectionK">Obligations & réactions</div>
-                      <div class="sectionPrompt" id="obligTitle">Choisissez les réactions attendues (et évitez celles à risque)</div>
-                    </div>
-                  </div>
-
-                  <div class="chips" id="obligChips"></div>
-                  <div class="corrWrap" id="obligCorr" hidden></div>
-
-                  <div class="navBar">
-                    <button id="obligBack">Retour</button>
-                    <button id="obligContinue">Continuer</button>
-                  </div>
+                <div class="logBlock step3" id="logPenal" hidden>
+                  <div class="logK">Étape 3 — Qualification pénale</div>
+                  <div class="logPills" id="logPenalPills"></div>
                 </div>
 
-                <div id="ui-conclu" hidden>
-                  <div class="sectionHeader">
-                    <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png" alt="Conclusion">
-                    <div>
-                      <div class="sectionK">Conclusion</div>
-                      <div class="sectionPrompt">Correction idéale — récapitulatif par étape</div>
-                    </div>
-                  </div>
-
-                  <p class="concluIntro">
-                    Voici la <b>lecture attendue</b> pour cette situation, par étape (à adapter selon le contexte réel).
-                  </p>
-
-                  <div class="corrWrap" id="concluWrap"></div>
-
-                  <div class="navBar">
-                    <button id="concluBack">Retour</button>
-                    <button id="concluNew">Nouvelle situation</button>
-                  </div>
+                <div class="logBlock step4" id="logOblig" hidden>
+                  <div class="logK">Étape 4 — Obligations & réactions</div>
+                  <div class="logPills" id="logObligPills"></div>
                 </div>
-
               </div>
             </div>
-          </section>
-        </div>
 
+            <div class="rightStage">
+              <div id="step1Chooser" hidden>
+                <div class="sectionHeader">
+                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/a.png" alt="Carte — Situation">
+                  <div>
+                    <div class="sectionK">Situation(s)</div>
+                    <div class="sectionPrompt">Choisissez une carte</div>
+                  </div>
+                </div>
+
+                <div class="dealRow" id="dealRow" aria-label="Choix des cartes"></div>
+              </div>
+
+              <div id="ui-violences" hidden>
+                <div class="sectionHeader">
+                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/b.png" alt="Carte — V.">
+                  <div>
+                    <div class="sectionK">Type(s) de V.</div>
+                    <div class="sectionPrompt">Choisissez un ou plusieurs type(s) de V. auquel correspond la situation</div>
+                  </div>
+                </div>
+
+                <div class="chips" id="violChips"></div>
+                <div class="corrWrap" id="violCorr" hidden></div>
+
+                <div class="navBar">
+                  <button id="violBack">Retour</button>
+                  <button id="violContinue">Continuer</button>
+                </div>
+              </div>
+
+              <div id="ui-penal" hidden>
+                <div class="sectionHeader">
+                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/c.png" alt="Carte — Qualification pénale">
+                  <div>
+                    <div class="sectionK">Qualification pénale</div>
+                    <div class="sectionPrompt">Choisissez une ou plusieurs qualification(s) pénale(s) possible(s)</div>
+                  </div>
+                </div>
+
+                <div class="chips" id="penalChips"></div>
+                <div class="corrWrap" id="penalCorr" hidden></div>
+
+                <div class="navBar">
+                  <button id="penalBack">Retour</button>
+                  <button id="penalContinue">Continuer</button>
+                </div>
+              </div>
+
+              <div id="ui-oblig" hidden>
+                <div class="sectionHeader">
+                  <img src="https://avantpost-cpu.github.io/depot-quiz/cartes/d.png" alt="Carte — Obligations & réactions">
+                  <div>
+                    <div class="sectionK">Obligations & réactions</div>
+                    <div class="sectionPrompt">Choisissez les réactions attendues (et évitez celles à risque)</div>
+                  </div>
+                </div>
+
+                <div class="chips" id="obligChips"></div>
+                <div class="corrWrap" id="obligCorr" hidden></div>
+
+                <div class="navBar">
+                  <button id="obligBack">Retour</button>
+                  <button id="obligContinue">Nouvelle situation</button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </section>
       </div>
+
     </div>
   </div>
+</div>
+script.js
+(() => {
+  const $ = (id) => document.getElementById(id);
 
-  <script>
-    (() => {
-      const $ = (id) => document.getElementById(id);
+  const IMG = {
+    aFront:"https://avantpost-cpu.github.io/depot-quiz/cartes/a1.png",
+    aBack:"https://avantpost-cpu.github.io/depot-quiz/cartes/a.png",
+    bBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/b.png",
+    cBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/c.png",
+    dBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/d.png",
+  };
 
-      const IMG = {
-        aBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/a.png",
-        aFront:"https://avantpost-cpu.github.io/depot-quiz/cartes/a1.png",
-        bBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/b.png",
-        cBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/c.png",
-        dBack: "https://avantpost-cpu.github.io/depot-quiz/cartes/d.png",
-      };
+  const SITUATIONS = [
+    "Situation 1 — Comportement humiliant imposé à un mineur devant le groupe.",
+    "Situation 2 — Rite d’intégration dégradant entre jeunes de l’équipe.",
+    "Situation 3 — Propos insultants et dévalorisants répétés envers un jeune sportif.",
+    "Situation 4 — Sanction physique dangereuse imposée par un adulte.",
+    "Situation 5 — Secret imposé à une mineure avec pression et chantage.",
+    "Situation 6 — Contact physique lors d’une correction technique sans explication claire.",
+    "Situation 7 — Mineur forcé de poursuivre malgré une blessure grave, sans réaction des adultes présents.",
+    "Situation 8 — Privation de boire imposée pendant la séance.",
+    "Situation 9 — Intrusions répétées dans un vestiaire sans motif légitime.",
+    "Situation 10 — Messages nocturnes, pression et obtention d’images intimes.",
+    "Situation 11 — Envoi coordonné de messages insultants via les réseaux sociaux.",
+    "Situation 12 — Blagues à caractère sexuel répétées sur le corps de mineurs.",
+    "Situation 13 — Captation d’image sous la douche puis diffusion sur les réseaux.",
+    "Situation 14 — Refus de signaler des faits graves concernant un mineur malgré plusieurs alertes.",
+    "Situation 15 — Marques récurrentes sur le corps d’un jeune et humiliations publiques par un parent.",
+    "Situation 16 — Révélation d’un comportement imposé dans un espace clos avec secret.",
+    "Situation 17 — Déshabillage forcé dans un vestiaire, moqueries et diffusion d’une vidéo.",
+    "Situation 18 — Régime extrême, privation d’eau et contraintes physiques sur une joueuse mineure.",
+    "Situation 19 — Refus d’inscription discriminatoire d’un enfant en situation de handicap.",
+    "Situation 20 — Secret imposé à un mineur sous menace visant un proche.",
+    "Situation 21 — Captation vidéo de jeunes sans autorisation parentale ni consentement.",
+    "Situation 22 — Propos discriminants, pression et chantage envers une jeune joueuse.",
+    "Situation 23 — Jalousie, emprise et surveillance de la localisation d’un mineur.",
+    "Situation 24 — Usage de la peur et de l’agressivité comme méthode d’encadrement.",
+    "Situation 25 — Gestes imposés sans cadre médical ni consentement clair.",
+    "Situation 26 — Corrections physiques et verbales banalisées par l’entourage.",
+    "Situation 27 — Contacts physiques imposés et inutiles avec des mineurs.",
+    "Situation 28 — Mise à l’écart du groupe et remarques humiliantes liées au surpoids.",
+    "Situation 29 — Minimisation institutionnelle de faits graves au nom d’une prétendue tradition.",
+    "Situation 30 — Détention d’images intimes, nouvelles exigences et menace de diffusion."
+  ];
 
-      const SITUATIONS = [
-        "Un entraîneur contraint régulièrement un mineur à faire un tour de terrain complètement nu devant les autres coéquipiers.",
-        "Les membres de l’équipe soumettent le nouveau joueur à une claque donnée par chacun d’eux comme rite d’intégration.",
-        "Un dirigeant crie régulièrement sur un jeune sportif, l’insulte et le ridiculise devant le groupe en cas d’erreur.",
-        "Un entraîneur impose aux jeunes comme sanction de courir derrière sa voiture.",
-        "Un éducateur demande à une mineur de garder un secret concernant les relations sexuelles qu’ils entretiennent dans les vestiaires sinon il la sortira de l’équipe en disant qu’elle elle se dope.",
-        "Un entraîneur touche un jeune lors de corrections techniques sans expliquer le geste ni demander son accord.",
-        "L’entraîneur oblige un mineur de 13 ans à continuer le match malgré une blessure grave devant les dirigeants qui ne réagissent pas.",
-        "Un entraîneur interdit à un joueur de boire durant la séance sous prétexte que cela fait perdre du temps.",
-        "Un entraîneur pénètre régulièrement dans les vestiaires lorsque les jeunes sont à la douche sans raison.",
-        "Un dirigeant envoie des messages à une mineur tard le soir et obtient des vidéos intimes de masturbation, après l’avoir menacé de nuire à sa réputation si elle refusait.",
-        "Après s’être concertés, plusieurs joueurs de l’équipe ont chacun adressé un unique message insultant et rabaissant à un de leurs coéquipiers via les réseaux sociaux.",
-        "Un arbitre fait régulièrement des blagues sexuelles et insistantes sur le corps des filles devant des joueurs et joueuses mineurs.",
-        "Un jeune partenaire d’entraînement filme discrètement un coéquipier sous la douche et publie la vidéo sur les réseaux sociaux.",
-        "Un président de club refuse de signaler les faits de violences sexuelles sur mineur dont il a connaissance, malgré des alertes répétées, sous prétexte qu’il ne veut pas « dénoncer » et bafouer sa présomption d’innocence car c’est un entraîneur avec une bonne réputation.",
-        "Un jeune a des marques de coups récurrents sur le corps, se fait humilier et insulter par son père au club.",
-        "Une mineure vient vous dire que son entraîneur sort son sexe et lui demande de lui toucher ses parties intimes lorsqu’ils ne sont que tous les deux dans une voiture et que c’est leur secret.",
-        "Un groupe de jeunes déshabille un coéquipier dans le vestiaire pour le mettre sous la douche et se moquer de lui, l’un d’eux filme la scène pour la diffuser sur le groupe whatsapp de l’équipe.",
-        "L’équipe technique et médicale impose à une joueuse de 14 ans un régime strict, la prive de boire et l’oblige à faire des séances de sauna habillée pour qu’elle soit au « bon poids » pour la compétition à venir.",
-        "Un dirigeant refuse l’inscription d’un enfant en situation de handicap sans examiner d’aménagement possible, alors que sa pratique est médicalement autorisée.",
-        "Un adulte impose à un mineur de ne pas parler à ses parents de leur secret sinon il va faire du mal à sa petite sœur. ",
-        "Un entraîneur filme des jeunes sous prétexte d’analyse technique sans autorisation parentale et sans le consentement des concernés.",
-        "Un dirigeant dit à une jeune joueuse que son club n’aime pas les “gouines”. Il la contraint à céder à ses avances. A défaut, il aurait annoncé à l’ensemble de l’équipe son orientation sexuelle.",
-        "Un adulte se montre régulièrement jaloux ou attristé par les relations du jeune sportif et a installé une application lui permettant de surveiller la localisation du mineur.",
-        "Un entraîneur utilise régulièrement la peur et l’agressivité comme méthode de motivation. Il exige une obéissance totale et interdit toute contestation de la part des jeunes.",
-        "Un entraîneur impose des massages sans cadre médical ni consentement clair et en profite pour toucher le corps des jeunes filles.",
-        "Un coach a pour habitude de bousculer physiquement et verbalement ses élèves pour les corriger, comportements admis par la famille et le club.",
-        "Un entraîneur se montre excessivement tactile et impose des contacts physiques inutiles avec des mineurs (tels que la bise pour dire bonjour, des câlins ou de les prendre sur ses genoux).",
-        "Un jeune est mis à l’écart du groupe sans explication et subit des remarques humiliantes en raison de son surpoids.",
-        "Le dirigeant du club minimise les violences en parlant de “ tradition sportive”.",
-        "Un encadrant, en possession de photos intimes d’une jeune joueuse, lui demande d’envoyer des vidéos, encore plus sexualisées, sous peine de diffuser les premières et de la contraindre à une relation sexuelle.",
-      ];
+  const VIOLENCE_ITEMS = [
+    { id:"vp",  label:"V. psychologique" },
+    { id:"hum", label:"Humiliation" },
+    { id:"int", label:"Intimidation" },
+    { id:"phys",label:"V. physique" },
+    { id:"hm",  label:"Harcèlement moral" },
+    { id:"hs",  label:"Harcèlement sexuel" },
+    { id:"aa",  label:"Abus d’autorité" },
+    { id:"neg", label:"Mise en danger / négligence" }
+  ];
 
-      const VIOLENCE_ITEMS = [
-        { id:"vp",  label:"Violence psychologique" },
-        { id:"hum", label:"Humiliation" },
-        { id:"int", label:"Intimidation" },
-        { id:"phys",label:"Violence physique" },
-        { id:"hm",  label:"Harcèlement moral" },
-        { id:"hs",  label:"Harcèlement sexuel" },
-        { id:"aa",  label:"Abus d’autorité" },
-        { id:"neg", label:"Mise en danger / négligence" }
-      ];
+  const PENAL_ITEMS = [
+    { id:"p_hm", label:"Harcèlement moral", art:"222-32-2-2 CP", desc:"Propos ou comportements répétés qui dégradent les conditions de vie et la santé." },
+    { id:"p_viol", label:"V. volontaires", art:"222-7 et suivants CP", desc:"Acte intentionnel causant une atteinte physique ou psychologique." },
+    { id:"p_men", label:"Menaces", art:"222-17 / 222-18 CP", desc:"Annonce d’un crime ou délit pour inquiéter ou faire pression." },
+    { id:"p_attsex", label:"Atteinte sexuelle", art:"227-25 / 227-27 CP", desc:"Acte sexuel d’un majeur sur un mineur." },
+    { id:"p_agrsex", label:"Agression sexuelle", art:"222-22 CP", desc:"Acte sexuel sans consentement, hors pénétration." },
+    { id:"p_hs", label:"Harcèlement sexuel", art:"222-33 CP", desc:"Propos ou comportements sexuels répétés portant atteinte à la dignité." },
+    { id:"p_hscol", label:"Harcèlement scolaire", art:"222-33-2-3 CP", desc:"Moqueries, humiliations ou mises à l’écart répétées." },
+    { id:"p_medang", label:"Mise en danger", art:"223-1 CP", desc:"Exposer volontairement autrui à un risque grave et immédiat." },
+    { id:"p_nonden", label:"Non-dénonciation", art:"434-1 / 434-3 CP", desc:"Ne pas signaler un crime ou des faits graves sur mineur." },
+    { id:"p_comp", label:"Complicité", art:"121-7 CP", desc:"Aider, faciliter ou provoquer la commission d’une infraction." },
+    { id:"p_seq", label:"Séquestration", art:"224-1 à 224-5-2 CP", desc:"Retenir une personne contre sa volonté, sans base légale." },
+    { id:"p_biz", label:"Bizutage", art:"225-16-1 CP", desc:"Imposer des actes humiliants, dégradants ou dangereux dans un cadre collectif." }
+  ];
 
-      /* ✅ Qualification pénale — textes du PDF */
-      const PENAL_ITEMS = [
-        {
-          id:"p_hm",
-          label:"Harcèlement moral",
-          art:"222-32-2-2 CP",
-          desc:"Propos ou comportements répétés qui dégradent les conditions de vie et la santé d’une personne. Peut être caractérisé en groupe ou en ligne."
-        },
-        {
-          id:"p_viol",
-          label:"Violences volontaires",
-          art:"222-7 et suivants CP",
-          desc:"Acte intentionnel causant une atteinte physique ou psychologique. Sanction variable selon la gravité (ITT, mutilation, mort…)."
-        },
-        {
-          id:"p_men",
-          label:"Menaces",
-          art:"222-17 / 222-18 CP",
-          desc:"Annonce d’un crime ou délit pour inquiéter ou faire pression. Pas besoin de passer à l’acte."
-        },
-        {
-          id:"p_attsex",
-          label:"Atteinte sexuelle",
-          art:"227-25 / 227-27 CP",
-          desc:"Acte sexuel d’un majeur sur un mineur, même sans violence. Protection automatique des moins de 15 ans."
-        },
-        {
-          id:"p_agrsex",
-          label:"Agression sexuelle",
-          art:"222-22 CP",
-          desc:"Acte sexuel sans consentement (hors pénétration). Le silence ne vaut jamais accord. Protection renforcée pour les mineurs."
-        },
-        {
-          id:"p_hs",
-          label:"Harcèlement sexuel",
-          art:"222-33 CP",
-          desc:"Propos ou comportements sexuels répétés portant atteinte à la dignité ou créant un climat intimidant. Une seule fois suffit si pression pour obtenir une faveur sexuelle."
-        },
-        {
-          id:"p_hscol",
-          label:"Harcèlement scolaire",
-          art:"222-33-2-3 CP",
-          desc:"Moqueries, humiliations ou mises à l’écart répétées entre élèves ou par un adulte de l’établissement. Peut être commis en ligne."
-        },
-        {
-          id:"p_medang",
-          label:"Mise en danger",
-          art:"223-1 CP",
-          desc:"Exposer volontairement autrui à un risque grave et immédiat sans qu’un dommage soit nécessaire."
-        },
-        {
-          id:"p_nonden",
-          label:"Non-dénonciation",
-          art:"434-1 / 434-3 CP",
-          desc:"Ne pas signaler un crime ou des faits graves sur mineur/personne vulnérable alors qu’il est encore possible d’agir."
-        },
-        {
-          id:"p_comp",
-          label:"Complicité",
-          art:"121-7 CP",
-          desc:"Aider, faciliter ou provoquer la commission d’une infraction."
-        },
-        {
-          id:"p_seq",
-          label:"Séquestration",
-          art:"224-1 à 224-5-2 CP",
-          desc:"Retenir une personne contre sa volonté, sans base légale, en l’empêchant de partir ou en la maintenant enfermée. Atteinte grave à la liberté individuelle."
-        },
-        {
-          id:"p_biz",
-          label:"Bizutage",
-          art:"225-16-1 CP",
-          desc:"Imposer à une personne, même avec son accord apparent, des actes humiliants, dégradants ou dangereux, ou une consommation excessive d’alcool, dans un cadre scolaire, sportif ou collectif."
-        }
-      ];
+  const OBLIG_ITEMS = [
+    { id:"o_prot",   label:"Protéger / mettre à l’abri" },
+    { id:"o_ecoute", label:"Écouter sans juger" },
+    { id:"o_trace",  label:"Tracer les faits (date/lieu)" },
+    { id:"o_orient", label:"Alerter / référent / direction" },
+    { id:"o_119",    label:"Appeler / orienter vers 119" },
+    { id:"o_secret", label:"Ne pas promettre le secret" },
+    { id:"o_confr",  label:"Confronter l’adulte seul" },
+    { id:"o_enq",    label:"Mener sa propre enquête" }
+  ];
 
-      const OBLIG_ITEMS = [
-        { id:"o_prot",   label:"Protéger / mettre à l’abri" },
-        { id:"o_ecoute", label:"Écouter sans juger" },
-        { id:"o_trace",  label:"Tracer les faits (date/lieu)" },
-        { id:"o_orient", label:"Alerter / référent / direction" },
-        { id:"o_119",    label:"Appeler / orienter vers 119" },
-        { id:"o_secret", label:"Ne pas promettre le secret" },
-        { id:"o_confr",  label:"Confronter l’adulte seul" },
-        { id:"o_enq",    label:"Mener sa propre enquête" }
-      ];
+  const state = {
+    step: 1,
+    situationText: "",
+    selected: { v:new Set(), p:new Set(), o:new Set() },
+    locked:   { v:false, p:false, o:false },
+    correct:  { v:new Set(), p:new Set(), o:new Set() }
+  };
 
-      const state = {
-        step: 1,
-        dealt:false,
-        situationText:"",
-        selected:{ v:new Set(), p:new Set(), o:new Set() },
-        locked:{ v:false, p:false, o:false },
-        correct:{ v:new Set(), p:new Set(), o:new Set() }
-      };
+  function setScreen(which){
+    $("screen-intro").hidden = which !== "intro";
+    $("screen-game").hidden = which !== "game";
+  }
 
-      function setScreen(which){
-        $("screen-intro").hidden = which !== "intro";
-        $("screen-game").hidden  = which !== "game";
+  function setActiveStep(n){
+    for(let i=1;i<=4;i++) $("step-"+i).classList.remove("active");
+    $("step-"+n).classList.add("active");
+  }
+
+  function setLayoutForStep(n){
+    const layout = $("gameLayout");
+    if(!layout) return;
+    layout.classList.toggle("step1Mode", n === 1);
+  }
+
+  function clearStepButtonClasses(){
+    $("violBack").classList.remove("btn-back-step2","btn-back-step3","btn-back-step4");
+    $("violContinue").classList.remove("btn-step2","btn-step3","btn-step4");
+
+    $("penalBack").classList.remove("btn-back-step2","btn-back-step3","btn-back-step4");
+    $("penalContinue").classList.remove("btn-step2","btn-step3","btn-step4");
+
+    $("obligBack").classList.remove("btn-back-step2","btn-back-step3","btn-back-step4");
+    $("obligContinue").classList.remove("btn-step2","btn-step3","btn-step4");
+  }
+
+  function applyStepButtonClasses(n){
+    clearStepButtonClasses();
+
+    if(n === 2){
+      $("violBack").classList.add("btn-back-step2");
+      $("violContinue").classList.add("btn-step2");
+    }
+
+    if(n === 3){
+      $("penalBack").classList.add("btn-back-step3");
+      $("penalContinue").classList.add("btn-step3");
+    }
+
+    if(n === 4){
+      $("obligBack").classList.add("btn-back-step4");
+      $("obligContinue").classList.add("btn-step4");
+    }
+  }
+
+  async function toggleFullscreen(){
+    try{
+      if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+      else await document.exitFullscreen();
+    }catch(e){
+      alert("Plein écran indisponible.");
+    }
+  }
+
+  function mapById(items){
+    return new Map(items.map(x => [x.id, x]));
+  }
+
+  const MAP_V = mapById(VIOLENCE_ITEMS);
+  const MAP_P = mapById(PENAL_ITEMS);
+  const MAP_O = mapById(OBLIG_ITEMS);
+
+  function labelsFromSet(set, map){
+    return Array.from(set).map(id => map.get(id)?.label || id);
+  }
+
+  function renderLogPills(targetId, labels){
+    const el = $(targetId);
+    el.innerHTML = "";
+    labels.forEach(txt => {
+      const s = document.createElement("span");
+      s.className = "logPill";
+      s.textContent = txt;
+      el.appendChild(s);
+    });
+  }
+
+  function computeCorrectionsFromSituation(text){
+    const t = (text || "").toLowerCase();
+
+    const v = new Set(["aa"]);
+
+    if(t.includes("insulte") || t.includes("ridicul") || t.includes("humili") || t.includes("moquer") || t.includes("dévaloris")){
+      v.add("vp");
+      v.add("hum");
+    }
+    if(t.includes("réguli") || t.includes("souvent") || t.includes("répét")){
+      v.add("hm");
+    }
+    if(t.includes("menace") || t.includes("chantage") || t.includes("peur") || t.includes("secret imposé") || t.includes("pression")){
+      v.add("int");
+    }
+    if(t.includes("blessure") || t.includes("physique") || t.includes("touche") || t.includes("massage") || t.includes("bouscul") || t.includes("privation d’eau")){
+      v.add("phys");
+    }
+    if(t.includes("vestiaire") || t.includes("douche") || t.includes("images intimes") || t.includes("sexuel") || t.includes("corps")){
+      v.add("hs");
+    }
+    if(t.includes("mise en danger") || t.includes("dangereuse") || t.includes("privation") || t.includes("blessure grave")){
+      v.add("neg");
+    }
+
+    const p = new Set();
+    if(v.has("hm")) p.add("p_hm");
+    if(v.has("hs")) p.add("p_hs");
+    if(v.has("int")) p.add("p_men");
+    if(v.has("phys")) p.add("p_viol");
+    if(v.has("neg")) p.add("p_medang");
+
+    if(t.includes("refus de signaler") || t.includes("ne pas signaler") || t.includes("couvrir") || t.includes("étouffer")){
+      p.add("p_nonden");
+    }
+    if(t.includes("rite d’intégration")){
+      p.add("p_biz");
+    }
+    if(p.size === 0) p.add("p_hm");
+
+    const o = new Set(["o_prot","o_ecoute","o_trace","o_orient","o_secret"]);
+    if(v.has("phys") || v.has("hs") || t.includes("secret") || t.includes("menace") || t.includes("chantage")){
+      o.add("o_119");
+    }
+
+    state.correct.v = v;
+    state.correct.p = p;
+    state.correct.o = o;
+  }
+
+  function resetGame(){
+    state.step = 1;
+    state.situationText = "";
+    state.selected.v.clear();
+    state.selected.p.clear();
+    state.selected.o.clear();
+    state.locked = { v:false, p:false, o:false };
+
+    $("frontImg").src = IMG.aFront;
+    $("overlayText").textContent = "";
+
+    if($("step1Chooser")) $("step1Chooser").hidden = true;
+    if($("dealRow")) $("dealRow").innerHTML = "";
+
+    ["layerB","layerC","layerD"].forEach(id => {
+      $(id).hidden = true;
+      $(id).innerHTML = "";
+    });
+
+    $("ui-violences").hidden = true;
+    $("ui-penal").hidden = true;
+    $("ui-oblig").hidden = true;
+
+    $("violChips").hidden = false;
+    $("penalChips").hidden = false;
+    $("obligChips").hidden = false;
+
+    $("violCorr").hidden = true;
+    $("penalCorr").hidden = true;
+    $("obligCorr").hidden = true;
+
+    $("violCorr").innerHTML = "";
+    $("penalCorr").innerHTML = "";
+    $("obligCorr").innerHTML = "";
+
+    $("logSituation").hidden = true;
+    $("logViol").hidden = true;
+    $("logPenal").hidden = true;
+    $("logOblig").hidden = true;
+
+    $("logSituationText").textContent = "";
+    $("logViolPills").innerHTML = "";
+    $("logPenalPills").innerHTML = "";
+    $("logObligPills").innerHTML = "";
+
+    $("violContinue").textContent = "Continuer";
+    $("penalContinue").textContent = "Continuer";
+    $("obligContinue").textContent = "Nouvelle situation";
+
+    clearStepButtonClasses();
+
+    setActiveStep(1);
+    setLayoutForStep(1);
+  }
+
+  function buildDealRow(){
+    const row = $("dealRow");
+    if(!row) return;
+
+    row.innerHTML = "";
+
+    const total = 12;
+    const rowW = row.clientWidth || 960;
+    const cardW = window.innerWidth <= 520 ? 68 : (window.innerWidth <= 980 ? 82 : 92);
+    const usableW = Math.max(cardW, rowW - 40);
+    const maxSpread = Math.min(usableW - cardW, (total - 1) * (cardW * .92));
+    const stepX = maxSpread / (total - 1);
+    const startX = Math.max(0, (rowW - (maxSpread + cardW)) / 2);
+
+    for(let i = 0; i < total; i++){
+      const d = document.createElement("div");
+      d.className = "dealCard";
+      d.style.width = `${cardW}px`;
+      d.style.left = `${Math.max(0, rowW / 2 - cardW / 2)}px`;
+      d.style.zIndex = String(i + 1);
+
+      const img = document.createElement("img");
+      img.src = IMG.aBack;
+      img.alt = "Dos de carte";
+      d.appendChild(img);
+
+      d.addEventListener("click", () => pickSituation(d));
+
+      row.appendChild(d);
+
+      setTimeout(() => {
+        d.classList.add("ready");
+        d.style.left = `${startX + i * stepX}px`;
+      }, 55 * i);
+    }
+  }
+
+  function pickSituation(cardEl = null){
+    const idx = Math.floor(Math.random() * SITUATIONS.length);
+    state.situationText = SITUATIONS[idx];
+
+    const launchReveal = () => {
+      $("overlayText").textContent = state.situationText;
+      $("logSituationText").textContent = state.situationText;
+      $("logSituation").hidden = false;
+
+      computeCorrectionsFromSituation(state.situationText);
+      showStep(2);
+    };
+
+    if(!cardEl){
+      launchReveal();
+      return;
+    }
+
+    const allCards = Array.from(document.querySelectorAll(".dealCard"));
+
+    allCards.forEach(c => {
+      if(c !== cardEl){
+        c.classList.add("fadeAway");
       }
-
-      function setActiveStep(n){
-        for(let i=1;i<=5;i++) $("step-"+i).classList.remove("active");
-        $("step-"+n).classList.add("active");
-      }
-
-      async function toggleFullscreen(){
-        try{
-          if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
-          else await document.exitFullscreen();
-        }catch(e){ alert("Plein écran indisponible."); }
-      }
-
-      function computeCorrectionsFromSituation(text){
-        const t = (text||"").toLowerCase();
-
-        const v = new Set(["aa"]);
-        if(t.includes("insulte") || t.includes("nul") || t.includes("ridicul") || t.includes("humili") || t.includes("moque")){
-          v.add("vp"); v.add("hum");
-        }
-        if(t.includes("réguli") || t.includes("souvent") || t.includes("répét")){
-          v.add("hm");
-        }
-        if(t.includes("menace") || t.includes("si tu parles") || t.includes("peur") || t.includes("détruis le club")){
-          v.add("int");
-        }
-        if(t.includes("douleur") || t.includes("bouscule") || t.includes("touche") || t.includes("douloureux")){
-          v.add("phys");
-        }
-        if(t.includes("corps") || t.includes("se changer") || t.includes("vestiaire") || t.includes("messages privés") || t.includes("messages")){
-          v.add("hs");
-        }
-        if(t.includes("continuer malgré") || t.includes("simules") || t.includes("mise en danger")){
-          v.add("neg");
-        }
-
-        /* ✅ Qualification pénale (mise à jour — IDs du PDF) */
-        const p = new Set();
-
-        if(v.has("hm")) p.add("p_hm");
-        if(v.has("hs")) p.add("p_hs");
-        if(v.has("int")) p.add("p_men");
-        if(v.has("phys")) p.add("p_viol");
-        if(v.has("neg")) p.add("p_medang");
-
-        // indices sexualisés/vestiaire/messages => harcèlement sexuel a minima
-        if(t.includes("vestiaire") || t.includes("se changer") || t.includes("corps") || t.includes("messages")){
-          p.add("p_hs");
-        }
-
-        // scénarios d’étouffement / pression pour ne pas parler => non-dénonciation (piste)
-        if(t.includes("détruis le club") || t.includes("ne rien dire") || t.includes("étouffer") || t.includes("couvrir")){
-          p.add("p_nonden");
-        }
-
-        if(p.size === 0) p.add("p_hm");
-
-        const o = new Set(["o_prot","o_ecoute","o_trace","o_orient","o_secret"]);
-        if(v.has("phys") || v.has("hs") || t.includes("secret") || t.includes("menace")) o.add("o_119");
-
-        state.correct.v = v; state.correct.p = p; state.correct.o = o;
-      }
-
-      function resetGame(){
-        state.step = 1;
-        state.dealt = false;
-        state.situationText = "";
-
-        state.selected.v.clear(); state.selected.p.clear(); state.selected.o.clear();
-        state.locked = { v:false, p:false, o:false };
-
-        $("dealRow").innerHTML = "";
-        $("step1").hidden = false;
-        $("reveal").hidden = true;
-
-        $("ui-violences").hidden = true;
-        $("ui-penal").hidden = true;
-        $("ui-oblig").hidden = true;
-        $("ui-conclu").hidden = true;
-
-        $("violChips").hidden = false; $("violCorr").hidden = true; $("violCorr").innerHTML = "";
-        $("penalChips").hidden = false; $("penalCorr").hidden = true; $("penalCorr").innerHTML = "";
-        $("obligChips").hidden = false; $("obligCorr").hidden = true; $("obligCorr").innerHTML = "";
-        $("concluWrap").innerHTML = "";
-
-        ["layerB","layerC","layerD"].forEach(id => { $(id).hidden = true; $(id).innerHTML = ""; });
-
-        $("frontImg").src = IMG.aFront;
-        $("overlayText").textContent = "";
-
-        $("obligContinue").textContent = "Continuer";
-
-        setActiveStep(1);
-      }
-
-      function buildDealRow(){
-        const row = $("dealRow");
-        row.innerHTML = "";
-
-        const total = 16;
-        const rowW = row.clientWidth || 900;
-        const cardW = window.matchMedia("(max-width:520px)").matches ? 52
-                    : window.matchMedia("(max-width:980px)").matches ? 56
-                    : 64;
-
-        const maxSpread = Math.min(rowW - cardW, (total-1) * (cardW * 0.78));
-        const stepX = maxSpread / (total-1);
-
-        const spreadW = maxSpread + cardW;
-        const startX = Math.max(0, (rowW - spreadW) / 2);
-
-        for(let i=0;i<total;i++){
-          const d = document.createElement("div");
-          d.className = "dealCard";
-          d.style.left = "0px";
-          d.style.zIndex = String(i+1);
-
-          const img = document.createElement("img");
-          img.src = IMG.aBack;
-          img.alt = "Dos de carte";
-          d.appendChild(img);
-
-          d.addEventListener("click", () => {
-            if(!d.classList.contains("ready")) return;
-            pickSituation();
-          });
-
-          row.appendChild(d);
-
-          setTimeout(() => {
-            d.classList.add("ready");
-            d.style.left = (startX + i * stepX) + "px";
-          }, 90 * i);
-        }
-        state.dealt = true;
-      }
-
-      function pickSituation(){
-        const idx = Math.floor(Math.random() * SITUATIONS.length);
-        state.situationText = SITUATIONS[idx];
-
-        $("frontImg").src = IMG.aFront;
-        $("overlayText").textContent = state.situationText;
-
-        computeCorrectionsFromSituation(state.situationText);
-
-        $("step1").hidden = true;
-        $("reveal").hidden = false;
-        showStep(2);
-      }
-
-      function ensureLayer(elId, imgSrc){
-        const el = $(elId);
-        el.hidden = false;
-        el.innerHTML = "";
-        const img = document.createElement("img");
-        img.src = imgSrc;
-        img.alt = "Carte (dos)";
-        el.appendChild(img);
-      }
-
-      /* ✅ Chips : article affiché + définition en tooltip (title) */
-      function renderChips(containerId, items, selectedSet, selColor, lockedGetter){
-        const wrap = $(containerId);
-        wrap.innerHTML = "";
-        items.forEach(it => {
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "chip";
-          btn.dataset.id = it.id;
-          btn.style.setProperty("--selColor", selColor);
-
-          const span = document.createElement("span");
-          span.className = "label";
-
-          if(it.art){
-            span.textContent = `${it.label} (Art. ${it.art})`;
-          }else{
-            span.textContent = it.label;
-          }
-
-          if(it.desc) btn.title = it.desc;
-
-          btn.appendChild(span);
-
-          btn.addEventListener("click", () => {
-            if(lockedGetter()) return;
-            const on = selectedSet.has(it.id)
-              ? (selectedSet.delete(it.id), false)
-              : (selectedSet.add(it.id), true);
-            btn.classList.toggle("selected", on);
-          });
-
-          wrap.appendChild(btn);
-        });
-      }
-
-      /* ✅ Correction : pour le pénal, on affiche aussi la définition */
-      function buildCorrectionSimple(corrEl, chosenSet, correctSet, items){
-        const chosen = Array.from(chosenSet);
-        const okChosen = chosen.filter(id => correctSet.has(id));
-        const badChosen = chosen.filter(id => !correctSet.has(id));
-        const correctArr = Array.from(correctSet);
-
-        const map = new Map(items.map(x => [x.id, x]));
-        const pills = (ids) => {
-          const w = document.createElement("div");
-          w.style.display = "flex";
-          w.style.flexWrap = "wrap";
-          w.style.gap = "8px";
-          ids.forEach(id => {
-            const it = map.get(id);
-            const s = document.createElement("span");
-            s.style.display="inline-block";
-            s.style.padding="6px 10px";
-            s.style.border="1px solid var(--hair)";
-            s.style.background="rgba(255,255,255,.10)";
-            s.style.fontSize="13px";
-            s.style.color="var(--ink)";
-
-            if(it){
-              const art = it.art ? ` (Art. ${it.art})` : "";
-              const desc = it.desc ? ` — ${it.desc}` : "";
-              s.textContent = `${it.label}${art}${desc}`;
-            }else{
-              s.textContent = id;
-            }
-
-            w.appendChild(s);
-          });
-          return w;
-        };
-
-        corrEl.innerHTML = "";
-
-        if(okChosen.length){
-          const b = document.createElement("div");
-          b.className = "corrBlock";
-          b.innerHTML = `<div class="corrHead"><div class="tag ok">OK</div><div class="h">Choix pertinents</div></div>`;
-          b.appendChild(pills(okChosen));
-          corrEl.appendChild(b);
-        }
-        if(badChosen.length){
-          const b = document.createElement("div");
-          b.className = "corrBlock";
-          b.innerHTML = `<div class="corrHead"><div class="tag rev">À REVOIR</div><div class="h">Choix à discuter / à risque</div></div>`;
-          b.appendChild(pills(badChosen));
-          corrEl.appendChild(b);
-        }
-
-        const bCorr = document.createElement("div");
-        bCorr.className = "corrBlock";
-        bCorr.innerHTML = `<div class="corrHead"><div class="tag corr">CORRECTION</div><div class="h">Correction attendue</div></div>`;
-        bCorr.appendChild(pills(correctArr));
-        corrEl.appendChild(bCorr);
-      }
-
-      function renderConclusion(){
-        const wrap = $("concluWrap");
-        wrap.innerHTML = "";
-
-        const buildIdealBlock = (title, tagTxt, color, correctSet, items) => {
-          const map = new Map(items.map(x => [x.id, x]));
-          const ids = Array.from(correctSet);
-
-          const block = document.createElement("div");
-          block.className = "corrBlock";
-          block.innerHTML = `
-            <div class="corrHead">
-              <div class="tag corr" style="background:${color}">${tagTxt}</div>
-              <div class="h">${title}</div>
-            </div>
-          `;
-
-          const pills = document.createElement("div");
-          pills.style.display = "flex";
-          pills.style.flexWrap = "wrap";
-          pills.style.gap = "8px";
-
-          ids.forEach(id => {
-            const it = map.get(id);
-            const s = document.createElement("span");
-            s.style.display="inline-block";
-            s.style.padding="6px 10px";
-            s.style.border="1px solid var(--hair)";
-            s.style.background="rgba(255,255,255,.10)";
-            s.style.fontSize="13px";
-            s.style.color="var(--ink)";
-
-            const art = it?.art ? ` (Art. ${it.art})` : "";
-            const desc = it?.desc ? ` — ${it.desc}` : "";
-            s.textContent = it ? `${it.label}${art}${desc}` : id;
-
-            pills.appendChild(s);
-          });
-
-          block.appendChild(pills);
-          return block;
-        };
-
-        wrap.appendChild(buildIdealBlock("Type(s) de violences — lecture attendue", "ÉTAPE 2", "var(--c2)", state.correct.v, VIOLENCE_ITEMS));
-        wrap.appendChild(buildIdealBlock("Qualification pénale — pistes possibles", "ÉTAPE 3", "var(--c3)", state.correct.p, PENAL_ITEMS));
-        wrap.appendChild(buildIdealBlock("Obligations & réactions — priorités", "ÉTAPE 4", "var(--c4)", state.correct.o, OBLIG_ITEMS));
-      }
-
-      function showStep(n){
-        state.step = n;
-
-        $("ui-violences").hidden = n !== 2;
-        $("ui-penal").hidden = n !== 3;
-        $("ui-oblig").hidden = n !== 4;
-        $("ui-conclu").hidden = n !== 5;
-
-        setActiveStep(n);
-
-        ["layerB","layerC","layerD"].forEach(id => { $(id).hidden = true; $(id).innerHTML = ""; });
-
-        if(n >= 2) ensureLayer("layerB", IMG.bBack);
-        if(n >= 3) ensureLayer("layerC", IMG.cBack);
-        if(n >= 4) ensureLayer("layerD", IMG.dBack);
-
-        if(n === 5){
-          renderConclusion();
-        }
-
-        if(n === 2){
-          renderChips("violChips", VIOLENCE_ITEMS, state.selected.v, "var(--c2)", () => state.locked.v);
-        }
-        if(n === 3){
-          renderChips("penalChips", PENAL_ITEMS, state.selected.p, "var(--c3)", () => state.locked.p);
-        }
-        if(n === 4){
-          renderChips("obligChips", OBLIG_ITEMS, state.selected.o, "var(--c4)", () => state.locked.o);
-        }
-      }
-
-      function start(){
-        setScreen("game");
-        resetGame();
-        requestAnimationFrame(buildDealRow);
-      }
-
-      $("btn-fs").addEventListener("click", toggleFullscreen);
-      $("btn-start").addEventListener("click", start);
-      $("start-by-card").addEventListener("click", start);
-
-      $("violBack").addEventListener("click", () => { resetGame(); requestAnimationFrame(buildDealRow); });
-      $("violContinue").addEventListener("click", () => {
-        if(!state.locked.v){
-          state.locked.v = true;
-          buildCorrectionSimple($("violCorr"), state.selected.v, state.correct.v, VIOLENCE_ITEMS);
-          $("violChips").hidden = true; $("violCorr").hidden = false;
-          return;
-        }
-        showStep(3);
+    });
+
+    cardEl.classList.add("pick");
+
+    setTimeout(() => {
+      if($("step1Chooser")) $("step1Chooser").hidden = true;
+      launchReveal();
+    }, 650);
+  }
+
+  function ensureLayer(elId, imgSrc){
+    const el = $(elId);
+    el.hidden = false;
+    el.innerHTML = "";
+    const img = document.createElement("img");
+    img.src = imgSrc;
+    img.alt = "Carte (dos)";
+    el.appendChild(img);
+  }
+
+  function renderChips(containerId, items, selectedSet, selColor, lockedGetter){
+    const wrap = $(containerId);
+    wrap.innerHTML = "";
+
+    items.forEach(it => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "chip";
+      btn.dataset.id = it.id;
+      btn.style.setProperty("--selColor", selColor);
+
+      const span = document.createElement("span");
+      span.className = "label";
+      span.textContent = it.art ? `${it.label} (Art. ${it.art})` : it.label;
+
+      if(it.desc) btn.title = it.desc;
+
+      btn.appendChild(span);
+
+      btn.addEventListener("click", () => {
+        if(lockedGetter()) return;
+        const on = selectedSet.has(it.id)
+          ? (selectedSet.delete(it.id), false)
+          : (selectedSet.add(it.id), true);
+        btn.classList.toggle("selected", on);
       });
 
-      $("penalBack").addEventListener("click", () => showStep(2));
-      $("penalContinue").addEventListener("click", () => {
-        if(!state.locked.p){
-          state.locked.p = true;
-          buildCorrectionSimple($("penalCorr"), state.selected.p, state.correct.p, PENAL_ITEMS);
-          $("penalChips").hidden = true; $("penalCorr").hidden = false;
-          return;
+      wrap.appendChild(btn);
+    });
+  }
+
+  function buildCorrectionSimple(corrEl, chosenSet, correctSet, items){
+    const chosen = Array.from(chosenSet);
+    const okChosen = chosen.filter(id => correctSet.has(id));
+    const badChosen = chosen.filter(id => !correctSet.has(id));
+    const correctArr = Array.from(correctSet);
+
+    const map = new Map(items.map(x => [x.id, x]));
+
+    const pills = (ids) => {
+      const w = document.createElement("div");
+      w.style.display = "flex";
+      w.style.flexWrap = "wrap";
+      w.style.gap = "6px";
+
+      ids.forEach(id => {
+        const it = map.get(id);
+        const s = document.createElement("span");
+        s.className = "logPill";
+        if(it){
+          const art = it.art ? ` (Art. ${it.art})` : "";
+          s.textContent = `${it.label}${art}`;
+        } else {
+          s.textContent = id;
         }
-        showStep(4);
+        w.appendChild(s);
       });
 
-      $("obligBack").addEventListener("click", () => showStep(3));
-      $("obligContinue").addEventListener("click", () => {
-        if(!state.locked.o){
-          state.locked.o = true;
-          buildCorrectionSimple($("obligCorr"), state.selected.o, state.correct.o, OBLIG_ITEMS);
-          $("obligChips").hidden = true; $("obligCorr").hidden = false;
-          $("obligContinue").textContent = "Conclusion";
-          return;
-        }
-        showStep(5);
-      });
+      return w;
+    };
 
-      $("concluBack").addEventListener("click", () => showStep(4));
-      $("concluNew").addEventListener("click", () => { resetGame(); requestAnimationFrame(buildDealRow); });
+    corrEl.innerHTML = "";
 
-      let resizeT = null;
-      window.addEventListener("resize", () => {
-        if(resizeT) clearTimeout(resizeT);
-        resizeT = setTimeout(() => {
-          if(!$("screen-game").hidden && state.step === 1 && state.dealt){
-            buildDealRow();
-          }
-        }, 120);
-      });
+    if(okChosen.length){
+      const b = document.createElement("div");
+      b.className = "corrBlock";
+      b.innerHTML = `<div class="corrHead"><div class="tag ok">OK</div><div>Choix pertinents</div></div>`;
+      b.appendChild(pills(okChosen));
+      corrEl.appendChild(b);
+    }
 
-      setScreen("intro");
-      setActiveStep(1);
-    })();
-  </script>
-</body>
-</html>
+    if(badChosen.length){
+      const b = document.createElement("div");
+      b.className = "corrBlock";
+      b.innerHTML = `<div class="corrHead"><div class="tag rev">À REVOIR</div><div>Choix à discuter / à risque</div></div>`;
+      b.appendChild(pills(badChosen));
+      corrEl.appendChild(b);
+    }
+
+    const bCorr = document.createElement("div");
+    bCorr.className = "corrBlock";
+    bCorr.innerHTML = `<div class="corrHead"><div class="tag corr">CORRECTION</div><div>Correction attendue</div></div>`;
+    bCorr.appendChild(pills(correctArr));
+    corrEl.appendChild(bCorr);
+  }
+
+  function showStep(n){
+    state.step = n;
+
+    if($("step1Chooser")) $("step1Chooser").hidden = n !== 1;
+    $("ui-violences").hidden = n !== 2;
+    $("ui-penal").hidden = n !== 3;
+    $("ui-oblig").hidden = n !== 4;
+
+    setActiveStep(n);
+    setLayoutForStep(n);
+    applyStepButtonClasses(n);
+
+    ["layerB","layerC","layerD"].forEach(id => {
+      $(id).hidden = true;
+      $(id).innerHTML = "";
+    });
+
+    if(n >= 2) ensureLayer("layerB", IMG.bBack);
+    if(n >= 3) ensureLayer("layerC", IMG.cBack);
+    if(n >= 4) ensureLayer("layerD", IMG.dBack);
+
+    if(n === 1){
+      requestAnimationFrame(buildDealRow);
+    }
+
+    if(n === 2){
+      renderChips("violChips", VIOLENCE_ITEMS, state.selected.v, "var(--c2)", () => state.locked.v);
+    }
+    if(n === 3){
+      renderChips("penalChips", PENAL_ITEMS, state.selected.p, "var(--c3)", () => state.locked.p);
+    }
+    if(n === 4){
+      renderChips("obligChips", OBLIG_ITEMS, state.selected.o, "var(--c4)", () => state.locked.o);
+    }
+  }
+
+  function start(){
+    setScreen("game");
+    resetGame();
+    showStep(1);
+  }
+
+  $("btn-fs").addEventListener("click", toggleFullscreen);
+  $("btn-start").addEventListener("click", start);
+  $("start-by-card").addEventListener("click", start);
+
+  $("violBack").addEventListener("click", () => {
+    setScreen("intro");
+    resetGame();
+  });
+
+  $("violContinue").addEventListener("click", () => {
+    if(!state.locked.v){
+      state.locked.v = true;
+      buildCorrectionSimple($("violCorr"), state.selected.v, state.correct.v, VIOLENCE_ITEMS);
+      $("violChips").hidden = true;
+      $("violCorr").hidden = false;
+      $("logViol").hidden = false;
+      renderLogPills("logViolPills", labelsFromSet(state.correct.v, MAP_V));
+      $("violContinue").textContent = "Qualification pénale";
+      return;
+    }
+    $("violContinue").textContent = "Continuer";
+    showStep(3);
+  });
+
+  $("penalBack").addEventListener("click", () => {
+    showStep(2);
+  });
+
+  $("penalContinue").addEventListener("click", () => {
+    if(!state.locked.p){
+      state.locked.p = true;
+      buildCorrectionSimple($("penalCorr"), state.selected.p, state.correct.p, PENAL_ITEMS);
+      $("penalChips").hidden = true;
+      $("penalCorr").hidden = false;
+      $("logPenal").hidden = false;
+      renderLogPills("logPenalPills", labelsFromSet(state.correct.p, MAP_P));
+      $("penalContinue").textContent = "Obligations";
+      return;
+    }
+    $("penalContinue").textContent = "Continuer";
+    showStep(4);
+  });
+
+  $("obligBack").addEventListener("click", () => {
+    showStep(3);
+  });
+
+  $("obligContinue").addEventListener("click", () => {
+    if(!state.locked.o){
+      state.locked.o = true;
+      buildCorrectionSimple($("obligCorr"), state.selected.o, state.correct.o, OBLIG_ITEMS);
+      $("obligChips").hidden = true;
+      $("obligCorr").hidden = false;
+      $("logOblig").hidden = false;
+      renderLogPills("logObligPills", labelsFromSet(state.correct.o, MAP_O));
+      $("obligContinue").textContent = "Nouvelle situation";
+      return;
+    }
+    start();
+  });
+
+  window.addEventListener("resize", () => {
+    if(state.step === 1 && !$("screen-game").hidden){
+      buildDealRow();
+    }
+  });
+
+  setScreen("intro");
+  setActiveStep(1);
+})();
+style.css
+:root{
+  --bg:#9ecbd9;
+
+  --ink:#ffffff;
+  --muted:rgba(255,255,255,.78);
+  --hair:rgba(255,255,255,.28);
+
+  --pad:26px;
+  --school:"Schoolbell", cursive;
+
+  --c1:#275c6d;
+  --c2:#33a0a2;
+  --c3:#d5b11c;
+  --c4:#c57e31;
+
+  --ok:#1f8a5b;
+  --rev:#de5103;
+  --corr:#275e72;
+
+  --tiltA:-2.2deg;
+
+  --logoH:84px;
+  --angeH:120px;
+
+  --boardRadius: 28px;
+  --lift: -18px;
+
+  --boardStroke: 0 0 0 0px rgba(255,255,255,.14);
+  --boardShadow2: 0 20px 18px rgba(0,0,0,.22);
+  --boardShadow1: -8px 14px 26px rgba(0,0,0,.84);
+
+  --leftColW: 410px;
+  --gapCols: 26px;
+
+  --stackScale: .30;
+  --stackX: 76px;
+  --stackY: 6px;
+
+  --fan2Rot:-12deg; --fan2X:  8px; --fan2Y: 10px;
+  --fan3Rot: -7deg; --fan3X: 14px; --fan3Y:  2px;
+  --fan4Rot: -3deg; --fan4X: 20px; --fan4Y: -6px;
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+body{
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow:hidden;
+  min-height:100vh;
+  display:grid;
+  place-items:center;
+}
+
+.outer{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.app{
+  width:auto;
+  height:auto;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.board{
+  width:1100px;
+  height:820px;
+  border-radius: var(--boardRadius);
+  overflow:hidden;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  background:
+    url("https://avantpost-cpu.github.io/depot-quiz/cartes/tapis.png")
+    center center / 120% no-repeat;
+  box-shadow: var(--boardStroke), var(--boardShadow2), var(--boardShadow1);
+}
+
+.top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding: calc(var(--pad) + 6px) var(--pad) 0;
+  transform: translateY(var(--lift));
+}
+
+.brand img{
+  display:block;
+  height:var(--logoH);
+  width:auto;
+  object-fit:contain;
+}
+
+.mid-ange{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex:1 1 auto;
+  min-width:0;
+  padding:0 10px;
+}
+
+.mid-ange img{
+  display:block;
+  height:var(--angeH);
+  width:auto;
+  object-fit:contain;
+  max-width:100%;
+}
+
+.fsBtn{
+  appearance:none;
+  border:1px solid var(--hair);
+  background:transparent;
+  padding:8px 10px;
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:11px;
+  cursor:pointer;
+  transition: transform .16s ease, border-color .16s ease;
+  white-space:nowrap;
+  color: var(--ink);
+}
+
+.fsBtn:hover{
+  border-color: rgba(255,255,255,.45);
+  transform: translateY(-1px);
+}
+
+.steps{
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap:14px;
+  padding:12px var(--pad) 16px;
+  border-top:1px solid var(--hair);
+  border-bottom:1px solid var(--hair);
+  margin:10px var(--pad) 0;
+  position:relative;
+  z-index:20;
+  transform: translateY(var(--lift));
+}
+
+.stepTop{
+  display:flex;
+  gap:10px;
+  align-items:baseline;
+  line-height:1.1;
+  user-select:none;
+}
+
+.step .n{
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:.02em;
+  color:var(--muted);
+  min-width:14px;
+}
+
+.step .t{
+  font-size:12.5px;
+  letter-spacing:.01em;
+  position:relative;
+  display:inline-block;
+  padding:6px 10px;
+  z-index:1;
+  color:var(--ink);
+  transition:color .2s ease;
+}
+
+.step .t::before{
+  content:"";
+  position:absolute;
+  left:-6px; right:-6px;
+  top:-6px; bottom:-6px;
+  background:transparent;
+  z-index:-1;
+  transition:background .22s ease;
+}
+
+.step.active .t{ color:#fff; }
+.step[data-step="1"].active .t::before{ background: var(--c1); }
+.step[data-step="2"].active .t::before{ background: var(--c2); }
+.step[data-step="3"].active .t::before{ background: var(--c3); }
+.step[data-step="4"].active .t::before{ background: var(--c4); }
+
+.content{
+  flex:1;
+  overflow:hidden;
+  padding:0 var(--pad) var(--pad);
+  position:relative;
+  z-index:10;
+  display:flex;
+  flex-direction:column;
+  transform: translateY(var(--lift));
+}
+
+.panel{
+  padding:0;
+  margin-top:10px;
+  height:100%;
+}
+
+h2{
+  font-size:16px;
+  letter-spacing:.02em;
+  font-weight:750;
+  margin-bottom:10px;
+  color:var(--ink);
+}
+
+.hint{
+  font-size:13.5px;
+  line-height:1.55;
+  color:var(--muted);
+  max-width:78ch;
+}
+
+.hint b{ color:var(--ink); }
+
+.rappel{
+  margin-top:14px;
+  padding-left:14px;
+  border-left:1px solid var(--hair);
+}
+
+.rappel .label{
+  font-weight:800;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:11px;
+  color:var(--ink);
+  margin-bottom:8px;
+}
+
+.rappel .txt{
+  font-size:15px;
+  line-height:1.55;
+  color:var(--ink);
+  max-width:78ch;
+}
+
+button{
+  appearance:none;
+  border:1px solid var(--hair);
+  background: rgba(255,255,255,.06);
+  color:var(--ink);
+  padding:9px 12px;
+  font-weight:750;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  font-size:11px;
+  cursor:pointer;
+  transition:
+    border-color .16s ease,
+    transform .16s ease,
+    opacity .16s ease,
+    background-color .16s ease,
+    color .16s ease,
+    box-shadow .16s ease;
+  backdrop-filter: blur(2px);
+}
+
+button:hover{
+  border-color: rgba(255,255,255,.45);
+  transform: translateY(-1px);
+}
+
+button:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+  transform:none;
+}
+
+/* BOUTONS ULTRA CLEAN PAR ÉTAPE */
+.btn-step2{
+  background: var(--c2);
+  border-color: var(--c2);
+  color:#fff;
+  box-shadow: 0 6px 14px rgba(0,0,0,.10);
+}
+.btn-step2:hover{
+  background:#2b8f91;
+  border-color:#2b8f91;
+}
+
+.btn-step3{
+  background: var(--c3);
+  border-color: var(--c3);
+  color:#fff;
+  box-shadow: 0 6px 14px rgba(0,0,0,.10);
+}
+.btn-step3:hover{
+  background:#caa513;
+  border-color:#caa513;
+}
+
+.btn-step4{
+  background: var(--c4);
+  border-color: var(--c4);
+  color:#fff;
+  box-shadow: 0 6px 14px rgba(0,0,0,.10);
+}
+.btn-step4:hover{
+  background:#b96f28;
+  border-color:#b96f28;
+}
+
+/* Version plus discrète pour les boutons "Retour" */
+.btn-back-step2{
+  background: color-mix(in srgb, var(--c2) 24%, transparent);
+  border-color: color-mix(in srgb, var(--c2) 70%, white 30%);
+  color:#fff;
+}
+.btn-back-step2:hover{
+  background: color-mix(in srgb, var(--c2) 40%, transparent);
+  border-color: var(--c2);
+}
+
+.btn-back-step3{
+  background: color-mix(in srgb, var(--c3) 24%, transparent);
+  border-color: color-mix(in srgb, var(--c3) 70%, white 30%);
+  color:#fff;
+}
+.btn-back-step3:hover{
+  background: color-mix(in srgb, var(--c3) 40%, transparent);
+  border-color: var(--c3);
+}
+
+.btn-back-step4{
+  background: color-mix(in srgb, var(--c4) 24%, transparent);
+  border-color: color-mix(in srgb, var(--c4) 70%, white 30%);
+  color:#fff;
+}
+.btn-back-step4:hover{
+  background: color-mix(in srgb, var(--c4) 40%, transparent);
+  border-color: var(--c4);
+}
+
+.navBar{
+  width:min(520px, 100%);
+  display:flex;
+  justify-content:flex-start;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.navBar.start{
+  justify-content:center;
+  width:min(820px, 100%);
+  margin-top:16px;
+}
+
+.backs{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap:12px;
+  align-items:start;
+}
+
+.back{
+  width:100%;
+  aspect-ratio:3 / 4;
+  transform: rotate(-2.2deg);
+  transform-origin:0% 100%;
+  transition: transform .22s ease;
+  cursor:pointer;
+}
+
+.back img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.back:hover{
+  transform: rotate(-2.2deg) translateY(-2px);
+}
+
+.gameLayout{
+  width:100%;
+  height:100%;
+  display:grid;
+  grid-template-columns: var(--leftColW) 1fr;
+  gap:var(--gapCols);
+  align-items:start;
+  overflow:hidden;
+  transition: grid-template-columns .25s ease, gap .25s ease;
+}
+
+.gameLayout.step1Mode{
+  grid-template-columns: 1fr;
+  gap:0;
+}
+
+.gameLayout.step1Mode .leftRail{
+  display:none;
+}
+
+.gameLayout.step1Mode .rightStage{
+  width:100%;
+  align-items:center;
+  justify-content:flex-start;
+  padding-right:0;
+  overflow:visible;
+}
+
+.gameLayout.step1Mode #step1Chooser{
+  width:100%;
+  max-width:none;
+  display:flex !important;
+  flex-direction:column;
+  align-items:center;
+}
+
+.gameLayout.step1Mode #step1Chooser .sectionHeader{
+  width:100%;
+  max-width:none;
+  justify-content:center;
+  text-align:center;
+  margin-bottom:4px;
+}
+
+.gameLayout.step1Mode #step1Chooser .sectionHeader > div{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.leftRail{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  height:100%;
+  overflow:hidden;
+  padding-top:0;
+}
+
+.stackClip{
+  position:relative;
+  width:100%;
+  height:220px;
+  overflow:visible;
+  border-radius:18px;
+  flex:0 0 auto;
+}
+
+.stackInner{
+  position:absolute;
+  left:0;
+  top:0;
+  width:330px;
+  aspect-ratio:3 / 4;
+  transform:
+    translateX(var(--stackX))
+    translateY(var(--stackY))
+    scale(var(--stackScale));
+  transform-origin:0% 0%;
+}
+
+.cardLayer{
+  position:absolute;
+  inset:0;
+  transform-origin:0% 100%;
+  pointer-events:none;
+  overflow:visible;
+  filter: drop-shadow(0 18px 18px rgba(0,0,0,.22));
+}
+
+.cardLayer img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.layerA{ transform: rotate(-2.2deg) translate(6px, 8px); }
+.layerFan2{ transform: rotate(var(--fan2Rot)) translate(var(--fan2X), var(--fan2Y)); }
+.layerFan3{ transform: rotate(var(--fan3Rot)) translate(var(--fan3X), var(--fan3Y)); }
+.layerFan4{ transform: rotate(var(--fan4Rot)) translate(var(--fan4X), var(--fan4Y)); }
+
+.cardOverlay{
+  position:absolute;
+  inset: 18% 15% 18% 15%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  pointer-events:none;
+  overflow:hidden;
+}
+
+.cardOverlay .txt{
+  font-family: var(--school);
+  font-size: clamp(10px, 1.05vw, 13px);
+  line-height: 1.06;
+  color:#426576;
+  font-weight:400;
+  white-space:pre-wrap;
+  text-shadow: 0 1px 0 rgba(0,0,0,.16);
+  width:100%;
+  max-width:100%;
+  overflow-wrap:anywhere;
+  word-break:break-word;
+  hyphens:auto;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp: 14;
+  -webkit-box-orient: vertical;
+}
+
+.leftLog{
+  min-height:0;
+  overflow:auto;
+  padding-right:6px;
+  margin-top:-80px;
+}
+
+.leftLog::-webkit-scrollbar{ width:8px; }
+.leftLog::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,.18);
+  border-radius:20px;
+}
+
+.logBlock{
+  border-top:1px solid var(--hair);
+  padding-top:8px;
+  margin-top:8px;
+}
+
+#logSituation{
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(255,255,255,.75);
+  border-radius: 14px;
+  padding: 12px 12px 10px;
+  box-shadow: 0 6px 14px rgba(0,0,0,.10);
+}
+
+#logSituation.logBlock{
+  border-top:none;
+  margin-top:8px;
+}
+
+#logSituation .logK{
+  color: var(--c1);
+}
+
+.logBlock.step1{ border-top-color: color-mix(in srgb, var(--c1) 75%, white 25%); }
+.logBlock.step2{ border-top-color: color-mix(in srgb, var(--c2) 75%, white 25%); }
+.logBlock.step3{ border-top-color: color-mix(in srgb, var(--c3) 75%, white 25%); }
+.logBlock.step4{ border-top-color: color-mix(in srgb, var(--c4) 75%, white 25%); }
+
+.logK{
+  font-weight:850;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:10px;
+  margin-bottom:6px;
+}
+
+.logBlock.step1 .logK{ color: var(--c1); }
+.logBlock.step2 .logK{ color: var(--c2); }
+.logBlock.step3 .logK{ color: var(--c3); }
+.logBlock.step4 .logK{ color: var(--c4); }
+
+.logText{
+  font-size:12.8px;
+  line-height:1.38;
+  color:var(--ink);
+}
+
+#logSituation .logText{
+  color:#244957;
+}
+
+.logPills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:6px;
+}
+
+.logPill{
+  display:inline-block;
+  padding:4px 8px;
+  border:1px solid var(--hair);
+  background:rgba(255,255,255,.10);
+  font-size:11.5px;
+  line-height:1.18;
+  color:var(--ink);
+}
+
+.logBlock.step1 .logPill{ border-color: color-mix(in srgb, var(--c1) 70%, white 30%); }
+.logBlock.step2 .logPill{ border-color: color-mix(in srgb, var(--c2) 70%, white 30%); }
+.logBlock.step3 .logPill{ border-color: color-mix(in srgb, var(--c3) 70%, white 30%); }
+.logBlock.step4 .logPill{ border-color: color-mix(in srgb, var(--c4) 70%, white 30%); }
+
+.rightStage{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  overflow:auto;
+  padding-right:6px;
+}
+
+.rightStage::-webkit-scrollbar{ width:8px; }
+.rightStage::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,.18);
+  border-radius:20px;
+}
+
+.sectionHeader{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  max-width:78ch;
+}
+
+.sectionHeader img{
+  width:48px;
+  height:auto;
+  object-fit:contain;
+  transform: rotate(-2.2deg);
+  transform-origin:0% 100%;
+  flex:0 0 auto;
+}
+
+.sectionK{
+  font-weight:850;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:10px;
+  line-height:1.2;
+  color:var(--muted);
+  margin-top:4px;
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+}
+
+.sectionPrompt{
+  font-weight:800;
+  letter-spacing:.01em;
+  font-size:16px;
+  line-height:1.25;
+  color:var(--ink);
+  margin-top:1px;
+  max-width:72ch;
+}
+
+.chips{
+  margin-top:0;
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:8px;
+  width:min(560px, 100%);
+}
+
+.chip{
+  appearance:none;
+  border:1px solid var(--hair);
+  background: rgba(255,255,255,.06);
+  padding:4px;
+  cursor:pointer;
+  text-align:left;
+  position:relative;
+  backdrop-filter: blur(2px);
+  min-height:0;
+}
+
+.chip .label{
+  position:relative;
+  display:block;
+  padding:8px 9px;
+  z-index:1;
+  color:var(--ink);
+  transition: color .18s ease;
+  font-weight:750;
+  line-height:1.18;
+  text-transform:none;
+  letter-spacing:0;
+  font-size:12.6px;
+}
+
+.chip .label::before{
+  content:"";
+  position:absolute;
+  left:2px; right:2px;
+  top:2px; bottom:2px;
+  background:transparent;
+  z-index:-1;
+  transition: background .18s ease;
+}
+
+.chip.selected .label{ color:#fff; }
+.chip.selected .label::before{ background: var(--selColor); }
+
+.corrWrap{
+  width:min(560px, 100%);
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-top:2px;
+  overflow:hidden;
+}
+
+.corrBlock{
+  border-top:1px solid var(--hair);
+  padding-top:8px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+
+.corrHead{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  color:var(--ink);
+  font-size:12px;
+  line-height:1.2;
+}
+
+.tag{
+  display:inline-block;
+  padding:5px 8px;
+  font-weight:900;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  font-size:10px;
+  color:#fff;
+  line-height:1;
+}
+
+.tag.ok{ background:#1f8a5b; }
+.tag.rev{ background:#d07a1d; }
+.tag.corr{ background:var(--corr); }
+
+.dealRow{
+  margin-top:14px;
+  position:relative;
+  width:100%;
+  max-width:none;
+  height:220px;
+  overflow:visible;
+}
+
+.dealCard{
+  position:absolute;
+  top:18px;
+  width:92px;
+  aspect-ratio:3/4;
+  transform: rotate(-2deg) translateY(18px) scale(.96);
+  transform-origin:50% 100%;
+  opacity:0;
+  cursor:pointer;
+  transition:
+    left .42s ease,
+    top .28s ease,
+    transform .22s ease,
+    opacity .22s ease,
+    filter .22s ease;
+  filter: drop-shadow(0 10px 12px rgba(0,0,0,.18));
+  pointer-events:none;
+}
+
+.dealCard.ready{
+  opacity:1;
+  pointer-events:auto;
+}
+
+.dealCard:hover{
+  transform: rotate(-2deg) translateY(12px) scale(1);
+}
+
+.dealCard img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+.dealCard.pick{
+  z-index:50 !important;
+  top:-6px !important;
+  transform: rotate(1deg) translateY(-28px) scale(1.14);
+  filter: drop-shadow(0 18px 18px rgba(0,0,0,.28));
+}
+
+.dealCard.fadeAway{
+  opacity:0 !important;
+  transform: translateY(30px) scale(.92) rotate(-4deg);
+  pointer-events:none;
+}
+
+@media (max-width: 980px){
+  :root{
+    --lift:-14px;
+    --leftColW: 1fr;
+    --gapCols:14px;
+    --stackX:32px;
+  }
+
+  .steps{ grid-template-columns:1fr; gap:10px; }
+  .backs{ grid-template-columns:1fr 1fr; }
+  .gameLayout{ grid-template-columns:1fr; }
+  .chips{ grid-template-columns:1fr; }
+  .stackClip{ height:200px; }
+  .cardOverlay .txt{ font-size:11px; }
+  .leftLog{ margin-top:-6px; }
+  .dealRow{ height:200px; }
+  .dealCard{ width:82px; }
+}
+
+@media (max-width: 520px){
+  :root{
+    --lift:-10px;
+    --stackX:12px;
+  }
+
+  .backs{ grid-template-columns:1fr; }
+  .brand img{ height:72px; }
+  .mid-ange img{ height:78px; }
+  .sectionHeader img{ width:44px; }
+  .sectionPrompt{ font-size:15px; }
+  .stackClip{ height:180px; }
+  .cardOverlay .txt{ font-size:10px; }
+  .dealRow{ height:180px; }
+  .dealCard{ width:68px; }
+}
+
+[hidden]{ display:none !important; }

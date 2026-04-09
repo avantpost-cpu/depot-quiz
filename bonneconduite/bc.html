@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La bonne conduite — Jeu interactif</title>
+
+  <style>
+    :root{
+      --bg:#efefea;
+      --ink:#173742;
+      --good:#3aaa62;
+      --bad:#e14d45;
+      --card-w:min(19vw, 230px);
+      --card-h:calc(var(--card-w) * 1.45);
+      --deck-w:min(18vw, 220px);
+      --deck-h:calc(var(--deck-w) * .72);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      overflow:hidden;
+    }
+
+    .app{
+      width:100vw;
+      height:100vh;
+      position:relative;
+      overflow:hidden;
+      background:#f3f3f0;
+    }
+
+    .hud{
+      position:absolute;
+      top:18px;
+      right:18px;
+      z-index:80;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      max-width:min(46vw, 560px);
+    }
+
+    .pill{
+      padding:10px 14px;
+      border-radius:999px;
+      background:rgba(255,255,255,.94);
+      border:1px solid rgba(0,0,0,.08);
+      box-shadow:none;
+      font-size:14px;
+      font-weight:800;
+      white-space:nowrap;
+    }
+
+    .board-wrap{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      padding:18px;
+    }
+
+    .board{
+      position:relative;
+      width:min(96vw, 1400px);
+      aspect-ratio:64 / 33;
+      background-image:url('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/Montage_format-64x33_Jeu-web.jpg');
+      background-size:contain;
+      background-position:center;
+      background-repeat:no-repeat;
+    }
+
+    .drop-target,
+    .slot,
+    .deck-zone{
+      position:absolute;
+      border-radius:22px;
+    }
+
+    .drop-target{z-index:5}
+    .drop-target.hovered{
+      outline:4px dashed rgba(255,255,255,.75);
+      outline-offset:6px;
+      background:rgba(255,255,255,.08);
+    }
+
+    /* zones des trois panneaux */
+    .drop-target[data-color="green"]{left:18.3%; top:25.8%; width:15.2%; height:25.5%;}
+    .drop-target[data-color="orange"]{left:42.8%; top:25.5%; width:14.8%; height:25.8%;}
+    .drop-target[data-color="red"]{left:67.3%; top:25.2%; width:15.5%; height:26%;}
+
+    /* zones des cartes du bas */
+    .slot.good{position:absolute; left:16.1%; top:78.5%; width:16.6%; height:12.3%; z-index:4;}
+    .slot.bad{position:absolute; left:68.5%; top:78.5%; width:16.6%; height:12.3%; z-index:4;}
+
+    .deck-zone{
+      left:41.85%;
+      top:78.45%;
+      width:16.8%;
+      height:12.4%;
+      z-index:25;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .deck-button{
+      width:100%;
+      height:100%;
+      border:none;
+      background:transparent;
+      border-radius:22px;
+      cursor:pointer;
+      position:absolute;
+      inset:0;
+      z-index:40;
+    }
+
+    .deck-button:disabled{cursor:default}
+
+    .deck-back{
+      position:absolute;
+      width:var(--deck-w);
+      height:var(--deck-h);
+      background-image:url('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/dos.png');
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      z-index:28;
+      transform:rotate(0deg);
+      border-radius:14px;
+      border-radius:14px;
+      transition:transform .42s cubic-bezier(.2,.75,.2,1), opacity .2s ease;
+      pointer-events:none;
+    }
+
+    .deck-back.spin-out{
+      transform:rotate(90deg) scale(1.02);
+      opacity:0;
+    }
+
+    .card{
+      position:absolute;
+      width:var(--card-w);
+      height:var(--card-h);
+      z-index:50;
+      display:block;
+      touch-action:none;
+      user-select:none;
+      pointer-events:none;
+      opacity:0;
+      transform:rotate(90deg) scale(.92);
+      transform-origin:center center;
+      transition:opacity .12s ease, transform .52s cubic-bezier(.2,.75,.2,1), left .25s ease, top .25s ease;
+      perspective:1400px;
+    }
+
+    .card.visible{
+      opacity:1;
+      transform:rotate(0deg) scale(1);
+    }
+
+    .card.flipping .card-inner{
+      transform:rotateY(180deg);
+    }
+
+    .card.draggable{cursor:grab}
+    .card.dragging{cursor:grabbing; z-index:95; transition:none}
+
+    .card-inner{
+      position:absolute;
+      inset:0;
+      filter:drop-shadow(0 18px 26px rgba(0,0,0,.24));
+      transform-style:preserve-3d;
+      transition:transform .52s cubic-bezier(.2,.75,.2,1);
+    }
+
+    .card-face{
+      position:absolute;
+      inset:0;
+      border-radius:18px;
+      overflow:hidden;
+      backface-visibility:hidden;
+      -webkit-backface-visibility:hidden;
+    }
+
+    .card-back-face{
+      background-image:url('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/dos.png');
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      transform:rotateY(0deg);
+    }
+
+    .card-front{
+      background-image:url('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/recto.png');
+      background-size:cover;
+      background-position:center;
+      border:none;
+      padding:14px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .mini-top{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:8px;
+      opacity:.95;
+    }
+
+    .mini{
+      border-radius:12px;
+      padding:8px 4px;
+      text-align:center;
+      font-size:10px;
+      font-weight:900;
+      line-height:1.05;
+      color:#fff;
+    }
+
+    .mini.green{background:#36b55c}
+    .mini.orange{background:#f0a133}
+    .mini.red{background:#e74747}
+    .mini span{display:block; font-size:18px; margin-bottom:3px}
+
+    .label{
+      font-size:11px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:#52707a;
+      margin-top:2px;
+    }
+
+    .situation{
+      flex:1;
+      border-radius:14px;
+      background:rgba(238,247,250,.92);
+      border:1px solid #d7ebf1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      padding:14px;
+      font-size:clamp(13px, 1.16vw, 20px);
+      line-height:1.16;
+      font-weight:900;
+      letter-spacing:-.02em;
+    }
+
+    .drag-note{
+      text-align:center;
+      font-size:12px;
+      color:#6a8790;
+      font-weight:800;
+    }
+
+    .ghost-card{
+      position:absolute;
+      width:var(--card-w);
+      height:var(--card-h);
+      border-radius:18px;
+      border:2px dashed rgba(255,255,255,.8);
+      background:rgba(255,255,255,.18);
+      display:none;
+      z-index:20;
+      pointer-events:none;
+    }
+
+    .ghost-card.show{display:block}
+
+    .feedback{
+      position:absolute;
+      left:50%;
+      bottom:16px;
+      transform:translateX(-50%);
+      z-index:85;
+      padding:10px 16px;
+      border-radius:999px;
+      background:rgba(255,255,255,.94);
+      border:1px solid rgba(0,0,0,.08);
+      box-shadow:none;
+      font-size:14px;
+      font-weight:900;
+      min-width:220px;
+      text-align:center;
+    }
+
+    .feedback.good{color:var(--good)}
+    .feedback.bad{color:var(--bad)}
+
+    .controls{
+      position:absolute;
+      left:18px;
+      bottom:18px;
+      z-index:85;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    button.ui{
+      border:none;
+      background:rgba(255,255,255,.94);
+      color:var(--ink);
+      border-radius:999px;
+      padding:12px 18px;
+      font-weight:900;
+      box-shadow:0 8px 24px rgba(0,0,0,.14);
+      cursor:pointer;
+    }
+
+    button.ui.primary{background:#1b7f8f; color:#fff}
+    button.ui:disabled{opacity:.45; cursor:not-allowed}
+
+    .placed-card{
+      position:absolute;
+      width:16.8%;
+      aspect-ratio:1.45 / 1;
+      background:linear-gradient(180deg, #ffffff 0%, #f7fbfc 100%);
+      border:2px solid rgba(23,55,66,.1);
+      border-radius:16px;
+      box-shadow:0 10px 24px rgba(0,0,0,.16);
+      padding:10px;
+      overflow:hidden;
+      animation:popIn .25s ease;
+    }
+
+    .placed-card .pc-label{
+      font-size:9px;
+      font-weight:900;
+      text-transform:uppercase;
+      letter-spacing:.08em;
+      color:#6f8a92;
+      margin-bottom:6px;
+    }
+
+    .placed-card .pc-text{
+      font-size:clamp(9px, .9vw, 14px);
+      line-height:1.12;
+      font-weight:900;
+      color:#173742;
+      display:-webkit-box;
+      -webkit-line-clamp:4;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+    }
+
+    @keyframes popIn{
+      from{transform:translateY(10px) scale(.96); opacity:0}
+      to{transform:translateY(0) scale(1); opacity:1}
+    }
+
+    @keyframes recoil{
+      0%{transform:translateX(0)}
+      40%{transform:translateX(-18px)}
+      100%{transform:translateX(0)}
+    }
+
+    @keyframes shake{
+      0%{transform:translateX(0)}
+      12%{transform:translateX(-10px)}
+      24%{transform:translateX(10px)}
+      36%{transform:translateX(-9px)}
+      48%{transform:translateX(9px)}
+      60%{transform:translateX(-8px)}
+      72%{transform:translateX(8px)}
+      84%{transform:translateX(-4px)}
+      100%{transform:translateX(0)}
+    }
+
+    .card.recoil{animation:recoil .12s ease 2}
+    .card.shake{animation:shake .34s linear 2}
+
+    .end-screen{
+      position:absolute;
+      inset:0;
+      background:rgba(255,255,255,.45);
+      backdrop-filter:blur(4px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:120;
+    }
+
+    .end-screen.show{display:flex}
+
+    .end-box{
+      background:#fff;
+      padding:28px 24px;
+      border-radius:22px;
+      box-shadow:0 16px 38px rgba(0,0,0,.16);
+      text-align:center;
+      width:min(92vw, 520px);
+    }
+
+    .end-box h2{margin:0 0 10px; font-size:34px; line-height:1}
+    .end-box p{margin:0 0 16px; color:#5e7a84; font-weight:600}
+
+    @media (max-width: 900px){
+      :root{
+        --card-w:min(30vw, 230px);
+        --deck-w:min(24vw, 190px);
+      }
+      .hud{max-width:70vw}
+      .feedback{font-size:12px; min-width:unset; width:calc(100% - 36px)}
+    }
+
+    @media (max-width: 700px){
+      body{overflow:auto}
+      .app{min-height:100vh; height:auto}
+      .board-wrap{padding:10px 10px 90px}
+      .board{width:98vw}
+      .hud{top:10px; left:10px; right:10px; max-width:none}
+      .controls{left:10px; right:10px; bottom:10px}
+      .controls button{flex:1}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="hud">
+      <div class="pill">✅ Ça roule : <span id="okCount">0</span></div>
+      <div class="pill">🅿️ Parking : <span id="badCount">0</span></div>
+      <div class="pill">🃏 Restantes : <span id="leftCount">0</span></div>
+    </div>
+
+    <div class="board-wrap">
+      <div class="board" id="board">
+        <div class="drop-target" data-color="green"></div>
+        <div class="drop-target" data-color="orange"></div>
+        <div class="drop-target" data-color="red"></div>
+
+        <div class="slot good" id="goodSlot"></div>
+        <div class="slot bad" id="badSlot"></div>
+
+        <div class="deck-zone" id="deckWrap">
+          <button class="deck-button" id="drawBtn" aria-label="Piocher une carte"></button>
+          <div class="deck-back" id="deckBack"></div>
+
+          <div class="card" id="activeCard">
+            <div class="card-inner">
+              <div class="card-face card-back-face"></div>
+              <div class="card-face card-front">
+
+                </div>
+                <div class="label">Une situation</div>
+                <div class="situation" id="situationText"></div>
+                <div class="drag-note">Glisse la carte sur la bonne couleur.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ghost-card" id="ghostCard"></div>
+        </div>
+
+        <div class="end-screen" id="endScreen">
+          <div class="end-box">
+            <h2>Partie terminée</h2>
+            <p id="endText"></p>
+            <button class="ui primary" id="restartFromEnd">Rejouer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feedback" id="feedback">La carte dos est posée à l’horizontale sur la pioche. Clique dessus pour la faire pivoter et afficher le recto.</div>
+
+    <div class="controls">
+      <button class="ui primary" id="restartBtn">Recommencer</button>
+    </div>
+  </div>
+
+  <script>
+    const BASE_CARDS = [
+      { text: "L'entraîneur félicite calmement un jeune après l'effort.", answer: "green" },
+      { text: "Un adulte insiste pour rester seul avec un mineur dans un vestiaire fermé.", answer: "red" },
+      { text: "Une blague humiliante est répétée devant tout le groupe.", answer: "orange" },
+      { text: "Un parent demande qu'un échange se fasse en présence d'un autre adulte.", answer: "green" },
+      { text: "Un coach touche un jeune sans expliquer le geste ni demander son accord.", answer: "orange" },
+      { text: "On menace un joueur de l'exclure s'il parle de ce qu'il subit.", answer: "red" },
+      { text: "Le club rappelle les règles de respect en début de saison.", answer: "green" },
+      { text: "Des messages tardifs deviennent personnels et insistants.", answer: "orange" },
+      { text: "On oblige un jeune à boire ou à subir un acte humiliant pour intégrer le groupe.", answer: "red" }
+    ];
+
+    const drawBtn = document.getElementById('drawBtn');
+    const deckWrap = document.getElementById('deckWrap');
+    const deckBack = document.getElementById('deckBack');
+    const board = document.getElementById('board');
+    const activeCard = document.getElementById('activeCard');
+    const ghostCard = document.getElementById('ghostCard');
+    const situationText = document.getElementById('situationText');
+    const feedback = document.getElementById('feedback');
+    const restartBtn = document.getElementById('restartBtn');
+    const restartFromEnd = document.getElementById('restartFromEnd');
+    const okCount = document.getElementById('okCount');
+    const badCount = document.getElementById('badCount');
+    const leftCount = document.getElementById('leftCount');
+    const goodSlot = document.getElementById('goodSlot');
+    const badSlot = document.getElementById('badSlot');
+    const choiceTargets = [...document.querySelectorAll('.drop-target')];
+    const endScreen = document.getElementById('endScreen');
+    const endText = document.getElementById('endText');
+
+    let cards = [];
+    let currentIndex = 0;
+    let activeData = null;
+    let isBusy = false;
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let good = 0;
+    let bad = 0;
+
+    function shuffle(arr){
+      const a = [...arr];
+      for(let i = a.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function updateCounters(){
+      okCount.textContent = good;
+      badCount.textContent = bad;
+      leftCount.textContent = Math.max(cards.length - currentIndex - (activeData ? 1 : 0), 0);
+    }
+
+    function placeCardOnDeckHome(){
+      activeCard.style.left = `${(deckWrap.clientWidth - activeCard.offsetWidth) / 2}px`;
+      activeCard.style.top = `${(deckWrap.clientHeight - activeCard.offsetHeight) / 2}px`;
+    }
+
+    function setBackState(){
+      deckBack.style.display = 'block';
+      deckBack.classList.remove('spin-out');
+      activeCard.className = 'card';
+      activeCard.style.pointerEvents = 'none';
+      activeCard.style.opacity = '0';
+      activeCard.style.transform = 'rotate(90deg) scale(.92)';
+      activeCard.style.left = `${(deckWrap.clientWidth - activeCard.offsetWidth) / 2}px`;
+      activeCard.style.top = `${(deckWrap.clientHeight - activeCard.offsetHeight) / 2}px`;
+      activeCard.style.transition = 'opacity .12s ease, transform .52s cubic-bezier(.2,.75,.2,1), left .25s ease, top .25s ease';
+      ghostCard.classList.remove('show');
+      situationText.textContent = '';
+    }
+
+    function resetGame(){
+      cards = shuffle(BASE_CARDS);
+      currentIndex = 0;
+      activeData = null;
+      isBusy = false;
+      isDragging = false;
+      good = 0;
+      bad = 0;
+      [...board.querySelectorAll('.placed-card')].forEach(el => el.remove());
+      feedback.textContent = 'La carte dos est posée à l’horizontale sur la pioche. Clique dessus pour la faire pivoter et afficher le recto.';
+      feedback.className = 'feedback';
+      drawBtn.disabled = false;
+      setBackState();
+      updateCounters();
+      endScreen.classList.remove('show');
+    }
+
+    function drawCard(){
+      if(isBusy || activeData || currentIndex >= cards.length) return;
+      isBusy = true;
+      activeData = cards[currentIndex];
+      situationText.textContent = activeData.text;
+      feedback.textContent = 'La carte pivote, se retourne et le recto apparaît.';
+      feedback.className = 'feedback';
+      drawBtn.disabled = true;
+
+      deckBack.classList.add('spin-out');
+
+      setTimeout(() => {
+        deckBack.style.display = 'none';
+        activeCard.className = 'card visible flipping';
+        activeCard.style.pointerEvents = 'none';
+        activeCard.style.opacity = '1';
+        activeCard.style.transform = 'rotate(0deg) scale(1)';
+        placeCardOnDeckHome();
+      }, 110);
+
+      setTimeout(() => {
+        activeCard.classList.remove('flipping');
+      }, 620);
+
+      setTimeout(() => {
+        activeCard.className = 'card visible draggable';
+        activeCard.style.pointerEvents = 'auto';
+        isBusy = false;
+        feedback.textContent = 'Glisse maintenant le recto vers Vert, Orange ou Rouge.';
+      }, 700);
+
+      updateCounters();
+    }
+
+    function pointerDown(e){
+      if(isBusy || !activeData) return;
+      if(e.button !== undefined && e.button !== 0) return;
+      isDragging = true;
+      activeCard.classList.add('dragging');
+      activeCard.style.transition = 'none';
+
+      const rect = activeCard.getBoundingClientRect();
+      const deckRect = deckWrap.getBoundingClientRect();
+      const pointX = e.touches ? e.touches[0].clientX : e.clientX;
+      const pointY = e.touches ? e.touches[0].clientY : e.clientY;
+      dragOffsetX = pointX - rect.left;
+      dragOffsetY = pointY - rect.top;
+
+      activeCard.style.left = `${rect.left - deckRect.left}px`;
+      activeCard.style.top = `${rect.top - deckRect.top}px`;
+      ghostCard.style.left = activeCard.style.left;
+      ghostCard.style.top = activeCard.style.top;
+      ghostCard.classList.add('show');
+      e.preventDefault();
+    }
+
+    function pointerMove(e){
+      if(!isDragging || !activeData) return;
+      const deckRect = deckWrap.getBoundingClientRect();
+      const pointX = e.touches ? e.touches[0].clientX : e.clientX;
+      const pointY = e.touches ? e.touches[0].clientY : e.clientY;
+      const x = pointX - deckRect.left - dragOffsetX;
+      const y = pointY - deckRect.top - dragOffsetY;
+      activeCard.style.left = `${x}px`;
+      activeCard.style.top = `${y}px`;
+
+      const target = hitTarget(pointX, pointY);
+      choiceTargets.forEach(t => t.classList.toggle('hovered', t === target));
+    }
+
+    function pointerUp(e){
+      if(!isDragging || !activeData) return;
+      isDragging = false;
+      activeCard.classList.remove('dragging');
+      ghostCard.classList.remove('show');
+      const pointX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+      const pointY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+      const target = hitTarget(pointX, pointY);
+      choiceTargets.forEach(t => t.classList.remove('hovered'));
+
+      if(!target){
+        returnCardHome();
+        return;
+      }
+      evaluateChoice(target.dataset.color);
+    }
+
+    function hitTarget(x, y){
+      return choiceTargets.find(target => {
+        const r = target.getBoundingClientRect();
+        return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+      }) || null;
+    }
+
+    function returnCardHome(){
+      activeCard.style.transition = 'left .25s ease, top .25s ease, transform .25s ease';
+      placeCardOnDeckHome();
+      activeCard.style.transform = 'rotate(0deg) scale(1)';
+      feedback.textContent = 'Dépose la carte sur l’une des trois couleurs.';
+      feedback.className = 'feedback';
+    }
+
+    function evaluateChoice(color){
+      if(!activeData || isBusy) return;
+      isBusy = true;
+      const correct = color === activeData.answer;
+      if(correct){
+        feedback.textContent = 'Bonne réponse ! La carte va dans « Ça roule ! ». ';
+        feedback.className = 'feedback good';
+        animateToZone(goodSlot, true);
+      } else {
+        feedback.textContent = 'Ce n’est pas la bonne couleur. La carte recule, se secoue et part au parking.';
+        feedback.className = 'feedback bad';
+        wrongAnimationThenParking();
+      }
+    }
+
+    function wrongAnimationThenParking(){
+      activeCard.classList.remove('recoil','shake');
+      void activeCard.offsetWidth;
+      activeCard.classList.add('recoil');
+      setTimeout(() => activeCard.classList.add('shake'), 160);
+      setTimeout(() => {
+        activeCard.classList.remove('recoil','shake');
+        animateToZone(badSlot, false);
+      }, 820);
+    }
+
+    function animateToZone(zoneEl, isGood){
+      const zoneRect = zoneEl.getBoundingClientRect();
+      const boardRect = board.getBoundingClientRect();
+      const deckRect = deckWrap.getBoundingClientRect();
+      const targetLeftInBoard = (zoneRect.left - boardRect.left) + (zoneRect.width - deckBack.offsetWidth) / 2;
+      const targetTopInBoard = (zoneRect.top - boardRect.top) + (zoneRect.height - deckBack.offsetHeight) / 2;
+      const deckLeftInBoard = deckRect.left - boardRect.left;
+      const deckTopInBoard = deckRect.top - boardRect.top;
+
+      activeCard.style.transition = 'left .48s cubic-bezier(.2,.75,.2,1), top .48s cubic-bezier(.2,.75,.2,1), transform .48s cubic-bezier(.2,.75,.2,1), opacity .18s ease';
+      activeCard.style.left = `${targetLeftInBoard - deckLeftInBoard}px`;
+      activeCard.style.top = `${targetTopInBoard - deckTopInBoard}px`;
+      activeCard.style.transform = 'rotate(0deg) scale(.9)';
+
+      setTimeout(() => {
+        activeCard.style.opacity = '0';
+      }, 360);
+
+      setTimeout(() => {
+        appendBackCard(zoneEl, isGood);
+        finalizeRound(isGood);
+      }, 500);
+    }
+
+    function appendBackCard(zoneEl, isGood){
+      const node = document.createElement('div');
+      node.className = 'deck-back';
+      node.style.position = 'absolute';
+      node.style.width = 'var(--deck-w)';
+      node.style.height = 'var(--deck-h)';
+      node.style.left = `calc(50% - (${getComputedStyle(document.documentElement).getPropertyValue('--deck-w').trim()} / 2))`;
+      node.style.top = `calc(50% - (${getComputedStyle(document.documentElement).getPropertyValue('--deck-h').trim()} / 2))`;
+      node.style.transform = 'rotate(0deg)';
+      node.style.opacity = '1';
+      node.style.transition = 'none';
+      node.style.pointerEvents = 'none';
+      node.style.zIndex = '6';
+      zoneEl.appendChild(node);
+    }
+
+    function finalizeRound(isGood){
+      if(isGood) good += 1;
+      else bad += 1;
+      currentIndex += 1;
+      activeData = null;
+      updateCounters();
+
+      if(currentIndex >= cards.length){
+        drawBtn.disabled = true;
+        setBackState();
+        deckBack.style.display = 'none';
+        feedback.textContent = 'Toutes les cartes ont été jouées.';
+        feedback.className = 'feedback';
+        showEnd();
+      } else {
+        setBackState();
+        drawBtn.disabled = false;
+        feedback.textContent = 'Une nouvelle carte dos est revenue à l’horizontale sur la pioche. Clique dessus pour afficher le recto.';
+        feedback.className = 'feedback';
+      }
+      isBusy = false;
+    }
+
+    function showEnd(){
+      endText.textContent = `Tu as classé ${cards.length} situations : ${good} dans « Ça roule ! » et ${bad} dans « Parking ». `;
+      endScreen.classList.add('show');
+    }
+
+    function escapeHtml(str){
+      return str
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    drawBtn.addEventListener('click', drawCard);
+    restartBtn.addEventListener('click', resetGame);
+    restartFromEnd.addEventListener('click', resetGame);
+    activeCard.addEventListener('mousedown', pointerDown);
+    activeCard.addEventListener('touchstart', pointerDown, { passive:false });
+    window.addEventListener('mousemove', pointerMove);
+    window.addEventListener('touchmove', pointerMove, { passive:false });
+    window.addEventListener('mouseup', pointerUp);
+    window.addEventListener('touchend', pointerUp);
+    window.addEventListener('resize', () => {
+      if(!activeData){
+        setBackState();
+      } else if(!isDragging){
+        placeCardOnDeckHome();
+      }
+    });
+
+    resetGame();
+  </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

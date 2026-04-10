@@ -72,32 +72,6 @@
       opacity:.9;
     }
 
-    .hud{
-      position:absolute;
-      top:18px;
-      left:50%;
-      transform:translateX(-50%);
-      z-index:80;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:center;
-      align-items:center;
-      width:max-content;
-      max-width:min(94vw, 900px);
-    }
-
-    .pill{
-      padding:10px 14px;
-      border-radius:999px;
-      background:rgba(255,255,255,.94);
-      border:1px solid rgba(0,0,0,.08);
-      box-shadow:none;
-      font-size:14px;
-      font-weight:800;
-      white-space:nowrap;
-    }
-
     .board-wrap{
       position:absolute;
       inset:0;
@@ -114,6 +88,56 @@
       background-size:contain;
       background-position:center;
       background-repeat:no-repeat;
+    }
+
+    .hud{
+      position:absolute;
+      top:6%;
+      left:61%;
+      transform:translateX(-50%);
+      z-index:80;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      justify-content:center;
+      padding:6px 10px;
+      border-radius:999px;
+      background:transparent;
+      border:0px solid rgba(255,255,255,.95);
+      width:auto;
+      max-width:min(88%, 700px);
+    }
+
+    .pill{
+      padding:4px 8px;
+      border-radius:999px;
+      background:transparent;
+      border:none;
+      box-shadow:none;
+      font-size:12px;
+      font-weight:800;
+      white-space:nowrap;
+      color:#fff;
+      text-shadow:0 1px 2px rgba(0,0,0,.25);
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .material-symbols-outlined{
+      font-family:'Material Symbols Outlined';
+      font-weight:normal;
+      font-style:normal;
+      font-size:18px;
+      line-height:1;
+      display:inline-block;
+      color:#fff;
+      vertical-align:middle;
+      font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 24;
     }
 
     .drop-target,
@@ -273,6 +297,10 @@
       box-shadow:0 10px 20px rgba(0,0,0,.18);
     }
 
+    .end-screen{
+      display:none !important;
+    }
+
     @keyframes recoil{
       0%{transform:translateX(0)}
       40%{transform:translateX(-18px)}
@@ -289,40 +317,6 @@
       72%{transform:translateX(8px)}
       84%{transform:translateX(-4px)}
       100%{transform:translateX(0)}
-    }
-
-    .end-screen{
-      position:absolute;
-      inset:0;
-      background:rgba(255,255,255,.45);
-      backdrop-filter:blur(4px);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index:120;
-    }
-
-    .end-screen.show{display:flex}
-
-    .end-box{
-      background:#fff;
-      padding:28px 24px;
-      border-radius:22px;
-      box-shadow:0 16px 38px rgba(0,0,0,.16);
-      text-align:center;
-      width:min(92vw, 520px);
-    }
-
-    .end-box h2{
-      margin:0 0 10px;
-      font-size:34px;
-      line-height:1;
-    }
-
-    .end-box p{
-      margin:0 0 16px;
-      color:#5e7a84;
-      font-weight:600;
     }
 
     button.ui{
@@ -353,14 +347,21 @@
       }
 
       .hud{
-        top:10px;
-        gap:8px;
-        max-width:94vw;
+        top:5.2%;
+        left:63%;
+        gap:6px;
+        padding:5px 8px;
+        max-width:90%;
       }
 
       .pill{
-        font-size:12px;
-        padding:8px 12px;
+        font-size:11px;
+        padding:3px 6px;
+        gap:5px;
+      }
+
+      .material-symbols-outlined{
+        font-size:16px;
       }
 
       button.ui{
@@ -385,16 +386,22 @@
       }
 
       .hud{
-        top:6px;
-        left:50%;
+        top:4.8%;
+        left:63%;
         transform:translateX(-50%);
-        gap:6px;
-        max-width:94vw;
+        gap:5px;
+        padding:4px 7px;
+        max-width:90%;
       }
 
       .pill{
-        padding:6px 10px;
-        font-size:11px;
+        padding:2px 5px;
+        font-size:10px;
+        gap:4px;
+      }
+
+      .material-symbols-outlined{
+        font-size:15px;
       }
 
       button.ui{
@@ -409,12 +416,15 @@
 
     @media (max-width: 900px) and (orientation: portrait){
       .rotate-notice{display:flex}
-      .hud,
       .board-wrap,
       .feedback,
       .controls{visibility:hidden}
     }
   </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
 </head>
 <body>
   <div class="app" id="app">
@@ -425,14 +435,25 @@
       </div>
     </div>
 
-    <div class="hud">
-      <div class="pill">✅ Ça roule : <span id="okCount">0</span></div>
-      <div class="pill">🅿️ Parking : <span id="badCount">0</span></div>
-      <div class="pill">🃏 Restantes : <span id="leftCount">0</span></div>
-    </div>
-
     <div class="board-wrap">
       <div class="board" id="board">
+
+        <div class="hud">
+          <div class="pill">
+            <span class="material-symbols-outlined">sports_score</span>
+            <span>Ça roule : <span id="okCount">0</span></span>
+          </div>
+
+          <div class="pill">
+            <span class="material-symbols-outlined">local_parking</span>
+            <span>Parking : <span id="badCount">0</span></span>
+          </div>
+
+          <div class="pill">
+            <span>🃏 Restantes : <span id="leftCount">0</span></span>
+          </div>
+        </div>
+
         <div class="drop-target" data-color="green"></div>
         <div class="drop-target" data-color="orange"></div>
         <div class="drop-target" data-color="red"></div>
@@ -445,19 +466,13 @@
           <div class="deck-back" id="deckBack"></div>
 
           <div class="card" id="activeCard">
-            <img id="cardFrontImg" alt="Carte recto">
+            <img id="cardFrontImg" alt="">
           </div>
 
           <div class="ghost-card" id="ghostCard"></div>
         </div>
 
-        <div class="end-screen" id="endScreen">
-          <div class="end-box">
-            <h2>Partie terminée</h2>
-            <p id="endText"></p>
-            <button class="ui primary" id="restartFromEnd">Rejouer</button>
-          </div>
-        </div>
+        <div class="end-screen" id="endScreen"></div>
       </div>
     </div>
 
@@ -492,7 +507,6 @@
       a.crossOrigin = 'anonymous';
     });
 
-    const app = document.getElementById('app');
     const rotateNotice = document.getElementById('rotateNotice');
     const drawBtn = document.getElementById('drawBtn');
     const deckWrap = document.getElementById('deckWrap');
@@ -502,15 +516,12 @@
     const activeFrontImg = document.getElementById('cardFrontImg');
     const ghostCard = document.getElementById('ghostCard');
     const feedback = document.getElementById('feedback');
-    const restartFromEnd = document.getElementById('restartFromEnd');
     const okCount = document.getElementById('okCount');
     const badCount = document.getElementById('badCount');
     const leftCount = document.getElementById('leftCount');
     const goodSlot = document.getElementById('goodSlot');
     const badSlot = document.getElementById('badSlot');
     const choiceTargets = [...document.querySelectorAll('.drop-target')];
-    const endScreen = document.getElementById('endScreen');
-    const endText = document.getElementById('endText');
 
     let cards = [];
     let currentIndex = 0;
@@ -639,7 +650,6 @@
       drawBtn.disabled = false;
       setBackState();
       updateCounters();
-      endScreen.classList.remove('show');
       updateOrientationUI();
     }
 
@@ -873,7 +883,6 @@
         drawBtn.disabled = true;
         setBackState();
         deckBack.style.display = 'none';
-        showEnd();
       } else {
         setBackState();
         drawBtn.disabled = false;
@@ -882,13 +891,7 @@
       isBusy = false;
     }
 
-    function showEnd(){
-      endText.textContent = `Tu as classé ${cards.length} cartes : ${good} dans « Ça roule ! » et ${bad} dans « Parking ».`;
-      endScreen.classList.add('show');
-    }
-
     drawBtn.addEventListener('click', drawCard);
-    restartFromEnd.addEventListener('click', resetGame);
 
     activeCard.addEventListener('mousedown', pointerDown);
     activeCard.addEventListener('touchstart', pointerDown, { passive:false });

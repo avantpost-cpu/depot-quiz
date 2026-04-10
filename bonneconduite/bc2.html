@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>Untitled</title>
+    
+
+  </head>
+    
+  <body>
+  <!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>La bonne conduite — Jeu interactif</title>
+
+  <style>
+    :root{
+      --bg:#91b8bf;
+      --ink:#173742;
+      --good:#3aaa62;
+      --bad:#e14d45;
+
+      /* recalculés en JS selon la vraie taille du plateau */
+      --card-w:160px;
+      --card-h:232px;
+      --deck-w:190px;
+      --deck-h:137px;
+    }
+
+    *{box-sizing:border-box}
+
+    html,body{
+      height:100%;
+      margin:0;
+      width:100%;
+      overflow:hidden;
+    }
+
+    body{
+      font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+    }
+
+    .app{
+      width:100vw;
+      height:100dvh;
+      position:relative;
+      overflow:hidden;
+      background:var(--bg);
+    }
+
+    @supports not (height: 100dvh){
+      .app{height:100vh}
+    }
+
+    .rotate-notice{
+      position:absolute;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:#173742;
+      color:#fff;
+      z-index:500;
+      padding:24px;
+      text-align:center;
+    }
+
+    .rotate-box{
+      max-width:320px;
+      font-size:clamp(20px, 4vw, 22px);
+      font-weight:800;
+      line-height:1.3;
+    }
+
+    .rotate-sub{
+      margin-top:12px;
+      font-size:clamp(14px, 2.4vw, 15px);
+      font-weight:600;
+      opacity:.9;
+    }
+
+    .board-wrap{
+      position:absolute;
+      inset:0;
+      display:grid;
+      place-items:center;
+      padding:18px;
+    }
+
+    .board{
+      position:relative;
+      width:min(96vw, 1400px);
+      aspect-ratio:64 / 33;
+      background-image:url('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/Montage_format-64x33_Jeu-web.jpg');
+      background-size:contain;
+      background-position:center;
+      background-repeat:no-repeat;
+    }
+
+    .hud{
+      position:absolute;
+      top:6%;
+      left:61%;
+      transform:translateX(-50%);
+      z-index:80;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:center;
+      padding:6px 10px;
+      border-radius:999px;
+      background:transparent;
+      width:auto;
+      max-width:min(88%, 900px);
+      flex-wrap:nowrap;
+    }
+
+    .pill{
+      padding:4px 8px;
+      border-radius:999px;
+      background:transparent;
+      border:none;
+      box-shadow:none;
+      font-size:clamp(12px, 1.1vw, 14px);
+      font-weight:800;
+      line-height:1.1;
+      white-space:nowrap;
+      color:#fff;
+      text-shadow:0 1px 2px rgba(0,0,0,.25);
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .pill span{
+      font-size:inherit;
+      line-height:inherit;
+    }
+
+    .material-symbols-outlined{
+      font-family:'Material Symbols Outlined';
+      font-weight:normal;
+      font-style:normal;
+      font-size:clamp(16px, 1.5vw, 18px);
+      line-height:1;
+      display:inline-block;
+      color:#fff;
+      vertical-align:middle;
+      font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 24;
+      flex:0 0 auto;
+    }
+
+    .drop-target,
+    .slot,
+    .deck-zone{
+      position:absolute;
+      border-radius:22px;
+    }
+
+    .drop-target{z-index:5}
+
+    .drop-target.hovered{
+      outline:4px dashed rgba(255,255,255,.75);
+      outline-offset:6px;
+      background:rgba(255,255,255,.08);
+    }
+
+    .drop-target[data-color="green"]{left:30%; top:25.8%; width:10%; height:28%;}
+    .drop-target[data-color="orange"]{left:46%; top:25.5%; width:10%; height:28%;}
+    .drop-target[data-color="red"]{left:62%; top:25.2%; width:10%; height:28%;}
+
+    .slot.good{
+      left:25%;
+      top:80%;
+      width:16.6%;
+      height:12.3%;
+      z-index:4;
+    }
+
+    .slot.bad{
+      left:59.6%;
+      top:80%;
+      width:14.6%;
+      height:12.3%;
+      z-index:2;
+    }
+
+    .deck-zone{
+      left:41.85%;
+      top:78.45%;
+      width:16.8%;
+      height:12.4%;
+      z-index:25;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .deck-button{
+      width:100%;
+      height:100%;
+      border:none;
+      background:transparent;
+      border-radius:22px;
+      cursor:pointer;
+      position:absolute;
+      inset:0;
+      z-index:40;
+      -webkit-tap-highlight-color:transparent;
+    }
+
+    .deck-button:disabled{cursor:default}
+
+    .deck-back,
+    .deck-stack-card{
+      position:absolute;
+      width:var(--deck-w);
+      height:var(--deck-h);
+      background-image:url('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/dos.png');
+      background-size:cover;
+      background-position:center;
+      background-repeat:no-repeat;
+      border-radius:14px;
+      pointer-events:none;
+    }
+
+    .deck-back{
+      z-index:28;
+      transform:rotate(0deg);
+      transition:transform .35s ease, opacity .2s ease;
+    }
+
+    .deck-back.spin-out{
+      transform:rotate(90deg) scale(1.02);
+      opacity:0;
+    }
+
+    .card{
+      position:absolute;
+      width:var(--card-w);
+      height:var(--card-h);
+      z-index:50;
+      opacity:0;
+      pointer-events:none;
+      transform:rotate(90deg) scale(.92);
+      transform-origin:center center;
+      transition:
+        opacity .12s ease,
+        transform .45s cubic-bezier(.2,.75,.2,1),
+        left .25s ease,
+        top .25s ease;
+      user-select:none;
+      touch-action:none;
+      -webkit-user-select:none;
+    }
+
+    .card.visible{
+      opacity:1;
+      transform:rotate(0deg) scale(1);
+    }
+
+    .card.draggable{cursor:grab}
+    .card.dragging{
+      cursor:grabbing;
+      z-index:95;
+      transition:none;
+    }
+
+    .card.recoil{animation:recoil .12s ease 2}
+    .card.shake{animation:shake .34s linear 2}
+
+    .card img{
+      width:120%;
+      height:120%;
+      object-fit:cover;
+      display:block;
+      border-radius:18px;
+      filter:drop-shadow(0 18px 26px rgba(0,0,0,.24));
+      pointer-events:none;
+    }
+
+    .ghost-card{
+      position:absolute;
+      width:var(--card-w);
+      height:var(--card-h);
+      border-radius:18px;
+      border:2px dashed rgba(255,255,255,.8);
+      background:rgba(255,255,255,.18);
+      display:none;
+      z-index:20;
+      pointer-events:none;
+    }
+
+    .ghost-card.show{display:block}
+
+    .feedback,
+    .controls,
+    .end-screen{
+      display:none !important;
+    }
+
+    .stacked-back{
+      box-shadow:0 10px 20px rgba(0,0,0,.18);
+    }
+
+    @keyframes recoil{
+      0%{transform:translateX(0)}
+      40%{transform:translateX(-18px)}
+      100%{transform:translateX(0)}
+    }
+
+    @keyframes shake{
+      0%{transform:translateX(0)}
+      12%{transform:translateX(-10px)}
+      24%{transform:translateX(10px)}
+      36%{transform:translateX(-9px)}
+      48%{transform:translateX(9px)}
+      60%{transform:translateX(-8px)}
+      72%{transform:translateX(8px)}
+      84%{transform:translateX(-4px)}
+      100%{transform:translateX(0)}
+    }
+
+    button.ui{
+      border:none;
+      background:rgba(255,255,255,.94);
+      color:var(--ink);
+      border-radius:999px;
+      padding:12px 18px;
+      font-weight:900;
+      box-shadow:0 8px 24px rgba(0,0,0,.14);
+      cursor:pointer;
+    }
+
+    button.ui.primary{
+      background:#1b7f8f;
+      color:#fff;
+    }
+
+    button.ui:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+
+    @media (max-width: 900px){
+      .hud{
+        top:5.2%;
+        left:62%;
+        gap:6px;
+        padding:4px 6px;
+        max-width:92%;
+      }
+
+      .pill{
+        font-size:clamp(10px, 1.9vw, 13px);
+        padding:2px 5px;
+        gap:4px;
+      }
+
+      .material-symbols-outlined{
+        font-size:clamp(14px, 2.2vw, 18px);
+      }
+
+      .slot.good{
+        left:25.7%;
+        top:79.6%;
+      }
+
+      .slot.bad{
+        left:59.2%;
+        top:79.6%;
+      }
+
+      .deck-zone{
+        top:78%;
+      }
+    }
+
+    @media (max-width: 900px) and (orientation: landscape){
+      .board-wrap{
+        padding:6px;
+      }
+
+      .board{
+        width:min(100vw, calc(100dvh * (64 / 33)));
+        height:auto;
+      }
+
+      .hud{
+        top:4.8%;
+        left:62%;
+        transform:translateX(-50%);
+      }
+
+      .pill{
+        font-size:clamp(10px, 1.6vw, 12px);
+      }
+
+      .slot.good{
+        left:25.8%;
+        top:79.6%;
+      }
+
+      .slot.bad{
+        left:59.1%;
+        top:79.6%;
+      }
+
+      .deck-zone{
+        top:77.95%;
+      }
+    }
+
+    @media (max-width: 900px) and (orientation: portrait){
+      .rotate-notice{display:flex}
+      .board-wrap,
+      .feedback,
+      .controls{visibility:hidden}
+    }
+  </style>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+</head>
+<body>
+  <div class="app" id="app">
+    <div id="rotateNotice" class="rotate-notice">
+      <div class="rotate-box">
+        Tourne ton téléphone à l’horizontale
+        <div class="rotate-sub">pour jouer en plein écran.</div>
+      </div>
+    </div>
+
+    <div class="board-wrap">
+      <div class="board" id="board">
+
+        <div class="hud">
+          <div class="pill">
+            <span class="material-symbols-outlined">sports_score</span>
+            Ça roule : <span id="okCount">0</span>
+          </div>
+
+          <div class="pill">
+            <span class="material-symbols-outlined">local_parking</span>
+            Parking : <span id="badCount">0</span>
+          </div>
+
+          <div class="pill">
+            🃏 Restantes : <span id="leftCount">0</span>
+          </div>
+        </div>
+
+        <div class="drop-target" data-color="green"></div>
+        <div class="drop-target" data-color="orange"></div>
+        <div class="drop-target" data-color="red"></div>
+
+        <div class="slot good" id="goodSlot"></div>
+        <div class="slot bad" id="badSlot"></div>
+
+        <div class="deck-zone" id="deckWrap">
+          <button class="deck-button" id="drawBtn" aria-label="Piocher une carte"></button>
+          <div class="deck-back" id="deckBack"></div>
+
+          <div class="card" id="activeCard">
+            <img id="cardFrontImg" alt="">
+          </div>
+
+          <div class="ghost-card" id="ghostCard"></div>
+        </div>
+
+        <div class="end-screen" id="endScreen"></div>
+      </div>
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <script>
+    const ANSWER_BY_ID = {
+      14:'green',34:'green',41:'green',52:'green',50:'green',28:'green',3:'green',36:'green',32:'green',16:'green',33:'green',4:'green',48:'green',1:'green',8:'green',45:'green',39:'green',7:'green',57:'green',9:'green',37:'green',
+      10:'orange',12:'orange',60:'orange',5:'orange',18:'orange',13:'orange',30:'orange',23:'orange',29:'orange',55:'orange',21:'orange',59:'orange',26:'orange',43:'orange',2:'orange',38:'orange',42:'orange',24:'orange',
+      35:'red',47:'red',51:'red',49:'red',54:'red',22:'red',31:'red',27:'red',17:'red',20:'red',19:'red',44:'red',6:'red',11:'red',40:'red',46:'red',25:'red',58:'red',15:'red',56:'red',53:'red'
+    };
+
+    const BASE_CARDS = Array.from({ length: 60 }, (_, i) => {
+      const n = i + 1;
+      return {
+        id: n,
+        image: n === 1
+          ? 'https://avantpost-cpu.github.io/depot-quiz/bonneconduite/cartes/Exe_cartes_La%20bonne%20conduite_web.png'
+          : `https://avantpost-cpu.github.io/depot-quiz/bonneconduite/cartes/Exe_cartes_La%20bonne%20conduite_web${n}.png`,
+        answer: ANSWER_BY_ID[n]
+      };
+    });
+
+    const cardFlipSound = new Audio('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/soncarte.mp3');
+    const cardOkSound = new Audio('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/sonok.mp3');
+    const cardFalseSound = new Audio('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/sonfaux.mp3');
+
+    [cardFlipSound, cardOkSound, cardFalseSound].forEach(a => {
+      a.preload = 'auto';
+      a.playsInline = true;
+      a.crossOrigin = 'anonymous';
+    });
+
+    const root = document.documentElement;
+    const rotateNotice = document.getElementById('rotateNotice');
+    const drawBtn = document.getElementById('drawBtn');
+    const deckWrap = document.getElementById('deckWrap');
+    const deckBack = document.getElementById('deckBack');
+    const board = document.getElementById('board');
+    const activeCard = document.getElementById('activeCard');
+    const activeFrontImg = document.getElementById('cardFrontImg');
+    const ghostCard = document.getElementById('ghostCard');
+    const feedback = document.getElementById('feedback');
+    const okCount = document.getElementById('okCount');
+    const badCount = document.getElementById('badCount');
+    const leftCount = document.getElementById('leftCount');
+    const goodSlot = document.getElementById('goodSlot');
+    const badSlot = document.getElementById('badSlot');
+    const choiceTargets = [...document.querySelectorAll('.drop-target')];
+
+    let cards = [];
+    let currentIndex = 0;
+    let activeData = null;
+    let isBusy = false;
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let good = 0;
+    let bad = 0;
+    let audioUnlocked = false;
+
+    function updateBoardScale(){
+      const boardRect = board.getBoundingClientRect();
+      const boardWidth = boardRect.width;
+
+      const cardW = Math.max(92, Math.min(boardWidth * 0.105, 180));
+      const deckW = Math.max(100, Math.min(boardWidth * 0.118, 220));
+
+      root.style.setProperty('--card-w', `${cardW}px`);
+      root.style.setProperty('--card-h', `${cardW * 1.45}px`);
+      root.style.setProperty('--deck-w', `${deckW}px`);
+      root.style.setProperty('--deck-h', `${deckW * 0.72}px`);
+    }
+
+    function setFeedback(text = '', className = 'feedback'){
+      if (!feedback) return;
+      feedback.textContent = text;
+      feedback.className = className;
+    }
+
+    function isMobileLike(){
+      return window.innerWidth <= 900;
+    }
+
+    function isPortrait(){
+      return window.matchMedia('(orientation: portrait)').matches;
+    }
+
+    async function enterFullscreen(){
+      if (!isMobileLike()) return;
+      try{
+        const el = document.documentElement;
+        if (!document.fullscreenElement && el.requestFullscreen) {
+          await el.requestFullscreen();
+        }
+      } catch(e){
+        console.log('Plein écran non activé :', e);
+      }
+    }
+
+    async function unlockAudio(){
+      if (audioUnlocked) return;
+
+      const audios = [cardFlipSound, cardOkSound, cardFalseSound];
+
+      try{
+        for (const a of audios){
+          a.muted = true;
+          a.currentTime = 0;
+          await a.play().catch(() => {});
+          a.pause();
+          a.currentTime = 0;
+          a.muted = false;
+        }
+        audioUnlocked = true;
+      } catch(e){
+        console.log('Déverrouillage audio impossible :', e);
+      }
+    }
+
+    function playSound(audioEl){
+      if (!audioEl) return;
+      const clone = audioEl.cloneNode();
+      clone.volume = 1;
+      clone.playsInline = true;
+      const p = clone.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(err => console.log('Lecture audio impossible :', err));
+      }
+    }
+
+    function playCardFlipSound(){ playSound(cardFlipSound); }
+    function playCardOkSound(){ playSound(cardOkSound); }
+    function playCardFalseSound(){ playSound(cardFalseSound); }
+
+    function updateOrientationUI(){
+      const showRotate = isMobileLike() && isPortrait();
+      rotateNotice.style.display = showRotate ? 'flex' : 'none';
+    }
+
+    function shuffle(arr){
+      const a = [...arr];
+      for(let i = a.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function updateCounters(){
+      okCount.textContent = good;
+      badCount.textContent = bad;
+      leftCount.textContent = Math.max(cards.length - currentIndex - (activeData ? 1 : 0), 0);
+      renderAllStacks();
+    }
+
+    function placeCardOnDeckHome(){
+      const left = (deckWrap.clientWidth - activeCard.offsetWidth) / 2;
+      const top = (deckWrap.clientHeight - activeCard.offsetHeight) / 2 - (activeCard.offsetHeight * 0.12);
+      activeCard.style.left = `${left}px`;
+      activeCard.style.top = `${top}px`;
+    }
+
+    function setBackState(){
+      deckBack.style.display = 'block';
+      deckBack.classList.remove('spin-out');
+      activeCard.className = 'card';
+      activeCard.style.pointerEvents = 'none';
+      activeCard.style.opacity = '0';
+      activeCard.style.transform = 'rotate(90deg) scale(.92)';
+      activeCard.style.transition = 'opacity .12s ease, transform .45s cubic-bezier(.2,.75,.2,1), left .25s ease, top .25s ease';
+      placeCardOnDeckHome();
+      ghostCard.classList.remove('show');
+      activeFrontImg.removeAttribute('src');
+    }
+
+    function resetGame(){
+      cards = shuffle(BASE_CARDS);
+      currentIndex = 0;
+      activeData = null;
+      isBusy = false;
+      isDragging = false;
+      good = 0;
+      bad = 0;
+
+      [...board.querySelectorAll('.stacked-back')].forEach(el => el.remove());
+
+      updateBoardScale();
+      setFeedback();
+      drawBtn.disabled = false;
+      setBackState();
+      updateCounters();
+      updateOrientationUI();
+    }
+
+    async function drawCard(){
+      if(isBusy || activeData || currentIndex >= cards.length) return;
+
+      await unlockAudio();
+      playCardFlipSound();
+      enterFullscreen();
+
+      isBusy = true;
+      activeData = cards[currentIndex];
+
+      activeFrontImg.onload = null;
+      activeFrontImg.onerror = null;
+
+      activeFrontImg.onload = () => {
+        drawBtn.disabled = true;
+        deckBack.classList.add('spin-out');
+
+        setTimeout(() => {
+          deckBack.style.display = 'none';
+          activeCard.className = 'card visible draggable';
+          activeCard.style.pointerEvents = 'auto';
+          activeCard.style.opacity = '1';
+          activeCard.style.transform = 'rotate(0deg) scale(1)';
+          placeCardOnDeckHome();
+          isBusy = false;
+        }, 120);
+
+        updateCounters();
+      };
+
+      activeFrontImg.onerror = () => {
+        console.error('URL en échec :', activeData.image);
+        isBusy = false;
+        activeData = null;
+        drawBtn.disabled = false;
+      };
+
+      activeFrontImg.src = activeData.image;
+    }
+
+    function getPoint(e){
+      return e.touches ? e.touches[0] : e;
+    }
+
+    function pointerDown(e){
+      if(isBusy || !activeData) return;
+      if(e.button !== undefined && e.button !== 0) return;
+
+      isDragging = true;
+      activeCard.classList.add('dragging');
+      activeCard.style.transition = 'none';
+
+      const rect = activeCard.getBoundingClientRect();
+      const deckRect = deckWrap.getBoundingClientRect();
+      const point = getPoint(e);
+
+      dragOffsetX = point.clientX - rect.left;
+      dragOffsetY = point.clientY - rect.top;
+
+      activeCard.style.left = `${rect.left - deckRect.left}px`;
+      activeCard.style.top = `${rect.top - deckRect.top}px`;
+      ghostCard.style.left = activeCard.style.left;
+      ghostCard.style.top = activeCard.style.top;
+      ghostCard.classList.add('show');
+
+      e.preventDefault();
+    }
+
+    function pointerMove(e){
+      if(!isDragging || !activeData) return;
+
+      const deckRect = deckWrap.getBoundingClientRect();
+      const point = getPoint(e);
+      const x = point.clientX - deckRect.left - dragOffsetX;
+      const y = point.clientY - deckRect.top - dragOffsetY;
+
+      activeCard.style.left = `${x}px`;
+      activeCard.style.top = `${y}px`;
+
+      const target = hitTarget(point.clientX, point.clientY);
+      choiceTargets.forEach(t => t.classList.toggle('hovered', t === target));
+
+      if (e.cancelable) e.preventDefault();
+    }
+
+    function pointerUp(e){
+      if(!isDragging || !activeData) return;
+
+      isDragging = false;
+      activeCard.classList.remove('dragging');
+      ghostCard.classList.remove('show');
+
+      const point = e.changedTouches ? e.changedTouches[0] : e;
+      const target = hitTarget(point.clientX, point.clientY);
+
+      choiceTargets.forEach(t => t.classList.remove('hovered'));
+
+      if(!target){
+        returnCardHome();
+        return;
+      }
+
+      evaluateChoice(target.dataset.color);
+    }
+
+    function hitTarget(x, y){
+      return choiceTargets.find(target => {
+        const r = target.getBoundingClientRect();
+        return x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+      }) || null;
+    }
+
+    function returnCardHome(){
+      activeCard.style.transition = 'left .25s ease, top .25s ease, transform .25s ease';
+      placeCardOnDeckHome();
+      activeCard.style.transform = 'rotate(0deg) scale(1)';
+    }
+
+    function evaluateChoice(color){
+      if(!activeData || isBusy) return;
+
+      isBusy = true;
+      const correct = color === activeData.answer;
+
+      if(correct){
+        playCardOkSound();
+        animateToZone(goodSlot, true);
+      } else {
+        playCardFalseSound();
+        wrongAnimationThenParking();
+      }
+    }
+
+    function wrongAnimationThenParking(){
+      activeCard.classList.remove('recoil','shake');
+      void activeCard.offsetWidth;
+      activeCard.classList.add('recoil');
+
+      setTimeout(() => activeCard.classList.add('shake'), 160);
+
+      setTimeout(() => {
+        activeCard.classList.remove('recoil','shake');
+        animateToZone(badSlot, false);
+      }, 820);
+    }
+
+    function animateToZone(zoneEl, isGood){
+      const zoneRect = zoneEl.getBoundingClientRect();
+      const boardRect = board.getBoundingClientRect();
+      const deckRect = deckWrap.getBoundingClientRect();
+
+      const cardW = activeCard.offsetWidth;
+      const cardH = activeCard.offsetHeight;
+
+      const targetLeftInBoard = (zoneRect.left - boardRect.left) + (zoneRect.width - cardW) / 2;
+      const targetTopInBoard = (zoneRect.top - boardRect.top) + (zoneRect.height - cardH) / 2;
+      const deckLeftInBoard = deckRect.left - boardRect.left;
+      const deckTopInBoard = deckRect.top - boardRect.top;
+
+      activeCard.style.transition = 'left .48s cubic-bezier(.2,.75,.2,1), top .48s cubic-bezier(.2,.75,.2,1), transform .48s cubic-bezier(.2,.75,.2,1), opacity .18s ease';
+      activeCard.style.left = `${targetLeftInBoard - deckLeftInBoard}px`;
+      activeCard.style.top = `${targetTopInBoard - deckTopInBoard}px`;
+      activeCard.style.transform = isGood
+        ? 'rotate(-5deg) scale(0.72)'
+        : 'rotate(5deg) scale(0.72)';
+
+      setTimeout(() => {
+        activeCard.style.opacity = '0';
+      }, 360);
+
+      setTimeout(() => {
+        finalizeRound(isGood);
+      }, 500);
+    }
+
+    function renderDeckStack(){
+      deckWrap.querySelectorAll('.deck-stack-card').forEach(el => el.remove());
+
+      const remaining = cards.length - currentIndex - (activeData ? 1 : 0);
+      const visibleCount = Math.min(3, Math.max(remaining, 0));
+
+      for(let i = visibleCount - 1; i >= 0; i--){
+        const node = document.createElement('div');
+        node.className = 'deck-stack-card';
+        node.style.zIndex = String(24 + i);
+        node.style.transform = `translate(${i * -5}px, ${i * -3}px) rotate(${i % 2 === 0 ? -2 : 2}deg)`;
+        node.style.opacity = i === 0 ? '0' : String(0.5 + i * 0.15);
+        deckWrap.insertBefore(node, deckBack);
+      }
+    }
+
+    function renderZoneStack(zoneEl, count){
+      zoneEl.querySelectorAll('.stacked-back').forEach(el => el.remove());
+
+      const visibleCount = Math.min(4, count);
+      const isGoodZone = zoneEl.id === 'goodSlot';
+      const stackScale = 0.8;
+
+      for(let i = visibleCount - 1; i >= 0; i--){
+        const node = document.createElement('div');
+        node.className = 'deck-back stacked-back';
+        node.style.position = 'absolute';
+        node.style.width = `calc(var(--deck-w) * ${stackScale})`;
+        node.style.height = `calc(var(--deck-h) * ${stackScale})`;
+        node.style.left = `calc(50% - (calc(var(--deck-w) * ${stackScale}) / 2) + ${i * 4}px)`;
+        node.style.top = `calc(50% - (calc(var(--deck-h) * ${stackScale}) / 2) - ${i * 2}px)`;
+        node.style.transform = isGoodZone ? 'rotate(-5deg)' : 'rotate(5deg)';
+        node.style.opacity = String(0.78 + i * 0.06);
+        node.style.transition = 'none';
+        node.style.pointerEvents = 'none';
+        node.style.zIndex = String(6 + i);
+        zoneEl.appendChild(node);
+      }
+    }
+
+    function renderAllStacks(){
+      renderDeckStack();
+      renderZoneStack(goodSlot, good);
+      renderZoneStack(badSlot, bad);
+    }
+
+    function finalizeRound(isGood){
+      if(isGood) good += 1;
+      else bad += 1;
+
+      currentIndex += 1;
+      activeData = null;
+      updateCounters();
+
+      if(currentIndex >= cards.length){
+        drawBtn.disabled = true;
+        setBackState();
+        deckBack.style.display = 'none';
+      } else {
+        setBackState();
+        drawBtn.disabled = false;
+      }
+
+      isBusy = false;
+    }
+
+    drawBtn.addEventListener('click', drawCard);
+
+    activeCard.addEventListener('mousedown', pointerDown);
+    activeCard.addEventListener('touchstart', pointerDown, { passive:false });
+
+    window.addEventListener('mousemove', pointerMove);
+    window.addEventListener('touchmove', pointerMove, { passive:false });
+    window.addEventListener('mouseup', pointerUp);
+    window.addEventListener('touchend', pointerUp);
+
+    window.addEventListener('resize', () => {
+      updateBoardScale();
+      if(!activeData){
+        setBackState();
+      } else if(!isDragging){
+        placeCardOnDeckHome();
+      }
+      renderAllStacks();
+      updateOrientationUI();
+    });
+
+    window.addEventListener('orientationchange', () => {
+      updateBoardScale();
+      updateOrientationUI();
+      setTimeout(() => {
+        if(!activeData){
+          setBackState();
+        } else if(!isDragging){
+          placeCardOnDeckHome();
+        }
+        renderAllStacks();
+      }, 120);
+    });
+
+    if ('ResizeObserver' in window){
+      const ro = new ResizeObserver(() => {
+        updateBoardScale();
+        if(!activeData && !isDragging){
+          setBackState();
+        } else if(activeData && !isDragging){
+          placeCardOnDeckHome();
+        }
+        renderAllStacks();
+      });
+      ro.observe(board);
+    }
+
+    rotateNotice.addEventListener('click', async () => {
+      await unlockAudio();
+      enterFullscreen();
+    });
+
+    window.addEventListener('pointerdown', unlockAudio, { once:true });
+    window.addEventListener('touchstart', unlockAudio, { once:true });
+    window.addEventListener('click', unlockAudio, { once:true });
+
+    resetGame();
+  </script>
+</body>
+</html>
+    
+  </body>
+  
+</html>

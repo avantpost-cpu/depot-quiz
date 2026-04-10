@@ -7,7 +7,7 @@
 
   <style>
     :root{
-      --bg:#efefea;
+      --bg:#91b8bf;
       --ink:#173742;
       --good:#3aaa62;
       --bad:#e14d45;
@@ -19,6 +19,7 @@
     }
 
     *{box-sizing:border-box}
+
     html,body{
       height:100%;
       margin:0;
@@ -37,7 +38,7 @@
       height:100dvh;
       position:relative;
       overflow:hidden;
-      background:#91b8bf;
+      background:var(--bg);
     }
 
     @supports not (height: 100dvh){
@@ -74,13 +75,16 @@
     .hud{
       position:absolute;
       top:18px;
-      right:18px;
+      left:50%;
+      transform:translateX(-50%);
       z-index:80;
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      justify-content:flex-end;
-      max-width:min(46vw, 560px);
+      justify-content:center;
+      align-items:center;
+      width:max-content;
+      max-width:min(94vw, 900px);
     }
 
     .pill{
@@ -120,6 +124,7 @@
     }
 
     .drop-target{z-index:5}
+
     .drop-target.hovered{
       outline:4px dashed rgba(255,255,255,.75);
       outline-offset:6px;
@@ -130,8 +135,23 @@
     .drop-target[data-color="orange"]{left:46%; top:25.5%; width:10%; height:28%;}
     .drop-target[data-color="red"]{left:62%; top:25.2%; width:10%; height:28%;}
 
-    .slot.good{position:absolute; left:26%; top:80%; width:16.6%; height:12.3%; z-index:4;}
-    .slot.bad{position:absolute; left:62%; top:80%; width:14.6%; height:12.3%; z-index:2;}
+    .slot.good{
+      position:absolute;
+      left:26%;
+      top:80%;
+      width:16.6%;
+      height:12.3%;
+      z-index:4;
+    }
+
+    .slot.bad{
+      position:absolute;
+      left:62%;
+      top:80%;
+      width:14.6%;
+      height:12.3%;
+      z-index:2;
+    }
 
     .deck-zone{
       left:41.85%;
@@ -154,6 +174,7 @@
       position:absolute;
       inset:0;
       z-index:40;
+      -webkit-tap-highlight-color:transparent;
     }
 
     .deck-button:disabled{cursor:default}
@@ -198,6 +219,7 @@
         top .25s ease;
       user-select:none;
       touch-action:none;
+      -webkit-user-select:none;
     }
 
     .card.visible{
@@ -206,7 +228,12 @@
     }
 
     .card.draggable{cursor:grab}
-    .card.dragging{cursor:grabbing; z-index:95; transition:none}
+    .card.dragging{
+      cursor:grabbing;
+      z-index:95;
+      transition:none;
+    }
+
     .card.recoil{animation:recoil .12s ease 2}
     .card.shake{animation:shake .34s linear 2}
 
@@ -235,49 +262,12 @@
     .ghost-card.show{display:block}
 
     .feedback{
-      position:absolute;
-      left:50%;
-      bottom:16px;
-      transform:translateX(-50%);
-      z-index:85;
-      padding:10px 16px;
-      border-radius:999px;
-      background:rgba(255,255,255,.94);
-      border:1px solid rgba(0,0,0,.08);
-      box-shadow:none;
-      font-size:14px;
-      font-weight:900;
-      min-width:220px;
-      text-align:center;
-      max-width:min(92vw, 720px);
+      display:none !important;
     }
-
-    .feedback.good{color:var(--good)}
-    .feedback.bad{color:var(--bad)}
 
     .controls{
-      position:absolute;
-      left:18px;
-      bottom:18px;
-      z-index:85;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
+      display:none !important;
     }
-
-    button.ui{
-      border:none;
-      background:rgba(255,255,255,.94);
-      color:var(--ink);
-      border-radius:999px;
-      padding:12px 18px;
-      font-weight:900;
-      box-shadow:0 8px 24px rgba(0,0,0,.14);
-      cursor:pointer;
-    }
-
-    button.ui.primary{background:#1b7f8f; color:#fff}
-    button.ui:disabled{opacity:.45; cursor:not-allowed}
 
     .stacked-back{
       box-shadow:0 10px 20px rgba(0,0,0,.18);
@@ -323,8 +313,38 @@
       width:min(92vw, 520px);
     }
 
-    .end-box h2{margin:0 0 10px; font-size:34px; line-height:1}
-    .end-box p{margin:0 0 16px; color:#5e7a84; font-weight:600}
+    .end-box h2{
+      margin:0 0 10px;
+      font-size:34px;
+      line-height:1;
+    }
+
+    .end-box p{
+      margin:0 0 16px;
+      color:#5e7a84;
+      font-weight:600;
+    }
+
+    button.ui{
+      border:none;
+      background:rgba(255,255,255,.94);
+      color:var(--ink);
+      border-radius:999px;
+      padding:12px 18px;
+      font-weight:900;
+      box-shadow:0 8px 24px rgba(0,0,0,.14);
+      cursor:pointer;
+    }
+
+    button.ui.primary{
+      background:#1b7f8f;
+      color:#fff;
+    }
+
+    button.ui:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
 
     @media (max-width: 900px){
       :root{
@@ -334,28 +354,13 @@
 
       .hud{
         top:10px;
-        left:10px;
-        right:10px;
-        max-width:none;
         gap:8px;
+        max-width:94vw;
       }
 
       .pill{
         font-size:12px;
         padding:8px 12px;
-      }
-
-      .feedback{
-        font-size:12px;
-        min-width:unset;
-        width:calc(100% - 20px);
-        bottom:10px;
-        padding:9px 12px;
-      }
-
-      .controls{
-        left:10px;
-        bottom:10px;
       }
 
       button.ui{
@@ -381,26 +386,15 @@
 
       .hud{
         top:6px;
-        right:6px;
-        left:auto;
-        max-width:48vw;
+        left:50%;
+        transform:translateX(-50%);
         gap:6px;
+        max-width:94vw;
       }
 
       .pill{
         padding:6px 10px;
         font-size:11px;
-      }
-
-      .feedback{
-        bottom:6px;
-        font-size:11px;
-        padding:7px 10px;
-      }
-
-      .controls{
-        left:6px;
-        bottom:6px;
       }
 
       button.ui{
@@ -430,18 +424,6 @@
         <div class="rotate-sub">pour jouer en plein écran.</div>
       </div>
     </div>
-
-<audio id="cardFlipSound" preload="auto">
-  <source src="https://avantpost-cpu.github.io/depot-quiz/bonneconduite/soncarte.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="cardOkSound" preload="auto">
-  <source src="https://avantpost-cpu.github.io/depot-quiz/bonneconduite/sonok.mp3" type="audio/mpeg">
-</audio>
-
-<audio id="cardFalseSound" preload="auto">
-  <source src="https://avantpost-cpu.github.io/depot-quiz/bonneconduite/sonfaux.mp3" type="audio/mpeg">
-</audio>
 
     <div class="hud">
       <div class="pill">✅ Ça roule : <span id="okCount">0</span></div>
@@ -479,11 +461,7 @@
       </div>
     </div>
 
-    <div class="feedback" id="feedback">La carte dos est posée à l’horizontale sur la pioche. Clique dessus pour la faire pivoter et afficher le recto.</div>
-
-    <div class="controls">
-      <button class="ui primary" id="restartBtn">Recommencer</button>
-    </div>
+    <div class="feedback" id="feedback"></div>
   </div>
 
   <script>
@@ -504,9 +482,18 @@
       };
     });
 
+    const cardFlipSound = new Audio('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/soncarte.mp3');
+    const cardOkSound = new Audio('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/sonok.mp3');
+    const cardFalseSound = new Audio('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/sonfaux.mp3');
+
+    [cardFlipSound, cardOkSound, cardFalseSound].forEach(a => {
+      a.preload = 'auto';
+      a.playsInline = true;
+      a.crossOrigin = 'anonymous';
+    });
+
     const app = document.getElementById('app');
     const rotateNotice = document.getElementById('rotateNotice');
-    const cardFlipSound = document.getElementById('cardFlipSound');
     const drawBtn = document.getElementById('drawBtn');
     const deckWrap = document.getElementById('deckWrap');
     const deckBack = document.getElementById('deckBack');
@@ -515,7 +502,6 @@
     const activeFrontImg = document.getElementById('cardFrontImg');
     const ghostCard = document.getElementById('ghostCard');
     const feedback = document.getElementById('feedback');
-    const restartBtn = document.getElementById('restartBtn');
     const restartFromEnd = document.getElementById('restartFromEnd');
     const okCount = document.getElementById('okCount');
     const badCount = document.getElementById('badCount');
@@ -535,6 +521,13 @@
     let dragOffsetY = 0;
     let good = 0;
     let bad = 0;
+    let audioUnlocked = false;
+
+    function setFeedback(text = '', className = 'feedback'){
+      if (!feedback) return;
+      feedback.textContent = text;
+      feedback.className = className;
+    }
 
     function isMobileLike(){
       return window.innerWidth <= 900;
@@ -556,18 +549,40 @@
       }
     }
 
-    function playCardFlipSound(){
-      if (!cardFlipSound) return;
+    async function unlockAudio(){
+      if (audioUnlocked) return;
+
+      const audios = [cardFlipSound, cardOkSound, cardFalseSound];
+
       try{
-        cardFlipSound.currentTime = 0;
-        const p = cardFlipSound.play();
-        if (p && typeof p.catch === 'function') {
-          p.catch(err => console.log('Lecture audio impossible :', err));
+        for (const a of audios){
+          a.muted = true;
+          a.currentTime = 0;
+          await a.play().catch(() => {});
+          a.pause();
+          a.currentTime = 0;
+          a.muted = false;
         }
+        audioUnlocked = true;
       } catch(e){
-        console.log('Lecture audio impossible :', e);
+        console.log('Déverrouillage audio impossible :', e);
       }
     }
+
+    function playSound(audioEl){
+      if (!audioEl) return;
+      const clone = audioEl.cloneNode();
+      clone.volume = 1;
+      clone.playsInline = true;
+      const p = clone.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(err => console.log('Lecture audio impossible :', err));
+      }
+    }
+
+    function playCardFlipSound(){ playSound(cardFlipSound); }
+    function playCardOkSound(){ playSound(cardOkSound); }
+    function playCardFalseSound(){ playSound(cardFalseSound); }
 
     function updateOrientationUI(){
       const showRotate = isMobileLike() && isPortrait();
@@ -620,8 +635,7 @@
 
       [...board.querySelectorAll('.stacked-back')].forEach(el => el.remove());
 
-      feedback.textContent = 'La carte dos est posée à l’horizontale sur la pioche. Clique dessus pour la faire pivoter et afficher le recto.';
-      feedback.className = 'feedback';
+      setFeedback();
       drawBtn.disabled = false;
       setBackState();
       updateCounters();
@@ -630,11 +644,11 @@
     }
 
     async function drawCard(){
-      await enterFullscreen();
-
       if(isBusy || activeData || currentIndex >= cards.length) return;
 
+      await unlockAudio();
       playCardFlipSound();
+      enterFullscreen();
 
       isBusy = true;
       activeData = cards[currentIndex];
@@ -643,10 +657,7 @@
       activeFrontImg.onerror = null;
 
       activeFrontImg.onload = () => {
-        feedback.textContent = 'La carte pivote et le recto apparaît.';
-        feedback.className = 'feedback';
         drawBtn.disabled = true;
-
         deckBack.classList.add('spin-out');
 
         setTimeout(() => {
@@ -657,7 +668,6 @@
           activeCard.style.transform = 'rotate(0deg) scale(1)';
           placeCardOnDeckHome();
           isBusy = false;
-          feedback.textContent = 'Glisse maintenant le recto vers Vert, Orange ou Rouge.';
         }, 120);
 
         updateCounters();
@@ -667,8 +677,6 @@
         console.error('URL en échec :', activeData.image);
         isBusy = false;
         activeData = null;
-        feedback.textContent = `Impossible de charger l’image de la carte ${currentIndex + 1}.`;
-        feedback.className = 'feedback bad';
         drawBtn.disabled = false;
       };
 
@@ -751,8 +759,6 @@
       activeCard.style.transition = 'left .25s ease, top .25s ease, transform .25s ease';
       placeCardOnDeckHome();
       activeCard.style.transform = 'rotate(0deg) scale(1)';
-      feedback.textContent = 'Dépose la carte sur l’une des trois couleurs.';
-      feedback.className = 'feedback';
     }
 
     function evaluateChoice(color){
@@ -762,12 +768,10 @@
       const correct = color === activeData.answer;
 
       if(correct){
-        feedback.textContent = 'Bonne réponse ! La carte va dans « Ça roule ! ».';
-        feedback.className = 'feedback good';
+        playCardOkSound();
         animateToZone(goodSlot, true);
       } else {
-        feedback.textContent = 'Ce n’est pas la bonne couleur. La carte recule, se secoue et part au parking.';
-        feedback.className = 'feedback bad';
+        playCardFalseSound();
         wrongAnimationThenParking();
       }
     }
@@ -869,14 +873,10 @@
         drawBtn.disabled = true;
         setBackState();
         deckBack.style.display = 'none';
-        feedback.textContent = 'Toutes les cartes ont été jouées.';
-        feedback.className = 'feedback';
         showEnd();
       } else {
         setBackState();
         drawBtn.disabled = false;
-        feedback.textContent = 'Une nouvelle carte dos est revenue à l’horizontale sur la pioche. Clique dessus pour afficher le recto.';
-        feedback.className = 'feedback';
       }
 
       isBusy = false;
@@ -888,15 +888,16 @@
     }
 
     drawBtn.addEventListener('click', drawCard);
-    restartBtn.addEventListener('click', resetGame);
     restartFromEnd.addEventListener('click', resetGame);
 
     activeCard.addEventListener('mousedown', pointerDown);
     activeCard.addEventListener('touchstart', pointerDown, { passive:false });
+
     window.addEventListener('mousemove', pointerMove);
     window.addEventListener('touchmove', pointerMove, { passive:false });
     window.addEventListener('mouseup', pointerUp);
     window.addEventListener('touchend', pointerUp);
+
     window.addEventListener('resize', () => {
       if(!activeData){
         setBackState();
@@ -906,9 +907,17 @@
       renderAllStacks();
       updateOrientationUI();
     });
+
     window.addEventListener('orientationchange', updateOrientationUI);
 
-    rotateNotice.addEventListener('click', enterFullscreen);
+    rotateNotice.addEventListener('click', async () => {
+      await unlockAudio();
+      enterFullscreen();
+    });
+
+    window.addEventListener('pointerdown', unlockAudio, { once:true });
+    window.addEventListener('touchstart', unlockAudio, { once:true });
+    window.addEventListener('click', unlockAudio, { once:true });
 
     resetGame();
   </script>

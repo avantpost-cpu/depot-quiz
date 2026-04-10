@@ -1,19 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-
-  <head>
-    <meta charset="UTF-8">
-    <title>Untitled</title>
-    
-
-  </head>
-    
-  <body>
-  <!doctype html>
+<!doctype html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no"
+  />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <title>La bonne conduite — Jeu interactif</title>
 
   <style>
@@ -28,6 +24,11 @@
       --card-h:232px;
       --deck-w:190px;
       --deck-h:137px;
+
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
     }
 
     *{box-sizing:border-box}
@@ -37,12 +38,15 @@
       margin:0;
       width:100%;
       overflow:hidden;
+      background:var(--bg);
     }
 
     body{
       font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:var(--bg);
       color:var(--ink);
+      overscroll-behavior:none;
+      -webkit-text-size-adjust:100%;
+      touch-action:manipulation;
     }
 
     .app{
@@ -51,6 +55,11 @@
       position:relative;
       overflow:hidden;
       background:var(--bg);
+      padding:
+        max(0px, var(--safe-top))
+        max(0px, var(--safe-right))
+        max(0px, var(--safe-bottom))
+        max(0px, var(--safe-left));
     }
 
     @supports not (height: 100dvh){
@@ -89,12 +98,12 @@
       inset:0;
       display:grid;
       place-items:center;
-      padding:18px;
+      padding:10px;
     }
 
     .board{
       position:relative;
-      width:min(96vw, 1400px);
+      width:min(98vw, 1400px);
       aspect-ratio:64 / 33;
       background-image:url('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/Montage_format-64x33_Jeu-web.jpg');
       background-size:contain;
@@ -104,37 +113,38 @@
 
     .hud{
       position:absolute;
-      top:6%;
-      left:61%;
+      top:4.8%;
+      left:61.2%;
       transform:translateX(-50%);
       z-index:80;
       display:flex;
-      gap:10px;
+      gap:8px;
       align-items:center;
       justify-content:center;
-      padding:6px 10px;
+      padding:3px 6px;
       border-radius:999px;
       background:transparent;
       width:auto;
-      max-width:min(88%, 900px);
+      max-width:min(90%, 920px);
       flex-wrap:nowrap;
+      pointer-events:none;
     }
 
     .pill{
-      padding:4px 8px;
+      padding:3px 6px;
       border-radius:999px;
       background:transparent;
       border:none;
       box-shadow:none;
-      font-size:clamp(12px, 1.1vw, 14px);
+      font-size:clamp(11px, 1vw, 14px);
       font-weight:800;
-      line-height:1.1;
+      line-height:1;
       white-space:nowrap;
       color:#fff;
-      text-shadow:0 1px 2px rgba(0,0,0,.25);
+      text-shadow:0 1px 2px rgba(0,0,0,.28);
       display:flex;
       align-items:center;
-      gap:6px;
+      gap:5px;
     }
 
     .pill span{
@@ -146,7 +156,7 @@
       font-family:'Material Symbols Outlined';
       font-weight:normal;
       font-style:normal;
-      font-size:clamp(16px, 1.5vw, 18px);
+      font-size:clamp(15px, 1.4vw, 18px);
       line-height:1;
       display:inline-block;
       color:#fff;
@@ -179,26 +189,26 @@
     .drop-target[data-color="red"]{left:62%; top:25.2%; width:10%; height:28%;}
 
     .slot.good{
-      left:25%;
-      top:80%;
-      width:16.6%;
-      height:12.3%;
+      left:25.2%;
+      top:79.9%;
+      width:16.3%;
+      height:12.1%;
       z-index:4;
     }
 
     .slot.bad{
-      left:59.6%;
-      top:80%;
-      width:14.6%;
-      height:12.3%;
+      left:59.25%;
+      top:79.9%;
+      width:14.4%;
+      height:12.1%;
       z-index:2;
     }
 
     .deck-zone{
       left:41.85%;
-      top:78.45%;
+      top:78.15%;
       width:16.8%;
-      height:12.4%;
+      height:12.2%;
       z-index:25;
       display:flex;
       align-items:center;
@@ -216,6 +226,7 @@
       inset:0;
       z-index:40;
       -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
     }
 
     .deck-button:disabled{cursor:default}
@@ -226,7 +237,7 @@
       width:var(--deck-w);
       height:var(--deck-h);
       background-image:url('https://avantpost-cpu.github.io/depot-quiz/bonneconduite/dos.png');
-      background-size:cover;
+      background-size:100% 100%;
       background-position:center;
       background-repeat:no-repeat;
       border-radius:14px;
@@ -237,6 +248,7 @@
       z-index:28;
       transform:rotate(0deg);
       transition:transform .35s ease, opacity .2s ease;
+      box-shadow:0 10px 20px rgba(0,0,0,.16);
     }
 
     .deck-back.spin-out{
@@ -261,6 +273,8 @@
       user-select:none;
       touch-action:none;
       -webkit-user-select:none;
+      overflow:visible;
+      filter:drop-shadow(0 18px 26px rgba(0,0,0,.24));
     }
 
     .card.visible{
@@ -279,13 +293,14 @@
     .card.shake{animation:shake .34s linear 2}
 
     .card img{
-      width:120%;
-      height:120%;
-      object-fit:cover;
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      object-position:center;
       display:block;
-      border-radius:18px;
-      filter:drop-shadow(0 18px 26px rgba(0,0,0,.24));
+      border-radius:0;
       pointer-events:none;
+      background:transparent;
     }
 
     .ghost-card{
@@ -352,42 +367,56 @@
     }
 
     @media (max-width: 900px){
+      .board-wrap{
+        padding:4px;
+      }
+
+      .board{
+        width:min(100vw, 1400px);
+      }
+
       .hud{
-        top:5.2%;
-        left:62%;
-        gap:6px;
-        padding:4px 6px;
-        max-width:92%;
+        top:4.15%;
+        left:61.7%;
+        gap:4px;
+        padding:2px 3px;
+        max-width:94%;
       }
 
       .pill{
-        font-size:clamp(10px, 1.9vw, 13px);
-        padding:2px 5px;
-        gap:4px;
+        font-size:clamp(9px, 1.8vw, 12px);
+        padding:2px 4px;
+        gap:3px;
+        letter-spacing:-0.01em;
       }
 
       .material-symbols-outlined{
-        font-size:clamp(14px, 2.2vw, 18px);
+        font-size:clamp(12px, 2vw, 16px);
       }
 
       .slot.good{
-        left:25.7%;
-        top:79.6%;
+        left:25.45%;
+        top:79.45%;
+        width:16.2%;
+        height:12%;
       }
 
       .slot.bad{
-        left:59.2%;
-        top:79.6%;
+        left:59.15%;
+        top:79.45%;
+        width:14.4%;
+        height:12%;
       }
 
       .deck-zone{
-        top:78%;
+        top:77.82%;
+        height:12%;
       }
     }
 
     @media (max-width: 900px) and (orientation: landscape){
       .board-wrap{
-        padding:6px;
+        padding:2px;
       }
 
       .board{
@@ -396,27 +425,36 @@
       }
 
       .hud{
-        top:4.8%;
-        left:62%;
+        top:4.05%;
+        left:61.8%;
         transform:translateX(-50%);
+        gap:4px;
+        padding:2px 2px;
+        max-width:95%;
       }
 
       .pill{
-        font-size:clamp(10px, 1.6vw, 12px);
+        font-size:clamp(8px, 1.55vw, 11px);
+        padding:1px 3px;
+        gap:2px;
+      }
+
+      .material-symbols-outlined{
+        font-size:clamp(11px, 1.8vw, 15px);
       }
 
       .slot.good{
-        left:25.8%;
-        top:79.6%;
+        left:25.55%;
+        top:79.38%;
       }
 
       .slot.bad{
         left:59.1%;
-        top:79.6%;
+        top:79.38%;
       }
 
       .deck-zone{
-        top:77.95%;
+        top:77.75%;
       }
     }
 
@@ -545,8 +583,13 @@
       const boardRect = board.getBoundingClientRect();
       const boardWidth = boardRect.width;
 
-      const cardW = Math.max(92, Math.min(boardWidth * 0.105, 180));
-      const deckW = Math.max(100, Math.min(boardWidth * 0.118, 220));
+      const isMobile = window.innerWidth <= 900;
+
+      const cardRatio = isMobile ? 0.112 : 0.105;
+      const deckRatio = isMobile ? 0.123 : 0.118;
+
+      const cardW = Math.max(isMobile ? 86 : 92, Math.min(boardWidth * cardRatio, isMobile ? 172 : 180));
+      const deckW = Math.max(isMobile ? 94 : 100, Math.min(boardWidth * deckRatio, isMobile ? 205 : 220));
 
       root.style.setProperty('--card-w', `${cardW}px`);
       root.style.setProperty('--card-h', `${cardW * 1.45}px`);
@@ -646,11 +689,13 @@
     function setBackState(){
       deckBack.style.display = 'block';
       deckBack.classList.remove('spin-out');
+
       activeCard.className = 'card';
       activeCard.style.pointerEvents = 'none';
       activeCard.style.opacity = '0';
       activeCard.style.transform = 'rotate(90deg) scale(.92)';
       activeCard.style.transition = 'opacity .12s ease, transform .45s cubic-bezier(.2,.75,.2,1), left .25s ease, top .25s ease';
+
       placeCardOnDeckHome();
       ghostCard.classList.remove('show');
       activeFrontImg.removeAttribute('src');
@@ -975,8 +1020,4 @@
     resetGame();
   </script>
 </body>
-</html>
-    
-  </body>
-  
 </html>

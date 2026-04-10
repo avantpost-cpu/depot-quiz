@@ -91,12 +91,12 @@
       background:rgba(255,255,255,.08);
     }
 
- .drop-target[data-color="green"]{left:30%; top:25.8%; width:10%; height:28%;}
+    .drop-target[data-color="green"]{left:30%; top:25.8%; width:10%; height:28%;}
     .drop-target[data-color="orange"]{left:46%; top:25.5%; width:10%; height:28%;}
     .drop-target[data-color="red"]{left:62%; top:25.2%; width:10%; height:28%;}
 
-    .slot.good{position:absolute; left:25%; top:78.5%; width:16.6%; height:12.3%; z-index:4;}
-    .slot.bad{position:absolute; left:60%; top:78.5%; width:14.6%; height:12.3%; z-index:2;}
+    .slot.good{position:absolute; left:26%; top:80%; width:16.6%; height:12.3%; z-index:4;}
+    .slot.bad{position:absolute; left:62%; top:80%; width:14.6%; height:12.3%; z-index:2;}
 
     .deck-zone{
       left:41.85%;
@@ -176,8 +176,8 @@
     .card.shake{animation:shake .34s linear 2}
 
     .card img{
-      width:100%;
-      height:100%;
+      width:120%;
+      height:120%;
       object-fit:cover;
       display:block;
       border-radius:18px;
@@ -420,7 +420,7 @@
 
     function placeCardOnDeckHome(){
       activeCard.style.left = `${(deckWrap.clientWidth - activeCard.offsetWidth) / 2}px`;
-      activeCard.style.top = `${(deckWrap.clientHeight - activeCard.offsetHeight) / 2}px`;
+      activeCard.style.top = `${(deckWrap.clientHeight - activeCard.offsetHeight) / 2-30}px`;
     }
 
     function setBackState(){
@@ -618,7 +618,9 @@
       activeCard.style.transition = 'left .48s cubic-bezier(.2,.75,.2,1), top .48s cubic-bezier(.2,.75,.2,1), transform .48s cubic-bezier(.2,.75,.2,1), opacity .18s ease';
       activeCard.style.left = `${targetLeftInBoard - deckLeftInBoard}px`;
       activeCard.style.top = `${targetTopInBoard - deckTopInBoard}px`;
-      activeCard.style.transform = 'rotate(0deg) scale(.9)';
+      activeCard.style.transform = isGood
+        ? 'rotate(-5deg) scale(0.8)'
+        : 'rotate(5deg) scale(0.8)';
 
       setTimeout(() => {
         activeCard.style.opacity = '0';
@@ -654,8 +656,8 @@
         const node = document.createElement('div');
         node.className = 'deck-back stacked-back';
         node.style.position = 'absolute';
-        node.style.width = 'var(--deck-w)';
-        node.style.height = 'var(--deck-h)';
+node.style.width = 'calc(var(--deck-w) * 0.8)';
+node.style.height = 'calc(var(--deck-h) * 0.8)';
         node.style.left = `calc(50% - (${getComputedStyle(document.documentElement).getPropertyValue('--deck-w').trim()} / 2) + ${i * 4}px)`;
         node.style.top = `calc(50% - (${getComputedStyle(document.documentElement).getPropertyValue('--deck-h').trim()} / 2) - ${i * 2}px)`;
         node.style.transform = `rotate(${i % 2 === 0 ? -1.5 : 1.5}deg)`;

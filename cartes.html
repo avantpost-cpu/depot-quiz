@@ -234,7 +234,7 @@ main {
 .controls {
   padding:16px;
   display:grid;
-  grid-template-columns:1.4fr 1fr 1fr auto auto;
+  grid-template-columns:1.4fr 1fr 1fr auto auto auto;
   gap:10px;
   align-items:center;
 }
@@ -485,6 +485,43 @@ tbody tr:hover { background:#fff7e6; }
   .team-title { font-size:25px; }
   th,td { padding:9px 8px; font-size:13px; }
 }
+
+/* --- TÉTIÈRE IMAGE RESPONSIVE + MASQUAGE ANCIEN HEADER --- */
+.app-header{
+  position:relative;
+  overflow:hidden;
+  min-height:clamp(180px, 34vw, 430px);
+  color:white;
+  background-image:url("https://avantpost-cpu.github.io/depot-quiz/foot_tete.png");
+  background-size:cover;
+  background-position:center center;
+  background-repeat:no-repeat;
+}
+
+.pattern,
+.header-inner,
+.cover,
+.badge,
+.hero-copy{
+  display:none !important;
+}
+
+@media(max-width:760px){
+  .app-header{
+    min-height:220px;
+    background-size:cover;
+    background-position:center top;
+  }
+}
+
+@media(max-width:480px){
+  .app-header{
+    min-height:170px;
+    background-size:cover;
+    background-position:center top;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -526,6 +563,7 @@ tbody tr:hover { background:#fff7e6; }
       <select id="status"><option value="">Tous les statuts</option><option value="owned">Possédés</option><option value="missing">Manquants</option></select>
       <button id="copyMissing">Copier les manquants</button>
       <button class="alt" id="exportList">Exporter mes possédés</button>
+      <button class="alt" id="importList">Importer ma liste</button>
     </div>
     <div class="mode-tabs">
       <button class="tab active" id="albumMode">Vue album</button>
@@ -718,6 +756,28 @@ document.getElementById('exportList').addEventListener('click',async()=>{
   const list=[...ownedSet].sort((a,b)=>a-b).join(', ');
   await navigator.clipboard.writeText(list);
   alert('Ta liste de numéros possédés a été copiée.');
+});
+
+
+document.getElementById('importList').addEventListener('click',()=>{
+  const input = prompt('Colle ici la liste exportée depuis l’autre appareil :');
+  if(!input) return;
+
+  const nums = input
+    .split(/[^0-9]+/)
+    .map(Number)
+    .filter(n => Number.isInteger(n) && n >= 1 && n <= DATA.length);
+
+  if(!nums.length){
+    alert('Aucun numéro valide trouvé.');
+    return;
+  }
+
+  const unique = [...new Set(nums)];
+  ownedSet = new Set(unique);
+  saveOwned();
+  render();
+  alert(unique.length + ' cartes possédées importées.');
 });
 
 loadOwned();

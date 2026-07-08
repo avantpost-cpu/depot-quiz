@@ -294,17 +294,12 @@ motCle.addEventListener("input", () => {
   motCle.value = motCle.value.toUpperCase();
   motCle.classList.remove("erreur");
 
-  if(selectionnees.size === bonnesPhrases.length && nettoyerTexte(motCle.value) === "CONSENTEMENT"){
+  if(nettoyerTexte(motCle.value) === "CONSENTEMENT"){
     validerMot();
   }
 });
 
 validateBtn.addEventListener("click", () => {
-  if(selectionnees.size !== bonnesPhrases.length){
-    message.textContent = "Il faut d’abord entourer les 3 bonnes situations.";
-    return;
-  }
-
   if(nettoyerTexte(motCle.value) === "CONSENTEMENT"){
     validerMot();
   } else {
@@ -328,7 +323,7 @@ function nettoyerTexte(texte){
     .trim()
     .toUpperCase()
     .normalize("NFD")
-    .replace(/[\\u0300-\\u036f]/g, "")
+    .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^A-Z]/g, "");
 }
 </script>

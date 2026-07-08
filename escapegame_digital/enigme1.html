@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Escape Game Rebond - Énigme 1</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#1b5f6e;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.wrapper{
+  width:1000px;
+  margin:40px auto;
+}
+
+.enigme{
+  display:flex;
+  line-height:0;
+  font-size:0;
+}
+
+.partie-gauche,
+.partie-droite{
+  position:relative;
+  height:716px;
+}
+
+.partie-gauche img,
+.partie-droite img{
+  display:block;
+  height:716px;
+  width:auto;
+  border:0;
+}
+
+/* MOTS MÊLÉS */
+
+.letter-grid{
+  position:absolute;
+  left:12.3%;
+  top:39.4%;
+  width:76.5%;
+  height:45.8%;
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  grid-template-rows:repeat(10,1fr);
+  line-height:1;
+  user-select:none;
+}
+
+.cell{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Patrick Hand', cursive;
+  font-size:34px;
+  font-weight:700;
+  color:#1b5f6e;
+  cursor:pointer;
+  border-radius:12px;
+  line-height:1;
+  transition:.15s;
+}
+
+.cell:hover{
+  background:rgba(27,95,110,.12);
+}
+
+.cell.selected{
+  background:rgba(27,95,110,.28);
+}
+
+.cell.found{
+  background:rgba(237,176,26,.75);
+}
+
+/* CHAMPS DE RÉPONSE */
+
+.reponses{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.reponses input{
+  position:absolute;
+  pointer-events:auto;
+  font-family:'Patrick Hand', cursive;
+  font-size:22px;
+  font-weight:700;
+  text-transform:uppercase;
+  background:transparent;
+  border:none;
+  outline:none;
+  color:#111;
+  height:34px;
+  line-height:34px;
+  padding:0 6px;
+  letter-spacing:0;
+  transition:.25s;
+}
+
+/* 1. PHYSIQUE */
+#mot1{
+  left:150px;
+  top:330px;
+  width:120px;
+}
+
+/* 2. NEGLIGENCE */
+#mot2{
+  left:350px;
+  top:330px;
+  width:120px;
+}
+
+/* 3. SEXUELLE */
+#mot3{
+  left:154px;
+  top:370px;
+  width:120px;
+}
+
+/* 4. L'EMPRISE */
+#mot4{
+  left:200px;
+  top:520px;
+  width:120px;
+}
+
+/* ÉTATS */
+
+.reponses input.ok{
+  background:#18A558;
+  color:#ffffff;
+  border-radius:8px;
+  padding:0 10px;
+  box-shadow:0 2px 6px rgba(0,0,0,.18);
+  font-weight:700;
+  cursor:default;
+}
+
+.reponses input[readonly],
+.reponses input:disabled{
+  opacity:1;
+  pointer-events:none;
+  -webkit-text-fill-color:#ffffff;
+}
+
+.reponses input.erreur{
+  background:#c0392b;
+  color:#ffffff;
+  border-radius:8px;
+  padding:0 10px;
+}
+
+/* BOUTONS */
+
+.panel{
+  text-align:center;
+  margin-top:30px;
+  font-size:17px;
+}
+
+.message{
+  margin-bottom:18px;
+  font-weight:bold;
+  color:#ffffff;
+}
+
+.btn{
+  display:inline-block;
+  padding:15px 35px;
+  background:#044e61;
+  color:#ffffff;
+  text-decoration:none;
+  border-radius:40px;
+  font-weight:bold;
+  border:none;
+  cursor:pointer;
+  font-size:17px;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+}
+
+/* FLÈCHE ÉNIGME SUIVANTE */
+
+.next-arrow{
+  position:fixed;
+  top:50%;
+  right:35px;
+  transform:translateY(-50%) translateX(12px);
+  width:56px;
+  height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:62px;
+  font-weight:200;
+  line-height:1;
+  color:#ffffff;
+  text-decoration:none;
+  opacity:0;
+  pointer-events:none;
+  transition:.35s ease;
+  z-index:999;
+}
+
+.next-arrow.visible{
+  opacity:.45;
+  pointer-events:auto;
+  transform:translateY(-50%) translateX(0);
+}
+
+.next-arrow:hover{
+  opacity:1;
+  transform:translateY(-50%) translateX(6px);
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <div class="enigme">
+
+    <div class="partie-gauche">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/1A.jpg" alt="Mots mêlés">
+      <div class="letter-grid" id="letterGrid"></div>
+    </div>
+
+    <div class="partie-droite">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/1B.jpg" alt="Réponses">
+
+      <div class="reponses">
+        <input id="mot1" type="text" autocomplete="off" maxlength="8">
+        <input id="mot2" type="text" autocomplete="off" maxlength="11">
+        <input id="mot3" type="text" autocomplete="off" maxlength="9">
+        <input id="mot4" type="text" autocomplete="off" maxlength="10">
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel">
+    <div class="message" id="message">Trouve les mots cachés à gauche, puis écris-les à droite.</div>
+    <button class="btn" id="validateBtn">Valider</button>
+  </div>
+
+</div>
+
+<a href="enigme2.html" class="next-arrow" id="nextBtn" title="Énigme suivante">→</a>
+
+<script>
+const letters = [
+  "DNUOHIPBNM",
+  "WPHYSIQUEM",
+  "PVEYEVLPGA",
+  "SEBRXIELLI",
+  "ZMZIUTGZIL",
+  "EPILEVAYGL",
+  "FROWLALGEO",
+  "JIEPLRPGNT",
+  "FSSEENACCV",
+  "PEVOACNVEI"
+];
+
+const hiddenWords = [
+  "PHYSIQUE",
+  "SEXUELLE",
+  "NEGLIGENCE",
+  "EMPRISE"
+];
+
+const solutions = {
+  mot1: ["PHYSIQUE"],
+  mot2: ["NEGLIGENCE"],
+  mot3: ["SEXUELLE"],
+  mot4: ["EMPRISE", "LEMPRISE"]
+};
+
+const grid = document.getElementById("letterGrid");
+const message = document.getElementById("message");
+const nextBtn = document.getElementById("nextBtn");
+const validateBtn = document.getElementById("validateBtn");
+
+let isSelecting = false;
+let selectedCells = [];
+
+letters.forEach((row, r) => {
+  [...row].forEach((letter, c) => {
+    const cell = document.createElement("div");
+    cell.className = "cell";
+    cell.textContent = letter;
+    cell.dataset.r = r;
+    cell.dataset.c = c;
+
+    cell.addEventListener("mousedown", () => startSelection(cell));
+    cell.addEventListener("mouseenter", () => continueSelection(cell));
+
+    grid.appendChild(cell);
+  });
+});
+
+document.addEventListener("mouseup", endSelection);
+
+if(validateBtn){
+  validateBtn.addEventListener("click", verifierReponses);
+}
+
+document.querySelectorAll(".reponses input").forEach(input => {
+  input.addEventListener("input", () => {
+    input.value = input.value.toUpperCase();
+    input.classList.remove("erreur");
+
+    const valeur = nettoyerTexte(input.value);
+
+    if(solutions[input.id] && solutions[input.id].includes(valeur)){
+      verrouillerMot(input);
+    }
+  });
+});
+
+function nettoyerTexte(texte){
+  return texte
+    .trim()
+    .toUpperCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^A-Z]/g, "");
+}
+
+function verrouillerMot(input){
+  input.classList.remove("erreur");
+  input.classList.add("ok");
+  input.readOnly = true;
+  input.setAttribute("readonly", "readonly");
+  input.blur();
+  verifierFin();
+}
+
+function verifierReponses(){
+  let erreur = false;
+
+  Object.keys(solutions).forEach(id => {
+    const input = document.getElementById(id);
+
+    if(!input) return;
+
+    if(input.classList.contains("ok")) return;
+
+    const valeur = nettoyerTexte(input.value);
+
+    if(solutions[id].includes(valeur)){
+      verrouillerMot(input);
+    } else {
+      input.classList.add("erreur");
+      erreur = true;
+    }
+  });
+
+  if(erreur){
+    message.textContent = "Il y a encore une erreur.";
+    if(nextBtn) nextBtn.classList.remove("visible");
+  }
+
+  verifierFin();
+}
+
+function verifierFin(){
+  const totalValides = document.querySelectorAll(".reponses input.ok").length;
+  const totalSolutions = Object.keys(solutions).length;
+
+  if(totalValides === totalSolutions){
+    message.textContent = "Bravo ! Les quatre mots sont corrects.";
+
+    if(nextBtn){
+      nextBtn.classList.add("visible");
+    }
+
+    if(validateBtn){
+      validateBtn.style.display = "none";
+    }
+  }
+}
+
+function startSelection(cell){
+  clearSelection();
+  isSelecting = true;
+  addCell(cell);
+}
+
+function continueSelection(cell){
+  if(isSelecting){
+    addCell(cell);
+  }
+}
+
+function addCell(cell){
+  if(selectedCells.includes(cell)) return;
+
+  selectedCells.push(cell);
+  cell.classList.add("selected");
+}
+
+function endSelection(){
+  if(!isSelecting) return;
+
+  isSelecting = false;
+
+  const word = selectedCells.map(cell => cell.textContent).join("");
+  const reversed = word.split("").reverse().join("");
+
+  if(hiddenWords.includes(word) || hiddenWords.includes(reversed)){
+    selectedCells.forEach(cell => {
+      cell.classList.remove("selected");
+      cell.classList.add("found");
+    });
+
+    message.textContent = "Mot trouvé : " + word;
+  } else {
+    clearSelection();
+  }
+
+  selectedCells = [];
+}
+
+function clearSelection(){
+  document.querySelectorAll(".cell.selected").forEach(cell => {
+    cell.classList.remove("selected");
+  });
+}
+</script>
+
+</body>
+</html>

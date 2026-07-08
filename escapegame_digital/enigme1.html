@@ -200,6 +200,25 @@ body{
   transform:translateY(-2px);
 }
 
+/* ANGE DE FIN */
+
+.ange-fin{
+  position:fixed;
+  left:50%;
+  bottom:-360px;
+  transform:translateX(-50%);
+  width:260px;
+  opacity:0;
+  transition:all .9s cubic-bezier(.18,.89,.32,1.28);
+  z-index:900;
+  pointer-events:none;
+}
+
+.ange-fin.visible{
+  bottom:40px;
+  opacity:1;
+}
+
 /* FLÈCHE ÉNIGME SUIVANTE */
 
 .next-arrow{
@@ -268,6 +287,12 @@ body{
 
 </div>
 
+<img
+  id="angeFin"
+  class="ange-fin"
+  src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/ange1.png"
+  alt="Bravo">
+
 <a href="enigme2.html" class="next-arrow" id="nextBtn" title="Énigme suivante">→</a>
 
 <script>
@@ -302,9 +327,11 @@ const grid = document.getElementById("letterGrid");
 const message = document.getElementById("message");
 const nextBtn = document.getElementById("nextBtn");
 const validateBtn = document.getElementById("validateBtn");
+const angeFin = document.getElementById("angeFin");
 
 let isSelecting = false;
 let selectedCells = [];
+let jeuTermine = false;
 
 letters.forEach((row, r) => {
   [...row].forEach((letter, c) => {
@@ -387,20 +414,26 @@ function verifierReponses(){
 }
 
 function verifierFin(){
+  if(jeuTermine) return;
+
   const totalValides = document.querySelectorAll(".reponses input.ok").length;
   const totalSolutions = Object.keys(solutions).length;
 
-  if(totalValides === totalSolutions){
-    message.textContent = "Bravo ! Les quatre mots sont corrects.";
+  if(totalValides !== totalSolutions) return;
 
-    if(nextBtn){
-      nextBtn.classList.add("visible");
-    }
+  jeuTermine = true;
 
-    if(validateBtn){
-      validateBtn.style.display = "none";
-    }
+  message.textContent = "Bravo ! Les quatre mots sont corrects.";
+
+  if(validateBtn){
+    validateBtn.style.display = "none";
   }
+
+  angeFin.classList.add("visible");
+
+  setTimeout(() => {
+    nextBtn.classList.add("visible");
+  }, 1000);
 }
 
 function startSelection(cell){

@@ -188,6 +188,25 @@ body{
   transform:translateY(-2px);
 }
 
+/* ANGE DE FIN */
+
+.ange-fin{
+  position:fixed;
+  left:32%;
+  bottom:-300px;
+  transform:translateX(-50%);
+  width:200px;
+  opacity:0;
+  transition:all .9s cubic-bezier(.18,.89,.32,1.28);
+  z-index:900;
+  pointer-events:none;
+}
+
+.ange-fin.visible{
+  bottom:40px;
+  opacity:1;
+}
+
 /* FLÈCHE */
 
 .next-arrow{
@@ -245,6 +264,12 @@ body{
 
 </div>
 
+<img
+  id="angeFin"
+  class="ange-fin"
+  src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme2/ange2.png"
+  alt="Bravo">
+
 <a href="enigme3.html" class="next-arrow" id="nextBtn" title="Énigme suivante">→</a>
 
 <script>
@@ -256,6 +281,9 @@ const message = document.getElementById("message");
 const motCle = document.getElementById("motCle");
 const validateBtn = document.getElementById("validateBtn");
 const nextBtn = document.getElementById("nextBtn");
+const angeFin = document.getElementById("angeFin");
+
+let jeuTermine = false;
 
 phrases.forEach(phrase => {
   phrase.addEventListener("click", () => {
@@ -309,13 +337,23 @@ validateBtn.addEventListener("click", () => {
 });
 
 function validerMot(){
+  if(jeuTermine) return;
+
+  jeuTermine = true;
+
   motCle.classList.remove("erreur");
   motCle.classList.add("ok");
   motCle.readOnly = true;
 
-  message.textContent = "Bravo ! Tu peux passer à l’énigme suivante.";
+  message.textContent = "Bravo ! Tu as gagné.";
+
   validateBtn.style.display = "none";
-  nextBtn.classList.add("visible");
+
+  angeFin.classList.add("visible");
+
+  setTimeout(() => {
+    nextBtn.classList.add("visible");
+  }, 1000);
 }
 
 function nettoyerTexte(texte){

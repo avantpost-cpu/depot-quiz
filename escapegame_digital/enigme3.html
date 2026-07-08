@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Escape Game Rebond - Énigme 3</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+
+<style>
+*{ margin:0; padding:0; box-sizing:border-box; }
+
+html, body{
+  width:100%;
+  min-height:100%;
+  background:#1b5f6e;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.page-enigme3{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:40px;
+}
+
+.bloc-enigme3{
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  height:716px;
+  line-height:0;
+  font-size:0;
+}
+
+.partie-3a,
+.partie-3b{
+  position:relative;
+  height:716px;
+}
+
+.partie-3a img,
+.animation-3b{
+  display:block;
+  height:716px;
+  width:auto;
+  border:0;
+}
+
+.reponse-corps{
+  position:absolute;
+  font-family:'Patrick Hand', cursive;
+  font-size:24px;
+  font-weight:700;
+  text-transform:uppercase;
+  background:transparent;
+  border:none;
+  outline:none;
+  color:#111;
+  height:34px;
+  line-height:34px;
+  padding:0 8px;
+}
+
+#mot1{ left:112px; top:370px; width:100px; }
+#mot2{ left:254px; top:370px; width:100px; }
+#mot3{ left:116px; top:450px; width:100px; }
+#mot4{ left:254px; top:450px; width:100px; }
+#mot5{ left:116px; top:533px; width:155px; }
+
+.reponse-corps.ok{
+  background:#18A558;
+  color:#ffffff;
+  border-radius:8px;
+  text-align:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.18);
+}
+
+#mot5.ok{ width:95px; }
+
+.reponse-corps[readonly]{
+  pointer-events:none;
+  -webkit-text-fill-color:#ffffff;
+}
+
+.reponse-corps.erreur{
+  background:#c0392b;
+  color:#ffffff;
+  border-radius:8px;
+}
+
+.badges-panel{
+  display:none;
+  gap:14px;
+  justify-content:center;
+  align-items:center;
+  margin-top:22px;
+  min-height:70px;
+}
+
+.badges-panel.visible{
+  display:flex;
+}
+
+.badge{
+  width:58px;
+  height:auto;
+  cursor:grab;
+  user-select:none;
+  touch-action:none;
+  z-index:1000;
+}
+
+.badge.dragging{
+  cursor:grabbing;
+  transform:scale(1.08);
+  filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));
+}
+
+.badge.place{
+  cursor:grab;
+}
+
+.panel{
+  text-align:center;
+  margin-top:30px;
+  font-size:17px;
+}
+
+.message{
+  margin-bottom:18px;
+  font-weight:bold;
+  color:#ffffff;
+}
+
+.btn{
+  display:inline-block;
+  padding:15px 35px;
+  background:#044e61;
+  color:#ffffff;
+  border:none;
+  border-radius:40px;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:17px;
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+}
+
+.next-arrow{
+  position:fixed;
+  top:50%;
+  right:35px;
+  transform:translateY(-50%) translateX(12px);
+  font-size:62px;
+  font-weight:200;
+  color:#ffffff;
+  text-decoration:none;
+  opacity:0;
+  pointer-events:none;
+  transition:.35s ease;
+  z-index:999;
+}
+
+.next-arrow.visible{
+  opacity:.45;
+  pointer-events:auto;
+  transform:translateY(-50%) translateX(0);
+}
+
+.next-arrow:hover{
+  opacity:1;
+  transform:translateY(-50%) translateX(6px);
+}
+</style>
+</head>
+
+<body>
+
+<div class="page-enigme3">
+
+  <div class="bloc-enigme3">
+
+    <div class="partie-3a">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/3A.jpg" alt="Énigme 3">
+
+      <input id="mot1" class="reponse-corps" type="text" autocomplete="off" maxlength="14">
+      <input id="mot2" class="reponse-corps" type="text" autocomplete="off" maxlength="14">
+      <input id="mot3" class="reponse-corps" type="text" autocomplete="off" maxlength="14">
+      <input id="mot4" class="reponse-corps" type="text" autocomplete="off" maxlength="14">
+      <input id="mot5" class="reponse-corps" type="text" autocomplete="off" maxlength="14">
+    </div>
+
+    <div class="partie-3b" id="zoneImage">
+      <video
+        class="animation-3b"
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/3B.mp4"
+        autoplay
+        muted
+        playsinline>
+      </video>
+    </div>
+
+  </div>
+
+  <div class="badges-panel" id="badgesPanel">
+    <img id="b1" class="badge" data-word="FESSES" src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/b1.png" alt="">
+    <img id="b2" class="badge" data-word="SEXE" src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/b2.png" alt="">
+    <img id="b3" class="badge" data-word="BOUCHE" src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/b3.png" alt="">
+    <img id="b4" class="badge" data-word="SEINS" src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/b4.png" alt="">
+    <img id="b5" class="badge" data-word="CUISSE" src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/b5.png" alt="">
+  </div>
+
+  <div class="panel">
+    <div class="message" id="message">Écris les cinq mots dans n’importe quel ordre.</div>
+    <button class="btn" id="validateBtn">Valider</button>
+  </div>
+
+</div>
+
+<a href="enigme4.html" class="next-arrow" id="nextBtn" title="Énigme suivante">→</a>
+
+<script>
+const motsPossibles = [
+  "FESSES",
+  "SEXE",
+  "BOUCHE",
+  "SEINS",
+  "POITRINE",
+  "CUISSE",
+  "CUISSES"
+];
+
+const motsCanoniques = {
+  FESSES:"FESSES",
+  SEXE:"SEXE",
+  BOUCHE:"BOUCHE",
+  SEINS:"SEINS",
+  POITRINE:"SEINS",
+  CUISSE:"CUISSE",
+  CUISSES:"CUISSE"
+};
+
+const motsTrouves = new Set();
+const badgesPlaces = new Set();
+
+const message = document.getElementById("message");
+const validateBtn = document.getElementById("validateBtn");
+const nextBtn = document.getElementById("nextBtn");
+const zoneImage = document.getElementById("zoneImage");
+const badgesPanel = document.getElementById("badgesPanel");
+const inputs = document.querySelectorAll(".reponse-corps");
+
+let badgeActif = null;
+let offsetX = 0;
+let offsetY = 0;
+
+inputs.forEach(input => {
+  input.addEventListener("input", () => {
+    input.value = input.value.toUpperCase();
+    input.classList.remove("erreur");
+
+    const valeur = nettoyerTexte(input.value);
+
+    if(motsPossibles.includes(valeur)){
+      const canonique = motsCanoniques[valeur];
+
+      if(!motsTrouves.has(canonique)){
+        verrouillerMot(input, canonique);
+      }
+    }
+  });
+});
+
+validateBtn.addEventListener("click", verifierReponses);
+
+function nettoyerTexte(texte){
+  return texte
+    .trim()
+    .toUpperCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^A-Z]/g,"");
+}
+
+function verrouillerMot(input, mot){
+  input.classList.add("ok");
+  input.readOnly = true;
+  input.value = mot;
+  input.blur();
+
+  motsTrouves.add(mot);
+  verifierMots();
+}
+
+function verifierReponses(){
+  let erreur = false;
+
+  inputs.forEach(input => {
+    if(input.classList.contains("ok")) return;
+
+    const valeur = nettoyerTexte(input.value);
+
+    if(motsPossibles.includes(valeur)){
+      const canonique = motsCanoniques[valeur];
+
+      if(!motsTrouves.has(canonique)){
+        verrouillerMot(input, canonique);
+      } else {
+        input.classList.add("erreur");
+        erreur = true;
+      }
+    } else {
+      input.classList.add("erreur");
+      erreur = true;
+    }
+  });
+
+  if(erreur){
+    message.textContent = "Il manque encore un mot ou un mot est déjà utilisé.";
+  }
+
+  verifierMots();
+}
+
+function verifierMots(){
+  if(motsTrouves.size === 5){
+    message.textContent = "Bravo ! Prends un numéro et pose-le sur l’image.";
+    validateBtn.style.display = "none";
+    badgesPanel.classList.add("visible");
+  }
+}
+
+document.querySelectorAll(".badge").forEach(badge => {
+  badge.addEventListener("mousedown", commencerDrag);
+});
+
+function commencerDrag(e){
+  e.preventDefault();
+
+  badgeActif = e.currentTarget;
+
+  const rect = badgeActif.getBoundingClientRect();
+
+  offsetX = e.clientX - rect.left;
+  offsetY = e.clientY - rect.top;
+
+  badgeActif.classList.add("dragging");
+
+  document.body.appendChild(badgeActif);
+
+  badgeActif.style.position = "fixed";
+  badgeActif.style.left = rect.left + "px";
+  badgeActif.style.top = rect.top + "px";
+  badgeActif.style.zIndex = "9999";
+}
+
+document.addEventListener("mousemove", e => {
+  if(!badgeActif) return;
+
+  badgeActif.style.left = (e.clientX - offsetX) + "px";
+  badgeActif.style.top = (e.clientY - offsetY) + "px";
+});
+
+document.addEventListener("mouseup", e => {
+  if(!badgeActif) return;
+
+  const imageRect = zoneImage.getBoundingClientRect();
+
+  const x = e.clientX - imageRect.left;
+  const y = e.clientY - imageRect.top;
+
+  if(
+    x >= 0 &&
+    x <= imageRect.width &&
+    y >= 0 &&
+    y <= imageRect.height
+  ){
+    zoneImage.appendChild(badgeActif);
+
+    badgeActif.style.position = "absolute";
+    badgeActif.style.left = (x - offsetX) + "px";
+    badgeActif.style.top = (y - offsetY) + "px";
+    badgeActif.style.zIndex = "80";
+
+    badgeActif.classList.remove("dragging");
+    badgeActif.classList.add("place");
+
+    badgesPlaces.add(badgeActif.id);
+
+    if(badgesPlaces.size === 5){
+      message.textContent = "Bravo ! Tu peux passer à l’énigme suivante.";
+      nextBtn.classList.add("visible");
+    }
+
+  } else {
+    badgesPanel.appendChild(badgeActif);
+
+    badgeActif.style.position = "";
+    badgeActif.style.left = "";
+    badgeActif.style.top = "";
+    badgeActif.style.zIndex = "";
+
+    badgeActif.classList.remove("dragging");
+  }
+
+  badgeActif = null;
+});
+</script>
+
+</body>
+</html>

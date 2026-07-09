@@ -38,7 +38,7 @@ body{
   font-size:0;
 }
 
-.zone-enigme2 img{
+.animation-2{
   display:block;
   height:716px;
   width:auto;
@@ -66,54 +66,13 @@ body{
   cursor:default;
 }
 
-.phrase[data-id="1"]{
-  left:62px;
-  top:239px;
-  width:254px;
-  height:55px;
-}
-
-.phrase[data-id="2"]{
-  left:63px;
-  top:311px;
-  width:257px;
-  height:98px;
-}
-
-.phrase[data-id="3"]{
-  left:62px;
-  top:424px;
-  width:257px;
-  height:58px;
-}
-
-.phrase[data-id="4"]{
-  left:64px;
-  top:499px;
-  width:258px;
-  height:43px;
-}
-
-.phrase[data-id="5"]{
-  left:698px;
-  top:236px;
-  width:255px;
-  height:101px;
-}
-
-.phrase[data-id="6"]{
-  left:698px;
-  top:353px;
-  width:233px;
-  height:80px;
-}
-
-.phrase[data-id="7"]{
-  left:699px;
-  top:447px;
-  width:230px;
-  height:118px;
-}
+.phrase[data-id="1"]{ left:62px; top:239px; width:254px; height:55px; }
+.phrase[data-id="2"]{ left:63px; top:311px; width:257px; height:98px; }
+.phrase[data-id="3"]{ left:62px; top:424px; width:257px; height:58px; }
+.phrase[data-id="4"]{ left:64px; top:499px; width:258px; height:43px; }
+.phrase[data-id="5"]{ left:698px; top:236px; width:255px; height:101px; }
+.phrase[data-id="6"]{ left:698px; top:353px; width:233px; height:80px; }
+.phrase[data-id="7"]{ left:699px; top:447px; width:230px; height:118px; }
 
 /* MOT-CLÉ */
 
@@ -123,14 +82,12 @@ body{
   top:597px;
   width:345px;
   height:60px;
-
   font-family:'Patrick Hand', cursive;
   font-size:42px;
   font-weight:700;
   letter-spacing:6px;
   text-align:center;
   text-transform:uppercase;
-
   background:transparent;
   border:0;
   outline:none;
@@ -335,7 +292,13 @@ body{
       </div>
     </div>
 
-    <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme2/enigme2.mp4" alt="Énigme 2">
+    <video
+      class="animation-2"
+      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme2/enigme2.mp4"
+      autoplay
+      muted
+      playsinline>
+    </video>
 
     <button class="phrase bonne" data-id="1" type="button"></button>
     <button class="phrase mauvaise" data-id="2" type="button"></button>
@@ -347,6 +310,11 @@ body{
 
     <input id="motCle" type="text" autocomplete="off" maxlength="12">
 
+  </div>
+
+  <div class="panel">
+    <div class="message" id="message">Entoure les situations sans risque, puis trouve le mot-clé.</div>
+    <button class="btn" id="validateBtn" type="button">Valider</button>
   </div>
 
 </div>
@@ -437,9 +405,7 @@ function validerMot(){
   ajouterMotTrouve("Énigme 2", "CONSENTEMENT");
 
   message.textContent = "Bravo ! Tu as gagné.";
-
   validateBtn.style.display = "none";
-
   angeFin.classList.add("visible");
 
   setTimeout(() => {

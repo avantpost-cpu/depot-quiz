@@ -475,9 +475,7 @@ const solutions = {
 };
 
 const grid = document.getElementById("letterGrid");
-const message = document.getElementById("message");
 const nextBtn = document.getElementById("nextBtn");
-const validateBtn = document.getElementById("validateBtn");
 const angeFin = document.getElementById("angeFin");
 
 let isSelecting = false;
@@ -503,7 +501,6 @@ letters.forEach((row, r) => {
 
 document.addEventListener("mouseup", endSelection);
 
-validateBtn.addEventListener("click", verifierReponses);
 
 document.querySelectorAll(".reponses input").forEach(input => {
   input.addEventListener("input", () => {
@@ -536,32 +533,6 @@ function verrouillerMot(input){
   verifierFin();
 }
 
-function verifierReponses(){
-  let erreur = false;
-
-  Object.keys(solutions).forEach(id => {
-    const input = document.getElementById(id);
-
-    if(input.classList.contains("ok")) return;
-
-    const valeur = nettoyerTexte(input.value);
-
-    if(solutions[id].includes(valeur)){
-      verrouillerMot(input);
-    } else {
-      input.classList.add("erreur");
-      erreur = true;
-    }
-  });
-
-  if(erreur){
-    message.textContent = "Il y a encore une erreur.";
-    nextBtn.classList.remove("visible");
-  }
-
-  verifierFin();
-}
-
 function verifierFin(){
   if(jeuTermine) return;
 
@@ -572,11 +543,9 @@ function verifierFin(){
 
   jeuTermine = true;
 
-  message.textContent = "Bravo ! Les quatre mots sont corrects.";
 
   ajouterMotTrouve("Énigme 1", "EMPRISE");
 
-  validateBtn.style.display = "none";
   angeFin.classList.add("visible");
 
   setTimeout(() => {
@@ -617,7 +586,6 @@ function endSelection(){
       cell.classList.add("found");
     });
 
-    message.textContent = "Mot trouvé : " + word;
   } else {
     clearSelection();
   }

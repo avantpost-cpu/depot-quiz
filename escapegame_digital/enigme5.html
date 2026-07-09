@@ -82,6 +82,38 @@ html, body{
   100%{ transform:translateY(12px); opacity:.55; }
 }
 
+/* BRAVI DE FIN */
+
+.bloc-enigme5.gagnee .animation-5,
+.bloc-enigme5.gagnee .code-panel{
+  opacity:.5;
+  filter:saturate(.5);
+  transition:opacity .45s ease, filter .45s ease;
+}
+
+.bravi-final{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  z-index:2600;
+  transition:opacity .45s ease;
+}
+
+.bravi-final.visible{
+  opacity:1;
+}
+
+.bravi-final img{
+  width:50%;
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
+}
+
 /* SAC INVENTAIRE */
 
 .inventaire{
@@ -313,6 +345,10 @@ html, body{
       </div>
     </div>
 
+    <div class="bravi-final" id="braviFinal">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi5.png" alt="Bravo énigme 5">
+    </div>
+
     <video
       id="videoEnigme5"
       class="animation-5"
@@ -339,6 +375,7 @@ const videoEnigme5 = document.getElementById("videoEnigme5");
 const codePanel = document.getElementById("codePanel");
 const chiffres = document.querySelectorAll(".chiffre");
 const nextBtn = document.getElementById("nextBtn");
+const braviFinal = document.getElementById("braviFinal");
 
 let code = [0, 0, 0];
 let jeuTermine = false;
@@ -373,11 +410,14 @@ function verifierCode(){
 
     codePanel.classList.add("cadenas-ouvert");
 
-    ajouterMotTrouve("Énigme 5", "SIGNALEMENT");
+    ajouterMotTrouve("Énigme 5", "DANS");
+
+    document.querySelector(".bloc-enigme5").classList.add("gagnee");
+    braviFinal.classList.add("visible");
 
     setTimeout(() => {
       nextBtn.classList.add("visible");
-    }, 700);
+    }, 1000);
   }
 }
 

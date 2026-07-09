@@ -29,6 +29,7 @@ html, body{
 }
 
 .bloc-enigme3{
+  position:relative;
   display:flex;
   justify-content:center;
   align-items:flex-start;
@@ -154,6 +155,95 @@ html, body{
   transform:translateY(-2px);
 }
 
+/* ONGLET INVENTAIRE */
+
+/* Sac */
+
+.inventaire{
+    position:absolute;
+    left:-70px;
+    top:0;
+    height:716px;
+    z-index:3000;
+}
+
+.inventaire-tab{
+    position:absolute;
+    left:0;
+    top:25px;
+    width:70px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    cursor:pointer;
+}
+
+.inventaire-tab img{
+    width:80px;
+    height:auto;
+    transition:transform .25s;
+  filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
+}
+
+.inventaire:hover .inventaire-tab img{
+    transform:scale(1.08);
+}
+
+/* Tiroir */
+
+.inventaire-content{
+    position:absolute;
+    left:70px;
+    top:10;
+
+    width:0;
+    height:200px;
+
+    overflow:hidden;
+
+background:rgba(255,255,255,.30);   /* blanc à 30 % */
+backdrop-filter:blur(8px);
+-webkit-backdrop-filter:blur(8px);
+
+color:#044e61;
+
+    transition:width .35s ease;
+
+    border-radius:0 18px 18px 0;
+
+    box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+
+.inventaire:hover .inventaire-content{
+    width:230px;
+}
+
+.inventaire-content-inner{
+    width:230px;
+    height:716px;
+    padding:25px 18px;
+    overflow-y:auto;
+}
+
+.inventaire-content h3{
+    font-size:18px;
+    margin-bottom:18px;
+    color:#044e61;
+}
+
+.inventaire-content ul{
+    list-style:none;
+}
+
+.inventaire-content li{
+    margin-bottom:10px;
+    padding:10px;
+    border-radius:10px;
+    background:rgba(255,255,255,.55);
+    color:#044e61;
+    font-weight:bold;
+}
+
 .next-arrow{
   position:fixed;
   top:50%;
@@ -187,6 +277,19 @@ html, body{
 <div class="page-enigme3">
 
   <div class="bloc-enigme3">
+
+    <div class="inventaire" id="inventaire">
+      <div class="inventaire-tab">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png" alt="Inventaire">
+      </div>
+
+      <div class="inventaire-content">
+        <div class="inventaire-content-inner">
+          <h3>Mots trouvés</h3>
+          <ul id="listeMots"></ul>
+        </div>
+      </div>
+    </div>
 
     <div class="partie-3a">
       <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/3A.jpg" alt="Énigme 3">
@@ -261,6 +364,8 @@ const inputs = document.querySelectorAll(".reponse-corps");
 let badgeActif = null;
 let offsetX = 0;
 let offsetY = 0;
+
+afficherMotsTrouves();
 
 inputs.forEach(input => {
   input.addEventListener("input", () => {
@@ -397,6 +502,10 @@ document.addEventListener("mouseup", e => {
 
     if(badgesPlaces.size === 5){
       message.textContent = "Bravo ! Tu peux passer à l’énigme suivante.";
+
+      /* Si l’énigme 3 donne un mot final, remplace "MOT_ÉNIGME_3" par le bon mot */
+      /* ajouterMotTrouve("Énigme 3", "MOT_ÉNIGME_3"); */
+
       nextBtn.classList.add("visible");
     }
 
@@ -413,6 +522,41 @@ document.addEventListener("mouseup", e => {
 
   badgeActif = null;
 });
+
+/* MÉMOIRE DES MOTS TROUVÉS */
+
+function ajouterMotTrouve(enigme, mot){
+  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+  const existeDeja = mots.some(item => item.enigme === enigme);
+
+  if(!existeDeja){
+    mots.push({ enigme, mot });
+    localStorage.setItem("motsEscapeRebond", JSON.stringify(mots));
+  }
+
+  afficherMotsTrouves();
+}
+
+function afficherMotsTrouves(){
+  const liste = document.getElementById("listeMots");
+  if(!liste) return;
+
+  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+  liste.innerHTML = "";
+
+  if(mots.length === 0){
+    const li = document.createElement("li");
+    li.textContent = "Aucun mot";
+    liste.appendChild(li);
+    return;
+  }
+
+  mots.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item.enigme + " : " + item.mot;
+    liste.appendChild(li);
+  });
+}
 </script>
 
 </body>

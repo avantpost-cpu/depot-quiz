@@ -145,6 +145,42 @@ html, body{
   border-radius:8px;
 }
 
+
+/* BRAVI DE FIN */
+
+.bloc-enigme4.gagnee .animation-4,
+.bloc-enigme4.gagnee .drop-zone,
+.bloc-enigme4.gagnee .lettres-panel,
+.bloc-enigme4.gagnee .jeu2,
+.bloc-enigme4.gagnee .reponse-jeu2{
+  opacity:.5;
+  filter:saturate(.5);
+  transition:opacity .45s ease, filter .45s ease;
+}
+
+.bravi-final{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  z-index:2600;
+  transition:opacity .45s ease;
+}
+
+.bravi-final.visible{
+  opacity:1;
+}
+
+.bravi-final img{
+  width:50%;
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
+}
+
 /* ONGLET INVENTAIRE */
 
 /* Sac */
@@ -390,6 +426,10 @@ color:#044e61;
       </div>
     </div>
 
+    <div class="bravi-final" id="braviFinal">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi4.png" alt="Bravo énigme 4">
+    </div>
+
     <video
       id="videoEnigme4"
       class="animation-4"
@@ -440,6 +480,7 @@ const lettresPanel = document.getElementById("lettresPanel");
 const nextBtn = document.getElementById("nextBtn");
 const jeu2 = document.getElementById("jeu2");
 const reponseJeu2 = document.getElementById("reponseJeu2");
+const braviFinal = document.getElementById("braviFinal");
 
 let lettreActive = null;
 let offsetX = 0;
@@ -556,9 +597,14 @@ reponseJeu2.addEventListener("input", () => {
     reponseJeu2.classList.add("ok");
     reponseJeu2.readOnly = true;
 
-    ajouterMotTrouve("Énigme 4", "ALERTE");
+    ajouterMotTrouve("Énigme 4", "L'ENFANCE");
 
-    nextBtn.classList.add("visible");
+    document.querySelector(".bloc-enigme4").classList.add("gagnee");
+    braviFinal.classList.add("visible");
+
+    setTimeout(() => {
+      nextBtn.classList.add("visible");
+    }, 1000);
   }
 });
 

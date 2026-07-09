@@ -81,7 +81,7 @@ html, body{
   box-shadow:0 2px 6px rgba(0,0,0,.18);
 }
 
-#mot5.ok{ width:95px; }
+#mot5.ok{ width:155px; }
 
 .reponse-corps[readonly]{
   pointer-events:none;
@@ -470,6 +470,13 @@ let offsetY = 0;
 
 afficherMotsTrouves();
 
+function setMessage(texte){
+  if(message){
+    message.textContent = texte;
+  }
+}
+
+
 inputs.forEach(input => {
   input.addEventListener("input", () => {
     input.value = input.value.toUpperCase();
@@ -487,7 +494,7 @@ inputs.forEach(input => {
   });
 });
 
-if(validateBtn){ validateBtn.addEventListener("click", verifierReponses); }
+if(validateBtn){ if(validateBtn){ validateBtn.addEventListener("click", verifierReponses); } }
 
 function nettoyerTexte(texte){
   return texte
@@ -532,7 +539,7 @@ function verifierReponses(){
   });
 
   if(erreur){
-    message.textContent = "Il manque encore un mot ou un mot est déjà utilisé.";
+    setMessage("Il manque encore un mot ou un mot est déjà utilisé.");
   }
 
   verifierMots();
@@ -540,8 +547,8 @@ function verifierReponses(){
 
 function verifierMots(){
   if(motsTrouves.size === 5){
-    message.textContent = "Bravo ! Prends un numéro et pose-le sur l’image.";
-    if(validateBtn){ validateBtn.style.display = "none"; }
+    setMessage("Bravo ! Prends un numéro et pose-le sur l’image.");
+    if(validateBtn){ if(validateBtn){ validateBtn.style.display = "none"; } }
     badgesPanel.classList.add("visible");
   }
 }
@@ -604,7 +611,7 @@ document.addEventListener("mouseup", e => {
     badgesPlaces.add(badgeActif.id);
 
     if(badgesPlaces.size === 5){
-      message.textContent = "Bravo ! Tu peux passer à l’énigme suivante.";
+      setMessage("Bravo ! Tu peux passer à l’énigme suivante.");
 
       /* Si l’énigme 3 donne un mot final, remplace "MOT_ÉNIGME_3" par le bon mot */
       /* ajouterMotTrouve("Énigme 3", "MOT_ÉNIGME_3"); */

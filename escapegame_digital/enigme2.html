@@ -107,6 +107,40 @@ html, body{
   border-radius:10px;
 }
 
+
+/* BRAVI DE FIN */
+
+.zone-enigme2.gagnee .animation-2,
+.zone-enigme2.gagnee .phrase,
+.zone-enigme2.gagnee #motCle{
+  opacity:.5;
+  filter:saturate(.5);
+  transition:opacity .45s ease, filter .45s ease;
+}
+
+.bravi-final{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  z-index:2600;
+  transition:opacity .45s ease;
+}
+
+.bravi-final.visible{
+  opacity:1;
+}
+
+.bravi-final img{
+  width:50%;
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
+}
+
 /* ONGLET SAC */
 
 .inventaire{
@@ -388,6 +422,10 @@ html, body{
       </div>
     </div>
 
+    <div class="bravi-final" id="braviFinal">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi2.png" alt="Bravo énigme 2">
+    </div>
+
     <video
       class="animation-2"
       src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme2/enigme2.mp4"
@@ -429,6 +467,7 @@ const motCle = document.getElementById("motCle");
 const validateBtn = document.getElementById("validateBtn");
 const nextBtn = document.getElementById("nextBtn");
 const angeFin = document.getElementById("angeFin");
+const braviFinal = document.getElementById("braviFinal");
 
 let jeuTermine = false;
 
@@ -443,7 +482,7 @@ phrases.forEach(phrase => {
     if(!bonnesPhrases.includes(id)){
       phrase.classList.add("grisee");
       phrase.disabled = true;
-      message.textContent = "Cette phrase n’est pas une situation à retenir.";
+      if(message){ message.textContent = "Cette phrase n’est pas une situation à retenir."; }
       return;
     }
 
@@ -453,7 +492,7 @@ phrases.forEach(phrase => {
 
     if(selectionnees.size === bonnesPhrases.length){
       griserMauvaises();
-      message.textContent = "Bravo ! Les bonnes situations sont entourées. Trouve maintenant le mot-clé.";
+      if(message){ message.textContent = "Bravo ! Les bonnes situations sont entourées. Trouve maintenant le mot-clé."; }
     }
   });
 });
@@ -476,14 +515,16 @@ motCle.addEventListener("input", () => {
   }
 });
 
-validateBtn.addEventListener("click", () => {
-  if(nettoyerTexte(motCle.value) === "CONSENTEMENT"){
-    validerMot();
-  } else {
-    motCle.classList.add("erreur");
-    message.textContent = "Le mot-clé n’est pas encore correct.";
-  }
-});
+if(validateBtn){
+  validateBtn.addEventListener("click", () => {
+    if(nettoyerTexte(motCle.value) === "CONSENTEMENT"){
+      validerMot();
+    } else {
+      motCle.classList.add("erreur");
+      if(message){ message.textContent = "Le mot-clé n’est pas encore correct."; }
+    }
+  });
+}
 
 function validerMot(){
   if(jeuTermine) return;
@@ -494,11 +535,12 @@ function validerMot(){
   motCle.classList.add("ok");
   motCle.readOnly = true;
 
-  ajouterMotTrouve("Énigme 2", "CONSENTEMENT");
+  ajouterMotTrouve("Énigme 2", "LE SPORT");
 
-  message.textContent = "Bravo ! Tu as gagné.";
-  validateBtn.style.display = "none";
-  angeFin.classList.add("visible");
+  document.querySelector(".zone-enigme2").classList.add("gagnee");
+  braviFinal.classList.add("visible");
+
+  if(validateBtn){ validateBtn.style.display = "none"; }
 
   setTimeout(() => {
     nextBtn.classList.add("visible");

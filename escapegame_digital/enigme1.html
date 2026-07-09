@@ -11,11 +11,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{ margin:0; padding:0; box-sizing:border-box; }
 
 body{
   background:#1b5f6e;
@@ -77,17 +73,9 @@ body{
   transition:.15s;
 }
 
-.cell:hover{
-  background:rgba(27,95,110,.12);
-}
-
-.cell.selected{
-  background:rgba(27,95,110,.28);
-}
-
-.cell.found{
-  background:rgba(237,176,26,.75);
-}
+.cell:hover{ background:rgba(27,95,110,.12); }
+.cell.selected{ background:rgba(27,95,110,.28); }
+.cell.found{ background:rgba(237,176,26,.75); }
 
 /* CHAMPS DE RÉPONSE */
 
@@ -111,7 +99,6 @@ body{
   height:34px;
   line-height:34px;
   padding:0 6px;
-  letter-spacing:0;
   transition:.25s;
 }
 
@@ -126,8 +113,6 @@ body{
   border-radius:8px;
   padding:0 10px;
   box-shadow:0 2px 6px rgba(0,0,0,.18);
-  font-weight:700;
-  cursor:default;
 }
 
 .reponses input[readonly],
@@ -144,7 +129,7 @@ body{
   padding:0 10px;
 }
 
-/* INVENTAIRE */
+/* SAC INVENTAIRE */
 
 .inventaire{
   position:absolute;
@@ -227,22 +212,9 @@ body{
   font-weight:bold;
   font-size:14px;
 }
-<div class="navigation-enigmes" id="navigationEnigmes">
-  <div class="navigation-tab">
-    <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png" alt="Énigmes">
-  </div>
 
-  <div class="navigation-content">
-    <div class="navigation-content-inner">
-      <h3>Énigmes</h3>
-      <a href="enigme1.html">Énigme 1</a>
-      <a href="enigme2.html">Énigme 2</a>
-      <a href="enigme3.html">Énigme 3</a>
-      <a href="enigme4.html">Énigme 4</a>
-      <a href="enigme5.html">Énigme 5</a>
-    </div>
-  </div>
-</div>
+/* LOUPE ÉNIGMES */
+
 .navigation-enigmes{
   position:absolute;
   left:-70px;
@@ -311,6 +283,7 @@ body{
 
 .navigation-content a{
   display:block;
+  line-height:18px;
   margin-bottom:10px;
   padding:10px;
   border-radius:10px;
@@ -319,14 +292,13 @@ body{
   font-weight:bold;
   font-size:14px;
   text-decoration:none;
-  line-height:18px;
 }
 
 .navigation-content a:hover{
   background:#044e61;
   color:#ffffff;
 }
-  
+
 /* BOUTONS */
 
 .panel{
@@ -346,7 +318,6 @@ body{
   padding:15px 35px;
   background:#044e61;
   color:#ffffff;
-  text-decoration:none;
   border-radius:40px;
   font-weight:bold;
   border:none;
@@ -355,9 +326,7 @@ body{
   transition:.2s;
 }
 
-.btn:hover{
-  transform:translateY(-2px);
-}
+.btn:hover{ transform:translateY(-2px); }
 
 /* ANGE DE FIN */
 
@@ -378,7 +347,7 @@ body{
   opacity:1;
 }
 
-/* FLÈCHE ÉNIGME SUIVANTE */
+/* FLÈCHE */
 
 .next-arrow{
   position:fixed;
@@ -390,10 +359,8 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
-  font-family:Arial, Helvetica, sans-serif;
   font-size:62px;
   font-weight:200;
-  line-height:1;
   color:#ffffff;
   text-decoration:none;
   opacity:0;
@@ -434,6 +401,23 @@ body{
       </div>
     </div>
 
+    <div class="navigation-enigmes" id="navigationEnigmes">
+      <div class="navigation-tab">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png" alt="Énigmes">
+      </div>
+
+      <div class="navigation-content">
+        <div class="navigation-content-inner">
+          <h3>Énigmes</h3>
+          <a href="enigme1.html">Énigme 1</a>
+          <a href="enigme2.html">Énigme 2</a>
+          <a href="enigme3.html">Énigme 3</a>
+          <a href="enigme4.html">Énigme 4</a>
+          <a href="enigme5.html">Énigme 5</a>
+        </div>
+      </div>
+    </div>
+
     <div class="partie-gauche">
       <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/1A.jpg" alt="Mots mêlés">
       <div class="letter-grid" id="letterGrid"></div>
@@ -450,6 +434,11 @@ body{
       </div>
     </div>
 
+  </div>
+
+  <div class="panel">
+    <div class="message" id="message">Trouve les mots cachés à gauche, puis écris-les à droite.</div>
+    <button class="btn" id="validateBtn">Valider</button>
   </div>
 
 </div>
@@ -519,9 +508,7 @@ letters.forEach((row, r) => {
 
 document.addEventListener("mouseup", endSelection);
 
-if(validateBtn){
-  validateBtn.addEventListener("click", verifierReponses);
-}
+validateBtn.addEventListener("click", verifierReponses);
 
 document.querySelectorAll(".reponses input").forEach(input => {
   input.addEventListener("input", () => {
@@ -560,8 +547,6 @@ function verifierReponses(){
   Object.keys(solutions).forEach(id => {
     const input = document.getElementById(id);
 
-    if(!input) return;
-
     if(input.classList.contains("ok")) return;
 
     const valeur = nettoyerTexte(input.value);
@@ -576,7 +561,7 @@ function verifierReponses(){
 
   if(erreur){
     message.textContent = "Il y a encore une erreur.";
-    if(nextBtn) nextBtn.classList.remove("visible");
+    nextBtn.classList.remove("visible");
   }
 
   verifierFin();
@@ -596,10 +581,7 @@ function verifierFin(){
 
   ajouterMotTrouve("Énigme 1", "EMPRISE");
 
-  if(validateBtn){
-    validateBtn.style.display = "none";
-  }
-
+  validateBtn.style.display = "none";
   angeFin.classList.add("visible");
 
   setTimeout(() => {

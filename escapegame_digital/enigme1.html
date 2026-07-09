@@ -417,6 +417,10 @@ body{
 
 <body>
 
+<audio id="voixInstruction" preload="auto">
+    <source src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/voix1.mp3" type="audio/mpeg">
+</audio>
+
 <div class="wrapper">
 
   <div class="enigme">
@@ -667,6 +671,23 @@ function afficherMotsTrouves(){
     liste.appendChild(li);
   });
 }
+  /* ===========================
+   VOIX DES INSTRUCTIONS
+=========================== */
+
+const voixInstruction = document.getElementById("voixInstruction");
+
+window.addEventListener("load", () => {
+
+    setTimeout(() => {
+
+        voixInstruction.play().catch(() => {
+            console.log("Lecture automatique bloquée.");
+        });
+
+    }, 2000);
+
+});
 </script>
 
 </body>

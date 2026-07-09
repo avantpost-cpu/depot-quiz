@@ -644,13 +644,14 @@ function retourDepart(badge){
 
 function verifierFin(){
   if(badgesPlaces.size === 5){
+    ajouterMotTrouve("Énigme 3", "ENFANCE");
     nextBtn.classList.add("visible");
   }
 }
 
 /* MÉMOIRE */
 
-function ajouterMotTrouve("Énigme 3", "ENFANCE");{
+function ajouterMotTrouve(enigme, mot){
   const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
 
   if(!mots.some(item => item.enigme === enigme)){

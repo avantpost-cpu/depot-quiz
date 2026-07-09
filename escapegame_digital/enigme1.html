@@ -129,6 +129,39 @@ body{
   padding:0 10px;
 }
 
+
+/* BRAVI DE FIN */
+
+.enigme.gagnee .partie-gauche,
+.enigme.gagnee .partie-droite{
+  opacity:.5;
+  filter:saturate(.5);
+  transition:opacity .45s ease, filter .45s ease;
+}
+
+.bravi-final{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  z-index:2600;
+  transition:opacity .45s ease;
+}
+
+.bravi-final.visible{
+  opacity:1;
+}
+
+.bravi-final img{
+  width:50%;
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
+}
+
 /* SAC INVENTAIRE */
 
 .inventaire{
@@ -418,6 +451,10 @@ body{
       </div>
     </div>
 
+    <div class="bravi-final" id="braviFinal">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi1.png" alt="Bravo énigme 1">
+    </div>
+
     <div class="partie-gauche">
       <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/1A.jpg" alt="Mots mêlés">
       <div class="letter-grid" id="letterGrid"></div>
@@ -477,6 +514,7 @@ const solutions = {
 const grid = document.getElementById("letterGrid");
 const nextBtn = document.getElementById("nextBtn");
 const angeFin = document.getElementById("angeFin");
+const braviFinal = document.getElementById("braviFinal");
 
 let isSelecting = false;
 let selectedCells = [];
@@ -544,9 +582,9 @@ function verifierFin(){
   jeuTermine = true;
 
 
-  ajouterMotTrouve("Énigme 1", "EMPRISE");
-
-  angeFin.classList.add("visible");
+  document.querySelector(".enigme").classList.add("gagnee");
+  ajouterMotTrouve("Énigme 1", "PROTÉGEONS");
+  braviFinal.classList.add("visible");
 
   setTimeout(() => {
     nextBtn.classList.add("visible");

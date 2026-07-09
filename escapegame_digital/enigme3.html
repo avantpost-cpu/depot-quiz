@@ -194,7 +194,7 @@ html, body{
 .inventaire-content{
     position:absolute;
     left:70px;
-    top:10;
+    top:10px;
 
     width:0;
     height:200px;
@@ -248,6 +248,94 @@ color:#044e61;
   font-size:14px;
 }
 
+
+/* ONGLET LOUPE */
+
+.navigation-enigmes{
+  position:absolute;
+  left:-70px;
+  top:90px;
+  height:716px;
+  z-index:2990;
+}
+
+.navigation-tab{
+  position:absolute;
+  left:0;
+  top:25px;
+  width:70px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+}
+
+.navigation-tab img{
+  width:80px;
+  height:auto;
+  display:block;
+  pointer-events:none;
+  transition:transform .25s;
+  filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
+}
+
+.navigation-enigmes:hover .navigation-tab img{
+  transform:scale(1.08);
+}
+
+.navigation-content{
+  position:absolute;
+  left:70px;
+  top:10px;
+  width:0;
+  height:250px;
+  overflow:hidden;
+  background:rgba(255,255,255,.30);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  color:#044e61;
+  transition:width .35s ease;
+  border-radius:0 18px 18px 0;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+
+.navigation-enigmes:hover .navigation-content{
+  width:230px;
+}
+
+.navigation-content-inner{
+  width:230px;
+  height:250px;
+  padding:25px 18px;
+  overflow-y:auto;
+  line-height:1.3;
+}
+
+.navigation-content h3{
+  font-size:18px;
+  margin-bottom:18px;
+  color:#044e61;
+}
+
+.navigation-content a{
+  display:block;
+  line-height:18px;
+  margin-bottom:10px;
+  padding:10px;
+  border-radius:10px;
+  background:rgba(255,255,255,.55);
+  color:#044e61;
+  font-weight:bold;
+  font-size:14px;
+  text-decoration:none;
+}
+
+.navigation-content a:hover{
+  background:#044e61;
+  color:#ffffff;
+}
+
+
 .next-arrow{
   position:fixed;
   top:50%;
@@ -295,6 +383,23 @@ color:#044e61;
       </div>
     </div>
 
+    <div class="navigation-enigmes" id="navigationEnigmes">
+      <div class="navigation-tab">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png" alt="Énigmes">
+      </div>
+
+      <div class="navigation-content">
+        <div class="navigation-content-inner">
+          <h3>Énigmes</h3>
+          <a href="enigme1.html">Énigme 1</a>
+          <a href="enigme2.html">Énigme 2</a>
+          <a href="enigme3.html">Énigme 3</a>
+          <a href="enigme4.html">Énigme 4</a>
+          <a href="enigme5.html">Énigme 5</a>
+        </div>
+      </div>
+    </div>
+
     <div class="partie-3a">
       <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/3A.jpg" alt="Énigme 3">
 
@@ -323,6 +428,11 @@ color:#044e61;
     <img id="b3" class="badge" data-word="BOUCHE" src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/b3.png" alt="">
     <img id="b4" class="badge" data-word="SEINS" src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/b4.png" alt="">
     <img id="b5" class="badge" data-word="ENTREJAMBE" src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/b5.png" alt="">
+  </div>
+
+  <div class="panel">
+    <div class="message" id="message">Écris les cinq mots dans n’importe quel ordre.</div>
+    <button class="btn" id="validateBtn">Valider</button>
   </div>
 
 </div>
@@ -381,7 +491,7 @@ inputs.forEach(input => {
   });
 });
 
-validateBtn.addEventListener("click", verifierReponses);
+if(validateBtn){ validateBtn.addEventListener("click", verifierReponses); }
 
 function nettoyerTexte(texte){
   return texte
@@ -435,7 +545,7 @@ function verifierReponses(){
 function verifierMots(){
   if(motsTrouves.size === 5){
     message.textContent = "Bravo ! Prends un numéro et pose-le sur l’image.";
-    validateBtn.style.display = "none";
+    if(validateBtn){ validateBtn.style.display = "none"; }
     badgesPanel.classList.add("visible");
   }
 }

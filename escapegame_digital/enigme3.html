@@ -157,6 +157,39 @@ body.debug .debug-zone{
   display:block;
 }
 
+
+/* BRAVI DE FIN */
+
+.bloc-enigme3.gagnee .partie-3a,
+.bloc-enigme3.gagnee .partie-3b{
+  opacity:.5;
+  filter:saturate(.5);
+  transition:opacity .45s ease, filter .45s ease;
+}
+
+.bravi-final{
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  opacity:0;
+  pointer-events:none;
+  z-index:2600;
+  transition:opacity .45s ease;
+}
+
+.bravi-final.visible{
+  opacity:1;
+}
+
+.bravi-final img{
+  width:50%;
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
+}
+
 /* SAC */
 
 .inventaire{
@@ -383,6 +416,10 @@ body.debug .debug-zone{
       </div>
     </div>
 
+    <div class="bravi-final" id="braviFinal">
+      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi3.png" alt="Bravo énigme 3">
+    </div>
+
     <div class="partie-3a">
       <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme3/3A.jpg" alt="Énigme 3">
 
@@ -467,6 +504,7 @@ const zoneImage = document.getElementById("zoneImage");
 const badgesPanel = document.getElementById("badgesPanel");
 const debugZones = document.getElementById("debugZones");
 const inputs = document.querySelectorAll(".reponse-corps");
+const braviFinal = document.getElementById("braviFinal");
 
 let badgeActif = null;
 let offsetX = 0;
@@ -644,8 +682,13 @@ function retourDepart(badge){
 
 function verifierFin(){
   if(badgesPlaces.size === 5){
-    ajouterMotTrouve("Énigme 3", "ENFANCE");
-    nextBtn.classList.add("visible");
+    ajouterMotTrouve("Énigme 3", "ENSEMBLE");
+    document.querySelector(".bloc-enigme3").classList.add("gagnee");
+    braviFinal.classList.add("visible");
+
+    setTimeout(() => {
+      nextBtn.classList.add("visible");
+    }, 1000);
   }
 }
 

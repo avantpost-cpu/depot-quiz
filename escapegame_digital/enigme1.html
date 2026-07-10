@@ -412,10 +412,136 @@ body{
   opacity:1;
   transform:translateY(-50%) translateX(6px);
 }
+
+/* ÉCRAN D'ACCÈS */
+
+.acces-overlay{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  background:#1b5f6e;
+  transition:opacity .45s ease, visibility .45s ease;
+}
+
+.acces-overlay.masque{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+
+.acces-carte{
+  width:min(420px, 92vw);
+  padding:42px 34px 36px;
+  background:#ffffff;
+  border-radius:24px;
+  text-align:center;
+  box-shadow:0 18px 50px rgba(0,0,0,.28);
+}
+
+.acces-carte h1{
+  margin:0 0 12px;
+  font-family:'Patrick Hand', cursive;
+  font-size:42px;
+  line-height:1;
+  color:#044e61;
+}
+
+.acces-carte p{
+  margin:0 0 24px;
+  font-size:16px;
+  line-height:1.5;
+  color:#345;
+}
+
+.acces-carte input{
+  width:100%;
+  height:54px;
+  padding:0 18px;
+  border:2px solid #d8e2e5;
+  border-radius:14px;
+  outline:none;
+  text-align:center;
+  font-family:'Patrick Hand', cursive;
+  font-size:25px;
+  letter-spacing:2px;
+  color:#044e61;
+  background:#f7fafb;
+  transition:border-color .2s, box-shadow .2s;
+}
+
+.acces-carte input:focus{
+  border-color:#1b5f6e;
+  box-shadow:0 0 0 4px rgba(27,95,110,.12);
+}
+
+.acces-bouton{
+  width:100%;
+  margin-top:16px;
+  padding:15px 24px;
+  border:0;
+  border-radius:40px;
+  background:#044e61;
+  color:#ffffff;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:transform .2s, background .2s;
+}
+
+.acces-bouton:hover{
+  transform:translateY(-2px);
+  background:#1b5f6e;
+}
+
+.acces-erreur{
+  min-height:22px;
+  margin-top:14px !important;
+  margin-bottom:0 !important;
+  color:#c0392b !important;
+  font-weight:bold;
+}
+
+.acces-carte.secoue{
+  animation:secousse .35s ease;
+}
+
+@keyframes secousse{
+  0%,100%{ transform:translateX(0); }
+  25%{ transform:translateX(-9px); }
+  75%{ transform:translateX(9px); }
+}
+
 </style>
 </head>
 
 <body>
+
+
+<div class="acces-overlay" id="accesOverlay">
+  <div class="acces-carte" id="accesCarte">
+    <h1>Accès à l’escape game</h1>
+    <p>Entre le code qui t’a été communiqué pour commencer l’énigme.</p>
+
+    <input
+      id="codeAcces"
+      type="password"
+      inputmode="text"
+      autocomplete="off"
+      placeholder="Code d’accès"
+      aria-label="Code d’accès">
+
+    <button class="acces-bouton" id="boutonAcces" type="button">
+      Entrer
+    </button>
+
+    <p class="acces-erreur" id="erreurAcces" aria-live="polite"></p>
+  </div>
+</div>
+
 
 <audio id="voixInstruction" preload="auto">
     <source src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/voix1.mp3" type="audio/mpeg">
@@ -672,21 +798,57 @@ function afficherMotsTrouves(){
   });
 }
   /* ===========================
-   VOIX DES INSTRUCTIONS
+   ACCÈS PROTÉGÉ ET VOIX
 =========================== */
 
+const CODE_ACCES = "REBOND2026"; // Modifie le code ici
+
+const accesOverlay = document.getElementById("accesOverlay");
+const accesCarte = document.getElementById("accesCarte");
+const codeAcces = document.getElementById("codeAcces");
+const boutonAcces = document.getElementById("boutonAcces");
+const erreurAcces = document.getElementById("erreurAcces");
 const voixInstruction = document.getElementById("voixInstruction");
 
+function ouvrirEscapeGame(){
+  const codeSaisi = codeAcces.value.trim().toUpperCase();
+
+  if(codeSaisi !== CODE_ACCES.toUpperCase()){
+    erreurAcces.textContent = "Code incorrect. Essaie encore.";
+    codeAcces.value = "";
+    codeAcces.focus();
+
+    accesCarte.classList.remove("secoue");
+    void accesCarte.offsetWidth;
+    accesCarte.classList.add("secoue");
+    return;
+  }
+
+  erreurAcces.textContent = "";
+  accesOverlay.classList.add("masque");
+
+  setTimeout(() => {
+    accesOverlay.remove();
+  }, 500);
+
+  setTimeout(() => {
+    voixInstruction.currentTime = 0;
+    voixInstruction.play().catch(() => {
+      console.log("La lecture audio a été bloquée par le navigateur.");
+    });
+  }, 2000);
+}
+
+boutonAcces.addEventListener("click", ouvrirEscapeGame);
+
+codeAcces.addEventListener("keydown", (event) => {
+  if(event.key === "Enter"){
+    ouvrirEscapeGame();
+  }
+});
+
 window.addEventListener("load", () => {
-
-    setTimeout(() => {
-
-        voixInstruction.play().catch(() => {
-            console.log("Lecture automatique bloquée.");
-        });
-
-    }, 2000);
-
+  codeAcces.focus();
 });
 </script>
 

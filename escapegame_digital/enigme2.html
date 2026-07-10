@@ -11,9 +11,14 @@
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
-*{ margin:0; padding:0; box-sizing:border-box; }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-html, body{
+html,
+body{
   background:#1b5f6e;
   font-family:Arial, Helvetica, sans-serif;
 }
@@ -61,13 +66,54 @@ html, body{
   cursor:default;
 }
 
-.phrase[data-id="1"]{ left:62px; top:239px; width:254px; height:55px; }
-.phrase[data-id="2"]{ left:63px; top:311px; width:257px; height:98px; }
-.phrase[data-id="3"]{ left:62px; top:424px; width:257px; height:58px; }
-.phrase[data-id="4"]{ left:64px; top:499px; width:258px; height:43px; }
-.phrase[data-id="5"]{ left:698px; top:236px; width:255px; height:101px; }
-.phrase[data-id="6"]{ left:698px; top:353px; width:233px; height:80px; }
-.phrase[data-id="7"]{ left:699px; top:447px; width:230px; height:118px; }
+.phrase[data-id="1"]{
+  left:62px;
+  top:239px;
+  width:254px;
+  height:55px;
+}
+
+.phrase[data-id="2"]{
+  left:63px;
+  top:311px;
+  width:257px;
+  height:98px;
+}
+
+.phrase[data-id="3"]{
+  left:62px;
+  top:424px;
+  width:257px;
+  height:58px;
+}
+
+.phrase[data-id="4"]{
+  left:64px;
+  top:499px;
+  width:258px;
+  height:43px;
+}
+
+.phrase[data-id="5"]{
+  left:698px;
+  top:236px;
+  width:255px;
+  height:101px;
+}
+
+.phrase[data-id="6"]{
+  left:698px;
+  top:353px;
+  width:233px;
+  height:80px;
+}
+
+.phrase[data-id="7"]{
+  left:699px;
+  top:447px;
+  width:230px;
+  height:118px;
+}
 
 /* MOT-CLÉ */
 
@@ -77,12 +123,15 @@ html, body{
   top:597px;
   width:345px;
   height:60px;
+
   font-family:'Patrick Hand', cursive;
   font-size:42px;
   font-weight:700;
   letter-spacing:6px;
+
   text-align:center;
   text-transform:uppercase;
+
   background:transparent;
   border:0;
   outline:none;
@@ -107,8 +156,7 @@ html, body{
   border-radius:10px;
 }
 
-
-/* BRAVI DE FIN */
+/* BRAVO DE FIN */
 
 .zone-enigme2.gagnee .animation-2,
 .zone-enigme2.gagnee .phrase,
@@ -121,12 +169,15 @@ html, body{
 .bravi-final{
   position:absolute;
   inset:0;
+
   display:flex;
   justify-content:center;
   align-items:center;
+
   opacity:0;
   pointer-events:none;
   z-index:2600;
+
   transition:opacity .45s ease;
 }
 
@@ -156,9 +207,11 @@ html, body{
   left:0;
   top:25px;
   width:70px;
+
   display:flex;
   justify-content:center;
   align-items:center;
+
   cursor:pointer;
 }
 
@@ -167,6 +220,7 @@ html, body{
   height:auto;
   display:block;
   pointer-events:none;
+
   transition:transform .25s;
   filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
 }
@@ -179,14 +233,19 @@ html, body{
   position:absolute;
   left:70px;
   top:10px;
+
   width:0;
   height:200px;
   overflow:hidden;
+
   background:rgba(255,255,255,.30);
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
+
   color:#044e61;
+
   transition:width .35s ease;
+
   border-radius:0 18px 18px 0;
   box-shadow:0 6px 18px rgba(0,0,0,.25);
 }
@@ -216,12 +275,16 @@ html, body{
 
 .inventaire-content li{
   display:block;
+
   line-height:18px;
   margin-bottom:10px;
   padding:10px;
+
   border-radius:10px;
+
   background:rgba(255,255,255,.55);
   color:#044e61;
+
   font-weight:bold;
   font-size:14px;
 }
@@ -241,9 +304,11 @@ html, body{
   left:0;
   top:25px;
   width:70px;
+
   display:flex;
   justify-content:center;
   align-items:center;
+
   cursor:pointer;
 }
 
@@ -252,6 +317,7 @@ html, body{
   height:auto;
   display:block;
   pointer-events:none;
+
   transition:transform .25s;
   filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
 }
@@ -260,18 +326,27 @@ html, body{
   transform:scale(1.08);
 }
 
+/*
+Le tiroir n’a plus de hauteur fixe.
+Sa hauteur s’adapte automatiquement aux cinq liens.
+*/
+
 .navigation-content{
   position:absolute;
   left:70px;
   top:10px;
+
   width:0;
-  height:250px;
   overflow:hidden;
+
   background:rgba(255,255,255,.30);
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
+
   color:#044e61;
+
   transition:width .35s ease;
+
   border-radius:0 18px 18px 0;
   box-shadow:0 6px 18px rgba(0,0,0,.25);
 }
@@ -282,23 +357,30 @@ html, body{
 
 .navigation-content-inner{
   width:230px;
-  height:250px;
-  padding:25px 18px;
-  overflow-y:auto;
+  padding:22px 18px 16px;
+  overflow:visible;
   line-height:1.3;
 }
 
 .navigation-content a{
   display:block;
+
   line-height:18px;
-  margin-bottom:10px;
-  padding:10px;
+  margin-bottom:8px;
+  padding:9px 10px;
+
   border-radius:10px;
+
   background:rgba(255,255,255,.55);
   color:#044e61;
+
   font-weight:bold;
   font-size:14px;
   text-decoration:none;
+}
+
+.navigation-content a:last-child{
+  margin-bottom:0;
 }
 
 .navigation-content a:hover{
@@ -323,13 +405,17 @@ html, body{
 .btn{
   display:inline-block;
   padding:15px 35px;
+
   background:#044e61;
   color:#ffffff;
+
   border:none;
   border-radius:40px;
+
   font-weight:bold;
   cursor:pointer;
   font-size:17px;
+
   transition:.2s;
 }
 
@@ -343,10 +429,14 @@ html, body{
   position:fixed;
   left:32%;
   bottom:-300px;
+
   transform:translateX(-50%);
+
   width:200px;
   opacity:0;
+
   transition:all .9s cubic-bezier(.18,.89,.32,1.28);
+
   z-index:900;
   pointer-events:none;
 }
@@ -362,13 +452,18 @@ html, body{
   position:fixed;
   top:50%;
   right:35px;
+
   transform:translateY(-50%) translateX(12px);
+
   font-size:62px;
   font-weight:200;
+
   color:#ffffff;
   text-decoration:none;
+
   opacity:0;
   pointer-events:none;
+
   transition:.35s ease;
   z-index:999;
 }
@@ -392,39 +487,67 @@ html, body{
 
   <div class="zone-enigme2">
 
+    <!-- SAC INVENTAIRE -->
+
     <div class="inventaire" id="inventaire">
+
       <div class="inventaire-tab">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png" alt="Inventaire">
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png"
+          alt="Inventaire">
       </div>
 
       <div class="inventaire-content">
         <div class="inventaire-content-inner">
+
           <h3>Mots trouvés</h3>
+
           <ul id="listeMots"></ul>
+
         </div>
       </div>
+
     </div>
 
+    <!-- NAVIGATION ÉNIGMES -->
+
     <div class="navigation-enigmes" id="navigationEnigmes">
+
       <div class="navigation-tab">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png" alt="Énigmes">
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png"
+          alt="Énigmes">
       </div>
 
       <div class="navigation-content">
+
         <div class="navigation-content-inner">
+
           <h3>Énigmes</h3>
+
           <a href="enigme1.html">Énigme 1</a>
           <a href="enigme2.html">Énigme 2</a>
           <a href="enigme3.html">Énigme 3</a>
           <a href="enigme4.html">Énigme 4</a>
           <a href="enigme5.html">Énigme 5</a>
+
         </div>
+
       </div>
+
     </div>
 
+    <!-- BRAVO FINAL -->
+
     <div class="bravi-final" id="braviFinal">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi2.png" alt="Bravo énigme 2">
+
+      <img
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi2.png"
+        alt="Bravo énigme 2">
+
     </div>
+
+    <!-- ANIMATION PRINCIPALE -->
 
     <video
       class="animation-2"
@@ -434,20 +557,63 @@ html, body{
       playsinline>
     </video>
 
-    <button class="phrase bonne" data-id="1" type="button"></button>
-    <button class="phrase mauvaise" data-id="2" type="button"></button>
-    <button class="phrase bonne" data-id="3" type="button"></button>
-    <button class="phrase mauvaise" data-id="4" type="button"></button>
-    <button class="phrase mauvaise" data-id="5" type="button"></button>
-    <button class="phrase mauvaise" data-id="6" type="button"></button>
-    <button class="phrase bonne" data-id="7" type="button"></button>
+    <!-- ZONES CLIQUABLES -->
 
-    <input id="motCle" type="text" autocomplete="off" maxlength="12">
+    <button
+      class="phrase bonne"
+      data-id="1"
+      type="button">
+    </button>
+
+    <button
+      class="phrase mauvaise"
+      data-id="2"
+      type="button">
+    </button>
+
+    <button
+      class="phrase bonne"
+      data-id="3"
+      type="button">
+    </button>
+
+    <button
+      class="phrase mauvaise"
+      data-id="4"
+      type="button">
+    </button>
+
+    <button
+      class="phrase mauvaise"
+      data-id="5"
+      type="button">
+    </button>
+
+    <button
+      class="phrase mauvaise"
+      data-id="6"
+      type="button">
+    </button>
+
+    <button
+      class="phrase bonne"
+      data-id="7"
+      type="button">
+    </button>
+
+    <!-- MOT-CLÉ -->
+
+    <input
+      id="motCle"
+      type="text"
+      autocomplete="off"
+      maxlength="12">
 
   </div>
 
-
 </div>
+
+<!-- ANGE DE FIN -->
 
 <img
   id="angeFin"
@@ -455,10 +621,19 @@ html, body{
   src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme2/ange2.png"
   alt="Bravo">
 
-<a href="enigme3.html" class="next-arrow" id="nextBtn" title="Énigme suivante">→</a>
+<!-- FLÈCHE ÉNIGME SUIVANTE -->
+
+<a
+  href="enigme3.html"
+  class="next-arrow"
+  id="nextBtn"
+  title="Énigme suivante">
+  →
+</a>
 
 <script>
 const bonnesPhrases = ["1", "3", "7"];
+
 const selectionnees = new Set();
 
 const phrases = document.querySelectorAll(".phrase");
@@ -473,118 +648,211 @@ let jeuTermine = false;
 
 afficherMotsTrouves();
 
+/* CLIC SUR LES PHRASES */
+
 phrases.forEach(phrase => {
+
   phrase.addEventListener("click", () => {
+
     const id = phrase.dataset.id;
 
-    if(phrase.disabled) return;
+    if(phrase.disabled){
+      return;
+    }
 
     if(!bonnesPhrases.includes(id)){
+
       phrase.classList.add("grisee");
       phrase.disabled = true;
-      if(message){ message.textContent = "Cette phrase n’est pas une situation à retenir."; }
+
+      if(message){
+        message.textContent =
+          "Cette phrase n’est pas une situation à retenir.";
+      }
+
       return;
     }
 
     phrase.classList.add("active");
     phrase.disabled = true;
+
     selectionnees.add(id);
 
     if(selectionnees.size === bonnesPhrases.length){
+
       griserMauvaises();
-      if(message){ message.textContent = "Bravo ! Les bonnes situations sont entourées. Trouve maintenant le mot-clé."; }
+
+      if(message){
+        message.textContent =
+          "Bravo ! Les bonnes situations sont entourées. Trouve maintenant le mot-clé.";
+      }
     }
+
   });
+
 });
 
+/* GRISE LES MAUVAISES PHRASES */
+
 function griserMauvaises(){
+
   phrases.forEach(phrase => {
+
     if(!bonnesPhrases.includes(phrase.dataset.id)){
+
       phrase.classList.add("grisee");
       phrase.disabled = true;
+
     }
+
   });
+
 }
 
+/* CONTRÔLE DU MOT-CLÉ */
+
 motCle.addEventListener("input", () => {
+
   motCle.value = motCle.value.toUpperCase();
   motCle.classList.remove("erreur");
 
   if(nettoyerTexte(motCle.value) === "CONSENTEMENT"){
     validerMot();
   }
+
 });
 
+/* BOUTON ÉVENTUEL DE VALIDATION */
+
 if(validateBtn){
+
   validateBtn.addEventListener("click", () => {
+
     if(nettoyerTexte(motCle.value) === "CONSENTEMENT"){
+
       validerMot();
+
     } else {
+
       motCle.classList.add("erreur");
-      if(message){ message.textContent = "Le mot-clé n’est pas encore correct."; }
+
+      if(message){
+        message.textContent =
+          "Le mot-clé n’est pas encore correct.";
+      }
+
     }
+
   });
+
 }
 
+/* VALIDATION DE L’ÉNIGME */
+
 function validerMot(){
-  if(jeuTermine) return;
+
+  if(jeuTermine){
+    return;
+  }
 
   jeuTermine = true;
 
   motCle.classList.remove("erreur");
   motCle.classList.add("ok");
+
   motCle.readOnly = true;
 
   ajouterMotTrouve("Énigme 2", "LE SPORT");
 
-  document.querySelector(".zone-enigme2").classList.add("gagnee");
+  document
+    .querySelector(".zone-enigme2")
+    .classList.add("gagnee");
+
   braviFinal.classList.add("visible");
 
-  if(validateBtn){ validateBtn.style.display = "none"; }
+  if(validateBtn){
+    validateBtn.style.display = "none";
+  }
 
   setTimeout(() => {
+
     nextBtn.classList.add("visible");
+
   }, 1000);
+
 }
 
+/* NETTOYAGE DU TEXTE */
+
 function nettoyerTexte(texte){
+
   return texte
     .trim()
     .toUpperCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .replace(/[^A-Z]/g, "");
+
 }
 
+/* AJOUT DU MOT DANS L’INVENTAIRE */
+
 function ajouterMotTrouve(enigme, mot){
-  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+
+  const mots =
+    JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
 
   if(!mots.some(item => item.enigme === enigme)){
-    mots.push({ enigme, mot });
-    localStorage.setItem("motsEscapeRebond", JSON.stringify(mots));
+
+    mots.push({
+      enigme,
+      mot
+    });
+
+    localStorage.setItem(
+      "motsEscapeRebond",
+      JSON.stringify(mots)
+    );
+
   }
 
   afficherMotsTrouves();
+
 }
 
-function afficherMotsTrouves(){
-  const liste = document.getElementById("listeMots");
-  if(!liste) return;
+/* AFFICHAGE DE L’INVENTAIRE */
 
-  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+function afficherMotsTrouves(){
+
+  const liste = document.getElementById("listeMots");
+
+  if(!liste){
+    return;
+  }
+
+  const mots =
+    JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
 
   liste.innerHTML = "";
 
   if(mots.length === 0){
+
     liste.innerHTML = "<li>Aucun mot</li>";
     return;
+
   }
 
   mots.forEach(item => {
+
     const li = document.createElement("li");
-    li.textContent = item.enigme + " : " + item.mot;
+
+    li.textContent =
+      item.enigme + " : " + item.mot;
+
     liste.appendChild(li);
+
   });
+
 }
 </script>
 

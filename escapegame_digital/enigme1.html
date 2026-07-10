@@ -335,31 +335,28 @@ body{
 }
 
 .navigation-content{
-  position:absolute;
-  left:70px;
-  top:10px;
-  width:0;
-  height:250px;
-  overflow:hidden;
-  background:rgba(255,255,255,.30);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
-  color:#044e61;
-  transition:width .35s ease;
-  border-radius:0 18px 18px 0;
-  box-shadow:0 6px 18px rgba(0,0,0,.25);
-}
+    position:absolute;
+    left:70px;
+    top:10px;
+    width:0;
+    overflow:hidden;
 
-.navigation-enigmes:hover .navigation-content{
-  width:230px;
+    background:rgba(255,255,255,.30);
+    backdrop-filter:blur(8px);
+
+    border-radius:0 18px 18px 0;
+    box-shadow:0 6px 18px rgba(0,0,0,.25);
+
+    transition:width .35s ease;
 }
 
 .navigation-content-inner{
-  width:230px;
-  height:250px;
-  padding:25px 18px;
-  overflow-y:auto;
-  line-height:1.3;
+    width:230px;
+    padding:18px;
+}
+
+.navigation-enigmes:hover .navigation-content{
+    width:230px;
 }
 
 .navigation-content h3{

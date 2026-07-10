@@ -26,6 +26,8 @@ body{
 .enigme{
   position:relative;
   display:flex;
+  align-items:flex-start;
+  gap:0;
   line-height:0;
   font-size:0;
 }
@@ -34,6 +36,18 @@ body{
 .partie-droite{
   position:relative;
   height:716px;
+  line-height:0;
+  font-size:0;
+}
+
+.partie-gauche{
+  flex:0 0 auto;
+  width:auto;
+}
+
+.partie-droite{
+  flex:0 0 500px;
+  width:500px;
 }
 
 .partie-gauche img,
@@ -76,6 +90,46 @@ body{
 .cell:hover{ background:rgba(27,95,110,.12); }
 .cell.selected{ background:rgba(27,95,110,.28); }
 .cell.found{ background:rgba(237,176,26,.75); }
+
+
+/* TRANSITION ENTRE LES DEUX JEUX */
+
+.partie-droite{
+  overflow:hidden;
+}
+
+.image-jeu{
+  position:absolute;
+  inset:0;
+  display:block;
+  width:500px;
+  height:716px;
+  object-fit:fill;
+  opacity:0;
+  transition:opacity .6s ease;
+  pointer-events:none;
+}
+
+.image-jeu.visible{
+  opacity:1;
+}
+
+.reponses{
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .45s ease;
+}
+
+.reponses.active{
+  opacity:1;
+  visibility:visible;
+}
+
+.letter-grid.terminee{
+  pointer-events:none;
+  opacity:.55;
+  transition:opacity .45s ease;
+}
 
 /* CHAMPS DE RÉPONSE */
 
@@ -645,9 +699,19 @@ body{
     </div>
 
     <div class="partie-droite">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/1B.jpg" alt="Réponses">
+      <img
+        id="imageJeu1"
+        class="image-jeu"
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/1B.jpg"
+        alt="Première partie de l’énigme">
 
-      <div class="reponses">
+      <img
+        id="imageJeu2"
+        class="image-jeu visible"
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/1B1.jpg"
+        alt="Deuxième partie de l’énigme">
+
+      <div class="reponses" id="reponsesJeu2">
         <input id="mot1" type="text" autocomplete="off" maxlength="8">
         <input id="mot2" type="text" autocomplete="off" maxlength="11">
         <input id="mot3" type="text" autocomplete="off" maxlength="9">
@@ -699,10 +763,15 @@ const grid = document.getElementById("letterGrid");
 const nextBtn = document.getElementById("nextBtn");
 const angeFin = document.getElementById("angeFin");
 const braviFinal = document.getElementById("braviFinal");
+const imageJeu1 = document.getElementById("imageJeu1");
+const imageJeu2 = document.getElementById("imageJeu2");
+const reponsesJeu2 = document.getElementById("reponsesJeu2");
 
 let isSelecting = false;
 let selectedCells = [];
 let jeuTermine = false;
+let secondJeuActive = false;
+const motsTrouvesGrille = new Set();
 
 afficherMotsTrouves();
 
@@ -756,7 +825,7 @@ function verrouillerMot(input){
 }
 
 function verifierFin(){
-  if(jeuTermine) return;
+  if(jeuTermine || !secondJeuActive) return;
 
   const totalValides = document.querySelectorAll(".reponses input.ok").length;
   const totalSolutions = Object.keys(solutions).length;
@@ -765,7 +834,6 @@ function verifierFin(){
 
   jeuTermine = true;
 
-
   document.querySelector(".enigme").classList.add("gagnee");
   ajouterMotTrouve("Énigme 1", "PROTÉGEONS");
   braviFinal.classList.add("visible");
@@ -773,6 +841,22 @@ function verifierFin(){
   setTimeout(() => {
     nextBtn.classList.add("visible");
   }, 1000);
+}
+
+function activerSecondJeu(){
+  if(secondJeuActive) return;
+
+  secondJeuActive = true;
+  grid.classList.add("terminee");
+
+  imageJeu2.classList.remove("visible");
+  imageJeu1.classList.add("visible");
+
+  setTimeout(() => {
+    reponsesJeu2.classList.add("active");
+    const premierChamp = reponsesJeu2.querySelector("input");
+    if(premierChamp) premierChamp.focus();
+  }, 450);
 }
 
 function startSelection(cell){
@@ -803,10 +887,17 @@ function endSelection(){
   const reversed = word.split("").reverse().join("");
 
   if(hiddenWords.includes(word) || hiddenWords.includes(reversed)){
+    const motTrouve = hiddenWords.includes(word) ? word : reversed;
+    motsTrouvesGrille.add(motTrouve);
+
     selectedCells.forEach(cell => {
       cell.classList.remove("selected");
       cell.classList.add("found");
     });
+
+    if(motsTrouvesGrille.size === hiddenWords.length){
+      setTimeout(activerSecondJeu, 450);
+    }
 
   } else {
     clearSelection();

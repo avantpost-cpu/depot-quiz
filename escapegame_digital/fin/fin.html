@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Escape Game Rebond - Fin</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+  background:#1b5f6e;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.page-fin{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:40px;
+}
+
+.bloc-fin{
+  position:relative;
+  width:999px;
+  height:716px;
+  line-height:0;
+  font-size:0;
+}
+
+.animation-fin{
+  display:block;
+  width:999px;
+  height:716px;
+  border:0;
+}
+
+/* ======================================================
+   SAC — INVENTAIRE
+====================================================== */
+
+.inventaire{
+  position:absolute;
+  left:-70px;
+  top:0;
+  height:716px;
+  z-index:3000;
+}
+
+.inventaire-tab{
+  position:absolute;
+  left:0;
+  top:25px;
+  width:70px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+}
+
+.inventaire-tab img{
+  width:80px;
+  height:auto;
+  display:block;
+  pointer-events:none;
+  transition:transform .25s;
+  filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
+}
+
+.inventaire:hover .inventaire-tab img{
+  transform:scale(1.08);
+}
+
+.inventaire-content{
+  position:absolute;
+  left:70px;
+  top:10px;
+  width:0;
+  height:200px;
+  overflow:hidden;
+  background:rgba(255,255,255,.30);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  color:#044e61;
+  transition:width .35s ease;
+  border-radius:0 18px 18px 0;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+
+.inventaire:hover .inventaire-content{
+  width:230px;
+}
+
+.inventaire-content-inner{
+  width:230px;
+  height:200px;
+  padding:25px 18px;
+  overflow-y:auto;
+  line-height:1.3;
+}
+
+.inventaire-content h3,
+.navigation-content h3{
+  font-size:18px;
+  line-height:22px;
+  margin-bottom:18px;
+  color:#044e61;
+}
+
+.inventaire-content ul{
+  list-style:none;
+}
+
+.inventaire-content li{
+  display:block;
+  line-height:18px;
+  margin-bottom:10px;
+  padding:10px;
+  border-radius:10px;
+  background:rgba(255,255,255,.55);
+  color:#044e61;
+  font-weight:bold;
+  font-size:14px;
+}
+
+/* ======================================================
+   LOUPE — NAVIGATION
+====================================================== */
+
+.navigation-enigmes{
+  position:absolute;
+  left:-70px;
+  top:90px;
+  height:716px;
+  z-index:2990;
+}
+
+.navigation-tab{
+  position:absolute;
+  left:0;
+  top:25px;
+  width:70px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+}
+
+.navigation-tab img{
+  width:80px;
+  height:auto;
+  display:block;
+  pointer-events:none;
+  transition:transform .25s;
+  filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
+}
+
+.navigation-enigmes:hover .navigation-tab img{
+  transform:scale(1.08);
+}
+
+.navigation-content{
+  position:absolute;
+  left:70px;
+  top:10px;
+  width:0;
+  overflow:hidden;
+  background:rgba(255,255,255,.30);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  color:#044e61;
+  transition:width .35s ease;
+  border-radius:0 18px 18px 0;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+
+.navigation-enigmes:hover .navigation-content{
+  width:230px;
+}
+
+.navigation-content-inner{
+  width:230px;
+  padding:22px 18px 16px;
+  overflow:visible;
+  line-height:1.3;
+}
+
+.navigation-content a{
+  display:block;
+  line-height:18px;
+  margin-bottom:8px;
+  padding:9px 10px;
+  border-radius:10px;
+  background:rgba(255,255,255,.55);
+  color:#044e61;
+  font-weight:bold;
+  font-size:14px;
+  text-decoration:none;
+}
+
+.navigation-content a:last-child{
+  margin-bottom:0;
+}
+
+.navigation-content a:hover{
+  background:#044e61;
+  color:#ffffff;
+}
+
+/* ======================================================
+   ADAPTATION ÉCRANS PLUS PETITS
+====================================================== */
+
+@media screen and (max-width:1140px){
+
+  .page-fin{
+    align-items:flex-start;
+    padding-left:85px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="page-fin">
+
+  <div class="bloc-fin">
+
+    <!-- SAC -->
+
+    <div class="inventaire" id="inventaire">
+
+      <div class="inventaire-tab">
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png"
+          alt="Inventaire">
+      </div>
+
+      <div class="inventaire-content">
+
+        <div class="inventaire-content-inner">
+
+          <h3>Mots trouvés</h3>
+
+          <ul id="listeMots"></ul>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- LOUPE -->
+
+    <div class="navigation-enigmes" id="navigationEnigmes">
+
+      <div class="navigation-tab">
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png"
+          alt="Énigmes">
+      </div>
+
+      <div class="navigation-content">
+
+        <div class="navigation-content-inner">
+
+          <h3>Énigmes</h3>
+
+          <a href="enigme1.html">Énigme 1</a>
+          <a href="enigme2.html">Énigme 2</a>
+          <a href="enigme3.html">Énigme 3</a>
+          <a href="enigme4.html">Énigme 4</a>
+          <a href="enigme5.html">Énigme 5</a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- VIDÉO DE FIN -->
+
+    <video
+      id="videoFin"
+      class="animation-fin"
+      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/fin/animationfin1.mp4"
+      autoplay
+      muted
+      playsinline
+      preload="auto">
+    </video>
+
+  </div>
+
+</div>
+
+<script>
+
+/* ======================================================
+   AFFICHAGE DES MOTS TROUVÉS
+====================================================== */
+
+afficherMotsTrouves();
+
+function afficherMotsTrouves(){
+
+  const liste = document.getElementById("listeMots");
+
+  if(!liste){
+    return;
+  }
+
+  let mots = [];
+
+  try{
+    mots = JSON.parse(
+      localStorage.getItem("motsEscapeRebond")
+    ) || [];
+  }
+  catch(erreur){
+    mots = [];
+  }
+
+  liste.innerHTML = "";
+
+  if(mots.length === 0){
+
+    const li = document.createElement("li");
+    li.textContent = "Aucun mot";
+
+    liste.appendChild(li);
+
+    return;
+  }
+
+  mots.forEach(function(item){
+
+    const li = document.createElement("li");
+
+    if(
+      typeof item === "object" &&
+      item !== null &&
+      item.enigme &&
+      item.mot
+    ){
+      li.textContent = item.enigme + " : " + item.mot;
+    }
+    else{
+      li.textContent = String(item);
+    }
+
+    liste.appendChild(li);
+
+  });
+
+}
+
+/* ======================================================
+   SÉCURITÉ DE LECTURE DE LA VIDÉO
+====================================================== */
+
+const videoFin = document.getElementById("videoFin");
+
+videoFin.play().catch(function(){
+
+  /*
+    Certains navigateurs peuvent bloquer momentanément
+    l’autoplay. La vidéo démarrera au premier clic.
+  */
+
+  document.addEventListener(
+    "click",
+    function lancerVideo(){
+
+      videoFin.play();
+
+      document.removeEventListener(
+        "click",
+        lancerVideo
+      );
+
+    }
+  );
+
+});
+
+</script>
+
+</body>
+</html>

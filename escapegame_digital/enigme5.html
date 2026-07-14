@@ -7,9 +7,14 @@
 <title>Escape Game Rebond - Énigme 5</title>
 
 <style>
-*{ margin:0; padding:0; box-sizing:border-box; }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-html, body{
+html,
+body{
   width:100%;
   min-height:100%;
   background:#1b5f6e;
@@ -59,7 +64,7 @@ html, body{
   height:68px;
   border:none;
   background:transparent;
-  color:#000;
+  color:#000000;
   font-size:48px;
   line-height:68px;
   font-weight:700;
@@ -77,41 +82,18 @@ html, body{
 }
 
 @keyframes ouvrirCadenas{
-  0%{ transform:translateY(0); }
-  40%{ transform:translateY(-6px); }
-  100%{ transform:translateY(12px); opacity:.55; }
-}
+  0%{
+    transform:translateY(0);
+  }
 
-/* BRAVI DE FIN */
+  40%{
+    transform:translateY(-6px);
+  }
 
-.bloc-enigme5.gagnee .animation-5,
-.bloc-enigme5.gagnee .code-panel{
-  opacity:.5;
-  filter:saturate(.5);
-  transition:opacity .45s ease, filter .45s ease;
-}
-
-.bravi-final{
-  position:absolute;
-  inset:0;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  opacity:0;
-  pointer-events:none;
-  z-index:2600;
-  transition:opacity .45s ease;
-}
-
-.bravi-final.visible{
-  opacity:1;
-}
-
-.bravi-final img{
-  width:50%;
-  height:auto;
-  display:block;
-  filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
+  100%{
+    transform:translateY(12px);
+    opacity:.55;
+  }
 }
 
 /* SAC INVENTAIRE */
@@ -280,34 +262,6 @@ html, body{
   background:#044e61;
   color:#ffffff;
 }
-
-/* FLÈCHE */
-
-.next-arrow{
-  position:fixed;
-  top:50%;
-  right:35px;
-  transform:translateY(-50%) translateX(12px);
-  font-size:62px;
-  font-weight:200;
-  color:#ffffff;
-  text-decoration:none;
-  opacity:0;
-  pointer-events:none;
-  transition:.35s ease;
-  z-index:999;
-}
-
-.next-arrow.visible{
-  opacity:.45;
-  pointer-events:auto;
-  transform:translateY(-50%) translateX(0);
-}
-
-.next-arrow:hover{
-  opacity:1;
-  transform:translateY(-50%) translateX(6px);
-}
 </style>
 </head>
 
@@ -317,39 +271,59 @@ html, body{
 
   <div class="bloc-enigme5">
 
+    <!-- SAC -->
+
     <div class="inventaire" id="inventaire">
+
       <div class="inventaire-tab">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png" alt="Inventaire">
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png"
+          alt="Inventaire">
       </div>
 
       <div class="inventaire-content">
+
         <div class="inventaire-content-inner">
+
           <h3>Mots trouvés</h3>
+
           <ul id="listeMots"></ul>
+
         </div>
+
       </div>
+
     </div>
 
+    <!-- LOUPE -->
+
     <div class="navigation-enigmes" id="navigationEnigmes">
+
       <div class="navigation-tab">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png" alt="Énigmes">
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png"
+          alt="Énigmes">
       </div>
 
       <div class="navigation-content">
+
         <div class="navigation-content-inner">
+
           <h3>Énigmes</h3>
+
           <a href="enigme1.html">Énigme 1</a>
           <a href="enigme2.html">Énigme 2</a>
           <a href="enigme3.html">Énigme 3</a>
           <a href="enigme4.html">Énigme 4</a>
           <a href="enigme5.html">Énigme 5</a>
+
         </div>
+
       </div>
+
     </div>
 
-    <div class="bravi-final" id="braviFinal">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi5.png" alt="Bravo énigme 5">
-    </div>
+    <!-- VIDÉO -->
 
     <video
       id="videoEnigme5"
@@ -360,37 +334,45 @@ html, body{
       playsinline>
     </video>
 
+    <!-- CADENAS -->
+
     <div class="code-panel" id="codePanel">
+
       <button class="chiffre" data-index="0" type="button">0</button>
       <button class="chiffre" data-index="1" type="button">0</button>
       <button class="chiffre" data-index="2" type="button">0</button>
+
     </div>
 
   </div>
 
 </div>
 
-<a href="coffre.html" class="next-arrow" id="nextBtn" title="Coffre final">→</a>
-
 <script>
 const videoEnigme5 = document.getElementById("videoEnigme5");
 const codePanel = document.getElementById("codePanel");
 const chiffres = document.querySelectorAll(".chiffre");
-const nextBtn = document.getElementById("nextBtn");
-const braviFinal = document.getElementById("braviFinal");
 
 let code = [0, 0, 0];
 let jeuTermine = false;
 
 afficherMotsTrouves();
 
-videoEnigme5.addEventListener("ended", () => {
+/* Affichage du cadenas à la fin de la vidéo */
+
+videoEnigme5.addEventListener("ended", function(){
   codePanel.classList.add("visible");
 });
 
-chiffres.forEach(chiffre => {
-  chiffre.addEventListener("click", () => {
-    if(jeuTermine) return;
+/* Modification des chiffres */
+
+chiffres.forEach(function(chiffre){
+
+  chiffre.addEventListener("click", function(){
+
+    if(jeuTermine){
+      return;
+    }
 
     const index = Number(chiffre.dataset.index);
 
@@ -398,60 +380,121 @@ chiffres.forEach(chiffre => {
     chiffre.textContent = code[index];
 
     verifierCode();
+
   });
+
 });
 
+/* Vérification du code */
+
 function verifierCode(){
-  if(code.join("") === "119"){
-    jeuTermine = true;
 
-    chiffres.forEach(chiffre => {
-      chiffre.classList.add("ok");
-      chiffre.disabled = true;
-    });
-
-    codePanel.classList.add("cadenas-ouvert");
-
-    ajouterMotTrouve("Énigme 5", "DANS");
-
-    document.querySelector(".bloc-enigme5").classList.add("gagnee");
-    braviFinal.classList.add("visible");
-
-    setTimeout(() => {
-      nextBtn.classList.add("visible");
-    }, 1000);
+  if(code.join("") !== "119"){
+    return;
   }
+
+  jeuTermine = true;
+
+  chiffres.forEach(function(chiffre){
+    chiffre.classList.add("ok");
+    chiffre.disabled = true;
+  });
+
+  codePanel.classList.add("cadenas-ouvert");
+
+  ajouterMotTrouve("Énigme 5", "DANS");
+
+  /*
+    Petit délai pour laisser apparaître le code en vert
+    et l’animation d’ouverture du cadenas.
+  */
+
+  setTimeout(function(){
+
+    window.location.href =
+      "https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/fin/fin.html";
+
+  }, 700);
+
 }
 
-function ajouterMotTrouve(enigme, mot){
-  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+/* Enregistrement du mot */
 
-  if(!mots.some(item => item.enigme === enigme)){
-    mots.push({ enigme, mot });
-    localStorage.setItem("motsEscapeRebond", JSON.stringify(mots));
+function ajouterMotTrouve(enigme, mot){
+
+  let mots = [];
+
+  try{
+    mots =
+      JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+  }
+  catch(erreur){
+    mots = [];
+  }
+
+  const motExiste = mots.some(function(item){
+    return item.enigme === enigme;
+  });
+
+  if(!motExiste){
+
+    mots.push({
+      enigme:enigme,
+      mot:mot
+    });
+
+    localStorage.setItem(
+      "motsEscapeRebond",
+      JSON.stringify(mots)
+    );
+
   }
 
   afficherMotsTrouves();
+
 }
 
-function afficherMotsTrouves(){
-  const liste = document.getElementById("listeMots");
-  if(!liste) return;
+/* Affichage de l’inventaire */
 
-  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+function afficherMotsTrouves(){
+
+  const liste = document.getElementById("listeMots");
+
+  if(!liste){
+    return;
+  }
+
+  let mots = [];
+
+  try{
+    mots =
+      JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+  }
+  catch(erreur){
+    mots = [];
+  }
 
   liste.innerHTML = "";
 
   if(mots.length === 0){
-    liste.innerHTML = "<li>Aucun mot</li>";
+
+    const li = document.createElement("li");
+    li.textContent = "Aucun mot";
+
+    liste.appendChild(li);
+
     return;
   }
 
-  mots.forEach(item => {
+  mots.forEach(function(item){
+
     const li = document.createElement("li");
     li.textContent = item.enigme + " : " + item.mot;
+
     liste.appendChild(li);
+
   });
+
 }
 </script>
 

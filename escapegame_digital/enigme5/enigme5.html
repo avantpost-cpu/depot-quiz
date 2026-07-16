@@ -7,9 +7,14 @@
 <title>Escape Game Rebond - Énigme 5</title>
 
 <style>
-*{ margin:0; padding:0; box-sizing:border-box; }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-html, body{
+html,
+body{
   width:100%;
   min-height:100%;
   background:#1b5f6e;
@@ -39,14 +44,18 @@ html, body{
   border:0;
 }
 
-/* CADENAS */
+/* ======================================================
+   CADENAS
+====================================================== */
 
 .code-panel{
   position:absolute;
   left:600px;
   top:537px;
+
   display:none;
   gap:6px;
+
   z-index:60;
 }
 
@@ -57,15 +66,19 @@ html, body{
 .chiffre{
   width:48px;
   height:68px;
+
   border:none;
   background:transparent;
-  color:#000;
+
+  color:#000000;
+
   font-size:48px;
   line-height:68px;
   font-weight:700;
   text-align:center;
-  cursor:pointer;
   font-family:Arial, Helvetica, sans-serif;
+
+  cursor:pointer;
 }
 
 .chiffre.ok{
@@ -77,18 +90,33 @@ html, body{
 }
 
 @keyframes ouvrirCadenas{
-  0%{ transform:translateY(0); }
-  40%{ transform:translateY(-6px); }
-  100%{ transform:translateY(12px); opacity:.55; }
+
+  0%{
+    transform:translateY(0);
+  }
+
+  40%{
+    transform:translateY(-6px);
+  }
+
+  100%{
+    transform:translateY(12px);
+    opacity:.55;
+  }
+
 }
 
-/* SAC INVENTAIRE */
+/* ======================================================
+   SAC INVENTAIRE
+====================================================== */
 
 .inventaire{
   position:absolute;
   left:-70px;
   top:0;
+
   height:716px;
+
   z-index:3000;
 }
 
@@ -96,19 +124,25 @@ html, body{
   position:absolute;
   left:0;
   top:25px;
+
   width:70px;
+
   display:flex;
   justify-content:center;
   align-items:center;
+
   cursor:pointer;
 }
 
 .inventaire-tab img{
   width:80px;
   height:auto;
+
   display:block;
   pointer-events:none;
+
   transition:transform .25s;
+
   filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
 }
 
@@ -120,14 +154,21 @@ html, body{
   position:absolute;
   left:70px;
   top:10px;
+
   width:0;
   height:200px;
+
   overflow:hidden;
+
   background:rgba(255,255,255,.30);
+
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
+
   color:#044e61;
+
   transition:width .35s ease;
+
   border-radius:0 18px 18px 0;
   box-shadow:0 6px 18px rgba(0,0,0,.25);
 }
@@ -139,15 +180,21 @@ html, body{
 .inventaire-content-inner{
   width:230px;
   height:200px;
+
   padding:25px 18px;
+
   overflow-y:auto;
+
   line-height:1.3;
 }
 
 .inventaire-content h3,
 .navigation-content h3{
   font-size:18px;
+  line-height:22px;
+
   margin-bottom:18px;
+
   color:#044e61;
 }
 
@@ -157,23 +204,33 @@ html, body{
 
 .inventaire-content li{
   display:block;
+
   line-height:18px;
+
   margin-bottom:10px;
   padding:10px;
+
   border-radius:10px;
+
   background:rgba(255,255,255,.55);
+
   color:#044e61;
+
   font-weight:bold;
   font-size:14px;
 }
 
-/* LOUPE ÉNIGMES */
+/* ======================================================
+   LOUPE ÉNIGMES
+====================================================== */
 
 .navigation-enigmes{
   position:absolute;
   left:-70px;
   top:90px;
+
   height:716px;
+
   z-index:2990;
 }
 
@@ -181,19 +238,25 @@ html, body{
   position:absolute;
   left:0;
   top:25px;
+
   width:70px;
+
   display:flex;
   justify-content:center;
   align-items:center;
+
   cursor:pointer;
 }
 
 .navigation-tab img{
   width:80px;
   height:auto;
+
   display:block;
   pointer-events:none;
+
   transition:transform .25s;
+
   filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
 }
 
@@ -205,14 +268,21 @@ html, body{
   position:absolute;
   left:70px;
   top:10px;
+
   width:0;
   height:250px;
+
   overflow:hidden;
+
   background:rgba(255,255,255,.30);
+
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
+
   color:#044e61;
+
   transition:width .35s ease;
+
   border-radius:0 18px 18px 0;
   box-shadow:0 6px 18px rgba(0,0,0,.25);
 }
@@ -224,19 +294,28 @@ html, body{
 .navigation-content-inner{
   width:230px;
   height:250px;
+
   padding:25px 18px;
+
   overflow-y:auto;
+
   line-height:1.3;
 }
 
 .navigation-content a{
   display:block;
+
   line-height:18px;
+
   margin-bottom:10px;
   padding:10px;
+
   border-radius:10px;
+
   background:rgba(255,255,255,.55);
+
   color:#044e61;
+
   font-weight:bold;
   font-size:14px;
   text-decoration:none;
@@ -247,32 +326,61 @@ html, body{
   color:#ffffff;
 }
 
-/* FLÈCHE */
+/* ======================================================
+   FLÈCHE
+====================================================== */
 
 .next-arrow{
   position:fixed;
   top:50%;
   right:35px;
-  transform:translateY(-50%) translateX(12px);
+
+  transform:
+    translateY(-50%)
+    translateX(12px);
+
   font-size:62px;
   font-weight:200;
+
   color:#ffffff;
   text-decoration:none;
+
   opacity:0;
   pointer-events:none;
+
   transition:.35s ease;
+
   z-index:999;
 }
 
 .next-arrow.visible{
   opacity:.45;
   pointer-events:auto;
-  transform:translateY(-50%) translateX(0);
+
+  transform:
+    translateY(-50%)
+    translateX(0);
 }
 
 .next-arrow:hover{
   opacity:1;
-  transform:translateY(-50%) translateX(6px);
+
+  transform:
+    translateY(-50%)
+    translateX(6px);
+}
+
+/* ======================================================
+   ÉCRANS PLUS PETITS
+====================================================== */
+
+@media screen and (max-width:1140px){
+
+  .page-enigme5{
+    align-items:flex-start;
+    padding-left:85px;
+  }
+
 }
 </style>
 </head>
@@ -283,35 +391,67 @@ html, body{
 
   <div class="bloc-enigme5">
 
-    <div class="inventaire" id="inventaire">
+    <!-- SAC -->
+
+    <div
+      class="inventaire"
+      id="inventaire">
+
       <div class="inventaire-tab">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png" alt="Inventaire">
+
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png"
+          alt="Inventaire">
+
       </div>
 
       <div class="inventaire-content">
+
         <div class="inventaire-content-inner">
+
           <h3>Mots trouvés</h3>
+
           <ul id="listeMots"></ul>
+
         </div>
+
       </div>
+
     </div>
 
-    <div class="navigation-enigmes" id="navigationEnigmes">
+    <!-- LOUPE -->
+
+    <div
+      class="navigation-enigmes"
+      id="navigationEnigmes">
+
       <div class="navigation-tab">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png" alt="Énigmes">
+
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png"
+          alt="Énigmes">
+
       </div>
 
       <div class="navigation-content">
+
         <div class="navigation-content-inner">
+
           <h3>Énigmes</h3>
+
           <a href="enigme1.html">Énigme 1</a>
           <a href="enigme2.html">Énigme 2</a>
           <a href="enigme3.html">Énigme 3</a>
           <a href="enigme4.html">Énigme 4</a>
           <a href="enigme5.html">Énigme 5</a>
+
         </div>
+
       </div>
+
     </div>
+
+    <!-- VIDÉO -->
 
     <video
       id="videoEnigme5"
@@ -319,97 +459,346 @@ html, body{
       src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme5/enigme5.mp4"
       autoplay
       muted
-      playsinline>
+      playsinline
+      preload="auto">
     </video>
 
-    <div class="code-panel" id="codePanel">
-      <button class="chiffre" data-index="0" type="button">0</button>
-      <button class="chiffre" data-index="1" type="button">0</button>
-      <button class="chiffre" data-index="2" type="button">0</button>
+    <!-- SONS -->
+
+    <audio
+      id="clickSound"
+      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme5/click.mp3"
+      preload="auto">
+    </audio>
+
+    <audio
+      id="unlockSound"
+      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme5/unlock.mp3"
+      preload="auto">
+    </audio>
+
+    <!-- CADENAS -->
+
+    <div
+      class="code-panel"
+      id="codePanel">
+
+      <button
+        class="chiffre"
+        data-index="0"
+        type="button">
+        0
+      </button>
+
+      <button
+        class="chiffre"
+        data-index="1"
+        type="button">
+        0
+      </button>
+
+      <button
+        class="chiffre"
+        data-index="2"
+        type="button">
+        0
+      </button>
+
     </div>
 
   </div>
 
 </div>
 
-<a href="coffre.html" class="next-arrow" id="nextBtn" title="Coffre final">→</a>
+<a
+  href="coffre.html"
+  class="next-arrow"
+  id="nextBtn"
+  title="Coffre final">
+  →
+</a>
 
 <script>
-const videoEnigme5 = document.getElementById("videoEnigme5");
-const codePanel = document.getElementById("codePanel");
-const chiffres = document.querySelectorAll(".chiffre");
-const nextBtn = document.getElementById("nextBtn");
+const videoEnigme5 =
+  document.getElementById("videoEnigme5");
+
+const codePanel =
+  document.getElementById("codePanel");
+
+const chiffres =
+  document.querySelectorAll(".chiffre");
+
+const nextBtn =
+  document.getElementById("nextBtn");
+
+const clickSound =
+  document.getElementById("clickSound");
+
+const unlockSound =
+  document.getElementById("unlockSound");
 
 let code = [0, 0, 0];
 let jeuTermine = false;
 
+/* ======================================================
+   INVENTAIRE AU CHARGEMENT
+====================================================== */
+
 afficherMotsTrouves();
 
-videoEnigme5.addEventListener("ended", () => {
-  codePanel.classList.add("visible");
-});
+/* ======================================================
+   AFFICHAGE DU CADENAS À LA FIN DE LA VIDÉO
+====================================================== */
 
-chiffres.forEach(chiffre => {
-  chiffre.addEventListener("click", () => {
-    if(jeuTermine) return;
+videoEnigme5.addEventListener(
+  "ended",
+  function(){
 
-    const index = Number(chiffre.dataset.index);
+    codePanel.classList.add(
+      "visible"
+    );
 
-    code[index] = (code[index] + 1) % 10;
-    chiffre.textContent = code[index];
-
-    verifierCode();
-  });
-});
-
-function verifierCode(){
-  if(code.join("") === "119"){
-    jeuTermine = true;
-
-    chiffres.forEach(chiffre => {
-      chiffre.classList.add("ok");
-      chiffre.disabled = true;
-    });
-
-    codePanel.classList.add("cadenas-ouvert");
-
-    ajouterMotTrouve("Énigme 5", "SIGNALEMENT");
-
-    setTimeout(() => {
-      nextBtn.classList.add("visible");
-    }, 700);
   }
+);
+
+/* ======================================================
+   CLIC SUR LES CHIFFRES
+====================================================== */
+
+chiffres.forEach(function(chiffre){
+
+  chiffre.addEventListener(
+    "click",
+    function(){
+
+      if(jeuTermine){
+        return;
+      }
+
+      const index =
+        Number(chiffre.dataset.index);
+
+      code[index] =
+        (code[index] + 1) % 10;
+
+      chiffre.textContent =
+        code[index];
+
+      /*
+        Son joué à chaque changement de chiffre.
+      */
+
+      jouerSonClick();
+
+      verifierCode();
+
+    }
+  );
+
+});
+
+/* ======================================================
+   SON DU CLIC
+====================================================== */
+
+function jouerSonClick(){
+
+  /*
+    cloneNode permet de rejouer le son rapidement,
+    même si le joueur clique plusieurs fois de suite.
+  */
+
+  const son =
+    clickSound.cloneNode();
+
+  son.volume = 1;
+
+  son.play().catch(function(){
+    /*
+      Le clic du joueur autorise normalement la lecture.
+      Cette sécurité évite une erreur visible si le
+      navigateur bloque malgré tout le son.
+    */
+  });
+
 }
 
-function ajouterMotTrouve(enigme, mot){
-  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+/* ======================================================
+   VÉRIFICATION DU CODE
+====================================================== */
 
-  if(!mots.some(item => item.enigme === enigme)){
-    mots.push({ enigme, mot });
-    localStorage.setItem("motsEscapeRebond", JSON.stringify(mots));
+function verifierCode(){
+
+  if(code.join("") !== "119"){
+    return;
+  }
+
+  jeuTermine = true;
+
+  /*
+    Lecture du son d'ouverture.
+  */
+
+  unlockSound.currentTime = 0;
+  unlockSound.volume = 1;
+
+  unlockSound.play().catch(function(){
+    /*
+      Sécurité en cas de blocage du navigateur.
+    */
+  });
+
+  chiffres.forEach(function(chiffre){
+
+    chiffre.classList.add(
+      "ok"
+    );
+
+    chiffre.disabled = true;
+
+  });
+
+  codePanel.classList.add(
+    "cadenas-ouvert"
+  );
+
+  ajouterMotTrouve(
+    "Énigme 5",
+    "SIGNALEMENT"
+  );
+
+  window.setTimeout(function(){
+
+    nextBtn.classList.add(
+      "visible"
+    );
+
+  }, 700);
+
+}
+
+/* ======================================================
+   AJOUT DU MOT DANS LE SAC
+====================================================== */
+
+function ajouterMotTrouve(enigme, mot){
+
+  let mots = [];
+
+  try{
+
+    mots =
+      JSON.parse(
+        localStorage.getItem("motsEscapeRebond")
+      ) || [];
+
+  }
+  catch(erreur){
+
+    mots = [];
+
+  }
+
+  const motDejaPresent =
+    mots.some(function(item){
+
+      return (
+        typeof item === "object" &&
+        item !== null &&
+        item.enigme === enigme
+      );
+
+    });
+
+  if(!motDejaPresent){
+
+    mots.push({
+      enigme:enigme,
+      mot:mot
+    });
+
+    localStorage.setItem(
+      "motsEscapeRebond",
+      JSON.stringify(mots)
+    );
+
   }
 
   afficherMotsTrouves();
+
 }
 
-function afficherMotsTrouves(){
-  const liste = document.getElementById("listeMots");
-  if(!liste) return;
+/* ======================================================
+   AFFICHAGE DES MOTS TROUVÉS
+====================================================== */
 
-  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+function afficherMotsTrouves(){
+
+  const liste =
+    document.getElementById("listeMots");
+
+  if(!liste){
+    return;
+  }
+
+  let mots = [];
+
+  try{
+
+    mots =
+      JSON.parse(
+        localStorage.getItem("motsEscapeRebond")
+      ) || [];
+
+  }
+  catch(erreur){
+
+    mots = [];
+
+  }
 
   liste.innerHTML = "";
 
   if(mots.length === 0){
-    liste.innerHTML = "<li>Aucun mot</li>";
+
+    const li =
+      document.createElement("li");
+
+    li.textContent =
+      "Aucun mot";
+
+    liste.appendChild(li);
+
     return;
   }
 
-  mots.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item.enigme + " : " + item.mot;
+  mots.forEach(function(item){
+
+    const li =
+      document.createElement("li");
+
+    if(
+      typeof item === "object" &&
+      item !== null &&
+      item.enigme &&
+      item.mot
+    ){
+
+      li.textContent =
+        item.enigme + " : " + item.mot;
+
+    }
+    else{
+
+      li.textContent =
+        String(item);
+
+    }
+
     liste.appendChild(li);
+
   });
+
 }
 </script>
 

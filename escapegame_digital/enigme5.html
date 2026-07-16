@@ -44,6 +44,51 @@ body{
   border:0;
 }
 
+/* BOUTON IMAGE DE DÉMARRAGE */
+
+.bouton-video{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  z-index:2000;
+
+  display:none;
+
+  border:0;
+  padding:0;
+  margin:0;
+  background:transparent;
+
+  cursor:pointer;
+}
+
+.bouton-video.visible{
+  display:block;
+}
+
+.bouton-video img{
+  display:block;
+  width:auto;
+  height:auto;
+  max-width:320px;
+  max-height:180px;
+  pointer-events:none;
+
+  filter:drop-shadow(0 8px 18px rgba(0,0,0,.35));
+  transition:transform .2s ease;
+}
+
+.bouton-video:hover img{
+  transform:scale(1.05);
+}
+
+.bouton-video:focus-visible{
+  outline:3px solid rgba(255,255,255,.95);
+  outline-offset:5px;
+  border-radius:8px;
+}
+
 /* CADENAS */
 
 .code-panel{
@@ -262,6 +307,15 @@ body{
   background:#044e61;
   color:#ffffff;
 }
+
+/* ÉCRANS PLUS PETITS */
+
+@media screen and (max-width:1140px){
+  .page-enigme5{
+    align-items:flex-start;
+    padding-left:85px;
+  }
+}
 </style>
 </head>
 
@@ -323,16 +377,29 @@ body{
 
     </div>
 
-    <!-- VIDÉO -->
+    <!-- VIDÉO EN PAUSE SUR LA PREMIÈRE IMAGE -->
 
     <video
       id="videoEnigme5"
       class="animation-5"
       src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme5/enigme5.mp4"
-      autoplay
-      muted
-      playsinline>
+      playsinline
+      preload="auto">
     </video>
+
+    <!-- BOUTON IMAGE CENTRAL -->
+
+    <button
+      class="bouton-video visible"
+      id="boutonVideo"
+      type="button"
+      aria-label="Lancer la vidéo avec le son">
+
+      <img
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme5/bouton.png"
+        alt="Continuer">
+
+    </button>
 
     <!-- CADENAS -->
 
@@ -349,43 +416,140 @@ body{
 </div>
 
 <script>
-const videoEnigme5 = document.getElementById("videoEnigme5");
-const codePanel = document.getElementById("codePanel");
-const chiffres = document.querySelectorAll(".chiffre");
+const videoEnigme5 =
+  document.getElementById("videoEnigme5");
+
+const boutonVideo =
+  document.getElementById("boutonVideo");
+
+const codePanel =
+  document.getElementById("codePanel");
+
+const chiffres =
+  document.querySelectorAll(".chiffre");
 
 let code = [0, 0, 0];
 let jeuTermine = false;
+let videoDemarree = false;
 
 afficherMotsTrouves();
 
-/* Affichage du cadenas à la fin de la vidéo */
+/* ======================================================
+   PRÉPARATION DE LA PREMIÈRE IMAGE
+====================================================== */
 
-videoEnigme5.addEventListener("ended", function(){
-  codePanel.classList.add("visible");
-});
+/*
+  Le bouton est visible dès l'affichage de la page.
+  La vidéo est chargée mais reste en pause.
+*/
 
-/* Modification des chiffres */
+videoEnigme5.pause();
+videoEnigme5.muted = false;
+videoEnigme5.volume = 1;
+videoEnigme5.load();
 
-chiffres.forEach(function(chiffre){
+/* ======================================================
+   LANCEMENT DE LA VIDÉO AVEC LE SON
+====================================================== */
 
-  chiffre.addEventListener("click", function(){
+boutonVideo.addEventListener(
+  "click",
+  async function(event){
 
-    if(jeuTermine){
+    event.preventDefault();
+    event.stopPropagation();
+
+    if(videoDemarree){
       return;
     }
 
-    const index = Number(chiffre.dataset.index);
+    videoDemarree = true;
 
-    code[index] = (code[index] + 1) % 10;
-    chiffre.textContent = code[index];
+    boutonVideo.disabled = true;
+    boutonVideo.classList.remove(
+      "visible"
+    );
 
-    verifierCode();
+    videoEnigme5.muted = false;
+    videoEnigme5.volume = 1;
 
-  });
+    try{
+
+      /*
+        On évite de modifier currentTime juste avant play(),
+        car certains navigateurs annulent alors la lecture.
+      */
+
+      await videoEnigme5.play();
+
+    }
+    catch(erreur){
+
+      console.error(
+        "Impossible de lancer la vidéo :",
+        erreur
+      );
+
+      videoDemarree = false;
+      boutonVideo.disabled = false;
+
+      boutonVideo.classList.add(
+        "visible"
+      );
+
+    }
+
+  }
+);
+
+/* ======================================================
+   AFFICHAGE DU CADENAS À LA FIN DE LA VIDÉO
+====================================================== */
+
+videoEnigme5.addEventListener(
+  "ended",
+  function(){
+
+    codePanel.classList.add(
+      "visible"
+    );
+
+  }
+);
+
+/* ======================================================
+   MODIFICATION DES CHIFFRES
+====================================================== */
+
+chiffres.forEach(function(chiffre){
+
+  chiffre.addEventListener(
+    "click",
+    function(){
+
+      if(jeuTermine){
+        return;
+      }
+
+      const index =
+        Number(chiffre.dataset.index);
+
+      code[index] =
+        (code[index] + 1) % 10;
+
+      chiffre.textContent =
+        code[index];
+
+      verifierCode();
+
+    }
+  );
 
 });
 
-/* Vérification du code */
+/* ======================================================
+   VÉRIFICATION DU CODE
+====================================================== */
 
 function verifierCode(){
 
@@ -396,20 +560,30 @@ function verifierCode(){
   jeuTermine = true;
 
   chiffres.forEach(function(chiffre){
-    chiffre.classList.add("ok");
+
+    chiffre.classList.add(
+      "ok"
+    );
+
     chiffre.disabled = true;
+
   });
 
-  codePanel.classList.add("cadenas-ouvert");
+  codePanel.classList.add(
+    "cadenas-ouvert"
+  );
 
-  ajouterMotTrouve("Énigme 5", "DANS");
+  ajouterMotTrouve(
+    "Énigme 5",
+    "DANS"
+  );
 
   /*
     Petit délai pour laisser apparaître le code en vert
-    et l’animation d’ouverture du cadenas.
+    et l'animation d'ouverture du cadenas.
   */
 
-  setTimeout(function(){
+  window.setTimeout(function(){
 
     window.location.href =
       "https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/fin/fin.html";
@@ -418,23 +592,38 @@ function verifierCode(){
 
 }
 
-/* Enregistrement du mot */
+/* ======================================================
+   ENREGISTREMENT DU MOT
+====================================================== */
 
 function ajouterMotTrouve(enigme, mot){
 
   let mots = [];
 
   try{
+
     mots =
-      JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+      JSON.parse(
+        localStorage.getItem("motsEscapeRebond")
+      ) || [];
+
   }
   catch(erreur){
+
     mots = [];
+
   }
 
-  const motExiste = mots.some(function(item){
-    return item.enigme === enigme;
-  });
+  const motExiste =
+    mots.some(function(item){
+
+      return (
+        typeof item === "object" &&
+        item !== null &&
+        item.enigme === enigme
+      );
+
+    });
 
   if(!motExiste){
 
@@ -454,11 +643,14 @@ function ajouterMotTrouve(enigme, mot){
 
 }
 
-/* Affichage de l’inventaire */
+/* ======================================================
+   AFFICHAGE DE L'INVENTAIRE
+====================================================== */
 
 function afficherMotsTrouves(){
 
-  const liste = document.getElementById("listeMots");
+  const liste =
+    document.getElementById("listeMots");
 
   if(!liste){
     return;
@@ -467,19 +659,28 @@ function afficherMotsTrouves(){
   let mots = [];
 
   try{
+
     mots =
-      JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+      JSON.parse(
+        localStorage.getItem("motsEscapeRebond")
+      ) || [];
+
   }
   catch(erreur){
+
     mots = [];
+
   }
 
   liste.innerHTML = "";
 
   if(mots.length === 0){
 
-    const li = document.createElement("li");
-    li.textContent = "Aucun mot";
+    const li =
+      document.createElement("li");
+
+    li.textContent =
+      "Aucun mot";
 
     liste.appendChild(li);
 
@@ -488,8 +689,26 @@ function afficherMotsTrouves(){
 
   mots.forEach(function(item){
 
-    const li = document.createElement("li");
-    li.textContent = item.enigme + " : " + item.mot;
+    const li =
+      document.createElement("li");
+
+    if(
+      typeof item === "object" &&
+      item !== null &&
+      item.enigme &&
+      item.mot
+    ){
+
+      li.textContent =
+        item.enigme + " : " + item.mot;
+
+    }
+    else{
+
+      li.textContent =
+        String(item);
+
+    }
 
     liste.appendChild(li);
 

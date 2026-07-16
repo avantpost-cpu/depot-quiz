@@ -44,6 +44,57 @@ body{
   border:0;
 }
 
+
+/* ======================================================
+   BOUTON DE DÉMARRAGE AVEC LE SON
+====================================================== */
+
+.bouton-demarrer-fin{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+
+  z-index:2550;
+
+  display:none;
+
+  padding:15px 32px;
+  border:0;
+  border-radius:999px;
+
+  background:#e65b10;
+  color:#000000;
+
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:20px;
+  line-height:24px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    opacity .2s ease;
+}
+
+.bouton-demarrer-fin.visible{
+  display:block;
+}
+
+.bouton-demarrer-fin:hover{
+  transform:translate(-50%,-50%) scale(1.05);
+  box-shadow:0 10px 28px rgba(0,0,0,.42);
+}
+
+.bouton-demarrer-fin:focus-visible{
+  outline:3px solid rgba(255,255,255,.95);
+  outline-offset:4px;
+}
+
 /* ======================================================
    ZONE DU CARNET
 ====================================================== */
@@ -907,11 +958,16 @@ body{
       id="videoFin"
       class="animation-fin"
       src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/fin/animationfin1.mp4"
-      autoplay
-      muted
       playsinline
       preload="auto">
     </video>
+
+    <button
+      class="bouton-demarrer-fin"
+      id="boutonDemarrerFin"
+      type="button">
+      Bravo, tu as réussi à ouvrir le carnet
+    </button>
 
     <!-- ZONE DU CARNET -->
 
@@ -1042,6 +1098,9 @@ body{
 <script>
 const videoFin =
   document.getElementById("videoFin");
+
+const boutonDemarrerFin =
+  document.getElementById("boutonDemarrerFin");
 
 const carnetZone =
   document.getElementById("carnetZone");
@@ -1243,24 +1302,140 @@ function creerPaquetPages(){
 creerPaquetPages();
 
 /* ======================================================
-   LECTURE VIDÉO
+   DÉMARRAGE DE LA PAGE AVEC LE SON
 ====================================================== */
 
-videoFin.play().catch(function(){
+let pageDemarree = false;
 
-  document.addEventListener(
-    "click",
-    function lancerVideo(){
+/*
+  La première image de la vidéo reste affichée.
+  La lecture ne commence qu'après le clic sur « Continuer ».
+*/
 
-      videoFin.play();
+function preparerPremiereImage(){
 
-    },
+  videoFin.pause();
+
+  try{
+    videoFin.currentTime = 0;
+  }
+  catch(erreur){
+    /*
+      Certains navigateurs n'autorisent currentTime
+      qu'après le chargement des métadonnées.
+    */
+  }
+
+  boutonDemarrerFin.classList.add(
+    "visible"
+  );
+
+}
+
+if(videoFin.readyState >= 1){
+
+  preparerPremiereImage();
+
+}
+else{
+
+  videoFin.addEventListener(
+    "loadedmetadata",
+    preparerPremiereImage,
     {
       once:true
     }
   );
 
-});
+}
+
+boutonDemarrerFin.addEventListener(
+  "click",
+  function(event){
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    if(pageDemarree){
+      return;
+    }
+
+    pageDemarree = true;
+
+    boutonDemarrerFin.classList.remove(
+      "visible"
+    );
+
+    /*
+      La première vidéo démarre directement avec le son.
+      Ce clic constitue l'interaction utilisateur exigée
+      par les navigateurs.
+    */
+
+    videoFin.muted = false;
+    videoFin.volume = 1;
+    videoFin.currentTime = 0;
+
+    const lectureInitiale =
+      videoFin.play();
+
+    if(
+      lectureInitiale &&
+      typeof lectureInitiale.catch === "function"
+    ){
+
+      lectureInitiale.catch(function(){
+
+        pageDemarree = false;
+
+        boutonDemarrerFin.classList.add(
+          "visible"
+        );
+
+      });
+
+    }
+
+    /*
+      Préparation discrète de la vidéo finale pendant
+      ce même geste utilisateur. Elle reste invisible,
+      sans son et revient immédiatement à sa première image.
+    */
+
+    videoJeuFinal.muted = true;
+    videoJeuFinal.volume = 0;
+    videoJeuFinal.currentTime = 0;
+
+    const preparationVideoFinale =
+      videoJeuFinal.play();
+
+    if(
+      preparationVideoFinale &&
+      typeof preparationVideoFinale.then === "function"
+    ){
+
+      preparationVideoFinale
+        .then(function(){
+
+          videoJeuFinal.pause();
+          videoJeuFinal.currentTime = 0;
+          videoJeuFinal.volume = 1;
+          videoJeuFinal.muted = false;
+
+        })
+        .catch(function(){
+
+          videoJeuFinal.pause();
+          videoJeuFinal.currentTime = 0;
+          videoJeuFinal.volume = 1;
+          videoJeuFinal.muted = false;
+
+        });
+
+    }
+
+  }
+);
 
 /* ======================================================
    INTERACTIONS
@@ -1495,6 +1670,10 @@ function lancerSequenceFinale(){
   );
 
   videoJeuFinal.classList.add(
+    "visible"
+  );
+
+  boutonLireVideo.classList.remove(
     "visible"
   );
 

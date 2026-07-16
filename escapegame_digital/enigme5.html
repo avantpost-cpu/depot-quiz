@@ -387,6 +387,20 @@ body{
       preload="auto">
     </video>
 
+    <!-- SONS -->
+
+    <audio
+      id="clickSound"
+      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme5/click.mp3"
+      preload="auto">
+    </audio>
+
+    <audio
+      id="unlockSound"
+      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme5/unlock.mp3"
+      preload="auto">
+    </audio>
+
     <!-- BOUTON IMAGE CENTRAL -->
 
     <button
@@ -427,6 +441,12 @@ const codePanel =
 
 const chiffres =
   document.querySelectorAll(".chiffre");
+
+const clickSound =
+  document.getElementById("clickSound");
+
+const unlockSound =
+  document.getElementById("unlockSound");
 
 let code = [0, 0, 0];
 let jeuTermine = false;
@@ -540,12 +560,41 @@ chiffres.forEach(function(chiffre){
       chiffre.textContent =
         code[index];
 
+      jouerSonClick();
+
       verifierCode();
 
     }
   );
 
 });
+
+/* ======================================================
+   SON À CHAQUE CHANGEMENT DE CHIFFRE
+====================================================== */
+
+function jouerSonClick(){
+
+  /*
+    Un clone permet de rejouer le son immédiatement,
+    même si le joueur clique plusieurs fois très vite.
+  */
+
+  const son =
+    clickSound.cloneNode(true);
+
+  son.volume = 1;
+
+  son.play().catch(function(erreur){
+
+    console.warn(
+      "Le son de clic n'a pas pu être lu :",
+      erreur
+    );
+
+  });
+
+}
 
 /* ======================================================
    VÉRIFICATION DU CODE
@@ -558,6 +607,24 @@ function verifierCode(){
   }
 
   jeuTermine = true;
+
+  /*
+    Son d'ouverture joué une seule fois
+    lorsque le code 119 est validé.
+  */
+
+  unlockSound.pause();
+  unlockSound.currentTime = 0;
+  unlockSound.volume = 1;
+
+  unlockSound.play().catch(function(erreur){
+
+    console.warn(
+      "Le son d'ouverture n'a pas pu être lu :",
+      erreur
+    );
+
+  });
 
   chiffres.forEach(function(chiffre){
 

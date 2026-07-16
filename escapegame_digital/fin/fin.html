@@ -962,6 +962,14 @@ body{
       preload="auto">
     </video>
 
+    <!-- SON DE FEUILLETAGE -->
+
+    <audio
+      id="sonFeuilletage"
+      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/fin/book2.mp3"
+      preload="auto">
+    </audio>
+
     <button
       class="bouton-demarrer-fin"
       id="boutonDemarrerFin"
@@ -1101,6 +1109,9 @@ const videoFin =
 
 const boutonDemarrerFin =
   document.getElementById("boutonDemarrerFin");
+
+const sonFeuilletage =
+  document.getElementById("sonFeuilletage");
 
 const carnetZone =
   document.getElementById("carnetZone");
@@ -1439,6 +1450,33 @@ boutonDemarrerFin.addEventListener(
 );
 
 /* ======================================================
+   SON DU FEUILLETAGE
+====================================================== */
+
+function jouerSonFeuilletage(){
+
+  /*
+    Le son est relancé depuis le début à chaque changement
+    de double page. Il est joué uniquement lorsqu'une page
+    tourne réellement, pas lors du clic final sur finE.png.
+  */
+
+  sonFeuilletage.pause();
+  sonFeuilletage.currentTime = 0;
+  sonFeuilletage.volume = 1;
+
+  sonFeuilletage.play().catch(function(erreur){
+
+    console.warn(
+      "Le son de feuilletage n'a pas pu être lu :",
+      erreur
+    );
+
+  });
+
+}
+
+/* ======================================================
    INTERACTIONS
 ====================================================== */
 
@@ -1504,6 +1542,8 @@ function tournerPages(){
   if(pageActuelle >= pagesCarnet.length - 1){
     return;
   }
+
+  jouerSonFeuilletage();
 
   animationEnCours = true;
 

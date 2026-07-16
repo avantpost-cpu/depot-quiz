@@ -631,6 +631,147 @@ body{
   color:#ffffff;
 }
 
+
+
+/* ======================================================
+   SÉQUENCE VIDÉO ET RÉPONSES FINALES
+====================================================== */
+
+.video-jeu-final,
+.reponses-finales{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:none;
+  z-index:120;
+}
+
+.video-jeu-final{
+  object-fit:fill;
+  background:#000;
+  pointer-events:auto;
+}
+
+.video-jeu-final.visible,
+.reponses-finales.visible{
+  display:block;
+}
+
+.reponses-finales{
+  background:transparent;
+  pointer-events:none;
+  z-index:125;
+}
+
+.champ-morse{
+  position:absolute;
+  left:238px;
+  width:319px;
+  height:49px;
+  border:0;
+  outline:0;
+  padding:2px 12px 0;
+  background:transparent;
+  color:#000;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:31px;
+  line-height:49px;
+  font-weight:900;
+  text-align:center;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  box-shadow:none;
+  pointer-events:auto;
+}
+
+.champ-morse::placeholder{
+  color:rgba(0,0,0,.35);
+}
+
+.champ-morse:focus{
+  background:transparent;
+}
+
+.champ-morse:-webkit-autofill,
+.champ-morse:-webkit-autofill:hover,
+.champ-morse:-webkit-autofill:focus{
+  -webkit-text-fill-color:#000;
+  -webkit-box-shadow:0 0 0 1000px transparent inset;
+  box-shadow:0 0 0 1000px transparent inset;
+  transition:background-color 9999s ease-out 0s;
+}
+
+.champ-morse-1{
+  top:253px;
+  transform:rotate(-2.8deg);
+}
+
+.champ-morse-2{
+  top:311px;
+  transform:rotate(-3.7deg);
+}
+
+.champ-morse-3{
+  top:369px;
+  transform:rotate(-4.2deg);
+}
+
+.champ-morse.correct{
+  background:transparent;
+  color:#044e61;
+}
+
+.champ-morse.erreur{
+  background:transparent;
+  color:#c0392b;
+}
+
+.message-reussite{
+  position:absolute;
+  left:205px;
+  bottom:12px;
+  width:380px;
+  padding:9px 14px;
+  border-radius:12px;
+  background:rgba(4,78,97,.94);
+  color:#fff;
+  font-size:17px;
+  line-height:21px;
+  font-weight:bold;
+  text-align:center;
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity .3s ease, transform .3s ease;
+}
+
+.message-reussite.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.bouton-lire-video{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  z-index:130;
+  display:none;
+  border:0;
+  border-radius:999px;
+  padding:14px 24px;
+  background:#65e13f;
+  color:#000;
+  font-size:18px;
+  font-weight:bold;
+  cursor:pointer;
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
+}
+
+.bouton-lire-video.visible{
+  display:block;
+}
+
 /* ======================================================
    ÉCRANS PLUS PETITS
 ====================================================== */
@@ -738,6 +879,71 @@ body{
         src=""
         alt="Double page du carnet">
 
+      <!-- VIDÉO FINALE : remplace visuellement finE.png -->
+
+      <video
+        class="video-jeu-final"
+        id="videoJeuFinal"
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/fin/finEjeu.mp4"
+        playsinline
+        preload="auto">
+      </video>
+
+      <button
+        class="bouton-lire-video"
+        id="boutonLireVideo"
+        type="button">
+        Lire la vidéo
+      </button>
+
+      <!-- ÉCRAN MORSE AFFICHÉ À LA FIN DE LA VIDÉO -->
+
+      <div
+        class="reponses-finales"
+        id="reponsesFinales"
+        aria-hidden="true">
+
+        <input
+          class="champ-morse champ-morse-1"
+          id="motMorse1"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          spellcheck="false"
+          maxlength="10"
+          aria-label="Premier mot caché">
+
+        <input
+          class="champ-morse champ-morse-2"
+          id="motMorse2"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          spellcheck="false"
+          maxlength="10"
+          aria-label="Deuxième mot caché">
+
+        <input
+          class="champ-morse champ-morse-3"
+          id="motMorse3"
+          type="text"
+          inputmode="text"
+          autocomplete="off"
+          spellcheck="false"
+          maxlength="10"
+          aria-label="Troisième mot caché">
+
+        <div
+          class="message-reussite"
+          id="messageReussite"
+          role="status"
+          aria-live="polite">
+          Bravo ! Le mot « LE SPORT » a été ajouté à ton sac.
+        </div>
+
+      </div>
+
+
       <!-- Nouvelle double page révélée progressivement -->
 
       <div
@@ -808,6 +1014,28 @@ const imageSuivanteDroite =
 
 const paquetPages =
   document.getElementById("paquetPages");
+
+const videoJeuFinal =
+  document.getElementById("videoJeuFinal");
+
+const boutonLireVideo =
+  document.getElementById("boutonLireVideo");
+
+const reponsesFinales =
+  document.getElementById("reponsesFinales");
+
+const champsMorse = [
+  document.getElementById("motMorse1"),
+  document.getElementById("motMorse2"),
+  document.getElementById("motMorse3")
+];
+
+const messageReussite =
+  document.getElementById("messageReussite");
+
+let sequenceFinaleLancee = false;
+let enigmeFinaleValidee = false;
+
 
 /* ======================================================
    IMAGES
@@ -1170,12 +1398,335 @@ function tournerPages(){
 
       carnetZone.setAttribute(
         "aria-label",
-        "Dernière page du carnet"
+        "Vidéo de la dernière énigme"
       );
+
+      lancerSequenceFinale();
 
     }
 
   }, dureeTotale + 80);
+
+}
+
+
+
+/* ======================================================
+   SÉQUENCE FINALE : VIDÉO PUIS TROIS CHAMPS
+====================================================== */
+
+function lancerSequenceFinale(){
+
+  if(sequenceFinaleLancee){
+    return;
+  }
+
+  sequenceFinaleLancee = true;
+
+  pageCarnetActuelle.classList.remove(
+    "visible"
+  );
+
+  reponsesFinales.classList.remove(
+    "visible"
+  );
+
+  reponsesFinales.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  videoJeuFinal.classList.add(
+    "visible"
+  );
+
+  videoJeuFinal.currentTime = 0;
+  videoJeuFinal.muted = false;
+  videoJeuFinal.volume = 1;
+
+  const tentativeLecture =
+    videoJeuFinal.play();
+
+  if(
+    tentativeLecture &&
+    typeof tentativeLecture.catch === "function"
+  ){
+
+    tentativeLecture.catch(function(){
+
+      boutonLireVideo.classList.add(
+        "visible"
+      );
+
+    });
+
+  }
+
+}
+
+boutonLireVideo.addEventListener(
+  "click",
+  function(event){
+
+    event.stopPropagation();
+
+    boutonLireVideo.classList.remove(
+      "visible"
+    );
+
+    videoJeuFinal.play();
+
+  }
+);
+
+videoJeuFinal.addEventListener(
+  "click",
+  function(event){
+
+    event.stopPropagation();
+
+    if(videoJeuFinal.paused){
+      videoJeuFinal.play();
+    }
+
+  }
+);
+
+videoJeuFinal.addEventListener(
+  "ended",
+  afficherReponsesFinales
+);
+
+function afficherReponsesFinales(){
+
+  boutonLireVideo.classList.remove(
+    "visible"
+  );
+
+  /*
+    La vidéo reste affichée sur sa dernière image.
+    On la met simplement en pause et on désactive ses clics
+    pour que les champs placés au-dessus restent accessibles.
+  */
+
+  videoJeuFinal.pause();
+  videoJeuFinal.classList.add(
+    "visible"
+  );
+  videoJeuFinal.style.pointerEvents =
+    "none";
+
+  reponsesFinales.classList.add(
+    "visible"
+  );
+
+  reponsesFinales.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  carnetZone.setAttribute(
+    "aria-label",
+    "Saisir les trois mots cachés"
+  );
+
+  window.setTimeout(function(){
+    champsMorse[0].focus();
+  }, 80);
+
+}
+
+const reponsesAttendues = [
+  "ECOUTER",
+  "CROIRE",
+  "PROTEGER"
+];
+
+champsMorse.forEach(function(champ, index){
+
+  champ.addEventListener(
+    "click",
+    function(event){
+      event.stopPropagation();
+    }
+  );
+
+  champ.addEventListener(
+    "keydown",
+    function(event){
+
+      event.stopPropagation();
+
+      if(event.key === "Enter"){
+
+        event.preventDefault();
+        verifierChampMorse(champ, index, true);
+
+      }
+
+    }
+  );
+
+  champ.addEventListener(
+    "input",
+    function(){
+      verifierChampMorse(champ, index, false);
+    }
+  );
+
+  champ.addEventListener(
+    "blur",
+    function(){
+      verifierChampMorse(champ, index, true);
+    }
+  );
+
+});
+
+function normaliserMot(texte){
+
+  return String(texte || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^A-Za-z]/g, "")
+    .toUpperCase();
+
+}
+
+function verifierChampMorse(champ, index, signalerErreur){
+
+  const valeur =
+    normaliserMot(champ.value);
+
+  const reponse =
+    reponsesAttendues[index];
+
+  champ.classList.remove(
+    "correct",
+    "erreur"
+  );
+
+  if(valeur === reponse){
+
+    champ.classList.add(
+      "correct"
+    );
+
+    champ.value = reponse;
+
+    if(index < champsMorse.length - 1){
+      champsMorse[index + 1].focus();
+    }
+
+  }
+  else if(
+    signalerErreur &&
+    valeur.length > 0
+  ){
+
+    champ.classList.add(
+      "erreur"
+    );
+
+  }
+
+  verifierEnigmeFinale();
+
+}
+
+function verifierEnigmeFinale(){
+
+  if(enigmeFinaleValidee){
+    return;
+  }
+
+  const toutesCorrectes =
+    champsMorse.every(function(champ, index){
+
+      return normaliserMot(champ.value) ===
+        reponsesAttendues[index];
+
+    });
+
+  if(!toutesCorrectes){
+    return;
+  }
+
+  enigmeFinaleValidee = true;
+
+  champsMorse.forEach(function(champ){
+
+    champ.classList.remove(
+      "erreur"
+    );
+
+    champ.classList.add(
+      "correct"
+    );
+
+    champ.readOnly = true;
+
+  });
+
+  ajouterMotFinalAuSac();
+
+  messageReussite.classList.add(
+    "visible"
+  );
+
+}
+
+function ajouterMotFinalAuSac(){
+
+  let mots = [];
+
+  try{
+
+    mots =
+      JSON.parse(
+        localStorage.getItem("motsEscapeRebond")
+      ) || [];
+
+  }
+  catch(erreur){
+
+    mots = [];
+
+  }
+
+  const dejaPresent =
+    mots.some(function(item){
+
+      if(
+        typeof item === "object" &&
+        item !== null
+      ){
+
+        return normaliserMot(item.mot) ===
+          "LESPORT";
+
+      }
+
+      return normaliserMot(item) ===
+        "LESPORT";
+
+    });
+
+  if(!dejaPresent){
+
+    mots.push({
+      enigme:"Énigme finale",
+      mot:"LE SPORT"
+    });
+
+    localStorage.setItem(
+      "motsEscapeRebond",
+      JSON.stringify(mots)
+    );
+
+  }
+
+  afficherMotsTrouves();
 
 }
 

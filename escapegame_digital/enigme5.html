@@ -401,6 +401,13 @@ body{
       preload="auto">
     </audio>
 
+    <audio
+      id="musiqueFond"
+      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme5/son5.mp3"
+      preload="auto"
+      loop>
+    </audio>
+
     <!-- BOUTON IMAGE CENTRAL -->
 
     <button
@@ -447,6 +454,9 @@ const clickSound =
 
 const unlockSound =
   document.getElementById("unlockSound");
+
+const musiqueFond =
+  document.getElementById("musiqueFond");
 
 let code = [0, 0, 0];
 let jeuTermine = false;
@@ -502,6 +512,23 @@ boutonVideo.addEventListener(
 
       await videoEnigme5.play();
 
+      /*
+        La musique démarre avec le même clic utilisateur
+        et joue ensuite en boucle pendant toute l'énigme.
+      */
+
+      musiqueFond.volume = 0.25;
+      musiqueFond.currentTime = 0;
+
+      musiqueFond.play().catch(function(erreur){
+
+        console.warn(
+          "Impossible de lancer la musique de fond :",
+          erreur
+        );
+
+      });
+
     }
     catch(erreur){
 
@@ -509,6 +536,9 @@ boutonVideo.addEventListener(
         "Impossible de lancer la vidéo :",
         erreur
       );
+
+      musiqueFond.pause();
+      musiqueFond.currentTime = 0;
 
       videoDemarree = false;
       boutonVideo.disabled = false;
@@ -651,6 +681,9 @@ function verifierCode(){
   */
 
   window.setTimeout(function(){
+
+    musiqueFond.pause();
+    musiqueFond.currentTime = 0;
 
     window.location.href =
       "https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/fin/fin.html";

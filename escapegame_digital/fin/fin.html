@@ -718,8 +718,9 @@ body{
 }
 
 .champ-morse.correct{
-  background:transparent;
-  color:#044e61;
+  background:#39b54a;
+  color:#ffffff;
+  border-radius:8px;
 }
 
 .champ-morse.erreur{
@@ -770,6 +771,44 @@ body{
 
 .bouton-lire-video.visible{
   display:block;
+}
+
+
+/* ======================================================
+   BRAVI FINAL — UNIQUEMENT APRÈS LES TROIS BONNES RÉPONSES
+====================================================== */
+
+.bloc-fin.gagnee .animation-fin,
+.bloc-fin.gagnee .carnet-zone{
+  opacity:.5;
+  filter:saturate(.5);
+  transition:opacity .45s ease, filter .45s ease;
+}
+
+.bravi-final{
+  position:absolute;
+  inset:0;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  opacity:0;
+  pointer-events:none;
+  z-index:2600;
+
+  transition:opacity .45s ease;
+}
+
+.bravi-final.visible{
+  opacity:1;
+}
+
+.bravi-final img{
+  width:50%;
+  height:auto;
+  display:block;
+  filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
 }
 
 /* ======================================================
@@ -846,6 +885,19 @@ body{
         </div>
 
       </div>
+
+    </div>
+
+    <!-- BRAVI FINAL : visible seulement quand les trois mots sont corrects -->
+
+    <div
+      class="bravi-final"
+      id="braviFinal"
+      aria-hidden="true">
+
+      <img
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi5.png"
+        alt="Bravo, énigme réussie">
 
     </div>
 
@@ -1032,6 +1084,12 @@ const champsMorse = [
 
 const messageReussite =
   document.getElementById("messageReussite");
+
+const braviFinal =
+  document.getElementById("braviFinal");
+
+const blocFin =
+  document.querySelector(".bloc-fin");
 
 let sequenceFinaleLancee = false;
 let enigmeFinaleValidee = false;
@@ -1542,6 +1600,12 @@ const reponsesAttendues = [
   "PROTEGER"
 ];
 
+const reponsesAffichees = [
+  "ÉCOUTER",
+  "CROIRE",
+  "PROTÉGER"
+];
+
 champsMorse.forEach(function(champ, index){
 
   champ.addEventListener(
@@ -1612,7 +1676,7 @@ function verifierChampMorse(champ, index, signalerErreur){
       "correct"
     );
 
-    champ.value = reponse;
+    champ.value = reponsesAffichees[index];
 
     if(index < champsMorse.length - 1){
       champsMorse[index + 1].focus();
@@ -1670,8 +1734,27 @@ function verifierEnigmeFinale(){
 
   ajouterMotFinalAuSac();
 
-  messageReussite.classList.add(
+  /*
+    Le Bravi final n'apparaît qu'une fois les trois réponses correctes.
+  */
+
+  if(messageReussite){
+    messageReussite.classList.remove(
+      "visible"
+    );
+  }
+
+  blocFin.classList.add(
+    "gagnee"
+  );
+
+  braviFinal.classList.add(
     "visible"
+  );
+
+  braviFinal.setAttribute(
+    "aria-hidden",
+    "false"
   );
 
 }

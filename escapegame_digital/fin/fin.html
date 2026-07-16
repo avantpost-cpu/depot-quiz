@@ -1152,6 +1152,7 @@ const blocFin =
 
 let sequenceFinaleLancee = false;
 let enigmeFinaleValidee = false;
+let attenteClicApresFinE = false;
 
 
 /* ======================================================
@@ -1473,7 +1474,15 @@ function tournerPages(){
     return;
   }
 
-  if(pageActuelle >= pagesCarnet.length - 1){
+  /*
+    Lorsque finE.png est affichée, on attend volontairement
+    un nouveau clic du joueur avant de lancer la vidéo finale.
+    Cela lui laisse le temps de lire entièrement la page.
+  */
+
+  if(attenteClicApresFinE){
+
+    attenteClicApresFinE = false;
 
     carnetZone.style.cursor =
       "default";
@@ -1482,6 +1491,17 @@ function tournerPages(){
       "title"
     );
 
+    carnetZone.setAttribute(
+      "aria-label",
+      "Vidéo de la dernière énigme"
+    );
+
+    lancerSequenceFinale();
+
+    return;
+  }
+
+  if(pageActuelle >= pagesCarnet.length - 1){
     return;
   }
 
@@ -1622,19 +1642,26 @@ function tournerPages(){
 
     if(pageActuelle === pagesCarnet.length - 1){
 
-      carnetZone.style.cursor =
-        "default";
+      /*
+        finE.png reste affichée aussi longtemps que nécessaire.
+        Le prochain clic sur le carnet lancera seulement alors
+        la vidéo et le dernier jeu interactif.
+      */
 
-      carnetZone.removeAttribute(
-        "title"
+      attenteClicApresFinE = true;
+
+      carnetZone.style.cursor =
+        "pointer";
+
+      carnetZone.setAttribute(
+        "title",
+        "Clique pour continuer"
       );
 
       carnetZone.setAttribute(
         "aria-label",
-        "Vidéo de la dernière énigme"
+        "Lire la dernière page puis cliquer pour continuer"
       );
-
-      lancerSequenceFinale();
 
     }
 

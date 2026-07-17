@@ -11,7 +11,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
 
 <style>
-*{ margin:0; padding:0; box-sizing:border-box; }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
 body{
   background:#1b5f6e;
@@ -87,10 +91,17 @@ body{
   transition:.15s;
 }
 
-.cell:hover{ background:rgba(27,95,110,.12); }
-.cell.selected{ background:rgba(27,95,110,.28); }
-.cell.found{ background:rgba(237,176,26,.75); }
+.cell:hover{
+  background:rgba(27,95,110,.12);
+}
 
+.cell.selected{
+  background:rgba(27,95,110,.28);
+}
+
+.cell.found{
+  background:rgba(237,176,26,.75);
+}
 
 /* TRANSITION ENTRE LES DEUX JEUX */
 
@@ -156,10 +167,29 @@ body{
   transition:.25s;
 }
 
-#mot1{ left:150px; top:330px; width:120px; }
-#mot2{ left:350px; top:330px; width:120px; }
-#mot3{ left:154px; top:370px; width:120px; }
-#mot4{ left:200px; top:520px; width:120px; }
+#mot1{
+  left:150px;
+  top:330px;
+  width:120px;
+}
+
+#mot2{
+  left:350px;
+  top:330px;
+  width:120px;
+}
+
+#mot3{
+  left:154px;
+  top:370px;
+  width:120px;
+}
+
+#mot4{
+  left:200px;
+  top:520px;
+  width:120px;
+}
 
 .reponses input.ok{
   background:#18A558;
@@ -183,8 +213,7 @@ body{
   padding:0 10px;
 }
 
-
-/* BRAVI DE FIN */
+/* BRAVO DE FIN */
 
 .enigme.gagnee .partie-gauche,
 .enigme.gagnee .partie-droite{
@@ -335,28 +364,26 @@ body{
 }
 
 .navigation-content{
-    position:absolute;
-    left:70px;
-    top:10px;
-    width:0;
-    overflow:hidden;
-
-    background:rgba(255,255,255,.30);
-    backdrop-filter:blur(8px);
-
-    border-radius:0 18px 18px 0;
-    box-shadow:0 6px 18px rgba(0,0,0,.25);
-
-    transition:width .35s ease;
+  position:absolute;
+  left:70px;
+  top:10px;
+  width:0;
+  overflow:hidden;
+  background:rgba(255,255,255,.30);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border-radius:0 18px 18px 0;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+  transition:width .35s ease;
 }
 
 .navigation-content-inner{
-    width:230px;
-    padding:18px;
+  width:230px;
+  padding:18px;
 }
 
 .navigation-enigmes:hover .navigation-content{
-    width:230px;
+  width:230px;
 }
 
 .navigation-content h3{
@@ -410,7 +437,9 @@ body{
   transition:.2s;
 }
 
-.btn:hover{ transform:translateY(-2px); }
+.btn:hover{
+  transform:translateY(-2px);
+}
 
 /* ANGE DE FIN */
 
@@ -580,9 +609,17 @@ body{
 }
 
 @keyframes secousse{
-  0%,100%{ transform:translateX(0); }
-  25%{ transform:translateX(-9px); }
-  75%{ transform:translateX(9px); }
+  0%,100%{
+    transform:translateX(0);
+  }
+
+  25%{
+    transform:translateX(-9px);
+  }
+
+  75%{
+    transform:translateX(9px);
+  }
 }
 
 @media (max-width:560px){
@@ -613,12 +650,10 @@ body{
     font-size:12px;
   }
 }
-
 </style>
 </head>
 
 <body>
-
 
 <div class="acces-overlay" id="accesOverlay">
   <div class="acces-carte" id="accesCarte">
@@ -637,19 +672,37 @@ body{
         placeholder="Tape la clé d’accès…"
         aria-label="Clé d’accès">
 
-      <button class="acces-bouton" id="boutonAcces" type="button">
+      <button
+        class="acces-bouton"
+        id="boutonAcces"
+        type="button">
         Valider
       </button>
     </div>
 
-    <p class="acces-erreur" id="erreurAcces" aria-live="polite"></p>
+    <p
+      class="acces-erreur"
+      id="erreurAcces"
+      aria-live="polite">
+    </p>
 
   </div>
 </div>
 
+<!-- VOIX DES INSTRUCTIONS -->
 
 <audio id="voixInstruction" preload="auto">
-    <source src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/voix1.mp3" type="audio/mpeg">
+  <source
+    src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/voix1.mp3"
+    type="audio/mpeg">
+</audio>
+
+<!-- SON JOUÉ LORSQU'UN MOT EST TROUVÉ -->
+
+<audio id="sonWin" preload="auto">
+  <source
+    src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/win.mp3"
+    type="audio/mpeg">
 </audio>
 
 <div class="wrapper">
@@ -658,7 +711,9 @@ body{
 
     <div class="inventaire" id="inventaire">
       <div class="inventaire-tab">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png" alt="Inventaire">
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png"
+          alt="Inventaire">
       </div>
 
       <div class="inventaire-content">
@@ -671,7 +726,9 @@ body{
 
     <div class="navigation-enigmes" id="navigationEnigmes">
       <div class="navigation-tab">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png" alt="Énigmes">
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png"
+          alt="Énigmes">
       </div>
 
       <div class="navigation-content">
@@ -687,15 +744,21 @@ body{
     </div>
 
     <div class="bravi-final" id="braviFinal">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi1.png" alt="Bravo énigme 1">
+      <img
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi1.png"
+        alt="Bravo énigme 1">
     </div>
 
     <div class="partie-gauche">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/1A.jpg" alt="Mots mêlés">
+      <img
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/1A.jpg"
+        alt="Mots mêlés">
+
       <div class="letter-grid" id="letterGrid"></div>
     </div>
 
     <div class="partie-droite">
+
       <img
         id="imageJeu1"
         class="image-jeu"
@@ -714,6 +777,7 @@ body{
         <input id="mot3" type="text" autocomplete="off" maxlength="9">
         <input id="mot4" type="text" autocomplete="off" maxlength="10">
       </div>
+
     </div>
 
   </div>
@@ -726,7 +790,13 @@ body{
   src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/enigme1/ange1.png"
   alt="Bravo">
 
-<a href="enigme2.html" class="next-arrow" id="nextBtn" title="Énigme suivante">→</a>
+<a
+  href="enigme2.html"
+  class="next-arrow"
+  id="nextBtn"
+  title="Énigme suivante">
+  →
+</a>
 
 <script>
 const letters = [
@@ -750,10 +820,10 @@ const hiddenWords = [
 ];
 
 const solutions = {
-  mot1: ["PHYSIQUE"],
-  mot2: ["NEGLIGENCE"],
-  mot3: ["SEXUELLE"],
-  mot4: ["EMPRISE", "LEMPRISE"]
+  mot1:["PHYSIQUE"],
+  mot2:["NEGLIGENCE"],
+  mot3:["SEXUELLE"],
+  mot4:["EMPRISE", "LEMPRISE"]
 };
 
 const grid = document.getElementById("letterGrid");
@@ -764,24 +834,35 @@ const imageJeu1 = document.getElementById("imageJeu1");
 const imageJeu2 = document.getElementById("imageJeu2");
 const reponsesJeu2 = document.getElementById("reponsesJeu2");
 
+const sonWin = document.getElementById("sonWin");
+
 let isSelecting = false;
 let selectedCells = [];
 let jeuTermine = false;
 let secondJeuActive = false;
+
 const motsTrouvesGrille = new Set();
 
 afficherMotsTrouves();
 
+/* CRÉATION DE LA GRILLE */
+
 letters.forEach((row, r) => {
   [...row].forEach((letter, c) => {
     const cell = document.createElement("div");
+
     cell.className = "cell";
     cell.textContent = letter;
     cell.dataset.r = r;
     cell.dataset.c = c;
 
-    cell.addEventListener("mousedown", () => startSelection(cell));
-    cell.addEventListener("mouseenter", () => continueSelection(cell));
+    cell.addEventListener("mousedown", () => {
+      startSelection(cell);
+    });
+
+    cell.addEventListener("mouseenter", () => {
+      continueSelection(cell);
+    });
 
     grid.appendChild(cell);
   });
@@ -789,6 +870,7 @@ letters.forEach((row, r) => {
 
 document.addEventListener("mouseup", endSelection);
 
+/* RÉPONSES DU DEUXIÈME JEU */
 
 document.querySelectorAll(".reponses input").forEach(input => {
   input.addEventListener("input", () => {
@@ -797,7 +879,10 @@ document.querySelectorAll(".reponses input").forEach(input => {
 
     const valeur = nettoyerTexte(input.value);
 
-    if(solutions[input.id] && solutions[input.id].includes(valeur)){
+    if(
+      solutions[input.id] &&
+      solutions[input.id].includes(valeur)
+    ){
       verrouillerMot(input);
     }
   });
@@ -815,24 +900,37 @@ function nettoyerTexte(texte){
 function verrouillerMot(input){
   input.classList.remove("erreur");
   input.classList.add("ok");
+
   input.readOnly = true;
   input.setAttribute("readonly", "readonly");
   input.blur();
+
   verifierFin();
 }
 
 function verifierFin(){
-  if(jeuTermine || !secondJeuActive) return;
+  if(jeuTermine || !secondJeuActive){
+    return;
+  }
 
-  const totalValides = document.querySelectorAll(".reponses input.ok").length;
-  const totalSolutions = Object.keys(solutions).length;
+  const totalValides =
+    document.querySelectorAll(".reponses input.ok").length;
 
-  if(totalValides !== totalSolutions) return;
+  const totalSolutions =
+    Object.keys(solutions).length;
+
+  if(totalValides !== totalSolutions){
+    return;
+  }
 
   jeuTermine = true;
 
-  document.querySelector(".enigme").classList.add("gagnee");
+  document
+    .querySelector(".enigme")
+    .classList.add("gagnee");
+
   ajouterMotTrouve("Énigme 1", "PROTÉGEONS");
+
   braviFinal.classList.add("visible");
 
   setTimeout(() => {
@@ -841,9 +939,12 @@ function verifierFin(){
 }
 
 function activerSecondJeu(){
-  if(secondJeuActive) return;
+  if(secondJeuActive){
+    return;
+  }
 
   secondJeuActive = true;
+
   grid.classList.add("terminee");
 
   imageJeu2.classList.remove("visible");
@@ -851,13 +952,21 @@ function activerSecondJeu(){
 
   setTimeout(() => {
     reponsesJeu2.classList.add("active");
-    const premierChamp = reponsesJeu2.querySelector("input");
-    if(premierChamp) premierChamp.focus();
+
+    const premierChamp =
+      reponsesJeu2.querySelector("input");
+
+    if(premierChamp){
+      premierChamp.focus();
+    }
   }, 450);
 }
 
+/* SÉLECTION DES LETTRES */
+
 function startSelection(cell){
   clearSelection();
+
   isSelecting = true;
   addCell(cell);
 }
@@ -869,22 +978,42 @@ function continueSelection(cell){
 }
 
 function addCell(cell){
-  if(selectedCells.includes(cell)) return;
+  if(selectedCells.includes(cell)){
+    return;
+  }
 
   selectedCells.push(cell);
   cell.classList.add("selected");
 }
 
 function endSelection(){
-  if(!isSelecting) return;
+  if(!isSelecting){
+    return;
+  }
 
   isSelecting = false;
 
-  const word = selectedCells.map(cell => cell.textContent).join("");
-  const reversed = word.split("").reverse().join("");
+  const word = selectedCells
+    .map(cell => cell.textContent)
+    .join("");
 
-  if(hiddenWords.includes(word) || hiddenWords.includes(reversed)){
-    const motTrouve = hiddenWords.includes(word) ? word : reversed;
+  const reversed = word
+    .split("")
+    .reverse()
+    .join("");
+
+  if(
+    hiddenWords.includes(word) ||
+    hiddenWords.includes(reversed)
+  ){
+    const motTrouve =
+      hiddenWords.includes(word)
+        ? word
+        : reversed;
+
+    const motDejaTrouve =
+      motsTrouvesGrille.has(motTrouve);
+
     motsTrouvesGrille.add(motTrouve);
 
     selectedCells.forEach(cell => {
@@ -892,7 +1021,19 @@ function endSelection(){
       cell.classList.add("found");
     });
 
-    if(motsTrouvesGrille.size === hiddenWords.length){
+    /*
+      Le son est joué uniquement lorsque
+      le mot est découvert pour la première fois.
+    */
+
+    if(!motDejaTrouve){
+      jouerSonMotTrouve();
+    }
+
+    if(
+      motsTrouvesGrille.size ===
+      hiddenWords.length
+    ){
       setTimeout(activerSecondJeu, 450);
     }
 
@@ -903,28 +1044,69 @@ function endSelection(){
   selectedCells = [];
 }
 
-function clearSelection(){
-  document.querySelectorAll(".cell.selected").forEach(cell => {
-    cell.classList.remove("selected");
+/* SON DE RÉUSSITE */
+
+function jouerSonMotTrouve(){
+  if(!sonWin){
+    return;
+  }
+
+  sonWin.pause();
+  sonWin.currentTime = 0;
+
+  sonWin.play().catch(error => {
+    console.log(
+      "Le son de réussite n’a pas pu être joué.",
+      error
+    );
   });
 }
 
-function ajouterMotTrouve(enigme, mot){
-  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+function clearSelection(){
+  document
+    .querySelectorAll(".cell.selected")
+    .forEach(cell => {
+      cell.classList.remove("selected");
+    });
+}
 
-  if(!mots.some(item => item.enigme === enigme)){
-    mots.push({ enigme, mot });
-    localStorage.setItem("motsEscapeRebond", JSON.stringify(mots));
+/* INVENTAIRE */
+
+function ajouterMotTrouve(enigme, mot){
+  const mots =
+    JSON.parse(
+      localStorage.getItem("motsEscapeRebond")
+    ) || [];
+
+  if(
+    !mots.some(item => item.enigme === enigme)
+  ){
+    mots.push({
+      enigme:enigme,
+      mot:mot
+    });
+
+    localStorage.setItem(
+      "motsEscapeRebond",
+      JSON.stringify(mots)
+    );
   }
 
   afficherMotsTrouves();
 }
 
 function afficherMotsTrouves(){
-  const liste = document.getElementById("listeMots");
-  if(!liste) return;
+  const liste =
+    document.getElementById("listeMots");
 
-  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
+  if(!liste){
+    return;
+  }
+
+  const mots =
+    JSON.parse(
+      localStorage.getItem("motsEscapeRebond")
+    ) || [];
 
   liste.innerHTML = "";
 
@@ -934,39 +1116,62 @@ function afficherMotsTrouves(){
   }
 
   mots.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item.enigme + " : " + item.mot;
+    const li =
+      document.createElement("li");
+
+    li.textContent =
+      item.enigme + " : " + item.mot;
+
     liste.appendChild(li);
   });
 }
-  /* ===========================
-   ACCÈS PROTÉGÉ ET VOIX
-=========================== */
 
-const CODE_ACCES = "REBOND2026"; // Modifie le code ici
+/* ACCÈS PROTÉGÉ ET VOIX */
 
-const accesOverlay = document.getElementById("accesOverlay");
-const accesCarte = document.getElementById("accesCarte");
-const codeAcces = document.getElementById("codeAcces");
-const boutonAcces = document.getElementById("boutonAcces");
-const erreurAcces = document.getElementById("erreurAcces");
-const voixInstruction = document.getElementById("voixInstruction");
+const CODE_ACCES = "REBOND2026";
+
+const accesOverlay =
+  document.getElementById("accesOverlay");
+
+const accesCarte =
+  document.getElementById("accesCarte");
+
+const codeAcces =
+  document.getElementById("codeAcces");
+
+const boutonAcces =
+  document.getElementById("boutonAcces");
+
+const erreurAcces =
+  document.getElementById("erreurAcces");
+
+const voixInstruction =
+  document.getElementById("voixInstruction");
 
 function ouvrirEscapeGame(){
-  const codeSaisi = codeAcces.value.trim().toUpperCase();
+  const codeSaisi =
+    codeAcces.value.trim().toUpperCase();
 
-  if(codeSaisi !== CODE_ACCES.toUpperCase()){
-    erreurAcces.textContent = "Code incorrect. Essaie encore.";
+  if(
+    codeSaisi !== CODE_ACCES.toUpperCase()
+  ){
+    erreurAcces.textContent =
+      "Code incorrect. Essaie encore.";
+
     codeAcces.value = "";
     codeAcces.focus();
 
     accesCarte.classList.remove("secoue");
+
     void accesCarte.offsetWidth;
+
     accesCarte.classList.add("secoue");
+
     return;
   }
 
   erreurAcces.textContent = "";
+
   accesOverlay.classList.add("masque");
 
   setTimeout(() => {
@@ -975,19 +1180,28 @@ function ouvrirEscapeGame(){
 
   setTimeout(() => {
     voixInstruction.currentTime = 0;
+
     voixInstruction.play().catch(() => {
-      console.log("La lecture audio a été bloquée par le navigateur.");
+      console.log(
+        "La lecture audio a été bloquée par le navigateur."
+      );
     });
   }, 2000);
 }
 
-boutonAcces.addEventListener("click", ouvrirEscapeGame);
+boutonAcces.addEventListener(
+  "click",
+  ouvrirEscapeGame
+);
 
-codeAcces.addEventListener("keydown", (event) => {
-  if(event.key === "Enter"){
-    ouvrirEscapeGame();
+codeAcces.addEventListener(
+  "keydown",
+  event => {
+    if(event.key === "Enter"){
+      ouvrirEscapeGame();
+    }
   }
-});
+);
 
 window.addEventListener("load", () => {
   codeAcces.focus();

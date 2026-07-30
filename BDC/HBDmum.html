@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
 
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#9f80a6">
 
 <title>Bon anniversaire Maman</title>
 
@@ -23,116 +21,102 @@ html{
 }
 
 body{
+
     min-height:100vh;
-    background-color:#9f80a6;
-    background-image:url("https://avantpost-cpu.github.io/depot-quiz/BDC/motif_leopard.png");
-    background-repeat:repeat;
-    background-size:300px;
-    color:black;
+    min-height:100dvh;
+
     font-family:Arial, Helvetica, sans-serif;
+
+    background:#9f80a6 url("https://avantpost-cpu.github.io/depot-quiz/BDC/motif_leopard.png") repeat;
+    background-size:300px;
+
+    overflow-x:hidden;
+
 }
 
 .page{
+
     width:100%;
-    max-width:520px;
-    margin:0 auto;
+    max-width:900px;
+    margin:auto;
+
     padding:
-        calc(24px + env(safe-area-inset-top))
-        18px
-        calc(40px + env(safe-area-inset-bottom));
+        calc(20px + env(safe-area-inset-top))
+        14px
+        calc(30px + env(safe-area-inset-bottom));
+
 }
 
 .header{
+
     text-align:center;
-    margin-bottom:30px;
+    margin-bottom:25px;
+
 }
 
 .header img{
-    display:block;
+
     width:100%;
     max-width:420px;
-    margin:0 auto 25px;
-}
+    display:block;
+    margin:auto;
 
-.header p{
-    max-width:420px;
-    margin:0 auto;
-    font-size:16px;
-    line-height:1.6;
-    opacity:.95;
 }
 
 .video-list{
-    display:flex;
-    flex-direction:column;
-    gap:32px;
+
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+
 }
 
 .video-card{
+
+    background:#000;
+    border-radius:18px;
     overflow:hidden;
-    background:#ffffff;
-    color:#044e61;
-    border-radius:22px;
-    box-shadow:0 12px 30px rgba(0,0,0,.22);
+
+    box-shadow:0 6px 18px rgba(0,0,0,.25);
+
 }
 
 .video-wrapper{
-    position:relative;
+
     width:100%;
     aspect-ratio:9/16;
     background:#000;
+
 }
 
 .video-wrapper video{
-    display:block;
+
     width:100%;
     height:100%;
-    object-fit:contain;
+
+    display:block;
+
+    object-fit:cover;
+
     background:#000;
+
 }
 
-.video-content{
-    padding:18px 20px 22px;
-}
+/* Sur tablette et ordinateur */
 
-.video-content h2{
-    margin-bottom:8px;
-    font-size:21px;
-    line-height:1.2;
-}
-
-.video-content p{
-    font-size:15px;
-    line-height:1.5;
-    color:#3d5960;
-}
-
-.footer{
-    margin-top:38px;
-    text-align:center;
-    font-size:13px;
-    line-height:1.5;
-    opacity:.8;
-}
-
-@media (min-width:700px){
-
-.page{
-    max-width:1100px;
-    padding-left:30px;
-    padding-right:30px;
-}
+@media (min-width:900px){
 
 .video-list{
-    display:grid;
-    grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:32px;
-    align-items:start;
+
+    grid-template-columns:repeat(3,1fr);
+    gap:18px;
+
 }
 
 }
 
 </style>
+
 </head>
 
 <body>
@@ -141,118 +125,123 @@ body{
 
 <header class="header">
 
-    <img src="https://avantpost-cpu.github.io/depot-quiz/BDC/titre.png" alt="Bon anniversaire Maman">
+<img
+src="https://avantpost-cpu.github.io/depot-quiz/BDC/titre.png"
+alt="Bon anniversaire Maman">
 
 </header>
 
 <section class="video-list">
 
-    <!-- VIDEO 1 -->
-    <article class="video-card">
+<!-- VIDEO 1 -->
 
-        <div class="video-wrapper">
+<div class="video-card">
 
-            <video
-                controls
-                playsinline
-                preload="metadata"
-                poster="videos/video1.jpg">
+<div class="video-wrapper">
 
-                <source
-                    src="videos/video1.mp4"
-                    type="video/mp4">
+<video controls playsinline preload="metadata">
 
-                Votre navigateur ne permet pas de lire cette vidéo.
+<source
+src="https://avantpost-cpu.github.io/depot-quiz/BDC/mamie.mp4"
+type="video/mp4">
 
-            </video>
+</video>
 
-        </div>
+</div>
 
-        <div class="video-content">
+</div>
 
-            <h2>Première vidéo</h2>
+<!-- VIDEO 2 -->
 
-            <p>
-                Une courte description de la première vidéo.
-            </p>
+<div class="video-card">
 
-        </div>
+<div class="video-wrapper">
 
-    </article>
+<video controls playsinline preload="metadata">
 
+<source
+src="https://avantpost-cpu.github.io/depot-quiz/BDC/video2.mp4"
+type="video/mp4">
 
-    <!-- VIDEO 2 -->
-    <article class="video-card">
+</video>
 
-        <div class="video-wrapper">
+</div>
 
-            <video
-                controls
-                playsinline
-                preload="metadata"
-                poster="videos/video2.jpg">
+</div>
 
-                <source
-                    src="videos/video2.mp4"
-                    type="video/mp4">
+<!-- VIDEO 3 -->
 
-                Votre navigateur ne permet pas de lire cette vidéo.
+<div class="video-card">
 
-            </video>
+<div class="video-wrapper">
 
-        </div>
+<video controls playsinline preload="metadata">
 
-        <div class="video-content">
+<source
+src="https://avantpost-cpu.github.io/depot-quiz/BDC/mamie.mp4"
+type="video/mp4">
 
-            <h2>Deuxième vidéo</h2>
+</video>
 
-            <p>
-                Une courte description de la deuxième vidéo.
-            </p>
+</div>
 
-        </div>
+</div>
 
-    </article>
+<!-- VIDEO 4 -->
 
+<div class="video-card">
 
-    <!-- VIDEO 3 -->
-    <article class="video-card">
+<div class="video-wrapper">
 
-        <div class="video-wrapper">
+<video controls playsinline preload="metadata">
 
-            <video
-                controls
-                playsinline
-                preload="metadata"
-                poster="videos/video3.jpg">
+<source
+src="https://avantpost-cpu.github.io/depot-quiz/BDC/video4.mp4"
+type="video/mp4">
 
-                <source
-                    src="videos/video3.mp4"
-                    type="video/mp4">
+</video>
 
-                Votre navigateur ne permet pas de lire cette vidéo.
+</div>
 
-            </video>
+</div>
 
-        </div>
+<!-- VIDEO 5 -->
 
-        <div class="video-content">
+<div class="video-card">
 
-            <h2>Troisième vidéo</h2>
+<div class="video-wrapper">
 
-            <p>
-                Une courte description de la troisième vidéo.
-            </p>
+<video controls playsinline preload="metadata">
 
-        </div>
+<source
+src="https://avantpost-cpu.github.io/depot-quiz/BDC/video5.mp4"
+type="video/mp4">
 
-    </article>
+</video>
+
+</div>
+
+</div>
+
+<!-- VIDEO 6 -->
+
+<div class="video-card">
+
+<div class="video-wrapper">
+
+<video controls playsinline preload="metadata">
+
+<source
+src="https://avantpost-cpu.github.io/depot-quiz/BDC/video6.mp4"
+type="video/mp4">
+
+</video>
+
+</div>
+
+</div>
 
 </section>
-
-<footer class="footer">
-    Les vidéos restent hébergées directement sur cette page GitHub.
-</footer>
 
 </main>
 
@@ -264,11 +253,11 @@ videos.forEach(video=>{
 
     video.addEventListener("play",()=>{
 
-        videos.forEach(otherVideo=>{
+        videos.forEach(other=>{
 
-            if(otherVideo!==video && !otherVideo.paused){
+            if(other!==video && !other.paused){
 
-                otherVideo.pause();
+                other.pause();
 
             }
 

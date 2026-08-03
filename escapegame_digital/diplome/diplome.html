@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Diplôme Rebond</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+
+<style>
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+  background:#1b5f6e;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+  padding:28px;
+}
+
+.page{
+  width:min(1180px, 100%);
+  margin:0 auto;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:22px;
+}
+
+.actions button{
+  min-height:48px;
+  padding:10px 24px;
+
+  border:0;
+  border-radius:999px;
+
+  background:#edb01a;
+  color:#044e61;
+
+  font-size:16px;
+  font-weight:bold;
+
+  cursor:pointer;
+}
+
+.actions button:hover{
+  transform:translateY(-1px);
+}
+
+.diplome{
+  position:relative;
+
+  width:100%;
+  aspect-ratio:818 / 578;
+
+  overflow:hidden;
+
+  background:
+    #ffffff
+    url("diplome.jpg")
+    center / 100% 100%
+    no-repeat;
+}
+
+.texte-variable{
+  position:absolute;
+
+  left:59.8%;
+  width:27.8%;
+
+  color:#087a78;
+
+  font-family:"Patrick Hand", "Comic Sans MS", cursive;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+
+  transform:translateY(-50%);
+}
+
+.nom-equipe{
+  top:43.6%;
+  font-size:clamp(18px, 3.1vw, 42px);
+  font-weight:bold;
+  letter-spacing:.4px;
+  text-transform:uppercase;
+}
+
+.classe{
+  top:52.2%;
+  font-size:clamp(16px, 2.4vw, 32px);
+}
+
+.ecole{
+  top:60.7%;
+  font-size:clamp(15px, 2.2vw, 29px);
+}
+
+.date{
+  position:absolute;
+
+  left:59.8%;
+  top:69.6%;
+  width:27.8%;
+
+  color:#087a78;
+
+  font-family:"Patrick Hand", "Comic Sans MS", cursive;
+  font-size:clamp(12px, 1.45vw, 20px);
+  text-align:center;
+}
+
+@media screen and (max-width:700px){
+
+  body{
+    padding:12px;
+  }
+
+  .actions{
+    margin-bottom:12px;
+  }
+
+}
+
+@page{
+  size:A4 landscape;
+  margin:0;
+}
+
+@media print{
+
+  html,
+  body{
+    width:297mm;
+    height:210mm;
+
+    margin:0;
+    padding:0;
+
+    background:#ffffff;
+  }
+
+  .page{
+    width:297mm;
+    height:210mm;
+    margin:0;
+  }
+
+  .actions{
+    display:none;
+  }
+
+  .diplome{
+    width:297mm;
+    height:210mm;
+  }
+
+  .texte-variable{
+    overflow:visible;
+    text-overflow:clip;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <div class="actions">
+
+    <button
+      id="boutonImprimer"
+      type="button">
+      Télécharger / imprimer le diplôme
+    </button>
+
+  </div>
+
+  <section
+    class="diplome"
+    aria-label="Diplôme Rebond personnalisé">
+
+    <div
+      id="nomEquipe"
+      class="texte-variable nom-equipe">
+      NOM DE L’ÉQUIPE
+    </div>
+
+    <div
+      id="classe"
+      class="texte-variable classe">
+      CLASSE
+    </div>
+
+    <div
+      id="ecole"
+      class="texte-variable ecole">
+      ÉCOLE OU STRUCTURE
+    </div>
+
+    <div
+      id="date"
+      class="date">
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+const nomEquipe =
+  document.getElementById("nomEquipe");
+
+const classe =
+  document.getElementById("classe");
+
+const ecole =
+  document.getElementById("ecole");
+
+const date =
+  document.getElementById("date");
+
+function lireParametre(nom){
+
+  const parametres =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  return parametres.get(nom);
+
+}
+
+function lireEquipeLocale(){
+
+  const brut =
+    localStorage.getItem(
+      "rebondCurrentTeam"
+    );
+
+  if(!brut){
+    return null;
+  }
+
+  try{
+    return JSON.parse(brut);
+  }
+  catch(error){
+    console.error(
+      "Informations locales illisibles :",
+      error
+    );
+
+    return null;
+  }
+
+}
+
+function formaterDate(dateBrute){
+
+  if(!dateBrute){
+    return "";
+  }
+
+  const objetDate =
+    new Date(
+      dateBrute + "T12:00:00"
+    );
+
+  if(
+    Number.isNaN(
+      objetDate.getTime()
+    )
+  ){
+    return dateBrute;
+  }
+
+  return objetDate.toLocaleDateString(
+    "fr-FR",
+    {
+      day:"2-digit",
+      month:"long",
+      year:"numeric"
+    }
+  );
+
+}
+
+function remplirDiplome(){
+
+  const equipeLocale =
+    lireEquipeLocale() || {};
+
+  /*
+    Les paramètres d'URL permettent également de tester :
+    diplome.html?equipe=Les%20Dragons&classe=6e&ecole=Collège%20Chaptal&date=2026-08-03
+  */
+
+  const valeurEquipe =
+    lireParametre("equipe") ||
+    equipeLocale.nomEquipe ||
+    equipeLocale.teamName ||
+    "NOM DE L’ÉQUIPE";
+
+  const valeurClasse =
+    lireParametre("classe") ||
+    equipeLocale.classe ||
+    equipeLocale.className ||
+    "CLASSE";
+
+  const valeurEcole =
+    lireParametre("ecole") ||
+    equipeLocale.ecole ||
+    equipeLocale.schoolName ||
+    "ÉCOLE OU STRUCTURE";
+
+  const valeurDate =
+    lireParametre("date") ||
+    equipeLocale.date ||
+    equipeLocale.sessionDate ||
+    "";
+
+  nomEquipe.textContent =
+    valeurEquipe;
+
+  classe.textContent =
+    valeurClasse;
+
+  ecole.textContent =
+    valeurEcole;
+
+  date.textContent =
+    formaterDate(
+      valeurDate
+    );
+
+  document.title =
+    "Diplôme Rebond — " +
+    valeurEquipe;
+
+}
+
+document
+  .getElementById("boutonImprimer")
+  .addEventListener(
+    "click",
+    function(){
+      window.print();
+    }
+  );
+
+remplirDiplome();
+</script>
+
+</body>
+</html>

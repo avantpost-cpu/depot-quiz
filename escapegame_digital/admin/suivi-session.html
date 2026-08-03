@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>Rebond — Suivi de la session</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+  background:#1b5f6e;
+  font-family:Arial, Helvetica, sans-serif;
+  color:#044e61;
+}
+
+body{
+  padding:40px 18px;
+}
+
+.page{
+  width:100%;
+  max-width:760px;
+  margin:0 auto;
+}
+
+.carte{
+  width:100%;
+  padding:34px;
+  background:#ffffff;
+  border-radius:24px;
+}
+
+h1{
+  margin-bottom:12px;
+  font-size:34px;
+  line-height:1.1;
+}
+
+.introduction{
+  color:#476b73;
+  font-size:17px;
+  line-height:1.5;
+}
+
+.resume{
+  display:none;
+  margin-top:25px;
+  padding:22px;
+  border-radius:18px;
+  background:#eaf5f2;
+}
+
+.resume.visible{
+  display:block;
+}
+
+.resume h2{
+  margin-bottom:8px;
+  font-size:23px;
+}
+
+.informations{
+  font-size:16px;
+  line-height:1.5;
+}
+
+.compteur{
+  margin-top:16px;
+  font-size:18px;
+  font-weight:bold;
+}
+
+.bouton{
+  width:100%;
+  min-height:56px;
+  margin-top:24px;
+  padding:12px 22px;
+
+  border:0;
+  border-radius:999px;
+
+  background:#edb01a;
+  color:#044e61;
+
+  font-size:18px;
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:
+    transform .2s ease,
+    opacity .2s ease;
+}
+
+.bouton:hover{
+  transform:translateY(-2px);
+}
+
+.bouton:disabled{
+  opacity:.55;
+  cursor:wait;
+  transform:none;
+}
+
+.message{
+  min-height:24px;
+  margin-top:18px;
+  font-size:15px;
+  font-weight:bold;
+  line-height:1.4;
+}
+
+.message.erreur{
+  color:#b53030;
+}
+
+.message.succes{
+  color:#16824a;
+}
+
+.tableau-wrapper{
+  width:100%;
+  margin-top:26px;
+  overflow-x:auto;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,
+td{
+  padding:15px 12px;
+  border-bottom:1px solid #d6e3e6;
+  text-align:left;
+  font-size:16px;
+}
+
+th{
+  color:#476b73;
+  font-size:14px;
+  text-transform:uppercase;
+  letter-spacing:.4px;
+}
+
+.statut{
+  font-weight:bold;
+}
+
+.statut.terminee{
+  color:#16824a;
+}
+
+.statut.encours{
+  color:#a46b00;
+}
+
+.aucune-equipe{
+  display:none;
+  margin-top:25px;
+  padding:22px;
+  border-radius:16px;
+  background:#f3f6f6;
+  color:#56747b;
+  text-align:center;
+  line-height:1.5;
+}
+
+.aucune-equipe.visible{
+  display:block;
+}
+
+@media screen and (max-width:620px){
+
+  body{
+    padding:18px 12px;
+  }
+
+  .carte{
+    padding:25px 18px;
+  }
+
+  h1{
+    font-size:29px;
+  }
+
+  th,
+  td{
+    padding:13px 8px;
+    font-size:14px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <section class="carte">
+
+    <h1>Suivi de la session</h1>
+
+    <p class="introduction">
+      Cette page permet de voir les équipes inscrites
+      et celles qui ont terminé l’escape game.
+    </p>
+
+    <section
+      id="resume"
+      class="resume">
+
+      <h2 id="nomEcole"></h2>
+
+      <div class="informations">
+
+        <div id="nomClasse"></div>
+
+        <div id="dateSession"></div>
+
+        <div id="codeSession"></div>
+
+      </div>
+
+      <div
+        id="compteur"
+        class="compteur">
+      </div>
+
+    </section>
+
+    <button
+      id="boutonActualiser"
+      class="bouton"
+      type="button">
+      Actualiser le suivi
+    </button>
+
+    <div
+      id="message"
+      class="message"
+      aria-live="polite">
+    </div>
+
+    <div class="tableau-wrapper">
+
+      <table id="tableauEquipes">
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Équipe
+            </th>
+
+            <th>
+              Statut
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="listeEquipes">
+        </tbody>
+
+      </table>
+
+    </div>
+
+    <div
+      id="aucuneEquipe"
+      class="aucune-equipe">
+      Aucune équipe n’a encore rejoint cette session.
+    </div>
+
+  </section>
+
+</main>
+
+<!-- Bibliothèque Supabase -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<!-- Configuration Rebond -->
+
+<script src="../js/config.js"></script>
+
+<!-- Fonctions communes -->
+
+<script src="../js/supabase.js"></script>
+
+<script>
+const resume =
+  document.getElementById("resume");
+
+const nomEcole =
+  document.getElementById("nomEcole");
+
+const nomClasse =
+  document.getElementById("nomClasse");
+
+const dateSession =
+  document.getElementById("dateSession");
+
+const codeSession =
+  document.getElementById("codeSession");
+
+const compteur =
+  document.getElementById("compteur");
+
+const listeEquipes =
+  document.getElementById("listeEquipes");
+
+const tableauEquipes =
+  document.getElementById("tableauEquipes");
+
+const aucuneEquipe =
+  document.getElementById("aucuneEquipe");
+
+const boutonActualiser =
+  document.getElementById("boutonActualiser");
+
+const message =
+  document.getElementById("message");
+
+/*
+  Le code et la clé privée sont récupérés
+  dans l’adresse de la page.
+*/
+
+const parametres =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const code =
+  parametres.get("code");
+
+const cleGestion =
+  parametres.get("cle");
+
+function afficherDate(dateBrute){
+
+  if(!dateBrute){
+    return "";
+  }
+
+  const date =
+    new Date(
+      dateBrute + "T12:00:00"
+    );
+
+  return date.toLocaleDateString(
+    "fr-FR"
+  );
+
+}
+
+async function chargerSession(){
+
+  message.textContent = "";
+  message.className = "message";
+
+  listeEquipes.innerHTML = "";
+
+  aucuneEquipe.classList.remove(
+    "visible"
+  );
+
+  if(
+    !code ||
+    !cleGestion
+  ){
+
+    message.className =
+      "message erreur";
+
+    message.textContent =
+      "Le lien de suivi est incomplet.";
+
+    tableauEquipes.style.display =
+      "none";
+
+    return;
+
+  }
+
+  boutonActualiser.disabled = true;
+
+  boutonActualiser.textContent =
+    "Actualisation…";
+
+  try{
+
+    const donnees =
+      await window.REBOND_DB.chargerSuivi({
+        code:code,
+        cleGestion:cleGestion
+      });
+
+    /*
+      Si aucune équipe n’est inscrite,
+      Supabase peut renvoyer un tableau vide.
+    */
+
+    if(
+      !donnees ||
+      donnees.length === 0
+    ){
+
+      resume.classList.remove(
+        "visible"
+      );
+
+      tableauEquipes.style.display =
+        "none";
+
+      aucuneEquipe.classList.add(
+        "visible"
+      );
+
+      message.className =
+        "message succes";
+
+      message.textContent =
+        "La session est active.";
+
+      return;
+
+    }
+
+    /*
+      Les informations de la session sont identiques
+      sur chaque ligne. On les récupère sur la première.
+    */
+
+    const premiereLigne =
+      donnees[0];
+
+    nomEcole.textContent =
+      premiereLigne.school_name;
+
+    nomClasse.textContent =
+      "Classe : " +
+      premiereLigne.class_name;
+
+    dateSession.textContent =
+      "Date : " +
+      afficherDate(
+        premiereLigne.session_date
+      );
+
+    codeSession.textContent =
+      "Code : " + code;
+
+    const nombreTotal =
+      donnees.length;
+
+    const nombreTerminees =
+      donnees.filter(
+        function(equipe){
+          return equipe.completed === true;
+        }
+      ).length;
+
+    compteur.textContent =
+      nombreTerminees +
+      " équipe(s) terminée(s) sur " +
+      nombreTotal;
+
+    resume.classList.add(
+      "visible"
+    );
+
+    tableauEquipes.style.display =
+      "table";
+
+    donnees.forEach(
+      function(equipe){
+
+        const ligne =
+          document.createElement("tr");
+
+        const celluleNom =
+          document.createElement("td");
+
+        celluleNom.textContent =
+          equipe.team_name;
+
+        const celluleStatut =
+          document.createElement("td");
+
+        celluleStatut.className =
+          "statut";
+
+        if(equipe.completed){
+
+          celluleStatut.textContent =
+            "Terminée ✓";
+
+          celluleStatut.classList.add(
+            "terminee"
+          );
+
+        }
+        else{
+
+          celluleStatut.textContent =
+            "En cours";
+
+          celluleStatut.classList.add(
+            "encours"
+          );
+
+        }
+
+        ligne.appendChild(
+          celluleNom
+        );
+
+        ligne.appendChild(
+          celluleStatut
+        );
+
+        listeEquipes.appendChild(
+          ligne
+        );
+
+      }
+    );
+
+    message.className =
+      "message succes";
+
+    message.textContent =
+      "Le suivi a été actualisé.";
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    resume.classList.remove(
+      "visible"
+    );
+
+    tableauEquipes.style.display =
+      "none";
+
+    message.className =
+      "message erreur";
+
+    message.textContent =
+      error.message ||
+      "Impossible de charger cette session.";
+
+  }
+  finally{
+
+    boutonActualiser.disabled = false;
+
+    boutonActualiser.textContent =
+      "Actualiser le suivi";
+
+  }
+
+}
+
+boutonActualiser.addEventListener(
+  "click",
+  chargerSession
+);
+
+/*
+  Chargement automatique à l’ouverture.
+*/
+
+chargerSession();
+</script>
+
+</body>
+</html>

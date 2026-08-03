@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>Rebond — Créer une session</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+  background:#1b5f6e;
+  font-family:Arial, Helvetica, sans-serif;
+  color:#044e61;
+}
+
+body{
+  padding:40px 18px;
+}
+
+.page{
+  width:100%;
+  max-width:720px;
+  margin:0 auto;
+}
+
+.carte{
+  width:100%;
+  padding:34px;
+  background:#ffffff;
+  border-radius:24px;
+}
+
+h1{
+  margin-bottom:12px;
+  font-size:34px;
+  line-height:1.1;
+}
+
+.introduction{
+  margin-bottom:28px;
+  color:#476b73;
+  font-size:17px;
+  line-height:1.5;
+}
+
+.formulaire{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.champ{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.champ-large{
+  grid-column:1 / -1;
+}
+
+label{
+  font-size:15px;
+  font-weight:bold;
+}
+
+input{
+  width:100%;
+  height:52px;
+  padding:0 14px;
+
+  border:2px solid #bed1d5;
+  border-radius:12px;
+
+  outline:none;
+
+  background:#ffffff;
+  color:#163f48;
+
+  font-size:17px;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+input:focus{
+  border-color:#edb01a;
+  box-shadow:0 0 0 4px rgba(237,176,26,.20);
+}
+
+.bouton{
+  width:100%;
+  min-height:58px;
+
+  margin-top:24px;
+  padding:12px 24px;
+
+  border:0;
+  border-radius:999px;
+
+  background:#edb01a;
+  color:#044e61;
+
+  font-size:19px;
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:
+    transform .2s ease,
+    opacity .2s ease;
+}
+
+.bouton:hover{
+  transform:translateY(-2px);
+}
+
+.bouton:disabled{
+  opacity:.55;
+  cursor:wait;
+  transform:none;
+}
+
+.message{
+  min-height:24px;
+  margin-top:18px;
+
+  font-size:15px;
+  font-weight:bold;
+  line-height:1.4;
+}
+
+.message.erreur{
+  color:#b53030;
+}
+
+.message.succes{
+  color:#16824a;
+}
+
+.resultat{
+  display:none;
+
+  margin-top:26px;
+  padding:24px;
+
+  border-radius:18px;
+
+  background:#eaf5f2;
+
+  text-align:center;
+}
+
+.resultat.visible{
+  display:block;
+}
+
+.resultat h2{
+  margin-bottom:8px;
+  font-size:21px;
+}
+
+.code-session{
+  margin:16px 0;
+
+  color:#044e61;
+
+  font-size:42px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:4px;
+}
+
+.lien-suivi{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  width:100%;
+  min-height:52px;
+
+  margin-top:18px;
+  padding:10px 20px;
+
+  border-radius:999px;
+
+  background:#044e61;
+  color:#ffffff;
+
+  font-size:17px;
+  font-weight:bold;
+  text-decoration:none;
+}
+
+.avertissement{
+  margin-top:15px;
+
+  color:#59757b;
+
+  font-size:13px;
+  line-height:1.4;
+}
+
+@media screen and (max-width:620px){
+
+  body{
+    padding:18px 12px;
+  }
+
+  .carte{
+    padding:25px 18px;
+  }
+
+  h1{
+    font-size:29px;
+  }
+
+  .formulaire{
+    grid-template-columns:1fr;
+  }
+
+  .champ-large{
+    grid-column:auto;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <section class="carte">
+
+    <h1>Créer une session</h1>
+
+    <p class="introduction">
+      Renseigne les informations de la classe.
+      Un code sera ensuite généré pour les équipes.
+    </p>
+
+    <form id="formulaireSession">
+
+      <div class="formulaire">
+
+        <div class="champ champ-large">
+
+          <label for="ecole">
+            École ou structure *
+          </label>
+
+          <input
+            id="ecole"
+            name="ecole"
+            type="text"
+            autocomplete="organization"
+            required>
+
+        </div>
+
+        <div class="champ">
+
+          <label for="classe">
+            Classe ou groupe *
+          </label>
+
+          <input
+            id="classe"
+            name="classe"
+            type="text"
+            placeholder="Ex. CM2 B"
+            autocomplete="off"
+            required>
+
+        </div>
+
+        <div class="champ">
+
+          <label for="dateSession">
+            Date *
+          </label>
+
+          <input
+            id="dateSession"
+            name="dateSession"
+            type="date"
+            required>
+
+        </div>
+
+        <div class="champ champ-large">
+
+          <label for="email">
+            Adresse e-mail de l’adulte *
+          </label>
+
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            required>
+
+        </div>
+
+      </div>
+
+      <button
+        id="boutonCreer"
+        class="bouton"
+        type="submit">
+        Créer la session
+      </button>
+
+    </form>
+
+    <div
+      id="message"
+      class="message"
+      aria-live="polite">
+    </div>
+
+    <section
+      id="resultat"
+      class="resultat">
+
+      <h2>Code à transmettre aux équipes</h2>
+
+      <div
+        id="codeSession"
+        class="code-session">
+      </div>
+
+      <p>
+        Les participants utiliseront ce code
+        pour rejoindre la partie.
+      </p>
+
+      <a
+        id="lienSuivi"
+        class="lien-suivi"
+        href="#">
+        Ouvrir le suivi de la session
+      </a>
+
+      <p class="avertissement">
+        Conserve ce lien de suivi. Il contient une clé privée
+        permettant de consulter les équipes inscrites.
+      </p>
+
+    </section>
+
+  </section>
+
+</main>
+
+<!-- Bibliothèque officielle Supabase -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<!-- Configuration du projet -->
+
+<script src="../js/config.js"></script>
+
+<!-- Fonctions communes Rebond -->
+
+<script src="../js/supabase.js"></script>
+
+<script>
+const formulaireSession =
+  document.getElementById("formulaireSession");
+
+const boutonCreer =
+  document.getElementById("boutonCreer");
+
+const message =
+  document.getElementById("message");
+
+const resultat =
+  document.getElementById("resultat");
+
+const codeSession =
+  document.getElementById("codeSession");
+
+const lienSuivi =
+  document.getElementById("lienSuivi");
+
+/*
+  La date du jour est proposée automatiquement.
+*/
+
+const dateSession =
+  document.getElementById("dateSession");
+
+dateSession.value =
+  new Date().toISOString().slice(0, 10);
+
+/*
+  Création de la session.
+*/
+
+formulaireSession.addEventListener(
+  "submit",
+  async function(event){
+
+    event.preventDefault();
+
+    message.textContent = "";
+    message.className = "message";
+
+    resultat.classList.remove(
+      "visible"
+    );
+
+    const ecole =
+      document
+        .getElementById("ecole")
+        .value
+        .trim();
+
+    const classe =
+      document
+        .getElementById("classe")
+        .value
+        .trim();
+
+    const email =
+      document
+        .getElementById("email")
+        .value
+        .trim();
+
+    const date =
+      dateSession.value;
+
+    if(
+      !ecole ||
+      !classe ||
+      !email ||
+      !date
+    ){
+
+      message.className =
+        "message erreur";
+
+      message.textContent =
+        "Tous les champs sont obligatoires.";
+
+      return;
+
+    }
+
+    boutonCreer.disabled = true;
+    boutonCreer.textContent =
+      "Création en cours…";
+
+    try{
+
+      const session =
+        await window.REBOND_DB.creerSession({
+          ecole:ecole,
+          classe:classe,
+          email:email,
+          date:date
+        });
+
+      codeSession.textContent =
+        session.code;
+
+      /*
+        Création du lien privé de suivi.
+
+        La page suivi-session.html sera créée
+        à l’étape suivante.
+      */
+
+      const adresseSuivi =
+        new URL(
+          "suivi-session.html",
+          window.location.href
+        );
+
+      adresseSuivi.searchParams.set(
+        "code",
+        session.code
+      );
+
+      adresseSuivi.searchParams.set(
+        "cle",
+        session.cleGestion
+      );
+
+      lienSuivi.href =
+        adresseSuivi.toString();
+
+      resultat.classList.add(
+        "visible"
+      );
+
+      message.className =
+        "message succes";
+
+      message.textContent =
+        "La session a bien été créée.";
+
+    }
+    catch(error){
+
+      console.error(error);
+
+      message.className =
+        "message erreur";
+
+      message.textContent =
+        error.message ||
+        "La session n’a pas pu être créée.";
+
+    }
+    finally{
+
+      boutonCreer.disabled = false;
+
+      boutonCreer.textContent =
+        "Créer la session";
+
+    }
+
+  }
+);
+</script>
+
+</body>
+</html>

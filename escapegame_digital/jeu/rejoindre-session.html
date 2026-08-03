@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>Rebond — Rejoindre une session</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+  background:#1b5f6e;
+  font-family:Arial, Helvetica, sans-serif;
+  color:#044e61;
+}
+
+body{
+  padding:40px 18px;
+}
+
+.page{
+  width:100%;
+  max-width:650px;
+  margin:0 auto;
+}
+
+.carte{
+  width:100%;
+  padding:34px;
+  background:#ffffff;
+  border-radius:24px;
+}
+
+h1{
+  margin-bottom:12px;
+  font-size:34px;
+  line-height:1.1;
+}
+
+.introduction{
+  margin-bottom:28px;
+  color:#476b73;
+  font-size:17px;
+  line-height:1.5;
+}
+
+.champ{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  margin-bottom:18px;
+}
+
+label{
+  font-size:15px;
+  font-weight:bold;
+}
+
+input{
+  width:100%;
+  height:52px;
+  padding:0 14px;
+
+  border:2px solid #bed1d5;
+  border-radius:12px;
+
+  outline:none;
+
+  background:#ffffff;
+  color:#163f48;
+
+  font-size:17px;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+input:focus{
+  border-color:#edb01a;
+  box-shadow:0 0 0 4px rgba(237,176,26,.20);
+}
+
+#codeSession{
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-weight:bold;
+}
+
+.bouton{
+  width:100%;
+  min-height:58px;
+
+  margin-top:8px;
+  padding:12px 24px;
+
+  border:0;
+  border-radius:999px;
+
+  background:#edb01a;
+  color:#044e61;
+
+  font-size:19px;
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:
+    transform .2s ease,
+    opacity .2s ease;
+}
+
+.bouton:hover{
+  transform:translateY(-2px);
+}
+
+.bouton:disabled{
+  opacity:.55;
+  cursor:wait;
+  transform:none;
+}
+
+.message{
+  min-height:24px;
+  margin-top:18px;
+
+  font-size:15px;
+  font-weight:bold;
+  line-height:1.4;
+}
+
+.message.erreur{
+  color:#b53030;
+}
+
+.message.succes{
+  color:#16824a;
+}
+
+.resume{
+  display:none;
+
+  margin-top:24px;
+  padding:22px;
+
+  border-radius:18px;
+
+  background:#eaf5f2;
+}
+
+.resume.visible{
+  display:block;
+}
+
+.resume h2{
+  margin-bottom:8px;
+  font-size:22px;
+}
+
+.resume p{
+  font-size:16px;
+  line-height:1.5;
+}
+
+@media screen and (max-width:620px){
+
+  body{
+    padding:18px 12px;
+  }
+
+  .carte{
+    padding:25px 18px;
+  }
+
+  h1{
+    font-size:29px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <section class="carte">
+
+    <h1>Rejoindre la partie</h1>
+
+    <p class="introduction">
+      Entre le code transmis par l’adulte
+      et choisis un nom pour ton équipe.
+    </p>
+
+    <form id="formulaireEquipe">
+
+      <div class="champ">
+
+        <label for="codeSession">
+          Code de session *
+        </label>
+
+        <input
+          id="codeSession"
+          name="codeSession"
+          type="text"
+          placeholder="RBD-7K42"
+          autocomplete="off"
+          maxlength="8"
+          required>
+
+      </div>
+
+      <div class="champ">
+
+        <label for="nomEquipe">
+          Nom de l’équipe ou du participant *
+        </label>
+
+        <input
+          id="nomEquipe"
+          name="nomEquipe"
+          type="text"
+          autocomplete="off"
+          required>
+
+      </div>
+
+      <button
+        id="boutonRejoindre"
+        class="bouton"
+        type="submit">
+        Commencer l’enquête
+      </button>
+
+    </form>
+
+    <div
+      id="message"
+      class="message"
+      aria-live="polite">
+    </div>
+
+    <section
+      id="resume"
+      class="resume">
+
+      <h2 id="titreEquipe"></h2>
+
+      <p id="informationsSession"></p>
+
+    </section>
+
+  </section>
+
+</main>
+
+<!-- Bibliothèque Supabase -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<!-- Configuration Rebond -->
+
+<script src="../js/config.js"></script>
+
+<!-- Fonctions communes -->
+
+<script src="../js/supabase.js"></script>
+
+<script>
+const formulaireEquipe =
+  document.getElementById("formulaireEquipe");
+
+const boutonRejoindre =
+  document.getElementById("boutonRejoindre");
+
+const message =
+  document.getElementById("message");
+
+const resume =
+  document.getElementById("resume");
+
+const titreEquipe =
+  document.getElementById("titreEquipe");
+
+const informationsSession =
+  document.getElementById("informationsSession");
+
+const champCode =
+  document.getElementById("codeSession");
+
+/*
+  Mise en forme automatique du code.
+*/
+
+champCode.addEventListener(
+  "input",
+  function(){
+
+    champCode.value =
+      champCode.value
+        .toUpperCase()
+        .replace(/[^A-Z0-9-]/g, "");
+
+  }
+);
+
+function afficherDate(dateBrute){
+
+  if(!dateBrute){
+    return "";
+  }
+
+  const date =
+    new Date(
+      dateBrute + "T12:00:00"
+    );
+
+  return date.toLocaleDateString(
+    "fr-FR"
+  );
+
+}
+
+formulaireEquipe.addEventListener(
+  "submit",
+  async function(event){
+
+    event.preventDefault();
+
+    message.textContent = "";
+    message.className = "message";
+
+    resume.classList.remove(
+      "visible"
+    );
+
+    const code =
+      champCode.value
+        .trim()
+        .toUpperCase();
+
+    const equipe =
+      document
+        .getElementById("nomEquipe")
+        .value
+        .trim();
+
+    if(
+      !code ||
+      !equipe
+    ){
+
+      message.className =
+        "message erreur";
+
+      message.textContent =
+        "Les deux champs sont obligatoires.";
+
+      return;
+
+    }
+
+    boutonRejoindre.disabled = true;
+
+    boutonRejoindre.textContent =
+      "Connexion à la session…";
+
+    try{
+
+      const participation =
+        await window.REBOND_DB.rejoindreSession({
+          code:code,
+          equipe:equipe
+        });
+
+      titreEquipe.textContent =
+        participation.nomEquipe;
+
+      informationsSession.textContent =
+        participation.ecole +
+        " — " +
+        participation.classe +
+        " — " +
+        afficherDate(
+          participation.date
+        );
+
+      resume.classList.add(
+        "visible"
+      );
+
+      message.className =
+        "message succes";
+
+      message.textContent =
+        "L’équipe est bien inscrite. Ouverture du jeu…";
+
+      /*
+        Petite pause pour laisser apparaître
+        la confirmation avant la redirection.
+      */
+
+      window.setTimeout(
+        function(){
+
+          window.location.href =
+            window.REBOND_CONFIG.enigme1Url;
+
+        },
+        900
+      );
+
+    }
+    catch(error){
+
+      console.error(error);
+
+      message.className =
+        "message erreur";
+
+      message.textContent =
+        error.message ||
+        "Impossible de rejoindre cette session.";
+
+      boutonRejoindre.disabled = false;
+
+      boutonRejoindre.textContent =
+        "Commencer l’enquête";
+
+    }
+
+  }
+);
+</script>
+
+</body>
+</html>

@@ -37,13 +37,19 @@ body{
   font-size:0;
 }
 
+/* VIDÉO CACHÉE AU DÉPART */
+
 .video-intro{
-  display:block;
+  display:none;
   width:999px;
   height:716px;
   object-fit:fill;
   border:0;
   background:#000000;
+}
+
+.video-intro.visible{
+  display:block;
 }
 
 /* BOUTON IMAGE CENTRAL */
@@ -78,6 +84,11 @@ body{
 
 .bouton-go:active{
   transform:translate(-50%,-50%) scale(.97);
+}
+
+.bouton-go:focus-visible{
+  outline:3px solid #ffffff;
+  outline-offset:5px;
 }
 
 /* FLÈCHE VERS L'ÉNIGME 1 */
@@ -192,41 +203,6 @@ const nextBtn =
 
 let introDemarree = false;
 
-/*
-  La première image de la vidéo reste visible.
-  La vidéo démarre avec le son après le clic
-  sur l'image bouton.
-*/
-
-function preparerIntro(){
-
-  videoIntro.pause();
-
-  try{
-    videoIntro.currentTime = 0;
-  }
-  catch(erreur){
-  }
-
-}
-
-if(videoIntro.readyState >= 1){
-
-  preparerIntro();
-
-}
-else{
-
-  videoIntro.addEventListener(
-    "loadedmetadata",
-    preparerIntro,
-    {
-      once:true
-    }
-  );
-
-}
-
 function lancerIntroduction(){
 
   if(introDemarree){
@@ -238,11 +214,9 @@ function lancerIntroduction(){
   boutonGo.style.opacity = "0";
   boutonGo.style.pointerEvents = "none";
 
-  window.setTimeout(function(){
-
-    boutonGo.style.display = "none";
-
-  }, 200);
+  videoIntro.classList.add(
+    "visible"
+  );
 
   videoIntro.muted = false;
   videoIntro.volume = 1;
@@ -256,15 +230,40 @@ function lancerIntroduction(){
     typeof lecture.catch === "function"
   ){
 
-    lecture.catch(function(){
+    lecture
+      .then(function(){
 
-      introDemarree = false;
+        window.setTimeout(function(){
 
-      boutonGo.style.display = "block";
-      boutonGo.style.opacity = "1";
-      boutonGo.style.pointerEvents = "auto";
+          boutonGo.style.display = "none";
 
-    });
+        }, 200);
+
+      })
+      .catch(function(){
+
+        introDemarree = false;
+
+        videoIntro.pause();
+
+        videoIntro.classList.remove(
+          "visible"
+        );
+
+        boutonGo.style.display = "block";
+        boutonGo.style.opacity = "1";
+        boutonGo.style.pointerEvents = "auto";
+
+      });
+
+  }
+  else{
+
+    window.setTimeout(function(){
+
+      boutonGo.style.display = "none";
+
+    }, 200);
 
   }
 

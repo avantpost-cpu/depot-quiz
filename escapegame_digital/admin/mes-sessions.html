@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rebond — Mes sessions</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;min-height:100%;background:#1b5f6e;font-family:Arial,Helvetica,sans-serif;color:#044e61}
+body{padding:40px 18px}
+.page{width:100%;max-width:820px;margin:0 auto}
+.carte{width:100%;padding:34px;background:#fff;border-radius:24px}
+h1{margin-bottom:12px;font-size:34px;line-height:1.1}
+.introduction{margin-bottom:24px;color:#476b73;font-size:17px;line-height:1.5}
+.message{min-height:24px;padding:16px;border-radius:14px;background:#eaf5f2;font-weight:bold;line-height:1.4}
+.message.erreur{background:#f8e3e3;color:#a52d2d}
+.message.succes{background:#e4f4e9;color:#16824a}
+.actions{display:none;margin-top:24px}
+.actions.visible{display:block}
+.bouton{display:inline-flex;align-items:center;justify-content:center;min-height:54px;padding:12px 26px;border:0;border-radius:999px;background:#edb01a;color:#044e61;font-size:17px;font-weight:bold;text-decoration:none;cursor:pointer}
+.email{margin-top:12px;margin-bottom:18px;color:#476b73;font-size:15px}
+@media(max-width:620px){body{padding:18px 12px}.carte{padding:25px 18px}h1{font-size:29px}}
+</style>
+</head>
+<body>
+<main class="page">
+  <section class="carte">
+    <h1>Espace Rebond</h1>
+    <p class="introduction">Cette page est réservée à l’équipe Rebond. Elle recevra ensuite le tableau de bord de toutes les sessions.</p>
+    <div id="message" class="message" aria-live="polite">Vérification de la connexion…</div>
+    <div id="actions" class="actions">
+      <p id="emailConnecte" class="email"></p>
+      <a class="bouton" href="creer-session.html">Créer une session</a>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../js/config.js"></script>
+<script>
+const message = document.getElementById("message");
+const actions = document.getElementById("actions");
+const emailConnecte = document.getElementById("emailConnecte");
+
+const client = window.supabase.createClient(
+  window.REBOND_CONFIG.supabaseUrl,
+  window.REBOND_CONFIG.supabaseKey
+);
+
+async function verifierConnexion(){
+  try{
+    const { data: { session }, error } = await client.auth.getSession();
+
+    if(error){
+      throw error;
+    }
+
+    if(!session){
+      message.className = "message erreur";
+      message.textContent = "Aucune connexion active. Utilise le lien d’invitation envoyé par Supabase.";
+      return;
+    }
+
+    message.className = "message succes";
+    message.textContent = "Connexion réussie.";
+    emailConnecte.textContent = "Compte connecté : " + session.user.email;
+    actions.classList.add("visible");
+  }
+  catch(error){
+    console.error(error);
+    message.className = "message erreur";
+    message.textContent = error.message || "Impossible de vérifier la connexion.";
+  }
+}
+
+verifierConnexion();
+</script>
+</body>
+</html>

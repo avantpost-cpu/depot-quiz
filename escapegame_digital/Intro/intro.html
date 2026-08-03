@@ -24,8 +24,8 @@ body{
 .page-intro{
   min-height:100vh;
   display:flex;
-  justify-content:center;
-  align-items:flex-start;
+  flex-direction:column;
+  align-items:center;
   padding-top:40px;
 }
 
@@ -33,6 +33,8 @@ body{
   position:relative;
   width:999px;
   height:716px;
+  line-height:0;
+  font-size:0;
 }
 
 .video-intro{
@@ -40,27 +42,100 @@ body{
   width:999px;
   height:716px;
   object-fit:fill;
-  background:#000;
+  border:0;
+  background:#000000;
 }
 
-/* Flèche */
+/* BOUTON CENTRAL */
+
+.bouton-go{
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  z-index:100;
+
+  min-width:220px;
+  padding:18px 34px;
+
+  border:0;
+  border-radius:28px;
+
+  background:#edb01a;
+  color:#044e61;
+
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight:900;
+  text-align:center;
+
+  cursor:pointer;
+
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    opacity .2s ease;
+}
+
+.bouton-go:hover{
+  transform:translate(-50%,-50%) scale(1.05);
+  box-shadow:0 10px 28px rgba(0,0,0,.42);
+}
+
+.bouton-go:active{
+  transform:translate(-50%,-50%) scale(.97);
+}
+
+.bouton-go:focus-visible{
+  outline:3px solid #ffffff;
+  outline-offset:4px;
+}
+
+.decompte{
+  display:block;
+  margin-bottom:8px;
+
+  font-size:24px;
+  line-height:28px;
+  letter-spacing:1px;
+}
+
+.clic{
+  display:block;
+
+  font-size:34px;
+  line-height:38px;
+  letter-spacing:1px;
+}
+
+/* FLÈCHE VERS L'ÉNIGME 1 */
 
 .next-arrow{
   position:fixed;
   top:50%;
   right:35px;
-  transform:translateY(-50%) translateX(12px);
+
+  transform:
+    translateY(-50%)
+    translateX(12px);
+
+  width:56px;
+  height:56px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
   font-size:62px;
   font-weight:200;
-
-  color:#fff;
+  color:#ffffff;
   text-decoration:none;
 
   opacity:0;
   pointer-events:none;
 
-  transition:.35s;
+  transition:.35s ease;
 
   z-index:999;
 }
@@ -68,79 +143,188 @@ body{
 .next-arrow.visible{
   opacity:.45;
   pointer-events:auto;
-  transform:translateY(-50%) translateX(0);
+
+  transform:
+    translateY(-50%)
+    translateX(0);
 }
 
 .next-arrow:hover{
   opacity:1;
-  transform:translateY(-50%) translateX(6px);
+
+  transform:
+    translateY(-50%)
+    translateX(6px);
+}
+
+@media screen and (max-width:1080px){
+
+  .page-intro{
+    align-items:flex-start;
+    padding-left:20px;
+  }
+
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="page-intro">
 
-<div class="bloc-intro">
+  <div class="bloc-intro">
 
-<video
-id="videoIntro"
-class="video-intro"
-autoplay
-muted
-playsinline
-webkit-playsinline
-preload="auto">
+    <video
+      id="videoIntro"
+      class="video-intro"
+      playsinline
+      webkit-playsinline
+      preload="auto">
 
-<source
-src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/Intro/intro.mp4"
-type="video/mp4">
+      <source
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/Intro/intro.mp4"
+        type="video/mp4">
 
-</video>
+    </video>
 
-</div>
+    <button
+      id="boutonGo"
+      class="bouton-go"
+      type="button"
+      aria-label="Lancer l’introduction">
+
+      <span class="decompte">
+        3… 2… 1…
+      </span>
+
+      <span class="clic">
+        CLIC !
+      </span>
+
+    </button>
+
+  </div>
 
 </div>
 
 <a
-href="../enigme1.html"
-class="next-arrow"
-id="nextBtn">
-
-→
-
+  href="../enigme1.html"
+  class="next-arrow"
+  id="nextBtn"
+  title="Commencer l’énigme 1"
+  aria-label="Passer à l’énigme 1">
+  →
 </a>
 
 <script>
-
 const videoIntro =
-document.getElementById("videoIntro");
+  document.getElementById("videoIntro");
+
+const boutonGo =
+  document.getElementById("boutonGo");
 
 const nextBtn =
-document.getElementById("nextBtn");
+  document.getElementById("nextBtn");
 
-/* Certains navigateurs nécessitent une relance */
+let introDemarree = false;
 
-videoIntro.addEventListener("loadeddata",()=>{
+/*
+  La première image de la vidéo reste visible.
+  La vidéo démarre avec le son après le clic.
+*/
 
-    const p = videoIntro.play();
+function preparerIntro(){
 
-    if(p){
-        p.catch(()=>{});
+  videoIntro.pause();
+
+  try{
+    videoIntro.currentTime = 0;
+  }
+  catch(erreur){
+  }
+
+}
+
+if(videoIntro.readyState >= 1){
+
+  preparerIntro();
+
+}
+else{
+
+  videoIntro.addEventListener(
+    "loadedmetadata",
+    preparerIntro,
+    {
+      once:true
+    }
+  );
+
+}
+
+boutonGo.addEventListener(
+  "click",
+  function(){
+
+    if(introDemarree){
+      return;
     }
 
-});
+    introDemarree = true;
 
-/* Fin de vidéo */
+    boutonGo.style.opacity = "0";
+    boutonGo.style.pointerEvents = "none";
 
-videoIntro.addEventListener("ended",()=>{
+    window.setTimeout(function(){
 
-    nextBtn.classList.add("visible");
+      boutonGo.style.display = "none";
 
-});
+    }, 200);
 
+    videoIntro.muted = false;
+    videoIntro.volume = 1;
+    videoIntro.currentTime = 0;
+
+    const lecture =
+      videoIntro.play();
+
+    if(
+      lecture &&
+      typeof lecture.catch === "function"
+    ){
+
+      lecture.catch(function(){
+
+        introDemarree = false;
+
+        boutonGo.style.display = "block";
+        boutonGo.style.opacity = "1";
+        boutonGo.style.pointerEvents = "auto";
+
+      });
+
+    }
+
+  }
+);
+
+/*
+  À la fin de la vidéo, la dernière image reste affichée
+  et la flèche vers l'énigme 1 apparaît.
+*/
+
+videoIntro.addEventListener(
+  "ended",
+  function(){
+
+    videoIntro.pause();
+
+    nextBtn.classList.add(
+      "visible"
+    );
+
+  }
+);
 </script>
 
 </body>

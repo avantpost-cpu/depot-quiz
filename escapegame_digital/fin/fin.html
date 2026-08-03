@@ -1195,6 +1195,15 @@ body{
 
 </div>
 
+<!-- CONNEXION SUPABASE ET MOTEUR REBOND -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<script src="../js/config.js"></script>
+<script src="../js/supabase.js"></script>
+
 <script>
 const videoFin =
   document.getElementById("videoFin");
@@ -1256,6 +1265,7 @@ const blocFin =
 let sequenceFinaleLancee = false;
 let enigmeFinaleValidee = false;
 let attenteClicApresFinE = false;
+let finalisationRebondEnCours = false;
 
 
 /* ======================================================
@@ -2212,6 +2222,80 @@ function verifierEnigmeFinale(){
     "aria-hidden",
     "false"
   );
+
+  /*
+    L'équipe est maintenant marquée comme terminée dans Supabase.
+    Après un court délai, le diplôme personnalisé est ouvert.
+  */
+
+  finaliserPartieRebond();
+
+}
+
+async function finaliserPartieRebond(){
+
+  if(finalisationRebondEnCours){
+    return;
+  }
+
+  finalisationRebondEnCours = true;
+
+  /*
+    On laisse le Bravi visible avant la redirection.
+  */
+
+  await new Promise(function(resolve){
+
+    window.setTimeout(
+      resolve,
+      1800
+    );
+
+  });
+
+  try{
+
+    if(
+      !window.REBOND_DB ||
+      typeof window.REBOND_DB.terminerPartie !== "function"
+    ){
+
+      throw new Error(
+        "Le moteur de session Rebond n'est pas disponible."
+      );
+
+    }
+
+    await window.REBOND_DB.terminerPartie();
+
+    /*
+      Le diplôme lit automatiquement le nom de l'équipe,
+      l'école, la classe et la date dans localStorage.
+    */
+
+    window.location.href =
+      window.REBOND_CONFIG.diplomaUrl ||
+      "../diplome/diplome.html";
+
+  }
+  catch(error){
+
+    console.error(
+      "La partie n'a pas pu être enregistrée comme terminée :",
+      error
+    );
+
+    /*
+      Le joueur a bien réussi l'énigme.
+      En cas de problème de connexion, on ouvre tout de même
+      le diplôme afin de ne pas bloquer la fin du jeu.
+    */
+
+    window.location.href =
+      window.REBOND_CONFIG.diplomaUrl ||
+      "../diplome/diplome.html";
+
+  }
 
 }
 

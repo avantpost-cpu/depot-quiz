@@ -21,6 +21,9 @@ body{
   min-height:100%;
   background:#1b5f6e;
   font-family:Arial, Helvetica, sans-serif;
+
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
 }
 
 body{
@@ -67,11 +70,21 @@ body{
 
   overflow:hidden;
 
-  background:
-    #ffffff
-    url("diplome.jpg")
-    center / 100% 100%
-    no-repeat;
+  background:#ffffff;
+}
+
+.fond-diplome{
+  position:absolute;
+  inset:0;
+
+  width:100%;
+  height:100%;
+
+  display:block;
+  object-fit:fill;
+
+  user-select:none;
+  pointer-events:none;
 }
 
 .texte-variable{
@@ -91,8 +104,13 @@ body{
   transform:translateY(-50%);
 }
 
+/*
+  Les textes sont placés juste au-dessus
+  des trois lignes imprimées du diplôme.
+*/
+
 .nom-equipe{
-  top:43.6%;
+  top:40.5%;
   font-size:clamp(18px, 3.1vw, 42px);
   font-weight:bold;
   letter-spacing:.4px;
@@ -100,12 +118,12 @@ body{
 }
 
 .classe{
-  top:52.2%;
+  top:49.0%;
   font-size:clamp(16px, 2.4vw, 32px);
 }
 
 .ecole{
-  top:60.7%;
+  top:57.5%;
   font-size:clamp(15px, 2.2vw, 29px);
 }
 
@@ -113,7 +131,7 @@ body{
   position:absolute;
 
   left:59.8%;
-  top:69.6%;
+  top:68.2%;
   width:27.8%;
 
   color:#087a78;
@@ -151,6 +169,9 @@ body{
     padding:0;
 
     background:#ffffff;
+
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
   }
 
   .page{
@@ -160,12 +181,20 @@ body{
   }
 
   .actions{
-    display:none;
+    display:none !important;
   }
 
   .diplome{
     width:297mm;
     height:210mm;
+
+    page-break-inside:avoid;
+    break-inside:avoid;
+  }
+
+  .fond-diplome{
+    display:block !important;
+    visibility:visible !important;
   }
 
   .texte-variable{
@@ -194,6 +223,11 @@ body{
   <section
     class="diplome"
     aria-label="Diplôme Rebond personnalisé">
+
+    <img
+      class="fond-diplome"
+      src="diplome.jpg"
+      alt="Fond du diplôme Rebond">
 
     <div
       id="nomEquipe"
@@ -261,12 +295,14 @@ function lireEquipeLocale(){
     return JSON.parse(brut);
   }
   catch(error){
+
     console.error(
       "Informations locales illisibles :",
       error
     );
 
     return null;
+
   }
 
 }
@@ -305,11 +341,6 @@ function remplirDiplome(){
 
   const equipeLocale =
     lireEquipeLocale() || {};
-
-  /*
-    Les paramètres d'URL permettent également de tester :
-    diplome.html?equipe=Les%20Dragons&classe=6e&ecole=Collège%20Chaptal&date=2026-08-03
-  */
 
   const valeurEquipe =
     lireParametre("equipe") ||
@@ -360,7 +391,39 @@ document
   .addEventListener(
     "click",
     function(){
-      window.print();
+
+      /*
+        Petit délai pour s’assurer que l’image et la police
+        sont chargées avant l’ouverture de l’impression.
+      */
+
+      Promise.all([
+        document.fonts ? document.fonts.ready : Promise.resolve(),
+        new Promise(function(resolve){
+
+          const fond =
+            document.querySelector(".fond-diplome");
+
+          if(fond.complete){
+            resolve();
+          }
+          else{
+            fond.addEventListener(
+              "load",
+              resolve,
+              {
+                once:true
+              }
+            );
+          }
+
+        })
+      ]).then(function(){
+
+        window.print();
+
+      });
+
     }
   );
 

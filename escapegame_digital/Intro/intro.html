@@ -37,7 +37,9 @@ body{
   font-size:0;
 }
 
-/* VIDÉO CACHÉE AU DÉPART */
+/* ======================================================
+   VIDÉO CACHÉE AU DÉPART
+====================================================== */
 
 .video-intro{
   display:none;
@@ -52,7 +54,9 @@ body{
   display:block;
 }
 
-/* BOUTON IMAGE CENTRAL */
+/* ======================================================
+   BOUTON IMAGE CENTRAL
+====================================================== */
 
 .bouton-go{
   position:absolute;
@@ -69,11 +73,9 @@ body{
   user-select:none;
   -webkit-user-drag:none;
 
-
   transition:
     transform .2s ease,
-    opacity .2s ease,
-    filter .2s ease;
+    opacity .2s ease;
 }
 
 .bouton-go:hover{
@@ -89,52 +91,152 @@ body{
   outline-offset:5px;
 }
 
-/* FLÈCHE VERS L'ÉNIGME 1 */
+/* ======================================================
+   FORMULAIRE DE SESSION
+====================================================== */
 
-.next-arrow{
-  position:fixed;
-  top:50%;
-  right:35px;
+.inscription-overlay{
+  position:absolute;
+  inset:0;
+  z-index:150;
 
-  transform:
-    translateY(-50%)
-    translateX(12px);
-
-  width:56px;
-  height:56px;
-
-  display:flex;
+  display:none;
   align-items:center;
   justify-content:center;
 
-  font-size:62px;
-  font-weight:200;
-  color:#ffffff;
-  text-decoration:none;
+  padding:36px;
 
-  opacity:0;
-  pointer-events:none;
+  background:rgba(27,95,110,.92);
 
-  transition:.35s ease;
-
-  z-index:999;
+  line-height:normal;
+  font-size:16px;
 }
 
-.next-arrow.visible{
-  opacity:.45;
-  pointer-events:auto;
-
-  transform:
-    translateY(-50%)
-    translateX(0);
+.inscription-overlay.visible{
+  display:flex;
 }
 
-.next-arrow:hover{
-  opacity:1;
+.inscription-carte{
+  width:560px;
+  max-width:100%;
 
-  transform:
-    translateY(-50%)
-    translateX(6px);
+  padding:30px;
+
+  background:#ffffff;
+  color:#044e61;
+
+  border-radius:24px;
+}
+
+.inscription-carte h1{
+  margin-bottom:10px;
+
+  font-size:30px;
+  line-height:1.1;
+}
+
+.inscription-carte .introduction{
+  margin-bottom:24px;
+
+  color:#476b73;
+
+  font-size:16px;
+  line-height:1.45;
+}
+
+.champ{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+
+  margin-bottom:17px;
+}
+
+.champ label{
+  font-size:15px;
+  font-weight:bold;
+}
+
+.champ input{
+  width:100%;
+  height:52px;
+
+  padding:0 14px;
+
+  border:2px solid #bed1d5;
+  border-radius:12px;
+
+  outline:none;
+
+  background:#ffffff;
+  color:#163f48;
+
+  font-size:17px;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.champ input:focus{
+  border-color:#edb01a;
+  box-shadow:0 0 0 4px rgba(237,176,26,.20);
+}
+
+#codeSession{
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-weight:bold;
+}
+
+.bouton-commencer{
+  width:100%;
+  min-height:58px;
+
+  margin-top:5px;
+  padding:12px 24px;
+
+  border:0;
+  border-radius:999px;
+
+  background:#edb01a;
+  color:#044e61;
+
+  font-size:19px;
+  font-weight:bold;
+
+  cursor:pointer;
+
+  transition:
+    transform .2s ease,
+    opacity .2s ease;
+}
+
+.bouton-commencer:hover{
+  transform:translateY(-2px);
+}
+
+.bouton-commencer:disabled{
+  opacity:.55;
+  cursor:wait;
+  transform:none;
+}
+
+.message{
+  min-height:23px;
+  margin-top:15px;
+
+  font-size:14px;
+  line-height:1.4;
+  font-weight:bold;
+}
+
+.message.erreur{
+  color:#b53030;
+}
+
+.message.succes{
+  color:#16824a;
 }
 
 @media screen and (max-width:1080px){
@@ -142,6 +244,22 @@ body{
   .page-intro{
     align-items:flex-start;
     padding-left:20px;
+  }
+
+}
+
+@media screen and (max-width:620px){
+
+  .inscription-overlay{
+    padding:18px;
+  }
+
+  .inscription-carte{
+    padding:24px 18px;
+  }
+
+  .inscription-carte h1{
+    font-size:27px;
   }
 
 }
@@ -176,18 +294,89 @@ body{
       tabindex="0"
       draggable="false">
 
+    <!-- FORMULAIRE AFFICHÉ À LA FIN DE LA VIDÉO -->
+
+    <div
+      id="inscriptionOverlay"
+      class="inscription-overlay">
+
+      <form
+        id="formulaireEquipe"
+        class="inscription-carte">
+
+        <h1>Rejoindre la partie</h1>
+
+        <p class="introduction">
+          Entre le code transmis par l’adulte
+          et choisis un nom pour ton équipe.
+        </p>
+
+        <div class="champ">
+
+          <label for="codeSession">
+            Code de session *
+          </label>
+
+          <input
+            id="codeSession"
+            name="codeSession"
+            type="text"
+            placeholder="RBD-7K42"
+            autocomplete="off"
+            maxlength="8"
+            required>
+
+        </div>
+
+        <div class="champ">
+
+          <label for="nomEquipe">
+            Nom de l’équipe ou du participant *
+          </label>
+
+          <input
+            id="nomEquipe"
+            name="nomEquipe"
+            type="text"
+            autocomplete="off"
+            required>
+
+        </div>
+
+        <button
+          id="boutonRejoindre"
+          class="bouton-commencer"
+          type="submit">
+          Commencer l’enquête
+        </button>
+
+        <div
+          id="message"
+          class="message"
+          aria-live="polite">
+        </div>
+
+      </form>
+
+    </div>
+
   </div>
 
 </div>
 
-<a
-  href="../enigme1.html"
-  class="next-arrow"
-  id="nextBtn"
-  title="Commencer l’énigme 1"
-  aria-label="Passer à l’énigme 1">
-  →
-</a>
+<!-- BIBLIOTHÈQUE SUPABASE -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<!-- CONFIGURATION DU PROJET -->
+
+<script src="../js/config.js"></script>
+
+<!-- FONCTIONS COMMUNES REBOND -->
+
+<script src="../js/supabase.js"></script>
 
 <script>
 const videoIntro =
@@ -196,10 +385,26 @@ const videoIntro =
 const boutonGo =
   document.getElementById("boutonGo");
 
-const nextBtn =
-  document.getElementById("nextBtn");
+const inscriptionOverlay =
+  document.getElementById("inscriptionOverlay");
+
+const formulaireEquipe =
+  document.getElementById("formulaireEquipe");
+
+const boutonRejoindre =
+  document.getElementById("boutonRejoindre");
+
+const message =
+  document.getElementById("message");
+
+const champCode =
+  document.getElementById("codeSession");
 
 let introDemarree = false;
+
+/* ======================================================
+   LANCEMENT DE LA VIDÉO
+====================================================== */
 
 function lancerIntroduction(){
 
@@ -255,15 +460,6 @@ function lancerIntroduction(){
       });
 
   }
-  else{
-
-    window.setTimeout(function(){
-
-      boutonGo.style.display = "none";
-
-    }, 200);
-
-  }
 
 }
 
@@ -289,10 +485,9 @@ boutonGo.addEventListener(
   }
 );
 
-/*
-  À la fin de la vidéo, la dernière image reste affichée
-  et la flèche vers l'énigme 1 apparaît.
-*/
+/* ======================================================
+   AFFICHAGE DU FORMULAIRE À LA FIN
+====================================================== */
 
 videoIntro.addEventListener(
   "ended",
@@ -300,9 +495,120 @@ videoIntro.addEventListener(
 
     videoIntro.pause();
 
-    nextBtn.classList.add(
+    inscriptionOverlay.classList.add(
       "visible"
     );
+
+    window.setTimeout(function(){
+
+      champCode.focus();
+
+    }, 80);
+
+  }
+);
+
+/* ======================================================
+   MISE EN FORME DU CODE
+====================================================== */
+
+champCode.addEventListener(
+  "input",
+  function(){
+
+    champCode.value =
+      champCode.value
+        .toUpperCase()
+        .replace(/[^A-Z0-9-]/g, "");
+
+  }
+);
+
+/* ======================================================
+   INSCRIPTION DE L’ÉQUIPE
+====================================================== */
+
+formulaireEquipe.addEventListener(
+  "submit",
+  async function(event){
+
+    event.preventDefault();
+
+    message.textContent = "";
+    message.className = "message";
+
+    const code =
+      champCode.value
+        .trim()
+        .toUpperCase();
+
+    const equipe =
+      document
+        .getElementById("nomEquipe")
+        .value
+        .trim();
+
+    if(
+      !code ||
+      !equipe
+    ){
+
+      message.className =
+        "message erreur";
+
+      message.textContent =
+        "Les deux champs sont obligatoires.";
+
+      return;
+
+    }
+
+    boutonRejoindre.disabled = true;
+
+    boutonRejoindre.textContent =
+      "Connexion à la session…";
+
+    try{
+
+      await window.REBOND_DB.rejoindreSession({
+        code:code,
+        equipe:equipe
+      });
+
+      message.className =
+        "message succes";
+
+      message.textContent =
+        "Équipe enregistrée. Ouverture de l’énigme…";
+
+      window.setTimeout(
+        function(){
+
+          window.location.href =
+            window.REBOND_CONFIG.enigme1Url;
+
+        },
+        700
+      );
+
+    }
+    catch(error){
+
+      console.error(error);
+
+      message.className =
+        "message erreur";
+
+      message.textContent =
+        error.message ||
+        "Impossible de rejoindre cette session.";
+
+      boutonRejoindre.disabled = false;
+
+      boutonRejoindre.textContent =
+        "Commencer l’enquête";
+
+    }
 
   }
 );

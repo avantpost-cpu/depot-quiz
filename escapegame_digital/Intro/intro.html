@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Escape Game Rebond - Introduction</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+  background:#1b5f6e;
+  font-family:Arial, Helvetica, sans-serif;
+}
+
+.page-intro{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-top:40px;
+}
+
+.bloc-intro{
+  position:relative;
+  width:999px;
+  height:716px;
+  line-height:0;
+  font-size:0;
+}
+
+.video-intro{
+  display:block;
+  width:999px;
+  height:716px;
+  object-fit:fill;
+  border:0;
+  background:#000000;
+}
+
+/* FLÈCHE VERS L'ÉNIGME 1 */
+
+.next-arrow{
+  position:fixed;
+  top:50%;
+  right:35px;
+
+  transform:
+    translateY(-50%)
+    translateX(12px);
+
+  width:56px;
+  height:56px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:62px;
+  font-weight:200;
+  color:#ffffff;
+  text-decoration:none;
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:.35s ease;
+
+  z-index:999;
+}
+
+.next-arrow.visible{
+  opacity:.45;
+  pointer-events:auto;
+
+  transform:
+    translateY(-50%)
+    translateX(0);
+}
+
+.next-arrow:hover{
+  opacity:1;
+
+  transform:
+    translateY(-50%)
+    translateX(6px);
+}
+
+@media screen and (max-width:1080px){
+
+  .page-intro{
+    align-items:flex-start;
+    padding-left:20px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="page-intro">
+
+  <div class="bloc-intro">
+
+    <video
+      id="videoIntro"
+      class="video-intro"
+      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/intro/intro.mp4"
+      autoplay
+      muted
+      playsinline
+      preload="auto">
+    </video>
+
+  </div>
+
+</div>
+
+<a
+  href="../enigme1.html"
+  class="next-arrow"
+  id="nextBtn"
+  title="Commencer l’énigme 1"
+  aria-label="Passer à l’énigme 1">
+  →
+</a>
+
+<script>
+const videoIntro =
+  document.getElementById("videoIntro");
+
+const nextBtn =
+  document.getElementById("nextBtn");
+
+/*
+  La vidéo démarre automatiquement dès le chargement.
+  Elle est muette pour que l'autoplay fonctionne
+  sur tous les navigateurs.
+*/
+
+window.addEventListener(
+  "load",
+  function(){
+
+    videoIntro.currentTime = 0;
+
+    const lecture =
+      videoIntro.play();
+
+    if(
+      lecture &&
+      typeof lecture.catch === "function"
+    ){
+
+      lecture.catch(function(erreur){
+
+        console.warn(
+          "La lecture automatique a été bloquée :",
+          erreur
+        );
+
+      });
+
+    }
+
+  }
+);
+
+/*
+  À la fin de la vidéo, la dernière image reste affichée
+  et la flèche vers l'énigme 1 apparaît.
+*/
+
+videoIntro.addEventListener(
+  "ended",
+  function(){
+
+    videoIntro.pause();
+
+    nextBtn.classList.add(
+      "visible"
+    );
+
+  }
+);
+</script>
+
+</body>
+</html>

@@ -464,6 +464,98 @@ body{
   }
 }
 
+
+.feuille.retour{
+  left:0;
+  transform-origin:right center;
+}
+
+.feuille.retour.active{
+  opacity:1;
+  animation:
+    tournerFeuilleRetour 1.05s cubic-bezier(.48,.02,.18,1) forwards;
+}
+
+@keyframes tournerFeuilleRetour{
+
+  0%{
+    transform:
+      rotateY(0deg)
+      rotateZ(0deg)
+      skewY(0deg)
+      scaleX(1)
+      scaleY(1)
+      translateY(0)
+      translateZ(0);
+  }
+
+  14%{
+    transform:
+      rotateY(16deg)
+      rotateZ(.4deg)
+      skewY(.5deg)
+      scaleX(.99)
+      scaleY(1.015)
+      translateY(-3px)
+      translateZ(5px);
+  }
+
+  32%{
+    transform:
+      rotateY(50deg)
+      rotateZ(1deg)
+      skewY(1.5deg)
+      scaleX(.95)
+      scaleY(1.04)
+      translateY(-8px)
+      translateZ(13px);
+  }
+
+  52%{
+    transform:
+      rotateY(92deg)
+      rotateZ(1.5deg)
+      skewY(2.5deg)
+      scaleX(.88)
+      scaleY(1.075)
+      translateY(-17px)
+      translateZ(25px);
+  }
+
+  72%{
+    transform:
+      rotateY(138deg)
+      rotateZ(.8deg)
+      skewY(1.2deg)
+      scaleX(.95)
+      scaleY(1.045)
+      translateY(-10px)
+      translateZ(14px);
+  }
+
+  91%{
+    transform:
+      rotateY(172deg)
+      rotateZ(.2deg)
+      skewY(.3deg)
+      scaleX(.99)
+      scaleY(1.015)
+      translateY(-3px)
+      translateZ(4px);
+  }
+
+  100%{
+    transform:
+      rotateY(180deg)
+      rotateZ(0deg)
+      skewY(0deg)
+      scaleX(1)
+      scaleY(1)
+      translateY(0)
+      translateZ(0);
+  }
+}
+
 /* ======================================================
    SAC INVENTAIRE
 ====================================================== */
@@ -1482,14 +1574,46 @@ function jouerSonFeuilletage(){
 
 carnetZone.addEventListener(
   "click",
-  tournerPages
+  function(event){
+
+    if(sequenceFinaleLancee){
+      return;
+    }
+
+    const rect =
+      carnetZone.getBoundingClientRect();
+
+    const positionX =
+      event.clientX - rect.left;
+
+    if(positionX < rect.width / 2){
+      tournerPagesEnArriere();
+    }
+    else{
+      tournerPages();
+    }
+
+  }
 );
 
 carnetZone.addEventListener(
   "keydown",
   function(event){
 
+    if(sequenceFinaleLancee){
+      return;
+    }
+
     if(
+      event.key === "ArrowLeft"
+    ){
+
+      event.preventDefault();
+      tournerPagesEnArriere();
+
+    }
+    else if(
+      event.key === "ArrowRight" ||
       event.key === "Enter" ||
       event.key === " "
     ){
@@ -1506,17 +1630,193 @@ carnetZone.addEventListener(
    TOURNER LES PAGES
 ====================================================== */
 
+function preparerFeuilletage(nouvelleImage, direction){
+
+  const feuilles =
+    paquetPages.querySelectorAll(".feuille");
+
+  imageSuivanteGauche.src =
+    nouvelleImage;
+
+  imageSuivanteDroite.src =
+    nouvelleImage;
+
+  pageSuivante.classList.add(
+    "visible"
+  );
+
+  revelationGauche.classList.remove(
+    "en-cours"
+  );
+
+  revelationDroite.classList.remove(
+    "en-cours"
+  );
+
+  feuilles.forEach(function(feuille){
+
+    feuille.classList.remove(
+      "active",
+      "retour"
+    );
+
+    feuille.style.animationDelay =
+      "0ms";
+
+    feuille.style.left =
+      "";
+
+    feuille.style.transformOrigin =
+      "";
+
+  });
+
+  if(direction === "arriere"){
+
+    feuilles.forEach(function(feuille){
+
+      feuille.classList.add(
+        "retour"
+      );
+
+      feuille.style.left =
+        "0";
+
+      feuille.style.transformOrigin =
+        "right center";
+
+    });
+
+  }
+
+  void pageSuivante.offsetWidth;
+  void paquetPages.offsetWidth;
+
+  revelationDroite.classList.add(
+    "en-cours"
+  );
+
+  revelationGauche.classList.add(
+    "en-cours"
+  );
+
+  feuilles.forEach(function(feuille, index){
+
+    const indexAnimation =
+      direction === "arriere"
+        ? (feuilles.length - 1 - index)
+        : index;
+
+    feuille.style.animationDelay =
+      (indexAnimation * decalageFeuilles) + "ms";
+
+    feuille.classList.add(
+      "active"
+    );
+
+  });
+
+  return feuilles;
+
+}
+
+function terminerFeuilletage(feuilles, nouvelleImage, nouvelIndex){
+
+  pageCarnetActuelle.src =
+    nouvelleImage;
+
+  pageCarnetActuelle.classList.add(
+    "visible"
+  );
+
+  pageActuelle =
+    nouvelIndex;
+
+  window.requestAnimationFrame(function(){
+
+    feuilles.forEach(function(feuille){
+
+      feuille.classList.remove(
+        "active",
+        "retour"
+      );
+
+      feuille.style.animationDelay =
+        "0ms";
+
+      feuille.style.left =
+        "";
+
+      feuille.style.transformOrigin =
+        "";
+
+    });
+
+    revelationGauche.classList.remove(
+      "en-cours"
+    );
+
+    revelationDroite.classList.remove(
+      "en-cours"
+    );
+
+    pageSuivante.classList.remove(
+      "visible"
+    );
+
+    animationEnCours =
+      false;
+
+  });
+
+}
+
+function mettreAJourEtatDernierePage(){
+
+  if(pageActuelle === pagesCarnet.length - 1){
+
+    attenteClicApresFinE = true;
+
+    carnetZone.style.cursor =
+      "pointer";
+
+    carnetZone.setAttribute(
+      "title",
+      "Clique à droite pour continuer ou à gauche pour revenir"
+    );
+
+    carnetZone.setAttribute(
+      "aria-label",
+      "Dernière page : clic à droite pour continuer, clic à gauche pour revenir"
+    );
+
+  }
+  else{
+
+    attenteClicApresFinE = false;
+
+    carnetZone.style.cursor =
+      "pointer";
+
+    carnetZone.setAttribute(
+      "title",
+      "Clique à droite pour avancer, à gauche pour revenir"
+    );
+
+    carnetZone.setAttribute(
+      "aria-label",
+      "Feuilleter le carnet : droite pour avancer, gauche pour revenir"
+    );
+
+  }
+
+}
+
 function tournerPages(){
 
   if(animationEnCours){
     return;
   }
-
-  /*
-    Lorsque finE.png est affichée, on attend volontairement
-    un nouveau clic du joueur avant de lancer la vidéo finale.
-    Cela lui laisse le temps de lire entièrement la page.
-  */
 
   if(attenteClicApresFinE){
 
@@ -1554,156 +1854,66 @@ function tournerPages(){
     pagesCarnet[indexSuivant];
 
   const feuilles =
-    paquetPages.querySelectorAll(".feuille");
-
-  /*
-    Préparation immédiate de la nouvelle double page.
-  */
-
-  imageSuivanteGauche.src =
-    nouvelleImage;
-
-  imageSuivanteDroite.src =
-    nouvelleImage;
-
-  pageSuivante.classList.add(
-    "visible"
-  );
-
-  /*
-    Réinitialisation des animations de révélation.
-  */
-
-  revelationGauche.classList.remove(
-    "en-cours"
-  );
-
-  revelationDroite.classList.remove(
-    "en-cours"
-  );
-
-  feuilles.forEach(function(feuille){
-
-    feuille.classList.remove(
-      "active"
+    preparerFeuilletage(
+      nouvelleImage,
+      "avant"
     );
-
-    feuille.style.animationDelay =
-      "0ms";
-
-  });
-
-  void pageSuivante.offsetWidth;
-  void paquetPages.offsetWidth;
-
-  /*
-    Révélation progressive de la page fixe.
-  */
-
-  revelationDroite.classList.add(
-    "en-cours"
-  );
-
-  revelationGauche.classList.add(
-    "en-cours"
-  );
-
-  /*
-    Feuilletage.
-  */
-
-  feuilles.forEach(function(feuille, index){
-
-    feuille.style.animationDelay =
-      (index * decalageFeuilles) + "ms";
-
-    feuille.classList.add(
-      "active"
-    );
-
-  });
-
-  /*
-    Fin de la transition.
-  */
 
   window.setTimeout(function(){
 
-    /*
-      La nouvelle image devient la page fixe officielle.
-
-      Visuellement, elle est déjà entièrement présente :
-      ce remplacement est donc invisible.
-    */
-
-    pageCarnetActuelle.src =
-      nouvelleImage;
-
-    pageCarnetActuelle.classList.add(
-      "visible"
+    terminerFeuilletage(
+      feuilles,
+      nouvelleImage,
+      indexSuivant
     );
 
-    pageActuelle =
-      indexSuivant;
+    mettreAJourEtatDernierePage();
 
-    /*
-      Retrait des éléments temporaires.
-    */
+  }, dureeTotale + 80);
 
-    window.requestAnimationFrame(function(){
+}
 
-      feuilles.forEach(function(feuille){
+function tournerPagesEnArriere(){
 
-        feuille.classList.remove(
-          "active"
-        );
+  if(animationEnCours){
+    return;
+  }
 
-        feuille.style.animationDelay =
-          "0ms";
+  if(sequenceFinaleLancee){
+    return;
+  }
 
-      });
+  if(pageActuelle <= 0){
+    return;
+  }
 
-      revelationGauche.classList.remove(
-        "en-cours"
-      );
+  attenteClicApresFinE = false;
 
-      revelationDroite.classList.remove(
-        "en-cours"
-      );
+  jouerSonFeuilletage();
 
-      pageSuivante.classList.remove(
-        "visible"
-      );
+  animationEnCours = true;
 
-      animationEnCours =
-        false;
+  const indexPrecedent =
+    pageActuelle - 1;
 
-    });
+  const nouvelleImage =
+    pagesCarnet[indexPrecedent];
 
-    if(pageActuelle === pagesCarnet.length - 1){
+  const feuilles =
+    preparerFeuilletage(
+      nouvelleImage,
+      "arriere"
+    );
 
-      /*
-        finE.png reste affichée aussi longtemps que nécessaire.
-        Le prochain clic sur le carnet lancera seulement alors
-        la vidéo et le dernier jeu interactif.
-      */
+  window.setTimeout(function(){
 
-      attenteClicApresFinE = true;
+    terminerFeuilletage(
+      feuilles,
+      nouvelleImage,
+      indexPrecedent
+    );
 
-      carnetZone.style.cursor =
-        "pointer";
-
-      carnetZone.setAttribute(
-        "title",
-        "Clique pour continuer"
-      );
-
-      carnetZone.setAttribute(
-        "aria-label",
-        "Lire la dernière page puis cliquer pour continuer"
-      );
-
-    }
+    mettreAJourEtatDernierePage();
 
   }, dureeTotale + 80);
 

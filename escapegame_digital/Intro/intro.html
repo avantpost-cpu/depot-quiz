@@ -46,7 +46,7 @@ body{
   background:#000000;
 }
 
-/* BOUTON CENTRAL */
+/* BOUTON IMAGE CENTRAL */
 
 .bouton-go{
   position:absolute;
@@ -55,58 +55,29 @@ body{
   transform:translate(-50%,-50%);
   z-index:100;
 
-  min-width:220px;
-  padding:18px 34px;
+  width:260px;
+  height:auto;
 
-  border:0;
-  border-radius:28px;
-
-  background:#edb01a;
-  color:#044e61;
-
-  font-family:Arial, Helvetica, sans-serif;
-  font-weight:900;
-  text-align:center;
-
+  display:block;
   cursor:pointer;
+  user-select:none;
+  -webkit-user-drag:none;
 
-  box-shadow:0 8px 24px rgba(0,0,0,.35);
+  filter:drop-shadow(0 8px 18px rgba(0,0,0,.35));
 
   transition:
     transform .2s ease,
-    box-shadow .2s ease,
-    opacity .2s ease;
+    opacity .2s ease,
+    filter .2s ease;
 }
 
 .bouton-go:hover{
   transform:translate(-50%,-50%) scale(1.05);
-  box-shadow:0 10px 28px rgba(0,0,0,.42);
+  filter:drop-shadow(0 10px 22px rgba(0,0,0,.42));
 }
 
 .bouton-go:active{
   transform:translate(-50%,-50%) scale(.97);
-}
-
-.bouton-go:focus-visible{
-  outline:3px solid #ffffff;
-  outline-offset:4px;
-}
-
-.decompte{
-  display:block;
-  margin-bottom:8px;
-
-  font-size:24px;
-  line-height:28px;
-  letter-spacing:1px;
-}
-
-.clic{
-  display:block;
-
-  font-size:34px;
-  line-height:38px;
-  letter-spacing:1px;
 }
 
 /* FLÈCHE VERS L'ÉNIGME 1 */
@@ -187,21 +158,14 @@ body{
 
     </video>
 
-    <button
+    <img
       id="boutonGo"
       class="bouton-go"
-      type="button"
-      aria-label="Lancer l’introduction">
-
-      <span class="decompte">
-        3… 2… 1…
-      </span>
-
-      <span class="clic">
-        CLIC !
-      </span>
-
-    </button>
+      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/Intro/bouton.png"
+      alt="Lancer l’introduction"
+      role="button"
+      tabindex="0"
+      draggable="false">
 
   </div>
 
@@ -230,7 +194,8 @@ let introDemarree = false;
 
 /*
   La première image de la vidéo reste visible.
-  La vidéo démarre avec le son après le clic.
+  La vidéo démarre avec le son après le clic
+  sur l'image bouton.
 */
 
 function preparerIntro(){
@@ -262,46 +227,65 @@ else{
 
 }
 
+function lancerIntroduction(){
+
+  if(introDemarree){
+    return;
+  }
+
+  introDemarree = true;
+
+  boutonGo.style.opacity = "0";
+  boutonGo.style.pointerEvents = "none";
+
+  window.setTimeout(function(){
+
+    boutonGo.style.display = "none";
+
+  }, 200);
+
+  videoIntro.muted = false;
+  videoIntro.volume = 1;
+  videoIntro.currentTime = 0;
+
+  const lecture =
+    videoIntro.play();
+
+  if(
+    lecture &&
+    typeof lecture.catch === "function"
+  ){
+
+    lecture.catch(function(){
+
+      introDemarree = false;
+
+      boutonGo.style.display = "block";
+      boutonGo.style.opacity = "1";
+      boutonGo.style.pointerEvents = "auto";
+
+    });
+
+  }
+
+}
+
 boutonGo.addEventListener(
   "click",
-  function(){
+  lancerIntroduction
+);
 
-    if(introDemarree){
-      return;
-    }
-
-    introDemarree = true;
-
-    boutonGo.style.opacity = "0";
-    boutonGo.style.pointerEvents = "none";
-
-    window.setTimeout(function(){
-
-      boutonGo.style.display = "none";
-
-    }, 200);
-
-    videoIntro.muted = false;
-    videoIntro.volume = 1;
-    videoIntro.currentTime = 0;
-
-    const lecture =
-      videoIntro.play();
+boutonGo.addEventListener(
+  "keydown",
+  function(event){
 
     if(
-      lecture &&
-      typeof lecture.catch === "function"
+      event.key === "Enter" ||
+      event.key === " "
     ){
 
-      lecture.catch(function(){
-
-        introDemarree = false;
-
-        boutonGo.style.display = "block";
-        boutonGo.style.opacity = "1";
-        boutonGo.style.pointerEvents = "auto";
-
-      });
+      event.preventDefault();
+      lancerIntroduction();
 
     }
 

@@ -24,8 +24,8 @@ body{
 .page-intro{
   min-height:100vh;
   display:flex;
-  flex-direction:column;
-  align-items:center;
+  justify-content:center;
+  align-items:flex-start;
   padding-top:40px;
 }
 
@@ -33,8 +33,6 @@ body{
   position:relative;
   width:999px;
   height:716px;
-  line-height:0;
-  font-size:0;
 }
 
 .video-intro{
@@ -42,37 +40,27 @@ body{
   width:999px;
   height:716px;
   object-fit:fill;
-  border:0;
-  background:#000000;
+  background:#000;
 }
 
-/* FLÈCHE VERS L'ÉNIGME 1 */
+/* Flèche */
 
 .next-arrow{
   position:fixed;
   top:50%;
   right:35px;
-
-  transform:
-    translateY(-50%)
-    translateX(12px);
-
-  width:56px;
-  height:56px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  transform:translateY(-50%) translateX(12px);
 
   font-size:62px;
   font-weight:200;
-  color:#ffffff;
+
+  color:#fff;
   text-decoration:none;
 
   opacity:0;
   pointer-events:none;
 
-  transition:.35s ease;
+  transition:.35s;
 
   z-index:999;
 }
@@ -80,118 +68,79 @@ body{
 .next-arrow.visible{
   opacity:.45;
   pointer-events:auto;
-
-  transform:
-    translateY(-50%)
-    translateX(0);
+  transform:translateY(-50%) translateX(0);
 }
 
 .next-arrow:hover{
   opacity:1;
-
-  transform:
-    translateY(-50%)
-    translateX(6px);
-}
-
-@media screen and (max-width:1080px){
-
-  .page-intro{
-    align-items:flex-start;
-    padding-left:20px;
-  }
-
+  transform:translateY(-50%) translateX(6px);
 }
 </style>
+
 </head>
 
 <body>
 
 <div class="page-intro">
 
-  <div class="bloc-intro">
+<div class="bloc-intro">
 
-    <video
-      id="videoIntro"
-      class="video-intro"
-      src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/intro/intro.mp4"
-      autoplay
-      muted
-      playsinline
-      preload="auto">
-    </video>
+<video
+id="videoIntro"
+class="video-intro"
+autoplay
+muted
+playsinline
+webkit-playsinline
+preload="auto">
 
-  </div>
+<source
+src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/intro/intro.mp4"
+type="video/mp4">
+
+</video>
+
+</div>
 
 </div>
 
 <a
-  href="../enigme1.html"
-  class="next-arrow"
-  id="nextBtn"
-  title="Commencer l’énigme 1"
-  aria-label="Passer à l’énigme 1">
-  →
+href="../enigme1.html"
+class="next-arrow"
+id="nextBtn">
+
+→
+
 </a>
 
 <script>
+
 const videoIntro =
-  document.getElementById("videoIntro");
+document.getElementById("videoIntro");
 
 const nextBtn =
-  document.getElementById("nextBtn");
+document.getElementById("nextBtn");
 
-/*
-  La vidéo démarre automatiquement dès le chargement.
-  Elle est muette pour que l'autoplay fonctionne
-  sur tous les navigateurs.
-*/
+/* Certains navigateurs nécessitent une relance */
 
-window.addEventListener(
-  "load",
-  function(){
+videoIntro.addEventListener("loadeddata",()=>{
 
-    videoIntro.currentTime = 0;
+    const p = videoIntro.play();
 
-    const lecture =
-      videoIntro.play();
-
-    if(
-      lecture &&
-      typeof lecture.catch === "function"
-    ){
-
-      lecture.catch(function(erreur){
-
-        console.warn(
-          "La lecture automatique a été bloquée :",
-          erreur
-        );
-
-      });
-
+    if(p){
+        p.catch(()=>{});
     }
 
-  }
-);
+});
 
-/*
-  À la fin de la vidéo, la dernière image reste affichée
-  et la flèche vers l'énigme 1 apparaît.
-*/
+/* Fin de vidéo */
 
-videoIntro.addEventListener(
-  "ended",
-  function(){
+videoIntro.addEventListener("ended",()=>{
 
-    videoIntro.pause();
+    nextBtn.classList.add("visible");
 
-    nextBtn.classList.add(
-      "visible"
-    );
+});
 
-  }
-);
 </script>
 
 </body>

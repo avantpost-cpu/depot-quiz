@@ -171,7 +171,7 @@
 
     const { data, error } =
       await client.rpc(
-        "rebond_session_dashboard",
+        "rebond_session_dashboard_v2",
         {
           p_session_code:
             code,

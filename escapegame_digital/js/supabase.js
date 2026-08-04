@@ -25,7 +25,9 @@
     ecole,
     classe,
     email,
-    date
+    date,
+    enseignant,
+    nombreEleves
   }){
 
     const { data, error } =
@@ -35,7 +37,9 @@
           p_school_name: ecole,
           p_class_name: classe,
           p_organizer_email: email,
-          p_session_date: date
+          p_session_date: date,
+          p_teacher_name: enseignant,
+          p_student_count: nombreEleves
         }
       );
 

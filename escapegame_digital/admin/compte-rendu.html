@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rebond — Compte rendu de sensibilisation</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+
+html,
+body{
+  margin:0;
+  min-height:100%;
+  background:#1b5f6e;
+  font-family:"Montserrat",Arial,sans-serif;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+
+body{
+  padding:28px 16px;
+}
+
+.barre-actions{
+  position:sticky;
+  top:12px;
+  z-index:10;
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-bottom:22px;
+}
+
+.bouton{
+  min-height:50px;
+  padding:10px 24px;
+  border:0;
+  border-radius:999px;
+  background:#edb01a;
+  color:#044e61;
+  font-size:16px;
+  font-weight:800;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.bouton-secondaire{
+  background:#ffffff;
+}
+
+.message{
+  width:min(980px,100%);
+  margin:0 auto 18px;
+  padding:16px;
+  border-radius:14px;
+  background:#fff;
+  color:#044e61;
+  font-weight:700;
+}
+
+.message.erreur{
+  color:#b53030;
+}
+
+.document{
+  width:min(980px,100%);
+  margin:0 auto;
+}
+
+.page{
+  position:relative;
+  width:100%;
+  aspect-ratio:210/297;
+  margin:0 auto 28px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:0 8px 28px rgba(0,0,0,.28);
+  page-break-after:always;
+}
+
+.page:last-child{
+  page-break-after:auto;
+}
+
+.fond{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:fill;
+  display:block;
+  user-select:none;
+  pointer-events:none;
+}
+
+/* PAGE 1 */
+
+.p1-numero{
+  position:absolute;
+  left:76.3%;
+  top:2.5%;
+  width:18.2%;
+  height:3.5%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#044e61;
+  font-weight:800;
+  font-size:clamp(8px,1.1vw,16px);
+  white-space:nowrap;
+}
+
+.p1-identite,
+.p1-infos{
+  position:absolute;
+  top:29.7%;
+  height:15.2%;
+  padding:2.1% 2.6%;
+  color:#044e61;
+}
+
+.p1-identite{
+  left:7.1%;
+  width:42.5%;
+}
+
+.p1-infos{
+  left:53.4%;
+  width:40.3%;
+}
+
+.ligne{
+  margin-bottom:1.35%;
+}
+
+.label{
+  display:block;
+  font-size:clamp(7px,.78vw,11px);
+  font-weight:700;
+  opacity:.72;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+.valeur{
+  display:block;
+  font-size:clamp(10px,1.26vw,18px);
+  line-height:1.12;
+  font-weight:800;
+}
+
+.p1-kpi{
+  position:absolute;
+  left:7.1%;
+  top:49.4%;
+  width:86.4%;
+  height:10.6%;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  color:#044e61;
+}
+
+.p1-kpi .item,
+.p2-kpi .item{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  min-width:0;
+}
+
+.nombre{
+  font-size:clamp(15px,2.3vw,34px);
+  line-height:1;
+  font-weight:800;
+}
+
+.texte{
+  margin-top:5px;
+  font-size:clamp(7px,.8vw,11px);
+  font-weight:700;
+  text-align:center;
+}
+
+/* PAGE 2 */
+
+.p2-kpi{
+  position:absolute;
+  left:7.1%;
+  top:19.3%;
+  width:86.3%;
+  height:9.1%;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:2.8%;
+  color:#044e61;
+}
+
+.p2-kpi .item:first-child,
+.p2-kpi .item:last-child{
+  color:#fff;
+}
+
+.p2-table{
+  position:absolute;
+  left:7.1%;
+  top:34.9%;
+  width:86.3%;
+  color:#044e61;
+  font-size:clamp(7px,.77vw,11px);
+}
+
+.p2-entete,
+.p2-ligne{
+  display:grid;
+  grid-template-columns:2.2fr .8fr .9fr 1fr;
+  align-items:center;
+}
+
+.p2-entete{
+  min-height:30px;
+  padding:0 2.2%;
+  font-weight:800;
+}
+
+.p2-ligne{
+  min-height:34px;
+  padding:0 2.2%;
+  border-bottom:1px solid rgba(4,78,97,.16);
+  background:rgba(255,255,255,.91);
+}
+
+.p2-ligne:nth-child(odd){
+  background:rgba(238,246,244,.94);
+}
+
+.p2-statut{
+  font-weight:800;
+  color:#14786c;
+}
+
+.p2-graphique{
+  position:absolute;
+  left:7.1%;
+  top:61.2%;
+  width:58.5%;
+  height:21.7%;
+  color:#044e61;
+}
+
+.barre-ligne{
+  display:grid;
+  grid-template-columns:24% 1fr 15%;
+  align-items:center;
+  gap:2%;
+  margin-bottom:2.2%;
+  font-size:clamp(7px,.74vw,10px);
+  font-weight:700;
+}
+
+.barre-fond{
+  height:10px;
+  border-radius:999px;
+  background:#e1edef;
+  overflow:hidden;
+}
+
+.barre-valeur{
+  display:block;
+  height:100%;
+  border-radius:999px;
+  background:#14786c;
+}
+
+.p2-resume{
+  position:absolute;
+  left:69.3%;
+  top:61.2%;
+  width:24%;
+  min-height:15%;
+  padding:2%;
+  color:#044e61;
+  font-size:clamp(7px,.78vw,11px);
+  line-height:1.35;
+}
+
+.p2-resume strong{
+  display:block;
+  margin-bottom:7px;
+  color:#e76f51;
+}
+
+/* Impression */
+
+@page{
+  size:A4 portrait;
+  margin:0;
+}
+
+@media print{
+
+  html,
+  body{
+    margin:0;
+    padding:0;
+    background:#fff;
+  }
+
+  .barre-actions,
+  .message{
+    display:none !important;
+  }
+
+  .document{
+    width:210mm;
+    margin:0;
+  }
+
+  .page{
+    width:210mm;
+    height:297mm;
+    margin:0;
+    box-shadow:none;
+    page-break-after:always;
+  }
+
+  .page:last-child{
+    page-break-after:auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="barre-actions">
+
+  <a
+    id="retourSuivi"
+    class="bouton bouton-secondaire"
+    href="#">
+    Retour au suivi
+  </a>
+
+  <button
+    id="imprimer"
+    class="bouton"
+    type="button">
+    Télécharger / imprimer le compte rendu
+  </button>
+
+</div>
+
+<div
+  id="message"
+  class="message">
+  Chargement du compte rendu…
+</div>
+
+<main
+  id="document"
+  class="document"
+  hidden>
+
+  <section class="page">
+
+    <img
+      class="fond"
+      src="page_1.jpg"
+      alt="">
+
+    <div
+      id="numeroBilan"
+      class="p1-numero">
+    </div>
+
+    <div class="p1-identite">
+
+      <div class="ligne">
+        <span class="label">Établissement</span>
+        <span id="etablissement" class="valeur"></span>
+      </div>
+
+      <div class="ligne">
+        <span class="label">Classe</span>
+        <span id="classe" class="valeur"></span>
+      </div>
+
+      <div class="ligne">
+        <span class="label">Code de session</span>
+        <span id="codeSession" class="valeur"></span>
+      </div>
+
+    </div>
+
+    <div class="p1-infos">
+
+      <div class="ligne">
+        <span class="label">Enseignant·e</span>
+        <span id="enseignant" class="valeur"></span>
+      </div>
+
+      <div class="ligne">
+        <span class="label">Date</span>
+        <span id="dateSession" class="valeur"></span>
+      </div>
+
+    </div>
+
+    <div class="p1-kpi">
+
+      <div class="item">
+        <span id="nombreEleves" class="nombre"></span>
+        <span class="texte">élèves</span>
+      </div>
+
+      <div class="item">
+        <span id="nombreEquipes" class="nombre"></span>
+        <span class="texte">équipes</span>
+      </div>
+
+      <div class="item">
+        <span id="tempsMoyenP1" class="nombre"></span>
+        <span class="texte">temps moyen</span>
+      </div>
+
+      <div class="item">
+        <span id="tauxReussiteP1" class="nombre"></span>
+        <span class="texte">équipes terminées</span>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="page">
+
+    <img
+      class="fond"
+      src="page_2.jpg"
+      alt="">
+
+    <div class="p2-kpi">
+
+      <div class="item">
+        <span id="nombreElevesP2" class="nombre"></span>
+        <span class="texte">élèves</span>
+      </div>
+
+      <div class="item">
+        <span id="nombreEquipesP2" class="nombre"></span>
+        <span class="texte">équipes</span>
+      </div>
+
+      <div class="item">
+        <span id="tempsMoyenP2" class="nombre"></span>
+        <span class="texte">temps moyen</span>
+      </div>
+
+      <div class="item">
+        <span id="tauxReussiteP2" class="nombre"></span>
+        <span class="texte">réussite</span>
+      </div>
+
+    </div>
+
+    <div class="p2-table">
+
+      <div class="p2-entete">
+        <span>Équipe</span>
+        <span>Temps</span>
+        <span>Progression</span>
+        <span>Statut</span>
+      </div>
+
+      <div id="lignesEquipes"></div>
+
+    </div>
+
+    <div
+      id="graphiqueEquipes"
+      class="p2-graphique">
+    </div>
+
+    <div
+      id="resumeSession"
+      class="p2-resume">
+    </div>
+
+  </section>
+
+  <section class="page">
+    <img
+      class="fond"
+      src="page_3.jpg"
+      alt="">
+  </section>
+
+  <section class="page">
+    <img
+      class="fond"
+      src="page_4.jpg"
+      alt="">
+  </section>
+
+</main>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
+<script src="../js/config.js"></script>
+<script src="../js/supabase.js"></script>
+
+<script>
+const parametres =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const code =
+  parametres.get("code");
+
+const cleGestion =
+  parametres.get("cle");
+
+const message =
+  document.getElementById("message");
+
+const documentCompteRendu =
+  document.getElementById("document");
+
+const retourSuivi =
+  document.getElementById("retourSuivi");
+
+function afficherDate(dateBrute){
+
+  if(!dateBrute){
+    return "—";
+  }
+
+  return new Date(
+    dateBrute + "T12:00:00"
+  ).toLocaleDateString(
+    "fr-FR",
+    {
+      day:"numeric",
+      month:"long",
+      year:"numeric"
+    }
+  );
+
+}
+
+function afficherDureeCourte(secondes){
+
+  if(
+    secondes === null ||
+    secondes === undefined
+  ){
+    return "—";
+  }
+
+  const total =
+    Math.max(
+      0,
+      Number(secondes)
+    );
+
+  const heures =
+    Math.floor(total / 3600);
+
+  const minutes =
+    Math.floor(
+      (total % 3600) / 60
+    );
+
+  const reste =
+    total % 60;
+
+  if(heures > 0){
+
+    return (
+      heures +
+      " h " +
+      String(minutes).padStart(2,"0")
+    );
+
+  }
+
+  if(minutes > 0){
+
+    return (
+      minutes +
+      " min " +
+      String(reste).padStart(2,"0")
+    );
+
+  }
+
+  return reste + " s";
+
+}
+
+function creerNumeroBilan(
+  codeSession,
+  dateSession
+){
+
+  const annee =
+    dateSession
+      ? String(dateSession).slice(0,4)
+      : new Date().getFullYear();
+
+  const suffixe =
+    String(codeSession || "")
+      .replace("RBD-","")
+      .toUpperCase();
+
+  return (
+    "RB-" +
+    annee +
+    "-" +
+    suffixe
+  );
+
+}
+
+function calculerStatistiques(
+  donnees
+){
+
+  const equipes =
+    donnees.filter(
+      function(ligne){
+        return Boolean(
+          ligne.team_name
+        );
+      }
+    );
+
+  const terminees =
+    equipes.filter(
+      function(equipe){
+        return equipe.completed === true;
+      }
+    );
+
+  const durees =
+    terminees
+      .map(
+        function(equipe){
+          return equipe.duration_seconds;
+        }
+      )
+      .filter(
+        function(duree){
+          return (
+            duree !== null &&
+            duree !== undefined
+          );
+        }
+      )
+      .map(Number);
+
+  const moyenne =
+    durees.length
+      ? Math.round(
+          durees.reduce(
+            function(total,duree){
+              return total + duree;
+            },
+            0
+          ) / durees.length
+        )
+      : null;
+
+  const taux =
+    equipes.length
+      ? Math.round(
+          terminees.length /
+          equipes.length *
+          100
+        )
+      : 0;
+
+  const minimum =
+    durees.length
+      ? Math.min(...durees)
+      : null;
+
+  const maximum =
+    durees.length
+      ? Math.max(...durees)
+      : null;
+
+  return {
+    equipes,
+    terminees,
+    durees,
+    moyenne,
+    taux,
+    minimum,
+    maximum,
+    ecart:
+      minimum !== null &&
+      maximum !== null
+        ? maximum - minimum
+        : null
+  };
+
+}
+
+function echapperHTML(valeur){
+
+  const element =
+    document.createElement("div");
+
+  element.textContent =
+    String(valeur ?? "");
+
+  return element.innerHTML;
+
+}
+
+async function chargerCompteRendu(){
+
+  if(
+    !code ||
+    !cleGestion
+  ){
+
+    message.className =
+      "message erreur";
+
+    message.textContent =
+      "Le lien du compte rendu est incomplet.";
+
+    return;
+
+  }
+
+  const adresseSuivi =
+    new URL(
+      "suivi-session.html",
+      window.location.href
+    );
+
+  adresseSuivi.searchParams.set(
+    "code",
+    code
+  );
+
+  adresseSuivi.searchParams.set(
+    "cle",
+    cleGestion
+  );
+
+  retourSuivi.href =
+    adresseSuivi.toString();
+
+  try{
+
+    const donnees =
+      await window.REBOND_DB.chargerSuivi({
+        code,
+        cleGestion
+      });
+
+    if(
+      !donnees ||
+      donnees.length === 0
+    ){
+
+      throw new Error(
+        "Aucune donnée reçue pour cette session."
+      );
+
+    }
+
+    const session =
+      donnees[0];
+
+    const stats =
+      calculerStatistiques(
+        donnees
+      );
+
+    document
+      .getElementById("numeroBilan")
+      .textContent =
+        creerNumeroBilan(
+          code,
+          session.session_date
+        );
+
+    document
+      .getElementById("etablissement")
+      .textContent =
+        session.school_name || "—";
+
+    document
+      .getElementById("classe")
+      .textContent =
+        session.class_name || "—";
+
+    document
+      .getElementById("codeSession")
+      .textContent =
+        code;
+
+    document
+      .getElementById("enseignant")
+      .textContent =
+        session.teacher_name || "—";
+
+    document
+      .getElementById("dateSession")
+      .textContent =
+        afficherDate(
+          session.session_date
+        );
+
+    document
+      .getElementById("nombreEleves")
+      .textContent =
+        session.student_count ?? "—";
+
+    document
+      .getElementById("nombreEquipes")
+      .textContent =
+        stats.equipes.length;
+
+    document
+      .getElementById("tempsMoyenP1")
+      .textContent =
+        afficherDureeCourte(
+          stats.moyenne
+        );
+
+    document
+      .getElementById("tauxReussiteP1")
+      .textContent =
+        stats.taux + " %";
+
+    document
+      .getElementById("nombreElevesP2")
+      .textContent =
+        session.student_count ?? "—";
+
+    document
+      .getElementById("nombreEquipesP2")
+      .textContent =
+        stats.equipes.length;
+
+    document
+      .getElementById("tempsMoyenP2")
+      .textContent =
+        afficherDureeCourte(
+          stats.moyenne
+        );
+
+    document
+      .getElementById("tauxReussiteP2")
+      .textContent =
+        stats.taux + " %";
+
+    const lignesEquipes =
+      document.getElementById(
+        "lignesEquipes"
+      );
+
+    lignesEquipes.innerHTML = "";
+
+    stats.equipes
+      .slice(0,8)
+      .forEach(
+        function(equipe){
+
+          const ligne =
+            document.createElement("div");
+
+          ligne.className =
+            "p2-ligne";
+
+          const temps =
+            equipe.duration_seconds !== null &&
+            equipe.duration_seconds !== undefined
+              ? afficherDureeCourte(
+                  equipe.duration_seconds
+                )
+              : "—";
+
+          const progression =
+            equipe.completed
+              ? "100 %"
+              : "En cours";
+
+          const statut =
+            equipe.completed
+              ? "Terminée"
+              : "En cours";
+
+          ligne.innerHTML = `
+            <span>${echapperHTML(equipe.team_name)}</span>
+            <span>${echapperHTML(temps)}</span>
+            <span>${echapperHTML(progression)}</span>
+            <span class="p2-statut">${echapperHTML(statut)}</span>
+          `;
+
+          lignesEquipes.appendChild(
+            ligne
+          );
+
+        }
+      );
+
+    const graphique =
+      document.getElementById(
+        "graphiqueEquipes"
+      );
+
+    graphique.innerHTML = "";
+
+    const dureeMax =
+      Math.max(
+        ...stats.equipes.map(
+          function(equipe){
+            return Number(
+              equipe.duration_seconds || 0
+            );
+          }
+        ),
+        1
+      );
+
+    stats.equipes
+      .filter(
+        function(equipe){
+          return (
+            equipe.duration_seconds !== null &&
+            equipe.duration_seconds !== undefined
+          );
+        }
+      )
+      .slice(0,6)
+      .forEach(
+        function(equipe){
+
+          const largeur =
+            Math.max(
+              3,
+              Math.round(
+                Number(
+                  equipe.duration_seconds
+                ) /
+                dureeMax *
+                100
+              )
+            );
+
+          const ligne =
+            document.createElement("div");
+
+          ligne.className =
+            "barre-ligne";
+
+          ligne.innerHTML = `
+            <span>${echapperHTML(equipe.team_name)}</span>
+            <span class="barre-fond">
+              <span
+                class="barre-valeur"
+                style="width:${largeur}%">
+              </span>
+            </span>
+            <span>${echapperHTML(
+              afficherDureeCourte(
+                equipe.duration_seconds
+              )
+            )}</span>
+          `;
+
+          graphique.appendChild(
+            ligne
+          );
+
+        }
+      );
+
+    const phraseTerminees =
+      stats.equipes.length > 0 &&
+      stats.terminees.length ===
+      stats.equipes.length
+        ? "Toutes les équipes ont terminé."
+        : (
+            stats.terminees.length +
+            " équipe(s) sur " +
+            stats.equipes.length +
+            " ont terminé."
+          );
+
+    document
+      .getElementById("resumeSession")
+      .innerHTML = `
+        <strong>Lecture rapide</strong>
+        ${echapperHTML(phraseTerminees)}<br>
+        Temps moyen :
+        ${echapperHTML(
+          afficherDureeCourte(
+            stats.moyenne
+          )
+        )}.<br>
+        Écart maximal :
+        ${echapperHTML(
+          afficherDureeCourte(
+            stats.ecart
+          )
+        )}.
+      `;
+
+    document.title =
+      "Bilan Rebond — " +
+      (session.school_name || "") +
+      " — " +
+      (session.class_name || "");
+
+    message.style.display =
+      "none";
+
+    documentCompteRendu.hidden =
+      false;
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    message.className =
+      "message erreur";
+
+    message.textContent =
+      error.message ||
+      "Impossible de générer le compte rendu.";
+
+  }
+
+}
+
+document
+  .getElementById("imprimer")
+  .addEventListener(
+    "click",
+    async function(){
+
+      if(document.fonts){
+        await document.fonts.ready;
+      }
+
+      window.print();
+
+    }
+  );
+
+chargerCompteRendu();
+</script>
+
+</body>
+</html>

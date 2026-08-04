@@ -128,10 +128,16 @@ h1{
   font-weight:bold;
 }
 
+.actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:24px;
+}
+
 .bouton{
   width:100%;
   min-height:56px;
-  margin-top:24px;
   padding:12px 22px;
   border:0;
   border-radius:999px;
@@ -140,6 +146,15 @@ h1{
   font-size:18px;
   font-weight:bold;
   cursor:pointer;
+  text-decoration:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.bouton-compte-rendu{
+  background:#044e61;
+  color:#ffffff;
 }
 
 .bouton:disabled{
@@ -224,7 +239,8 @@ th{
   }
 
   .grille-infos,
-  .indicateurs{
+  .indicateurs,
+  .actions{
     grid-template-columns:1fr;
   }
 
@@ -299,12 +315,23 @@ th{
 
     </section>
 
-    <button
-      id="boutonActualiser"
-      class="bouton"
-      type="button">
-      Actualiser le suivi
-    </button>
+    <div class="actions">
+
+      <button
+        id="boutonActualiser"
+        class="bouton"
+        type="button">
+        Actualiser le suivi
+      </button>
+
+      <a
+        id="boutonCompteRendu"
+        class="bouton bouton-compte-rendu"
+        href="#">
+        Générer le compte rendu
+      </a>
+
+    </div>
 
     <div
       id="message"
@@ -367,6 +394,9 @@ const aucuneEquipe =
 
 const boutonActualiser =
   document.getElementById("boutonActualiser");
+
+const boutonCompteRendu =
+  document.getElementById("boutonCompteRendu");
 
 const message =
   document.getElementById("message");
@@ -448,6 +478,36 @@ function afficherDuree(secondes){
     String(reste).padStart(2,"0") +
     " s"
   );
+
+}
+
+function preparerLienCompteRendu(){
+
+  if(
+    !code ||
+    !cleGestion
+  ){
+    return;
+  }
+
+  const adresse =
+    new URL(
+      "compte-rendu.html",
+      window.location.href
+    );
+
+  adresse.searchParams.set(
+    "code",
+    code
+  );
+
+  adresse.searchParams.set(
+    "cle",
+    cleGestion
+  );
+
+  boutonCompteRendu.href =
+    adresse.toString();
 
 }
 
@@ -717,6 +777,7 @@ boutonActualiser.addEventListener(
   chargerSession
 );
 
+preparerLienCompteRendu();
 chargerSession();
 </script>
 

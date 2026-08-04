@@ -1,0 +1,17 @@
+INSTALLATION
+
+Déposer dans escapegame_digital/admin/ :
+- compte-rendu.html
+- suivi-session.html
+- page_1.jpg
+- page_2.jpg
+- page_3.jpg
+- page_4.jpg
+
+Le fichier ../js/supabase.js doit déjà appeler rebond_session_dashboard_v2.
+
+Après publication GitHub :
+1. Ouvrir le suivi de session.
+2. Cliquer sur « Générer le compte rendu ».
+3. Vérifier les quatre pages.
+4. Cliquer sur « Télécharger / imprimer le compte rendu ».

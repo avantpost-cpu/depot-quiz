@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Escape Game Rebond</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+html,
+body{
+  width:100%;
+  min-height:100%;
+}
+
+body{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:28px 18px;
+
+  background:#1b5f6e;
+
+  font-family:Arial, Helvetica, sans-serif;
+  color:#044e61;
+}
+
+.page{
+  width:100%;
+  max-width:920px;
+}
+
+.carte{
+  width:100%;
+  padding:46px;
+
+  border-radius:28px;
+
+  background:#ffffff;
+
+  text-align:center;
+}
+
+.logo{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-width:132px;
+  min-height:42px;
+
+  margin-bottom:24px;
+  padding:8px 18px;
+
+  border-radius:999px;
+
+  background:#044e61;
+  color:#ffffff;
+
+  font-size:18px;
+  font-weight:900;
+  letter-spacing:1.5px;
+}
+
+h1{
+  margin-bottom:12px;
+
+  color:#044e61;
+
+  font-size:42px;
+  line-height:1.05;
+}
+
+.sous-titre{
+  max-width:650px;
+  margin:0 auto 36px;
+
+  color:#58777e;
+
+  font-size:18px;
+  line-height:1.5;
+}
+
+.choix{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+}
+
+.bloc{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+
+  min-height:290px;
+  padding:30px 26px;
+
+  border-radius:22px;
+
+  background:#eef6f4;
+}
+
+.bloc.eleve{
+  background:#fbf5df;
+}
+
+.picto{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  width:78px;
+  height:78px;
+
+  margin-bottom:20px;
+
+  border-radius:50%;
+
+  background:#044e61;
+  color:#ffffff;
+
+  font-size:38px;
+  line-height:1;
+}
+
+.bloc.eleve .picto{
+  background:#edb01a;
+  color:#044e61;
+}
+
+.bloc h2{
+  margin-bottom:12px;
+
+  color:#044e61;
+
+  font-size:25px;
+}
+
+.bloc p{
+  flex:1;
+
+  margin-bottom:24px;
+
+  color:#58777e;
+
+  font-size:16px;
+  line-height:1.5;
+}
+
+.bouton{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  width:100%;
+  min-height:56px;
+
+  padding:12px 22px;
+
+  border-radius:999px;
+
+  background:#044e61;
+  color:#ffffff;
+
+  font-size:17px;
+  font-weight:bold;
+  text-decoration:none;
+
+  transition:
+    transform .2s ease,
+    opacity .2s ease;
+}
+
+.bloc.eleve .bouton{
+  background:#edb01a;
+  color:#044e61;
+}
+
+.bouton:hover{
+  transform:translateY(-2px);
+}
+
+.bouton:focus-visible{
+  outline:3px solid #edb01a;
+  outline-offset:4px;
+}
+
+.note{
+  margin-top:26px;
+
+  color:#6b8388;
+
+  font-size:13px;
+  line-height:1.4;
+}
+
+@media screen and (max-width:720px){
+
+  body{
+    align-items:flex-start;
+    padding:18px 12px;
+  }
+
+  .carte{
+    padding:30px 18px;
+  }
+
+  h1{
+    font-size:34px;
+  }
+
+  .sous-titre{
+    font-size:16px;
+  }
+
+  .choix{
+    grid-template-columns:1fr;
+  }
+
+  .bloc{
+    min-height:auto;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<main class="page">
+
+  <section class="carte">
+
+    <div class="logo">
+      REBOND
+    </div>
+
+    <h1>
+      Escape Game pédagogique
+    </h1>
+
+    <p class="sous-titre">
+      Choisis ton accès pour créer une nouvelle session
+      ou rejoindre une partie avec ton équipe.
+    </p>
+
+    <div class="choix">
+
+      <section class="bloc enseignant">
+
+        <div class="picto" aria-hidden="true">
+          👩‍🏫
+        </div>
+
+        <h2>
+          Je suis enseignant·e
+        </h2>
+
+        <p>
+          Crée une session, renseigne ta classe
+          et récupère le code à transmettre aux équipes.
+        </p>
+
+        <a
+          class="bouton"
+          href="admin/creer-session.html">
+          Créer une session
+        </a>
+
+      </section>
+
+      <section class="bloc eleve">
+
+        <div class="picto" aria-hidden="true">
+          🔐
+        </div>
+
+        <h2>
+          Je rejoins une partie
+        </h2>
+
+        <p>
+          Saisis le code transmis par l’adulte
+          et choisis le nom de ton équipe pour commencer.
+        </p>
+
+        <a
+          class="bouton"
+          href="Intro/intro.html">
+          Rejoindre une session
+        </a>
+
+      </section>
+
+    </div>
+
+    <p class="note">
+      Cette page concerne uniquement l’Escape Game Rebond.
+    </p>
+
+  </section>
+
+</main>
+
+</body>
+</html>

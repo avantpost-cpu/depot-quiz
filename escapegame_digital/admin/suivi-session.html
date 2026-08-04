@@ -2,10 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-
-<meta
-  name="viewport"
-  content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Rebond — Suivi de la session</title>
 
@@ -31,7 +28,7 @@ body{
 
 .page{
   width:100%;
-  max-width:760px;
+  max-width:940px;
   margin:0 auto;
 }
 
@@ -67,18 +64,67 @@ h1{
 }
 
 .resume h2{
-  margin-bottom:8px;
-  font-size:23px;
+  margin-bottom:14px;
+  font-size:25px;
 }
 
-.informations{
-  font-size:16px;
-  line-height:1.5;
+.grille-infos{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
 }
 
-.compteur{
+.info{
+  padding:14px;
+  border-radius:12px;
+  background:#ffffff;
+}
+
+.info-label{
+  display:block;
+  margin-bottom:5px;
+  color:#688086;
+  font-size:12px;
+  font-weight:bold;
+  text-transform:uppercase;
+}
+
+.info-valeur{
+  display:block;
+  color:#044e61;
+  font-size:17px;
+  font-weight:bold;
+}
+
+.indicateurs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
   margin-top:16px;
-  font-size:18px;
+}
+
+.indicateur{
+  padding:16px 12px;
+  border-radius:14px;
+  background:#044e61;
+  color:#ffffff;
+  text-align:center;
+}
+
+.indicateur:nth-child(2){
+  background:#edb01a;
+  color:#044e61;
+}
+
+.indicateur strong{
+  display:block;
+  font-size:26px;
+}
+
+.indicateur span{
+  display:block;
+  margin-top:4px;
+  font-size:13px;
   font-weight:bold;
 }
 
@@ -87,31 +133,18 @@ h1{
   min-height:56px;
   margin-top:24px;
   padding:12px 22px;
-
   border:0;
   border-radius:999px;
-
   background:#edb01a;
   color:#044e61;
-
   font-size:18px;
   font-weight:bold;
-
   cursor:pointer;
-
-  transition:
-    transform .2s ease,
-    opacity .2s ease;
-}
-
-.bouton:hover{
-  transform:translateY(-2px);
 }
 
 .bouton:disabled{
   opacity:.55;
   cursor:wait;
-  transform:none;
 }
 
 .message{
@@ -119,7 +152,6 @@ h1{
   margin-top:18px;
   font-size:15px;
   font-weight:bold;
-  line-height:1.4;
 }
 
 .message.erreur{
@@ -143,17 +175,16 @@ table{
 
 th,
 td{
-  padding:15px 12px;
+  padding:14px 10px;
   border-bottom:1px solid #d6e3e6;
   text-align:left;
-  font-size:16px;
+  white-space:nowrap;
 }
 
 th{
   color:#476b73;
-  font-size:14px;
+  font-size:13px;
   text-transform:uppercase;
-  letter-spacing:.4px;
 }
 
 .statut{
@@ -176,14 +207,13 @@ th{
   background:#f3f6f6;
   color:#56747b;
   text-align:center;
-  line-height:1.5;
 }
 
 .aucune-equipe.visible{
   display:block;
 }
 
-@media screen and (max-width:620px){
+@media screen and (max-width:720px){
 
   body{
     padding:18px 12px;
@@ -193,14 +223,9 @@ th{
     padding:25px 18px;
   }
 
-  h1{
-    font-size:29px;
-  }
-
-  th,
-  td{
-    padding:13px 8px;
-    font-size:14px;
+  .grille-infos,
+  .indicateurs{
+    grid-template-columns:1fr;
   }
 
 }
@@ -216,29 +241,60 @@ th{
     <h1>Suivi de la session</h1>
 
     <p class="introduction">
-      Cette page permet de voir les équipes inscrites
-      et celles qui ont terminé l’escape game.
+      Consulte les équipes, leurs horaires
+      et leur durée de jeu.
     </p>
 
-    <section
-      id="resume"
-      class="resume">
+    <section id="resume" class="resume">
 
       <h2 id="nomEcole"></h2>
 
-      <div class="informations">
+      <div class="grille-infos">
 
-        <div id="nomClasse"></div>
+        <div class="info">
+          <span class="info-label">Classe</span>
+          <span id="nomClasse" class="info-valeur"></span>
+        </div>
 
-        <div id="dateSession"></div>
+        <div class="info">
+          <span class="info-label">Enseignant·e</span>
+          <span id="nomEnseignant" class="info-valeur"></span>
+        </div>
 
-        <div id="codeSession"></div>
+        <div class="info">
+          <span class="info-label">Nombre d’élèves</span>
+          <span id="nombreEleves" class="info-valeur"></span>
+        </div>
+
+        <div class="info">
+          <span class="info-label">Date</span>
+          <span id="dateSession" class="info-valeur"></span>
+        </div>
+
+        <div class="info">
+          <span class="info-label">Code</span>
+          <span id="codeSession" class="info-valeur"></span>
+        </div>
 
       </div>
 
-      <div
-        id="compteur"
-        class="compteur">
+      <div class="indicateurs">
+
+        <div class="indicateur">
+          <strong id="nombreEquipes">0</strong>
+          <span>équipes inscrites</span>
+        </div>
+
+        <div class="indicateur">
+          <strong id="nombreTerminees">0</strong>
+          <span>équipes terminées</span>
+        </div>
+
+        <div class="indicateur">
+          <strong id="tempsMoyen">—</strong>
+          <span>temps moyen</span>
+        </div>
+
       </div>
 
     </section>
@@ -261,31 +317,22 @@ th{
       <table id="tableauEquipes">
 
         <thead>
-
           <tr>
-
-            <th>
-              Équipe
-            </th>
-
-            <th>
-              Statut
-            </th>
-
+            <th>Équipe</th>
+            <th>Statut</th>
+            <th>Début</th>
+            <th>Fin</th>
+            <th>Durée</th>
           </tr>
-
         </thead>
 
-        <tbody id="listeEquipes">
-        </tbody>
+        <tbody id="listeEquipes"></tbody>
 
       </table>
 
     </div>
 
-    <div
-      id="aucuneEquipe"
-      class="aucune-equipe">
+    <div id="aucuneEquipe" class="aucune-equipe">
       Aucune équipe n’a encore rejoint cette session.
     </div>
 
@@ -293,41 +340,24 @@ th{
 
 </main>
 
-<!-- Bibliothèque Supabase -->
-
-<script
-  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-</script>
-
-<!-- Configuration Rebond -->
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="../js/config.js"></script>
-
-<!-- Fonctions communes -->
-
 <script src="../js/supabase.js"></script>
 
 <script>
+const parametres =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const code =
+  parametres.get("code");
+
+const cleGestion =
+  parametres.get("cle");
+
 const resume =
   document.getElementById("resume");
-
-const nomEcole =
-  document.getElementById("nomEcole");
-
-const nomClasse =
-  document.getElementById("nomClasse");
-
-const dateSession =
-  document.getElementById("dateSession");
-
-const codeSession =
-  document.getElementById("codeSession");
-
-const compteur =
-  document.getElementById("compteur");
-
-const listeEquipes =
-  document.getElementById("listeEquipes");
 
 const tableauEquipes =
   document.getElementById("tableauEquipes");
@@ -341,26 +371,10 @@ const boutonActualiser =
 const message =
   document.getElementById("message");
 
-/*
-  Le code et la clé privée sont récupérés
-  dans l’adresse de la page.
-*/
-
-const parametres =
-  new URLSearchParams(
-    window.location.search
-  );
-
-const code =
-  parametres.get("code");
-
-const cleGestion =
-  parametres.get("cle");
-
 function afficherDate(dateBrute){
 
   if(!dateBrute){
-    return "";
+    return "—";
   }
 
   const date =
@@ -369,7 +383,70 @@ function afficherDate(dateBrute){
     );
 
   return date.toLocaleDateString(
-    "fr-FR"
+    "fr-FR",
+    {
+      day:"numeric",
+      month:"long",
+      year:"numeric"
+    }
+  );
+
+}
+
+function afficherHeure(dateBrute){
+
+  if(!dateBrute){
+    return "—";
+  }
+
+  return new Date(
+    dateBrute
+  ).toLocaleTimeString(
+    "fr-FR",
+    {
+      hour:"2-digit",
+      minute:"2-digit",
+      second:"2-digit"
+    }
+  );
+
+}
+
+function afficherDuree(secondes){
+
+  if(
+    secondes === null ||
+    secondes === undefined
+  ){
+    return "—";
+  }
+
+  const total =
+    Number(secondes);
+
+  const heures =
+    Math.floor(total / 3600);
+
+  const minutes =
+    Math.floor(
+      (total % 3600) / 60
+    );
+
+  const reste =
+    total % 60;
+
+  if(heures > 0){
+    return (
+      heures + " h " +
+      String(minutes).padStart(2,"0") +
+      " min"
+    );
+  }
+
+  return (
+    minutes + " min " +
+    String(reste).padStart(2,"0") +
+    " s"
   );
 
 }
@@ -379,7 +456,9 @@ async function chargerSession(){
   message.textContent = "";
   message.className = "message";
 
-  listeEquipes.innerHTML = "";
+  document
+    .getElementById("listeEquipes")
+    .innerHTML = "";
 
   aucuneEquipe.classList.remove(
     "visible"
@@ -412,23 +491,120 @@ async function chargerSession(){
 
     const donnees =
       await window.REBOND_DB.chargerSuivi({
-        code:code,
-        cleGestion:cleGestion
+        code,
+        cleGestion
       });
-
-    /*
-      Si aucune équipe n’est inscrite,
-      Supabase peut renvoyer un tableau vide.
-    */
 
     if(
       !donnees ||
       donnees.length === 0
     ){
-
-      resume.classList.remove(
-        "visible"
+      throw new Error(
+        "Aucune donnée de session reçue."
       );
+    }
+
+    const session =
+      donnees[0];
+
+    document
+      .getElementById("nomEcole")
+      .textContent =
+        session.school_name || "Établissement";
+
+    document
+      .getElementById("nomClasse")
+      .textContent =
+        session.class_name || "—";
+
+    document
+      .getElementById("nomEnseignant")
+      .textContent =
+        session.teacher_name || "—";
+
+    document
+      .getElementById("nombreEleves")
+      .textContent =
+        session.student_count ?? "—";
+
+    document
+      .getElementById("dateSession")
+      .textContent =
+        afficherDate(
+          session.session_date
+        );
+
+    document
+      .getElementById("codeSession")
+      .textContent =
+        code;
+
+    const equipes =
+      donnees.filter(
+        function(ligne){
+          return Boolean(
+            ligne.team_name
+          );
+        }
+      );
+
+    const terminees =
+      equipes.filter(
+        function(equipe){
+          return equipe.completed === true;
+        }
+      );
+
+    const durees =
+      terminees
+        .map(
+          function(equipe){
+            return equipe.duration_seconds;
+          }
+        )
+        .filter(
+          function(duree){
+            return (
+              duree !== null &&
+              duree !== undefined
+            );
+          }
+        );
+
+    const moyenne =
+      durees.length
+        ? Math.round(
+            durees.reduce(
+              function(total,duree){
+                return total + Number(duree);
+              },
+              0
+            ) / durees.length
+          )
+        : null;
+
+    document
+      .getElementById("nombreEquipes")
+      .textContent =
+        equipes.length;
+
+    document
+      .getElementById("nombreTerminees")
+      .textContent =
+        terminees.length;
+
+    document
+      .getElementById("tempsMoyen")
+      .textContent =
+        moyenne === null
+          ? "—"
+          : afficherDuree(moyenne);
+
+    resume.classList.add(
+      "visible"
+    );
+
+    if(equipes.length === 0){
 
       tableauEquipes.style.display =
         "none";
@@ -437,115 +613,67 @@ async function chargerSession(){
         "visible"
       );
 
-      message.className =
-        "message succes";
-
-      message.textContent =
-        "La session est active.";
-
-      return;
-
     }
+    else{
 
-    /*
-      Les informations de la session sont identiques
-      sur chaque ligne. On les récupère sur la première.
-    */
+      tableauEquipes.style.display =
+        "table";
 
-    const premiereLigne =
-      donnees[0];
+      const listeEquipes =
+        document.getElementById(
+          "listeEquipes"
+        );
 
-    nomEcole.textContent =
-      premiereLigne.school_name;
+      equipes.forEach(
+        function(equipe){
 
-    nomClasse.textContent =
-      "Classe : " +
-      premiereLigne.class_name;
+          const ligne =
+            document.createElement("tr");
 
-    dateSession.textContent =
-      "Date : " +
-      afficherDate(
-        premiereLigne.session_date
+          ligne.innerHTML = `
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          `;
+
+          ligne.children[0].textContent =
+            equipe.team_name;
+
+          ligne.children[1].textContent =
+            equipe.completed
+              ? "Terminée ✓"
+              : "En cours";
+
+          ligne.children[1].className =
+            equipe.completed
+              ? "statut terminee"
+              : "statut encours";
+
+          ligne.children[2].textContent =
+            afficherHeure(
+              equipe.started_at
+            );
+
+          ligne.children[3].textContent =
+            afficherHeure(
+              equipe.completed_at
+            );
+
+          ligne.children[4].textContent =
+            afficherDuree(
+              equipe.duration_seconds
+            );
+
+          listeEquipes.appendChild(
+            ligne
+          );
+
+        }
       );
 
-    codeSession.textContent =
-      "Code : " + code;
-
-    const nombreTotal =
-      donnees.length;
-
-    const nombreTerminees =
-      donnees.filter(
-        function(equipe){
-          return equipe.completed === true;
-        }
-      ).length;
-
-    compteur.textContent =
-      nombreTerminees +
-      " équipe(s) terminée(s) sur " +
-      nombreTotal;
-
-    resume.classList.add(
-      "visible"
-    );
-
-    tableauEquipes.style.display =
-      "table";
-
-    donnees.forEach(
-      function(equipe){
-
-        const ligne =
-          document.createElement("tr");
-
-        const celluleNom =
-          document.createElement("td");
-
-        celluleNom.textContent =
-          equipe.team_name;
-
-        const celluleStatut =
-          document.createElement("td");
-
-        celluleStatut.className =
-          "statut";
-
-        if(equipe.completed){
-
-          celluleStatut.textContent =
-            "Terminée ✓";
-
-          celluleStatut.classList.add(
-            "terminee"
-          );
-
-        }
-        else{
-
-          celluleStatut.textContent =
-            "En cours";
-
-          celluleStatut.classList.add(
-            "encours"
-          );
-
-        }
-
-        ligne.appendChild(
-          celluleNom
-        );
-
-        ligne.appendChild(
-          celluleStatut
-        );
-
-        listeEquipes.appendChild(
-          ligne
-        );
-
-      }
-    );
+    }
 
     message.className =
       "message succes";
@@ -588,10 +716,6 @@ boutonActualiser.addEventListener(
   "click",
   chargerSession
 );
-
-/*
-  Chargement automatique à l’ouverture.
-*/
 
 chargerSession();
 </script>

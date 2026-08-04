@@ -302,6 +302,40 @@ input:focus{
 
         </div>
 
+        <div class="champ">
+
+          <label for="enseignant">
+            Nom de l’enseignant·e *
+          </label>
+
+          <input
+            id="enseignant"
+            name="enseignant"
+            type="text"
+            placeholder="Ex. Mme Dupont"
+            autocomplete="name"
+            required>
+
+        </div>
+
+        <div class="champ">
+
+          <label for="nombreEleves">
+            Nombre d’élèves *
+          </label>
+
+          <input
+            id="nombreEleves"
+            name="nombreEleves"
+            type="number"
+            min="1"
+            max="200"
+            step="1"
+            inputmode="numeric"
+            required>
+
+        </div>
+
         <div class="champ champ-large">
 
           <label for="email">
@@ -368,18 +402,11 @@ input:focus{
 
 </main>
 
-<!-- Bibliothèque officielle Supabase -->
-
 <script
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<!-- Configuration du projet -->
-
 <script src="../js/config.js"></script>
-
-<!-- Fonctions communes Rebond -->
-
 <script src="../js/supabase.js"></script>
 
 <script>
@@ -401,19 +428,11 @@ const codeSession =
 const lienSuivi =
   document.getElementById("lienSuivi");
 
-/*
-  La date du jour est proposée automatiquement.
-*/
-
 const dateSession =
   document.getElementById("dateSession");
 
 dateSession.value =
   new Date().toISOString().slice(0, 10);
-
-/*
-  Création de la session.
-*/
 
 formulaireSession.addEventListener(
   "submit",
@@ -440,6 +459,19 @@ formulaireSession.addEventListener(
         .value
         .trim();
 
+    const enseignant =
+      document
+        .getElementById("enseignant")
+        .value
+        .trim();
+
+    const nombreEleves =
+      Number(
+        document
+          .getElementById("nombreEleves")
+          .value
+      );
+
     const email =
       document
         .getElementById("email")
@@ -452,8 +484,11 @@ formulaireSession.addEventListener(
     if(
       !ecole ||
       !classe ||
+      !enseignant ||
       !email ||
-      !date
+      !date ||
+      !Number.isInteger(nombreEleves) ||
+      nombreEleves < 1
     ){
 
       message.className =
@@ -474,21 +509,16 @@ formulaireSession.addEventListener(
 
       const session =
         await window.REBOND_DB.creerSession({
-          ecole:ecole,
-          classe:classe,
-          email:email,
-          date:date
+          ecole,
+          classe,
+          email,
+          date,
+          enseignant,
+          nombreEleves
         });
 
       codeSession.textContent =
         session.code;
-
-      /*
-        Création du lien privé de suivi.
-
-        La page suivi-session.html sera créée
-        à l’étape suivante.
-      */
 
       const adresseSuivi =
         new URL(

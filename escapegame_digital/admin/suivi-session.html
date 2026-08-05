@@ -74,17 +74,17 @@ body{
   display:flex;
   flex-direction:column;
   align-items:flex-start;
-  justify-content:flex-start;
+  justify-content:center;
 
   overflow:hidden;
 
-  padding:
-    2.05%
-    2.1%
-    0;
+  /* Le canevas fait toujours 999 px :
+     on utilise donc des valeurs fixes pour éviter
+     le décalage provoqué par les paddings en %. */
+  padding:0 22px;
 
   color:#044e61;
-  line-height:1.1;
+  line-height:1;
 }
 
 .info-label{
@@ -97,6 +97,7 @@ body{
   font-size:11px;
 
   font-weight:800;
+  line-height:1;
   text-transform:uppercase;
 
   white-space:nowrap;
@@ -106,7 +107,7 @@ body{
   display:block;
 
   width:100%;
-  margin-top:7px;
+  margin-top:5px;
 
   overflow:hidden;
 
@@ -115,6 +116,7 @@ body{
   font-size:18px;
 
   font-weight:800;
+  line-height:1;
 
   text-overflow:ellipsis;
   white-space:nowrap;
@@ -176,9 +178,11 @@ body{
   align-items:center;
   justify-content:center;
 
-  padding-bottom:.4%;
+  padding-bottom:2px;
 
   color:#ffffff;
+
+  transform:translateY(-3px);
 
   text-align:center;
   line-height:1;
@@ -220,7 +224,7 @@ body{
 .indicateur-label{
   display:block;
 
-  margin-top:7px;
+  margin-top:4px;
 
   font-size:11px;
 
@@ -239,10 +243,10 @@ body{
   position:absolute;
 
   left:8.7%;
-  top:78.3%;
+  top:76.75%;
 
   width:82.8%;
-  height:11.2%;
+  height:12.75%;
 
   overflow:hidden;
 
@@ -296,10 +300,10 @@ body{
   align-items:center;
 
   width:100%;
-  min-height:25px;
+  min-height:26px;
 
   padding:
-    2px
+    3px
     10px;
 
   border-bottom:
@@ -870,8 +874,8 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=3"></script>
-<script src="../js/supabase.js?v=3"></script>
+<script src="../js/config.js?v=4"></script>
+<script src="../js/supabase.js?v=4"></script>
 
 <script>
 const parametres =

@@ -28,14 +28,13 @@ body{
 }
 
 body{
-  display:flex;
-  justify-content:center;
-  align-items:flex-start;
-
+  min-width:999px;
   min-height:100vh;
   min-height:100dvh;
 
-  padding:22px 12px;
+  padding:22px 0 30px;
+
+  overflow-x:auto;
 }
 
 /* ======================================================
@@ -43,8 +42,11 @@ body{
 ====================================================== */
 
 .page{
-  width:100%;
-  max-width:970px;
+  width:999px;
+  min-width:999px;
+  max-width:none;
+
+  margin:0 auto;
 }
 
 .tableau-bord{
@@ -92,11 +94,7 @@ body{
 
   color:#688086;
 
-  font-size:clamp(
-    7px,
-    .88vw,
-    11px
-  );
+  font-size:11px;
 
   font-weight:800;
   text-transform:uppercase;
@@ -114,11 +112,7 @@ body{
 
   color:#044e61;
 
-  font-size:clamp(
-    11px,
-    1.45vw,
-    18px
-  );
+  font-size:18px;
 
   font-weight:800;
 
@@ -217,11 +211,7 @@ body{
 .indicateur-nombre{
   display:block;
 
-  font-size:clamp(
-    20px,
-    3.05vw,
-    39px
-  );
+  font-size:39px;
 
   font-weight:900;
   line-height:1;
@@ -232,11 +222,7 @@ body{
 
   margin-top:7px;
 
-  font-size:clamp(
-    7px,
-    .86vw,
-    11px
-  );
+  font-size:11px;
 
   font-weight:800;
 
@@ -322,11 +308,7 @@ body{
 
   color:#044e61;
 
-  font-size:clamp(
-    8px,
-    1vw,
-    13px
-  );
+  font-size:13px;
 
   line-height:1.1;
 
@@ -433,11 +415,7 @@ body{
 
   background:rgba(255,255,255,.72);
 
-  font-size:clamp(
-    7px,
-    .82vw,
-    10px
-  );
+  font-size:10px;
 
   font-weight:800;
 
@@ -478,11 +456,7 @@ body{
 
   color:#647f85;
 
-  font-size:clamp(
-    9px,
-    1.05vw,
-    13px
-  );
+  font-size:13px;
 
   font-weight:bold;
 
@@ -639,11 +613,7 @@ body{
   background:rgba(255,255,255,.96);
   color:#044e61;
 
-  font-size:clamp(
-    7px,
-    .85vw,
-    10px
-  );
+  font-size:10px;
 
   font-weight:bold;
   text-align:center;
@@ -687,73 +657,24 @@ body{
 }
 
 /* ======================================================
-   RESPONSIVE
+   ÉCRANS PLUS PETITS
 ====================================================== */
 
-@media screen and (max-width:720px){
+/*
+  Le tableau de bord conserve toujours son canevas de 999 px,
+  comme les pages d’énigmes. Sur un écran plus étroit,
+  la page reste intacte et le navigateur permet simplement
+  un défilement horizontal.
+*/
+
+@media screen and (max-width:999px){
 
   body{
-    padding:8px 3px;
-  }
-
-  .page{
-    width:100%;
-  }
-
-  .ligne-equipe{
-    grid-template-columns:
-      1.75fr
-      .72fr
-      1.05fr
-      .88fr;
-
-    min-height:22px;
-
-    padding-left:6px;
-    padding-right:6px;
-  }
-
-  .puce-statut{
-    width:6px;
-    height:6px;
-
-    margin-right:5px;
-  }
-
-  .statut{
-    min-width:48px;
-
-    padding:3px 4px;
-  }
-
-  .temoin-suivi{
-    width:7px;
-    height:7px;
+    min-width:999px;
   }
 
 }
 
-@media screen and (max-width:470px){
-
-  .ligne-equipe{
-    grid-template-columns:
-      1.55fr
-      .65fr
-      .95fr
-      .8fr;
-
-    min-height:19px;
-
-    font-size:7px;
-  }
-
-  .statut{
-    min-width:42px;
-
-    font-size:6px;
-  }
-
-}
 </style>
 </head>
 
@@ -949,8 +870,8 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=2"></script>
-<script src="../js/supabase.js?v=2"></script>
+<script src="../js/config.js?v=3"></script>
+<script src="../js/supabase.js?v=3"></script>
 
 <script>
 const parametres =

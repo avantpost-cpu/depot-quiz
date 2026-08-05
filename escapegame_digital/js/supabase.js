@@ -21,6 +21,10 @@
       config.supabaseKey
     );
 
+  /* ======================================================
+     CRÉER UNE SESSION
+  ====================================================== */
+
   async function creerSession({
     ecole,
     classe,
@@ -34,12 +38,23 @@
       await client.rpc(
         "rebond_create_session",
         {
-          p_school_name: ecole,
-          p_class_name: classe,
-          p_organizer_email: email,
-          p_session_date: date,
-          p_teacher_name: enseignant,
-          p_student_count: nombreEleves
+          p_school_name:
+            ecole,
+
+          p_class_name:
+            classe,
+
+          p_organizer_email:
+            email,
+
+          p_session_date:
+            date,
+
+          p_teacher_name:
+            enseignant,
+
+          p_student_count:
+            nombreEleves
         }
       );
 
@@ -47,7 +62,10 @@
       throw error;
     }
 
-    if(!data || !data[0]){
+    if(
+      !data ||
+      !data[0]
+    ){
       throw new Error(
         "La session n’a pas pu être créée."
       );
@@ -66,6 +84,10 @@
 
   }
 
+  /* ======================================================
+     REJOINDRE UNE SESSION
+  ====================================================== */
+
   async function rejoindreSession({
     code,
     equipe
@@ -75,8 +97,11 @@
       await client.rpc(
         "rebond_join_session",
         {
-          p_session_code: code,
-          p_team_name: equipe
+          p_session_code:
+            code,
+
+          p_team_name:
+            equipe
         }
       );
 
@@ -84,7 +109,10 @@
       throw error;
     }
 
-    if(!data || !data[0]){
+    if(
+      !data ||
+      !data[0]
+    ){
       throw new Error(
         "Impossible de rejoindre cette session."
       );
@@ -115,12 +143,18 @@
 
     localStorage.setItem(
       "rebondCurrentTeam",
-      JSON.stringify(participation)
+      JSON.stringify(
+        participation
+      )
     );
 
     return participation;
 
   }
+
+  /* ======================================================
+     TERMINER UNE PARTIE
+  ====================================================== */
 
   async function terminerPartie(){
 
@@ -136,7 +170,9 @@
     }
 
     const participation =
-      JSON.parse(donnees);
+      JSON.parse(
+        donnees
+      );
 
     const { data, error } =
       await client.rpc(
@@ -164,6 +200,10 @@
 
   }
 
+  /* ======================================================
+     CHARGER LE TABLEAU DE BORD
+  ====================================================== */
+
   async function chargerSuivi({
     code,
     cleGestion
@@ -189,6 +229,69 @@
 
   }
 
+  /* ======================================================
+     RETROUVER UNE SESSION AVEC SON CODE
+  ====================================================== */
+
+  async function retrouverSession({
+    code
+  }){
+
+    const codeNettoye =
+      String(
+        code || ""
+      )
+        .trim()
+        .toUpperCase();
+
+    if(!codeNettoye){
+      throw new Error(
+        "Saisis un code de session."
+      );
+    }
+
+    const { data, error } =
+      await client.rpc(
+        "rebond_retrouver_session",
+        {
+          p_session_code:
+            codeNettoye
+        }
+      );
+
+    if(error){
+
+      console.error(error);
+
+      throw new Error(
+        "Impossible de retrouver cette session."
+      );
+
+    }
+
+    if(
+      !data ||
+      !data[0]
+    ){
+      throw new Error(
+        "Ce code de session est introuvable."
+      );
+    }
+
+    return {
+      code:
+        data[0].session_code,
+
+      cleGestion:
+        data[0].management_token
+    };
+
+  }
+
+  /* ======================================================
+     LIRE L’ÉQUIPE COURANTE
+  ====================================================== */
+
   function lireEquipeCourante(){
 
     const donnees =
@@ -201,13 +304,28 @@
     }
 
     try{
-      return JSON.parse(donnees);
+
+      return JSON.parse(
+        donnees
+      );
+
     }
     catch(error){
+
+      console.error(
+        "Impossible de lire les données de l’équipe.",
+        error
+      );
+
       return null;
+
     }
 
   }
+
+  /* ======================================================
+     API PUBLIQUE REBOND
+  ====================================================== */
 
   window.REBOND_DB = {
     client,
@@ -215,6 +333,7 @@
     rejoindreSession,
     terminerPartie,
     chargerSuivi,
+    retrouverSession,
     lireEquipeCourante
   };
 

@@ -253,10 +253,10 @@ body{
   position:absolute;
 
   left:8.7%;
-  top:75.6%;
+  top:75.4%;
 
   width:82.8%;
-  height:13.9%;
+  height:14.2%;
 
   overflow:hidden;
 
@@ -264,9 +264,9 @@ body{
 }
 
 /*
-  Les intitulés ÉQUIPE, DÉBUT,
+  Les titres ÉQUIPE, DÉBUT,
   TEMPS ÉCOULÉ et ÉTAT sont déjà
-  dessinés dans valid_3.png.
+  inscrits dans valid_3.png.
 */
 
 .liste-equipes{
@@ -296,17 +296,15 @@ body{
   background:rgba(4,78,97,.25);
 }
 
-/*
-  Une ligne correspond à une équipe.
-*/
+/* Une ligne correspond à une équipe */
 
 .ligne-equipe{
   display:grid;
 
   grid-template-columns:
     2.05fr
-    .78fr
-    1.15fr
+    .82fr
+    1.18fr
     .92fr;
 
   align-items:center;
@@ -329,6 +327,24 @@ body{
   );
 
   line-height:1.15;
+
+  animation:
+    apparitionLigne
+    .25s ease;
+}
+
+@keyframes apparitionLigne{
+
+  from{
+    opacity:0;
+    transform:translateY(4px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+
 }
 
 /* ======================================================
@@ -537,48 +553,62 @@ body{
 }
 
 /* ======================================================
-   ÉTAT DU SUIVI EN DIRECT
+   PETIT POINT VERT SUR LE BOUTON DE SUIVI
 ====================================================== */
 
-.etat-direct{
+.temoin-suivi{
   position:absolute;
 
-  left:21%;
-  top:33.65%;
+  left:22.2%;
+  top:28.75%;
 
-  z-index:4;
+  z-index:5;
 
-  display:none;
-  align-items:center;
-  justify-content:center;
-
-  width:28.3%;
-
-  color:#087f52;
-
-  font-size:clamp(
-    7px,
-    .9vw,
-    11px
-  );
-
-  font-weight:bold;
-  text-align:center;
-}
-
-.etat-direct.visible{
-  display:flex;
-}
-
-.point-direct{
-  width:8px;
-  height:8px;
-
-  margin-right:6px;
+  width:10px;
+  height:10px;
 
   border-radius:50%;
 
-  background:#1ac87b;
+  background:#8ea3a7;
+
+  opacity:0;
+
+  pointer-events:none;
+
+  transition:
+    opacity .2s ease,
+    background-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.temoin-suivi.actif{
+  opacity:1;
+
+  background:#21dc84;
+
+  box-shadow:
+    0 0 5px rgba(33,220,132,.9),
+    0 0 12px rgba(33,220,132,.75),
+    0 0 20px rgba(33,220,132,.45);
+
+  animation:
+    pulsationTemoin
+    1.5s ease-in-out infinite;
+}
+
+@keyframes pulsationTemoin{
+
+  0%,
+  100%{
+    transform:scale(1);
+    opacity:1;
+  }
+
+  50%{
+    transform:scale(1.18);
+    opacity:.78;
+  }
+
 }
 
 /* ======================================================
@@ -591,7 +621,7 @@ body{
   left:31%;
   top:33.55%;
 
-  z-index:5;
+  z-index:6;
 
   width:38%;
   min-height:22px;
@@ -692,6 +722,11 @@ body{
     min-width:48px;
 
     padding:3px 4px;
+  }
+
+  .temoin-suivi{
+    width:7px;
+    height:7px;
   }
 
 }
@@ -863,17 +898,13 @@ body{
 
     </section>
 
-    <!-- ÉTAT DU SUIVI -->
+    <!-- POINT LUMINEUX DU SUIVI -->
 
-    <div
-      id="etatDirect"
-      class="etat-direct">
-
-      <span class="point-direct"></span>
-
-      Suivi en direct activé
-
-    </div>
+    <span
+      id="temoinSuivi"
+      class="temoin-suivi"
+      aria-hidden="true">
+    </span>
 
     <!-- BOUTONS -->
 
@@ -881,7 +912,7 @@ body{
       id="boutonActualiser"
       class="bouton bouton-suivi"
       type="button"
-      aria-label="Activer ou désactiver le suivi en direct">
+      aria-label="Activer le suivi en direct">
 
       <span class="visuellement-cache">
         Activer le suivi
@@ -901,7 +932,10 @@ body{
 
     </a>
 
-    <div id="message" class="message" aria-live="polite"></div>
+    <div
+      id="message"
+      class="message"
+      aria-live="polite"></div>
 
   </section>
 
@@ -946,9 +980,9 @@ const boutonCompteRendu =
     "boutonCompteRendu"
   );
 
-const etatDirect =
+const temoinSuivi =
   document.getElementById(
-    "etatDirect"
+    "temoinSuivi"
   );
 
 const message =
@@ -1081,15 +1115,11 @@ function afficherDuree(secondes){
 function calculerDureeEquipe(equipe){
 
   if(equipe.completed){
-
     return equipe.duration_seconds;
-
   }
 
   if(!equipe.started_at){
-
     return null;
-
   }
 
   const debut =
@@ -1224,13 +1254,8 @@ function creerLigneEquipe(equipe){
   nom.textContent =
     equipe.team_name;
 
-  celluleNom.appendChild(
-    puce
-  );
-
-  celluleNom.appendChild(
-    nom
-  );
+  celluleNom.appendChild(puce);
+  celluleNom.appendChild(nom);
 
   const celluleDebut =
     document.createElement(
@@ -1341,7 +1366,7 @@ function afficherEquipes(equipes){
 }
 
 /* ======================================================
-   ACTUALISATION LOCALE DES CHRONOMÈTRES
+   ACTUALISATION DES CHRONOMÈTRES
 ====================================================== */
 
 function actualiserChronometres(){
@@ -1423,41 +1448,31 @@ async function chargerSession(
       donnees[0];
 
     document
-      .getElementById(
-        "nomEcole"
-      )
+      .getElementById("nomEcole")
       .textContent =
         session.school_name ||
         "Établissement";
 
     document
-      .getElementById(
-        "nomClasse"
-      )
+      .getElementById("nomClasse")
       .textContent =
         session.class_name ||
         "—";
 
     document
-      .getElementById(
-        "nomEnseignant"
-      )
+      .getElementById("nomEnseignant")
       .textContent =
         session.teacher_name ||
         "—";
 
     document
-      .getElementById(
-        "nombreEleves"
-      )
+      .getElementById("nombreEleves")
       .textContent =
         session.student_count ??
         "—";
 
     document
-      .getElementById(
-        "dateSession"
-      )
+      .getElementById("dateSession")
       .textContent =
         afficherDate(
           session.session_date
@@ -1500,23 +1515,17 @@ async function chargerSession(
       );
 
     document
-      .getElementById(
-        "nombreEquipes"
-      )
+      .getElementById("nombreEquipes")
       .textContent =
         equipes.length;
 
     document
-      .getElementById(
-        "nombreEnJeu"
-      )
+      .getElementById("nombreEnJeu")
       .textContent =
         enJeu.length;
 
     document
-      .getElementById(
-        "nombreTerminees"
-      )
+      .getElementById("nombreTerminees")
       .textContent =
         terminees.length;
 
@@ -1573,8 +1582,13 @@ function activerSuivi(){
 
   suiviAutomatique = true;
 
-  etatDirect.classList.add(
-    "visible"
+  temoinSuivi.classList.add(
+    "actif"
+  );
+
+  boutonActualiser.setAttribute(
+    "aria-label",
+    "Désactiver le suivi en direct"
   );
 
   chargerSession(false);
@@ -1599,8 +1613,13 @@ function desactiverSuivi(){
 
   suiviAutomatique = false;
 
-  etatDirect.classList.remove(
-    "visible"
+  temoinSuivi.classList.remove(
+    "actif"
+  );
+
+  boutonActualiser.setAttribute(
+    "aria-label",
+    "Activer le suivi en direct"
   );
 
   if(minuterieSuivi){

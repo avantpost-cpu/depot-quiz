@@ -23,11 +23,7 @@ body{
 
   background:#1b5f6e;
 
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
+  font-family:Arial, Helvetica, sans-serif;
   color:#044e61;
 }
 
@@ -55,7 +51,6 @@ body{
   position:relative;
 
   width:100%;
-
   aspect-ratio:2048 / 1763;
 
   background:
@@ -76,48 +71,56 @@ body{
 
   display:flex;
   flex-direction:column;
-  justify-content:center;
+  align-items:flex-start;
+  justify-content:flex-start;
 
   overflow:hidden;
 
-  padding:0 2%;
+  padding:
+    2.05%
+    2.1%
+    0;
 
   color:#044e61;
-
-  line-height:1.15;
+  line-height:1.1;
 }
 
 .info-label{
   display:block;
 
-  margin-bottom:4px;
+  margin:0;
 
-  color:#70868b;
+  color:#688086;
 
   font-size:clamp(
     7px,
-    .9vw,
+    .88vw,
     11px
   );
 
-  font-weight:bold;
+  font-weight:800;
   text-transform:uppercase;
+
+  white-space:nowrap;
 }
 
 .info-valeur{
   display:block;
+
+  width:100%;
+  margin-top:7px;
 
   overflow:hidden;
 
   color:#044e61;
 
   font-size:clamp(
-    10px,
-    1.35vw,
-    17px
+    11px,
+    1.45vw,
+    18px
   );
 
-  font-weight:bold;
+  font-weight:800;
 
   text-overflow:ellipsis;
   white-space:nowrap;
@@ -126,49 +129,49 @@ body{
 /* Première rangée */
 
 .info-structure{
-  left:8.6%;
-  top:36.1%;
+  left:9.15%;
+  top:36.95%;
 
-  width:27.9%;
-  height:8.1%;
+  width:27.55%;
+  height:7.45%;
 }
 
 .info-classe{
-  left:37.6%;
-  top:36.1%;
+  left:37.8%;
+  top:36.95%;
 
-  width:27.9%;
-  height:8.1%;
+  width:27.55%;
+  height:7.45%;
 }
 
 .info-date{
-  left:66.8%;
-  top:36.1%;
+  left:66.45%;
+  top:36.95%;
 
-  width:27.9%;
-  height:8.1%;
+  width:27.5%;
+  height:7.45%;
 }
 
 /* Deuxième rangée */
 
 .info-encadrant{
-  left:8.6%;
-  top:45.7%;
+  left:9.15%;
+  top:46.15%;
 
-  width:27.9%;
-  height:8.1%;
+  width:27.55%;
+  height:7.45%;
 }
 
 .info-participants{
-  left:37.6%;
-  top:45.7%;
+  left:37.8%;
+  top:46.15%;
 
-  width:27.9%;
-  height:8.1%;
+  width:27.55%;
+  height:7.45%;
 }
 
 /* ======================================================
-   LES TROIS INDICATEURS
+   INDICATEURS
 ====================================================== */
 
 .indicateur{
@@ -179,129 +182,109 @@ body{
   align-items:center;
   justify-content:center;
 
+  padding-bottom:.4%;
+
   color:#ffffff;
 
   text-align:center;
-
   line-height:1;
 }
 
 .indicateur-inscrites{
-  left:9.2%;
-  top:56.2%;
+  left:9.8%;
+  top:56.45%;
 
-  width:27.2%;
-  height:10.2%;
+  width:26.65%;
+  height:9.6%;
 }
 
 .indicateur-enjeu{
-  left:38.3%;
-  top:56.2%;
+  left:38.4%;
+  top:56.45%;
 
-  width:27.2%;
-  height:10.2%;
+  width:26.65%;
+  height:9.6%;
 }
 
 .indicateur-terminees{
-  left:66.9%;
-  top:56.2%;
+  left:66.95%;
+  top:56.45%;
 
-  width:27.2%;
-  height:10.2%;
+  width:26.65%;
+  height:9.6%;
 }
 
 .indicateur-nombre{
   display:block;
 
   font-size:clamp(
-    18px,
-    3vw,
-    38px
+    20px,
+    3.05vw,
+    39px
   );
 
   font-weight:900;
+  line-height:1;
 }
 
 .indicateur-label{
   display:block;
 
-  margin-top:5px;
+  margin-top:7px;
 
   font-size:clamp(
     7px,
-    .9vw,
+    .86vw,
     11px
   );
 
-  font-weight:bold;
+  font-weight:800;
 
+  line-height:1;
   text-transform:uppercase;
-  letter-spacing:.4px;
+  letter-spacing:.25px;
 }
 
 /* ======================================================
-   LISTE DES ÉQUIPES
+   TABLEAU DYNAMIQUE DES ÉQUIPES
 ====================================================== */
 
 .zone-equipes{
   position:absolute;
 
   left:8.7%;
-  top:74.2%;
+  top:75.6%;
 
-  width:82.7%;
-  height:16.4%;
+  width:82.8%;
+  height:13.9%;
 
   overflow:hidden;
 
   color:#044e61;
 }
 
-.entete-equipes{
-  display:grid;
-
-  grid-template-columns:
-    minmax(130px,1.7fr)
-    minmax(75px,.7fr)
-    minmax(105px,1fr)
-    minmax(85px,.8fr);
-
-  align-items:center;
-
-  min-height:30px;
-
-  padding:0 10px;
-
-  border-bottom:
-    1px solid
-    rgba(4,78,97,.25);
-
-  color:#486e76;
-
-  font-size:clamp(
-    8px,
-    .9vw,
-    11px
-  );
-
-  font-weight:bold;
-
-  text-transform:uppercase;
-}
+/*
+  Les intitulés ÉQUIPE, DÉBUT,
+  TEMPS ÉCOULÉ et ÉTAT sont déjà
+  dessinés dans valid_3.png.
+*/
 
 .liste-equipes{
-  height:calc(100% - 30px);
+  width:100%;
+  height:100%;
 
   overflow-y:auto;
 
+  padding-top:2px;
+
   scrollbar-width:thin;
   scrollbar-color:
-    rgba(4,78,97,.35)
+    rgba(4,78,97,.28)
     transparent;
 }
 
 .liste-equipes::-webkit-scrollbar{
-  width:6px;
+  width:5px;
 }
 
 .liste-equipes::-webkit-scrollbar-track{
@@ -310,34 +293,47 @@ body{
 
 .liste-equipes::-webkit-scrollbar-thumb{
   border-radius:999px;
-  background:rgba(4,78,97,.28);
+  background:rgba(4,78,97,.25);
 }
+
+/*
+  Une ligne correspond à une équipe.
+*/
 
 .ligne-equipe{
   display:grid;
 
   grid-template-columns:
-    minmax(130px,1.7fr)
-    minmax(75px,.7fr)
-    minmax(105px,1fr)
-    minmax(85px,.8fr);
+    2.05fr
+    .78fr
+    1.15fr
+    .92fr;
 
   align-items:center;
 
-  min-height:32px;
+  width:100%;
+  min-height:28px;
 
-  padding:4px 10px;
+  padding:2px 10px;
 
   border-bottom:
     1px solid
-    rgba(4,78,97,.13);
+    rgba(4,78,97,.14);
+
+  color:#044e61;
 
   font-size:clamp(
     8px,
     1vw,
     13px
   );
+
+  line-height:1.15;
 }
+
+/* ======================================================
+   NOM DE L’ÉQUIPE
+====================================================== */
 
 .nom-equipe{
   display:flex;
@@ -345,7 +341,7 @@ body{
 
   min-width:0;
 
-  font-weight:bold;
+  font-weight:700;
 }
 
 .nom-equipe-texte{
@@ -358,14 +354,12 @@ body{
 .puce-statut{
   flex:0 0 auto;
 
-  width:9px;
-  height:9px;
+  width:8px;
+  height:8px;
 
   margin-right:9px;
 
   border-radius:50%;
-
-  background:#aebec1;
 }
 
 .puce-statut.attente{
@@ -380,11 +374,27 @@ body{
   background:#e76f42;
 }
 
+/* ======================================================
+   HEURE ET DURÉE
+====================================================== */
+
 .heure,
 .duree{
-  font-variant-numeric:
-    tabular-nums;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
 }
+
+.duree{
+  font-weight:600;
+}
+
+.ligne-equipe.terminee .duree{
+  color:#e76f42;
+}
+
+/* ======================================================
+   BADGES D’ÉTAT
+====================================================== */
 
 .statut{
   display:inline-flex;
@@ -393,9 +403,9 @@ body{
 
   justify-self:start;
 
-  min-width:70px;
+  min-width:72px;
 
-  padding:4px 9px;
+  padding:3px 9px;
 
   border:
     1px solid
@@ -403,28 +413,34 @@ body{
 
   border-radius:999px;
 
+  background:rgba(255,255,255,.72);
+
   font-size:clamp(
     7px,
-    .9vw,
-    11px
+    .82vw,
+    10px
   );
 
-  font-weight:bold;
+  font-weight:800;
+
+  line-height:1;
 
   text-align:center;
   text-transform:uppercase;
+
+  white-space:nowrap;
 }
 
 .statut.attente{
-  color:#71878c;
+  color:#788d91;
 }
 
 .statut.encours{
-  color:#157b8d;
+  color:#168094;
 }
 
 .statut.terminee{
-  color:#d85f36;
+  color:#e76f42;
 }
 
 /* ======================================================
@@ -434,7 +450,8 @@ body{
 .aucune-equipe{
   display:none;
 
-  height:100%;
+  position:absolute;
+  inset:0;
 
   align-items:center;
   justify-content:center;
@@ -444,9 +461,9 @@ body{
   color:#647f85;
 
   font-size:clamp(
-    10px,
-    1.2vw,
-    15px
+    9px,
+    1.05vw,
+    13px
   );
 
   font-weight:bold;
@@ -480,8 +497,7 @@ body{
 
   cursor:pointer;
 
-  -webkit-tap-highlight-color:
-    transparent;
+  -webkit-tap-highlight-color:transparent;
 }
 
 .bouton:hover,
@@ -497,14 +513,10 @@ body{
 
 .bouton:disabled{
   opacity:.48;
-
   cursor:wait;
-
-  outline:none;
-  box-shadow:none;
 }
 
-/* Bouton Activer le suivi */
+/* Activer le suivi */
 
 .bouton-suivi{
   left:21%;
@@ -514,7 +526,7 @@ body{
   height:5.9%;
 }
 
-/* Bouton Générer le compte rendu */
+/* Générer le compte rendu */
 
 .bouton-compte-rendu{
   left:53.4%;
@@ -525,14 +537,14 @@ body{
 }
 
 /* ======================================================
-   ÉTAT DU SUIVI AUTOMATIQUE
+   ÉTAT DU SUIVI EN DIRECT
 ====================================================== */
 
 .etat-direct{
   position:absolute;
 
   left:21%;
-  top:33.1%;
+  top:33.65%;
 
   z-index:4;
 
@@ -551,7 +563,6 @@ body{
   );
 
   font-weight:bold;
-
   text-align:center;
 }
 
@@ -577,35 +588,32 @@ body{
 .message{
   position:absolute;
 
-  left:30%;
-  top:33.1%;
+  left:31%;
+  top:33.55%;
 
   z-index:5;
 
-  width:40%;
-  min-height:24px;
+  width:38%;
+  min-height:22px;
 
   display:none;
   align-items:center;
   justify-content:center;
 
-  padding:4px 10px;
+  padding:3px 10px;
 
   border-radius:999px;
 
-  background:
-    rgba(255,255,255,.96);
-
+  background:rgba(255,255,255,.96);
   color:#044e61;
 
   font-size:clamp(
     7px,
-    .9vw,
-    11px
+    .85vw,
+    10px
   );
 
   font-weight:bold;
-
   text-align:center;
 
   pointer-events:none;
@@ -660,13 +668,14 @@ body{
     width:100%;
   }
 
-  .entete-equipes,
   .ligne-equipe{
     grid-template-columns:
-      minmax(90px,1.5fr)
-      minmax(56px,.75fr)
-      minmax(70px,1fr)
-      minmax(62px,.8fr);
+      1.75fr
+      .72fr
+      1.05fr
+      .88fr;
+
+    min-height:23px;
 
     padding-left:6px;
     padding-right:6px;
@@ -689,24 +698,22 @@ body{
 
 @media screen and (max-width:470px){
 
-  .entete-equipes{
-    display:none;
-  }
-
-  .liste-equipes{
-    height:100%;
-  }
-
   .ligne-equipe{
     grid-template-columns:
-      minmax(80px,1.5fr)
-      minmax(48px,.7fr)
-      minmax(60px,.9fr)
-      minmax(50px,.8fr);
+      1.55fr
+      .65fr
+      .95fr
+      .8fr;
 
-    min-height:25px;
+    min-height:20px;
 
     font-size:7px;
+  }
+
+  .statut{
+    min-width:42px;
+
+    font-size:6px;
   }
 
 }
@@ -839,18 +846,9 @@ body{
 
     </div>
 
-    <!-- LISTE DES ÉQUIPES -->
+    <!-- LISTE DYNAMIQUE DES ÉQUIPES -->
 
     <section class="zone-equipes">
-
-      <div class="entete-equipes">
-
-        <span>Équipe</span>
-        <span>Début</span>
-        <span>Temps écoulé</span>
-        <span>État</span>
-
-      </div>
 
       <div
         id="listeEquipes"
@@ -860,10 +858,7 @@ body{
       <div
         id="aucuneEquipe"
         class="aucune-equipe">
-
-        Aucune équipe n’a encore rejoint
-        cette session.
-
+        Aucune équipe n’a encore rejoint cette session.
       </div>
 
     </section>
@@ -906,10 +901,7 @@ body{
 
     </a>
 
-    <div
-      id="message"
-      class="message"
-      aria-live="polite"></div>
+    <div id="message" class="message" aria-live="polite"></div>
 
   </section>
 
@@ -1008,11 +1000,7 @@ function afficherHeure(dateBrute){
   const date =
     new Date(dateBrute);
 
-  if(
-    Number.isNaN(
-      date.getTime()
-    )
-  ){
+  if(Number.isNaN(date.getTime())){
     return "—";
   }
 
@@ -1205,7 +1193,8 @@ function creerLigneEquipe(equipe){
     );
 
   ligne.className =
-    "ligne-equipe";
+    "ligne-equipe " +
+    statut.classe;
 
   const celluleNom =
     document.createElement(
@@ -1546,8 +1535,7 @@ async function chargerSession(
       window.setTimeout(
         function(){
 
-          message.textContent =
-            "";
+          message.textContent = "";
 
         },
         1700
@@ -1628,7 +1616,7 @@ function desactiverSuivi(){
 }
 
 /* ======================================================
-   CLIC SUR LE BOUTON DE SUIVI
+   BOUTON DE SUIVI
 ====================================================== */
 
 boutonActualiser.addEventListener(
@@ -1661,8 +1649,7 @@ boutonActualiser.addEventListener(
     window.setTimeout(
       function(){
 
-        message.textContent =
-          "";
+        message.textContent = "";
 
       },
       1700

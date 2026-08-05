@@ -28,12 +28,14 @@ body{
 
 .page-intro{
   min-height:100vh;
+  min-height:100dvh;
 
   display:flex;
   flex-direction:column;
   align-items:center;
+  justify-content:center;
 
-  padding-top:40px;
+  padding:20px;
 }
 
 .bloc-intro{
@@ -108,8 +110,7 @@ body{
 }
 
 .bouton-go:focus-visible{
-  outline:3px solid #ffffff;
-  outline-offset:5px;
+  outline:none;
 }
 
 /* ======================================================
@@ -137,15 +138,17 @@ body{
 }
 
 /*
-  La carte reprend exactement les proportions
-  de l’image valid_1.png : 1390 × 1087 px.
+  La popup est affichée à environ 70 %
+  de sa taille d’origine.
 */
 
 .inscription-carte{
   position:relative;
 
   width:641px;
-  height:501px;
+  height:auto;
+
+  aspect-ratio:1390 / 1087;
 
   max-width:100%;
 
@@ -159,25 +162,45 @@ body{
 }
 
 /* ======================================================
-   CHAMPS FONCTIONNELS POSITIONNÉS SUR L’IMAGE
+   CHAMPS RECALÉS DANS LES RECTANGLES BLANCS
 ====================================================== */
 
 .champ{
   position:absolute;
 
-  width:88.3%;
-  height:10.9%;
+  display:block;
+
+  margin:0;
 }
+
+/*
+  Champ du code de session
+*/
 
 .champ-code{
-  left:5.8%;
-  top:41.2%;
+  left:9.9%;
+  top:42.2%;
+
+  width:80.2%;
+  height:8.1%;
 }
 
+/*
+  Champ du nom de l’équipe
+*/
+
 .champ-equipe{
-  left:5.8%;
-  top:63.7%;
+  left:9.9%;
+  top:64.7%;
+
+  width:80.2%;
+  height:8.1%;
 }
+
+/*
+  Les intitulés sont déjà présents
+  dans l’image.
+*/
 
 .champ label{
   position:absolute;
@@ -185,8 +208,8 @@ body{
   width:1px;
   height:1px;
 
-  padding:0;
   margin:-1px;
+  padding:0;
 
   overflow:hidden;
 
@@ -199,65 +222,76 @@ body{
 }
 
 .champ input{
+  display:block;
+
   width:100%;
   height:100%;
 
-  padding:0 28px;
+  margin:0;
+  padding:0 16px;
 
   border:0;
-  border-radius:22px;
+  border-radius:14px;
 
   outline:none;
+  box-shadow:none;
 
   background:transparent;
   color:#044e61;
 
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
-  font-size:27px;
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:18px;
   font-weight:bold;
 
   line-height:1;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.champ input:hover,
+.champ input:focus,
+.champ input:focus-visible,
+.champ input:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
 }
 
 .champ input::placeholder{
-  color:#95a8ac;
-  opacity:.75;
-}
-
-.champ input:focus{
-  box-shadow:
-    0 0 0 5px
-    rgba(237,176,26,.48);
+  color:#a9b6b9;
+  opacity:1;
 }
 
 #codeSession{
   text-transform:uppercase;
 
-  letter-spacing:3px;
+  letter-spacing:2px;
   font-weight:900;
 }
 
 /* ======================================================
-   BOUTON POSITIONNÉ SUR LE BOUTON ORANGE DE L’IMAGE
+   BOUTON POSITIONNÉ SUR LE BOUTON ORANGE
 ====================================================== */
 
 .bouton-commencer{
   position:absolute;
 
-  left:6.3%;
-  top:80.2%;
+  left:10%;
+  top:81.3%;
 
-  width:87.9%;
-  height:13.5%;
+  width:80%;
+  height:10.4%;
 
+  margin:0;
   padding:0;
 
   border:0;
   border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
 
   background:transparent;
   color:transparent;
@@ -266,34 +300,25 @@ body{
 
   cursor:pointer;
 
-  transition:
-    transform .18s ease,
-    box-shadow .18s ease,
-    opacity .18s ease;
+  -webkit-tap-highlight-color:transparent;
 }
 
-.bouton-commencer:hover{
-  transform:scale(1.012);
-
-  box-shadow:
-    0 10px 25px
-    rgba(4,78,97,.23);
-}
-
+.bouton-commencer:hover,
+.bouton-commencer:focus,
+.bouton-commencer:focus-visible,
 .bouton-commencer:active{
-  transform:scale(.992);
-}
+  border:0;
+  outline:none;
+  box-shadow:none;
 
-.bouton-commencer:focus-visible{
-  outline:5px solid #044e61;
-  outline-offset:5px;
+  background:transparent;
+
+  transform:none;
 }
 
 .bouton-commencer:disabled{
   opacity:.55;
   cursor:wait;
-  transform:none;
-  box-shadow:none;
 }
 
 /* ======================================================
@@ -303,40 +328,36 @@ body{
 .message{
   position:absolute;
 
-  left:8%;
-  top:75.4%;
+  left:12%;
+  top:75.5%;
 
   z-index:5;
 
-  width:84%;
-  min-height:30px;
+  width:76%;
+  min-height:22px;
 
-  display:flex;
+  display:none;
   align-items:center;
   justify-content:center;
 
-  padding:5px 14px;
+  padding:3px 10px;
 
   border-radius:999px;
 
-  background:rgba(255,255,255,.94);
-
+  background:rgba(255,255,255,.95);
   color:#044e61;
 
-  font-size:14px;
-  line-height:1.3;
+  font-size:11px;
+  line-height:1.25;
   font-weight:bold;
 
   text-align:center;
 
-  opacity:0;
   pointer-events:none;
-
-  transition:opacity .2s ease;
 }
 
 .message:not(:empty){
-  opacity:1;
+  display:flex;
 }
 
 .message.erreur{
@@ -357,8 +378,8 @@ body{
   width:1px;
   height:1px;
 
-  padding:0;
   margin:-1px;
+  padding:0;
 
   overflow:hidden;
 
@@ -377,21 +398,17 @@ body{
 @media screen and (max-width:1080px){
 
   .page-intro{
-    align-items:flex-start;
-
-    padding-left:20px;
+    align-items:center;
   }
 
 }
 
-@media screen and (max-width:960px){
+@media screen and (max-width:760px){
 
   .page-intro{
-    align-items:center;
+    justify-content:flex-start;
 
-    min-height:auto;
-
-    padding:18px 10px;
+    padding:12px 6px;
   }
 
   .bloc-intro{
@@ -407,56 +424,58 @@ body{
   }
 
   .inscription-carte{
-    width:91.7%;
-    height:auto;
+    width:70%;
 
-    aspect-ratio:1390 / 1087;
+    max-width:641px;
   }
 
   .champ input{
-    padding:0 2.5%;
+    padding:0 2.6%;
 
-    border-radius:18px;
+    border-radius:10px;
 
     font-size:clamp(
-      16px,
-      2.8vw,
-      27px
+      11px,
+      2.5vw,
+      18px
     );
   }
 
   .message{
+    min-height:18px;
+
+    padding:2px 7px;
+
     font-size:clamp(
-      10px,
-      1.7vw,
-      14px
+      8px,
+      1.5vw,
+      11px
     );
   }
 
 }
 
-@media screen and (max-width:620px){
+@media screen and (max-width:520px){
 
   .page-intro{
-    padding:8px 4px;
+    padding:5px 2px;
   }
 
   .bouton-go{
     width:32%;
-    min-width:130px;
+    min-width:125px;
+  }
+
+  .inscription-carte{
+    width:86%;
   }
 
   .champ input{
-    border-radius:12px;
+    border-radius:7px;
   }
 
   .bouton-commencer{
-    border-radius:35px;
-  }
-
-  .message{
-    min-height:20px;
-    padding:3px 8px;
+    border-radius:25px;
   }
 
 }
@@ -552,7 +571,10 @@ body{
 
         </button>
 
-        <div id="message" class="message" aria-live="polite"></div>
+        <div
+          id="message"
+          class="message"
+          aria-live="polite"></div>
 
       </form>
 
@@ -764,7 +786,9 @@ formulaireEquipe.addEventListener(
 
     event.preventDefault();
 
-    message.textContent = "";
+    message.textContent =
+      "";
+
     message.className =
       "message";
 

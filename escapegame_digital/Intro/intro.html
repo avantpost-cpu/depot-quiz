@@ -46,6 +46,65 @@ body{
   padding:20px;
 }
 
+/* ======================================================
+   RETOUR AU MENU
+====================================================== */
+
+.retour-menu{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-height:34px;
+
+  margin-bottom:10px;
+  padding:7px 14px;
+
+  border:0;
+  border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
+
+  background:rgba(255,255,255,.94);
+  color:#044e61;
+
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:12px;
+  font-weight:bold;
+  line-height:1;
+
+  text-decoration:none;
+
+  cursor:pointer;
+
+  -webkit-tap-highlight-color:transparent;
+
+  transition:
+    background-color .2s ease,
+    transform .2s ease;
+}
+
+.retour-menu:hover{
+  background:#ffffff;
+
+  transform:translateY(-1px);
+}
+
+.retour-menu:focus,
+.retour-menu:focus-visible,
+.retour-menu:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:#ffffff;
+}
+
+/* ======================================================
+   BLOC VIDÉO ET FORMULAIRE
+====================================================== */
+
 .bloc-intro{
   position:relative;
 
@@ -150,7 +209,8 @@ body{
 }
 
 /*
-  La nouvelle image mesure 2048 × 1763 px.
+  La nouvelle image valid_1.png
+  mesure 2048 × 1763 px.
 */
 
 .inscription-carte{
@@ -364,19 +424,20 @@ body{
 .message{
   position:absolute;
 
-  left:29%;
+  left:50%;
   top:56.7%;
 
   z-index:8;
-
-  width:42%;
-  min-height:22px;
 
   display:none;
   align-items:center;
   justify-content:center;
 
-  padding:3px 10px;
+  width:max-content;
+  max-width:52%;
+  min-height:22px;
+
+  padding:4px 12px;
 
   border-radius:999px;
 
@@ -384,10 +445,13 @@ body{
   color:#044e61;
 
   font-size:clamp(8px,1vw,11px);
-  line-height:1.25;
   font-weight:bold;
+  line-height:1.2;
 
   text-align:center;
+  white-space:nowrap;
+
+  transform:translateX(-50%);
 
   pointer-events:none;
 }
@@ -484,16 +548,17 @@ body{
 .message-reprise{
   position:absolute;
 
-  left:48%;
+  left:64.5%;
   top:86%;
 
   z-index:8;
 
-  width:33%;
-
   display:none;
 
-  padding:5px 10px;
+  width:max-content;
+  max-width:42%;
+
+  padding:5px 12px;
 
   border-radius:999px;
 
@@ -502,9 +567,12 @@ body{
 
   font-size:clamp(8px,1vw,11px);
   font-weight:bold;
-  line-height:1.25;
+  line-height:1.2;
 
   text-align:center;
+  white-space:nowrap;
+
+  transform:translateX(-50%);
 
   pointer-events:none;
 }
@@ -564,6 +632,12 @@ body{
     padding:12px 4px;
   }
 
+  .retour-menu{
+    margin-bottom:7px;
+
+    font-size:11px;
+  }
+
   .bloc-intro{
     width:100%;
     height:auto;
@@ -613,6 +687,15 @@ body{
     padding:5px 1px;
   }
 
+  .retour-menu{
+    min-height:30px;
+
+    margin-bottom:6px;
+    padding:6px 11px;
+
+    font-size:10px;
+  }
+
   .bouton-go{
     width:32%;
     min-width:125px;
@@ -631,6 +714,13 @@ body{
     border-radius:24px;
   }
 
+  .message,
+  .message-reprise{
+    max-width:70%;
+
+    white-space:normal;
+  }
+
 }
 </style>
 </head>
@@ -638,6 +728,13 @@ body{
 <body>
 
 <div class="page-intro">
+
+  <a
+    class="retour-menu"
+    href="../index.html"
+    aria-label="Retour au menu principal">
+    ← Retour au menu
+  </a>
 
   <div class="bloc-intro">
 
@@ -728,11 +825,7 @@ body{
 
           </button>
 
-          <div
-            id="message"
-            class="message"
-            aria-live="polite">
-          </div>
+          <div id="message" class="message" aria-live="polite"></div>
 
         </form>
 
@@ -774,11 +867,7 @@ body{
 
           </button>
 
-          <div
-            id="messageReprise"
-            class="message-reprise"
-            aria-live="polite">
-          </div>
+          <div id="messageReprise" class="message-reprise" aria-live="polite"></div>
 
         </form>
 
@@ -794,8 +883,8 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=6"></script>
-<script src="../js/supabase.js?v=6"></script>
+<script src="../js/config.js?v=7"></script>
+<script src="../js/supabase.js?v=7"></script>
 
 <script>
 const videoIntro =
@@ -924,9 +1013,14 @@ function lancerIntroduction(){
     "visible"
   );
 
-  videoIntro.muted = false;
-  videoIntro.volume = 1;
-  videoIntro.currentTime = 0;
+  videoIntro.muted =
+    false;
+
+  videoIntro.volume =
+    1;
+
+  videoIntro.currentTime =
+    0;
 
   const lecture =
     videoIntro.play();
@@ -961,7 +1055,8 @@ function lancerIntroduction(){
             error
           );
 
-          introDemarree = false;
+          introDemarree =
+            false;
 
           videoIntro.pause();
 
@@ -984,6 +1079,10 @@ function lancerIntroduction(){
   }
 
 }
+
+/* ======================================================
+   ACTIONS DU BOUTON DE LANCEMENT
+====================================================== */
 
 boutonGo.addEventListener(
   "click",
@@ -1044,8 +1143,11 @@ formulaireEquipe.addEventListener(
 
     event.preventDefault();
 
-    message.textContent = "";
-    message.className = "message";
+    message.textContent =
+      "";
+
+    message.className =
+      "message";
 
     const code =
       nettoyerCode(
@@ -1084,11 +1186,6 @@ formulaireEquipe.addEventListener(
           code:code,
           equipe:equipe
         });
-
-      /*
-        Une nouvelle partie commence toujours
-        à l’énigme 1.
-      */
 
       localStorage.setItem(
         "rebondCurrentPage",
@@ -1162,25 +1259,26 @@ function determinerPageReprise(){
       pageEnregistree
     )
   ){
-    return pageEnregistree;
-  }
 
-  /*
-    Solution de secours :
-    on déduit la progression à partir
-    des mots déjà gagnés.
-  */
+    return pageEnregistree;
+
+  }
 
   let mots = [];
 
   try{
 
-    mots =
+    const donnees =
       JSON.parse(
         localStorage.getItem(
           "motsEscapeRebond"
         )
-      ) || [];
+      );
+
+    mots =
+      Array.isArray(donnees)
+        ? donnees
+        : [];
 
   }
   catch(error){
@@ -1217,11 +1315,18 @@ function determinerPageReprise(){
         )
       : 0;
 
-  if(derniereEnigme >= 5){
+  if(
+    derniereEnigme >= 5
+  ){
+
     return "fin/fin.html";
+
   }
 
-  if(derniereEnigme >= 1){
+  if(
+    derniereEnigme >= 1
+  ){
+
     return (
       "enigme" +
       Math.min(
@@ -1230,6 +1335,7 @@ function determinerPageReprise(){
       ) +
       ".html"
     );
+
   }
 
   return "enigme1.html";
@@ -1248,7 +1354,9 @@ function construireAdresseReprise(page){
       window.location.href
     );
 
-  if(page === "fin/fin.html"){
+  if(
+    page === "fin/fin.html"
+  ){
 
     return new URL(
       "fin/fin.html",
@@ -1274,7 +1382,8 @@ formulaireReprise.addEventListener(
 
     event.preventDefault();
 
-    messageReprise.textContent = "";
+    messageReprise.textContent =
+      "";
 
     messageReprise.className =
       "message-reprise";

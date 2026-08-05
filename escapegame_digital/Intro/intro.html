@@ -150,17 +150,16 @@ body{
 }
 
 /*
-  L’image valid_1.png mesure 1390 × 1087 px.
-  Elle est affichée ici à une largeur de 641 px.
+  La nouvelle image mesure 2048 × 1763 px.
 */
 
 .inscription-carte{
   position:relative;
 
-  width:641px;
+  width:760px;
   max-width:100%;
 
-  aspect-ratio:1390 / 1087;
+  aspect-ratio:2048 / 1763;
 
   overflow:hidden;
 
@@ -174,7 +173,22 @@ body{
 }
 
 /* ======================================================
-   CHAMPS SUPERPOSÉS AUX RECTANGLES BLANCS
+   FORMULAIRES POSITIONNÉS SUR L’IMAGE
+====================================================== */
+
+.formulaire-principal,
+.formulaire-reprise{
+  position:absolute;
+  inset:0;
+
+  margin:0;
+  padding:0;
+
+  pointer-events:none;
+}
+
+/* ======================================================
+   CHAMPS GÉNÉRAUX
 ====================================================== */
 
 .champ{
@@ -186,35 +200,9 @@ body{
   padding:0;
 
   overflow:hidden;
+
+  pointer-events:auto;
 }
-
-/*
-  Code de session
-*/
-
-.champ-code{
-  left:5.8%;
-  top:41.1%;
-
-  width:88.4%;
-  height:10.7%;
-}
-
-/*
-  Nom de l’équipe
-*/
-
-.champ-equipe{
-  left:5.8%;
-  top:63.6%;
-
-  width:88.4%;
-  height:10.7%;
-}
-
-/*
-  Les libellés sont déjà inscrits dans valid_1.png.
-*/
 
 .champ label{
   position:absolute;
@@ -234,10 +222,6 @@ body{
 
   border:0;
 }
-
-/* ======================================================
-   APPARENCE DES CHAMPS
-====================================================== */
 
 .champ input{
   display:block;
@@ -263,7 +247,7 @@ body{
   color:#044e61;
 
   font-family:Arial, Helvetica, sans-serif;
-  font-size:18px;
+  font-size:clamp(12px,1.55vw,18px);
   font-weight:bold;
   line-height:normal;
 
@@ -288,6 +272,18 @@ body{
   opacity:1;
 }
 
+/* ======================================================
+   CHAMP CODE DE SESSION
+====================================================== */
+
+.champ-code{
+  left:23.8%;
+  top:35.55%;
+
+  width:54.2%;
+  height:6.9%;
+}
+
 #codeSession{
   font-weight:900;
   letter-spacing:2px;
@@ -295,17 +291,29 @@ body{
 }
 
 /* ======================================================
-   BOUTON TRANSPARENT SUR LE BOUTON ORANGE
+   CHAMP NOM DE L’ÉQUIPE
+====================================================== */
+
+.champ-equipe{
+  left:23.8%;
+  top:49.15%;
+
+  width:54.2%;
+  height:6.9%;
+}
+
+/* ======================================================
+   BOUTON COMMENCER
 ====================================================== */
 
 .bouton-commencer{
   position:absolute;
 
-  left:5.8%;
-  top:80.7%;
+  left:23.8%;
+  top:59.45%;
 
-  width:88.4%;
-  height:13%;
+  width:54.2%;
+  height:8.05%;
 
   margin:0;
   padding:0;
@@ -325,6 +333,8 @@ body{
   font-size:0;
 
   cursor:pointer;
+
+  pointer-events:auto;
 
   -webkit-tap-highlight-color:transparent;
 }
@@ -348,18 +358,18 @@ body{
 }
 
 /* ======================================================
-   MESSAGE D’INFORMATION OU D’ERREUR
+   MESSAGE DU FORMULAIRE PRINCIPAL
 ====================================================== */
 
 .message{
   position:absolute;
 
-  left:12%;
-  top:75.4%;
+  left:29%;
+  top:56.7%;
 
-  z-index:5;
+  z-index:8;
 
-  width:76%;
+  width:42%;
   min-height:22px;
 
   display:none;
@@ -373,7 +383,7 @@ body{
   background:rgba(255,255,255,.96);
   color:#044e61;
 
-  font-size:11px;
+  font-size:clamp(8px,1vw,11px);
   line-height:1.25;
   font-weight:bold;
 
@@ -391,6 +401,123 @@ body{
 }
 
 .message.succes{
+  color:#16824a;
+}
+
+/* ======================================================
+   REPRISE D’UNE PARTIE
+====================================================== */
+
+.champ-reprise{
+  left:48.85%;
+  top:78.85%;
+
+  width:21.35%;
+  height:6.25%;
+}
+
+#codeReprise{
+  padding:0 16px;
+
+  font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+/* ======================================================
+   BOUTON VALIDER LA REPRISE
+====================================================== */
+
+.bouton-reprise{
+  position:absolute;
+
+  left:72.05%;
+  top:78.85%;
+
+  width:8.65%;
+  height:6.25%;
+
+  margin:0;
+  padding:0;
+
+  border:0;
+  border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
+
+  appearance:none;
+  -webkit-appearance:none;
+
+  background:transparent;
+  color:transparent;
+
+  font-size:0;
+
+  cursor:pointer;
+
+  pointer-events:auto;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.bouton-reprise:hover,
+.bouton-reprise:focus,
+.bouton-reprise:focus-visible,
+.bouton-reprise:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+}
+
+.bouton-reprise:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+
+/* ======================================================
+   MESSAGE DE REPRISE
+====================================================== */
+
+.message-reprise{
+  position:absolute;
+
+  left:48%;
+  top:86%;
+
+  z-index:8;
+
+  width:33%;
+
+  display:none;
+
+  padding:5px 10px;
+
+  border-radius:999px;
+
+  background:rgba(255,255,255,.96);
+  color:#044e61;
+
+  font-size:clamp(8px,1vw,11px);
+  font-weight:bold;
+  line-height:1.25;
+
+  text-align:center;
+
+  pointer-events:none;
+}
+
+.message-reprise:not(:empty){
+  display:block;
+}
+
+.message-reprise.erreur{
+  color:#b53030;
+}
+
+.message-reprise.succes{
   color:#16824a;
 }
 
@@ -434,7 +561,7 @@ body{
   .page-intro{
     justify-content:flex-start;
 
-    padding:12px 6px;
+    padding:12px 4px;
   }
 
   .bloc-intro{
@@ -450,30 +577,30 @@ body{
   }
 
   .inscription-carte{
-    width:70%;
-    max-width:641px;
+    width:90%;
+    max-width:760px;
   }
 
   .champ input{
-    padding:0 3.2%;
+    padding-left:3%;
+    padding-right:3%;
 
     border-radius:10px;
 
     font-size:clamp(
-      11px,
-      2.5vw,
+      9px,
+      2.25vw,
       18px
     );
   }
 
-  .message{
-    min-height:18px;
-
-    padding:2px 7px;
+  .message,
+  .message-reprise{
+    padding:2px 6px;
 
     font-size:clamp(
-      8px,
-      1.5vw,
+      7px,
+      1.4vw,
       11px
     );
   }
@@ -483,7 +610,7 @@ body{
 @media screen and (max-width:520px){
 
   .page-intro{
-    padding:5px 2px;
+    padding:5px 1px;
   }
 
   .bouton-go{
@@ -492,15 +619,16 @@ body{
   }
 
   .inscription-carte{
-    width:86%;
+    width:100%;
   }
 
   .champ input{
-    border-radius:7px;
+    border-radius:6px;
   }
 
-  .bouton-commencer{
-    border-radius:25px;
+  .bouton-commencer,
+  .bouton-reprise{
+    border-radius:24px;
   }
 
 }
@@ -539,80 +667,122 @@ body{
       id="inscriptionOverlay"
       class="inscription-overlay">
 
-      <form
-        id="formulaireEquipe"
-        class="inscription-carte">
+      <section class="inscription-carte">
 
         <h1 class="visuellement-cache">
-          Rejoins la partie
+          Rejoins ou reprends une partie
         </h1>
 
-        <p class="visuellement-cache">
-          Entre le code qui t’a été transmis
-          et inscris ton nom ou celui de ton équipe.
-        </p>
+        <!-- =============================================
+             REJOINDRE UNE NOUVELLE PARTIE
+        ============================================== -->
 
-        <!-- CODE DE SESSION -->
+        <form
+          id="formulaireEquipe"
+          class="formulaire-principal">
 
-        <div class="champ champ-code">
+          <div class="champ champ-code">
 
-          <label for="codeSession">
-            Code de session
-          </label>
+            <label for="codeSession">
+              Code de session
+            </label>
 
-          <input
-            id="codeSession"
-            name="codeSession"
-            type="text"
-            placeholder="RBD-7K42"
-            autocomplete="off"
-            autocapitalize="characters"
-            spellcheck="false"
-            maxlength="8"
-            required>
+            <input
+              id="codeSession"
+              name="codeSession"
+              type="text"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              maxlength="8"
+              required>
 
-        </div>
+          </div>
 
-        <!-- NOM DE L’ÉQUIPE -->
+          <div class="champ champ-equipe">
 
-        <div class="champ champ-equipe">
+            <label for="nomEquipe">
+              Nom de l’équipe ou du participant
+            </label>
 
-          <label for="nomEquipe">
-            Nom de l’équipe ou du participant
-          </label>
+            <input
+              id="nomEquipe"
+              name="nomEquipe"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              maxlength="60"
+              required>
 
-          <input
-            id="nomEquipe"
-            name="nomEquipe"
-            type="text"
-            autocomplete="off"
-            spellcheck="false"
-            maxlength="60"
-            required>
+          </div>
 
-        </div>
+          <button
+            id="boutonRejoindre"
+            class="bouton-commencer"
+            type="submit"
+            aria-label="Commencer la partie">
 
-        <!-- BOUTON ORANGE -->
+            <span class="visuellement-cache">
+              Commencer la partie
+            </span>
 
-        <button
-          id="boutonRejoindre"
-          class="bouton-commencer"
-          type="submit"
-          aria-label="Commencer la partie">
+          </button>
 
-          <span class="visuellement-cache">
-            Commencer la partie
-          </span>
+          <div
+            id="message"
+            class="message"
+            aria-live="polite">
+          </div>
 
-        </button>
+        </form>
 
-        <div
-          id="message"
-          class="message"
-          aria-live="polite">
-        </div>
+        <!-- =============================================
+             REPRENDRE UNE PARTIE
+        ============================================== -->
 
-      </form>
+        <form
+          id="formulaireReprise"
+          class="formulaire-reprise">
+
+          <div class="champ champ-reprise">
+
+            <label for="codeReprise">
+              Code de la partie à reprendre
+            </label>
+
+            <input
+              id="codeReprise"
+              name="codeReprise"
+              type="text"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              maxlength="8"
+              required>
+
+          </div>
+
+          <button
+            id="boutonReprise"
+            class="bouton-reprise"
+            type="submit"
+            aria-label="Reprendre la partie">
+
+            <span class="visuellement-cache">
+              Valider
+            </span>
+
+          </button>
+
+          <div
+            id="messageReprise"
+            class="message-reprise"
+            aria-live="polite">
+          </div>
+
+        </form>
+
+      </section>
 
     </div>
 
@@ -624,8 +794,8 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=5"></script>
-<script src="../js/supabase.js?v=5"></script>
+<script src="../js/config.js?v=6"></script>
+<script src="../js/supabase.js?v=6"></script>
 
 <script>
 const videoIntro =
@@ -668,7 +838,69 @@ const champEquipe =
     "nomEquipe"
   );
 
+const formulaireReprise =
+  document.getElementById(
+    "formulaireReprise"
+  );
+
+const champCodeReprise =
+  document.getElementById(
+    "codeReprise"
+  );
+
+const boutonReprise =
+  document.getElementById(
+    "boutonReprise"
+  );
+
+const messageReprise =
+  document.getElementById(
+    "messageReprise"
+  );
+
 let introDemarree = false;
+
+/* ======================================================
+   FORMATAGE DES CODES
+====================================================== */
+
+function nettoyerCode(valeur){
+
+  return String(
+    valeur || ""
+  )
+    .trim()
+    .toUpperCase()
+    .replace(
+      /[^A-Z0-9-]/g,
+      ""
+    );
+
+}
+
+champCode.addEventListener(
+  "input",
+  function(){
+
+    champCode.value =
+      nettoyerCode(
+        champCode.value
+      );
+
+  }
+);
+
+champCodeReprise.addEventListener(
+  "input",
+  function(){
+
+    champCodeReprise.value =
+      nettoyerCode(
+        champCodeReprise.value
+      );
+
+  }
+);
 
 /* ======================================================
    LANCEMENT DE LA VIDÉO
@@ -803,36 +1035,7 @@ videoIntro.addEventListener(
 );
 
 /* ======================================================
-   MISE EN FORME DU CODE
-====================================================== */
-
-function nettoyerCode(valeur){
-
-  return String(
-    valeur || ""
-  )
-    .toUpperCase()
-    .replace(
-      /[^A-Z0-9-]/g,
-      ""
-    );
-
-}
-
-champCode.addEventListener(
-  "input",
-  function(){
-
-    champCode.value =
-      nettoyerCode(
-        champCode.value
-      );
-
-  }
-);
-
-/* ======================================================
-   INSCRIPTION DE L’ÉQUIPE
+   REJOINDRE UNE NOUVELLE PARTIE
 ====================================================== */
 
 formulaireEquipe.addEventListener(
@@ -841,16 +1044,13 @@ formulaireEquipe.addEventListener(
 
     event.preventDefault();
 
-    message.textContent =
-      "";
-
-    message.className =
-      "message";
+    message.textContent = "";
+    message.className = "message";
 
     const code =
       nettoyerCode(
         champCode.value
-      ).trim();
+      );
 
     const equipe =
       champEquipe.value
@@ -874,9 +1074,6 @@ formulaireEquipe.addEventListener(
     boutonRejoindre.disabled =
       true;
 
-    message.className =
-      "message";
-
     message.textContent =
       "Connexion à la session…";
 
@@ -887,6 +1084,20 @@ formulaireEquipe.addEventListener(
           code:code,
           equipe:equipe
         });
+
+      /*
+        Une nouvelle partie commence toujours
+        à l’énigme 1.
+      */
+
+      localStorage.setItem(
+        "rebondCurrentPage",
+        "enigme1.html"
+      );
+
+      localStorage.removeItem(
+        "motsEscapeRebond"
+      );
 
       message.className =
         "message succes";
@@ -921,6 +1132,235 @@ formulaireEquipe.addEventListener(
         false;
 
     }
+
+  }
+);
+
+/* ======================================================
+   DÉTERMINER LA DERNIÈRE ÉNIGME ATTEINTE
+====================================================== */
+
+function determinerPageReprise(){
+
+  const pageEnregistree =
+    localStorage.getItem(
+      "rebondCurrentPage"
+    );
+
+  const pagesAutorisees = [
+    "enigme1.html",
+    "enigme2.html",
+    "enigme3.html",
+    "enigme4.html",
+    "enigme5.html",
+    "fin/fin.html"
+  ];
+
+  if(
+    pageEnregistree &&
+    pagesAutorisees.includes(
+      pageEnregistree
+    )
+  ){
+    return pageEnregistree;
+  }
+
+  /*
+    Solution de secours :
+    on déduit la progression à partir
+    des mots déjà gagnés.
+  */
+
+  let mots = [];
+
+  try{
+
+    mots =
+      JSON.parse(
+        localStorage.getItem(
+          "motsEscapeRebond"
+        )
+      ) || [];
+
+  }
+  catch(error){
+
+    mots = [];
+
+  }
+
+  const enigmesTerminees =
+    mots
+      .map(
+        function(item){
+
+          const correspondance =
+            String(
+              item.enigme || ""
+            ).match(
+              /(\d+)/
+            );
+
+          return correspondance
+            ? Number(
+                correspondance[1]
+              )
+            : 0;
+
+        }
+      );
+
+  const derniereEnigme =
+    enigmesTerminees.length
+      ? Math.max(
+          ...enigmesTerminees
+        )
+      : 0;
+
+  if(derniereEnigme >= 5){
+    return "fin/fin.html";
+  }
+
+  if(derniereEnigme >= 1){
+    return (
+      "enigme" +
+      Math.min(
+        derniereEnigme + 1,
+        5
+      ) +
+      ".html"
+    );
+  }
+
+  return "enigme1.html";
+
+}
+
+/* ======================================================
+   CONSTRUIRE L’ADRESSE DE REPRISE
+====================================================== */
+
+function construireAdresseReprise(page){
+
+  const adresseEnigme1 =
+    new URL(
+      window.REBOND_CONFIG.enigme1Url,
+      window.location.href
+    );
+
+  if(page === "fin/fin.html"){
+
+    return new URL(
+      "fin/fin.html",
+      adresseEnigme1
+    ).toString();
+
+  }
+
+  return new URL(
+    page,
+    adresseEnigme1
+  ).toString();
+
+}
+
+/* ======================================================
+   REPRENDRE UNE PARTIE
+====================================================== */
+
+formulaireReprise.addEventListener(
+  "submit",
+  function(event){
+
+    event.preventDefault();
+
+    messageReprise.textContent = "";
+
+    messageReprise.className =
+      "message-reprise";
+
+    const codeSaisi =
+      nettoyerCode(
+        champCodeReprise.value
+      );
+
+    if(!codeSaisi){
+
+      messageReprise.className =
+        "message-reprise erreur";
+
+      messageReprise.textContent =
+        "Saisis le code de la partie.";
+
+      return;
+
+    }
+
+    const participation =
+      window.REBOND_DB
+        .lireEquipeCourante();
+
+    if(
+      !participation ||
+      !participation.codeSession
+    ){
+
+      messageReprise.className =
+        "message-reprise erreur";
+
+      messageReprise.textContent =
+        "Aucune partie enregistrée sur cet appareil.";
+
+      return;
+
+    }
+
+    const codeEnregistre =
+      nettoyerCode(
+        participation.codeSession
+      );
+
+    if(
+      codeSaisi !==
+      codeEnregistre
+    ){
+
+      messageReprise.className =
+        "message-reprise erreur";
+
+      messageReprise.textContent =
+        "Ce code ne correspond pas à la partie enregistrée.";
+
+      return;
+
+    }
+
+    boutonReprise.disabled =
+      true;
+
+    messageReprise.className =
+      "message-reprise succes";
+
+    messageReprise.textContent =
+      "Partie retrouvée. Reprise en cours…";
+
+    const page =
+      determinerPageReprise();
+
+    const adresse =
+      construireAdresseReprise(
+        page
+      );
+
+    window.setTimeout(
+      function(){
+
+        window.location.href =
+          adresse;
+
+      },
+      550
+    );
 
   }
 );

@@ -8,7 +8,10 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap"
+  rel="stylesheet">
 
 <style>
 *{
@@ -21,24 +24,31 @@ html,
 body{
   width:100%;
   min-height:100%;
+
   background:#1b5f6e;
+
   font-family:Arial, Helvetica, sans-serif;
 }
 
 .page-enigme3{
   min-height:100vh;
+
   display:flex;
   flex-direction:column;
   align-items:center;
+
   padding-top:40px;
 }
 
 .bloc-enigme3{
   position:relative;
+
   display:flex;
   justify-content:center;
   align-items:flex-start;
+
   height:716px;
+
   line-height:0;
   font-size:0;
 }
@@ -46,73 +56,91 @@ body{
 .partie-3a,
 .partie-3b{
   position:relative;
+
   height:716px;
 }
 
 .partie-3a img,
 .animation-3b{
   display:block;
+
   height:716px;
   width:auto;
+
   border:0;
 }
 
-/* CHAMPS */
+/* ======================================================
+   CHAMPS
+====================================================== */
 
 .reponse-corps{
   position:absolute;
+
   height:34px;
+
   padding:0 8px;
 
-  font-family:'Patrick Hand', cursive;
-  font-size:24px;
-  font-weight:700;
-  line-height:34px;
-
-  text-transform:uppercase;
-
-  background:transparent;
   border:none;
   outline:none;
-  color:#111;
+
+  background:transparent;
+  color:#111111;
+
+  font-family:"Patrick Hand", cursive;
+  font-size:24px;
+  font-weight:700;
+
+  line-height:34px;
+  text-transform:uppercase;
 }
 
 #mot1{
   left:112px;
   top:370px;
+
   width:100px;
 }
 
 #mot2{
   left:254px;
   top:370px;
+
   width:130px;
 }
 
 #mot3{
   left:116px;
   top:450px;
+
   width:100px;
 }
 
 #mot4{
   left:254px;
   top:450px;
+
   width:100px;
 }
 
 #mot5{
   left:116px;
   top:533px;
+
   width:155px;
 }
 
 .reponse-corps.ok{
-  background:#18A558;
-  color:#ffffff;
   border-radius:8px;
+
+  background:#18a558;
+  color:#ffffff;
+
   text-align:center;
-  box-shadow:0 2px 6px rgba(0,0,0,.18);
+
+  box-shadow:
+    0 2px 6px
+    rgba(0,0,0,.18);
 }
 
 #mot2.ok{
@@ -125,29 +153,36 @@ body{
 
 .reponse-corps[readonly]{
   pointer-events:none;
+
   -webkit-text-fill-color:#ffffff;
 }
 
 .reponse-corps.erreur{
+  border-radius:8px;
+
   background:#c0392b;
   color:#ffffff;
-  border-radius:8px;
 }
 
-/* CHIFFRES */
+/* ======================================================
+   CHIFFRES
+====================================================== */
 
 .badges-panel{
-  display:none;
   position:absolute;
+
   left:55px;
   top:642px;
-  width:545px;
 
-  gap:14px;
+  z-index:200;
+
+  display:none;
   justify-content:center;
   align-items:center;
 
-  z-index:200;
+  width:545px;
+
+  gap:14px;
 }
 
 .badges-panel.visible{
@@ -166,39 +201,57 @@ body{
   font-family:Arial, Helvetica, sans-serif;
   font-size:28px;
   font-weight:900;
+
   line-height:48px;
   text-align:center;
 
   cursor:grab;
+
   user-select:none;
   touch-action:none;
 
-  box-shadow:0 4px 10px rgba(0,0,0,.28);
+  box-shadow:
+    0 4px 10px
+    rgba(0,0,0,.28);
 }
 
 .badge.dragging{
   cursor:grabbing;
+
   transform:scale(1.08);
-  filter:drop-shadow(0 6px 10px rgba(0,0,0,.35));
+
+  filter:
+    drop-shadow(
+      0 6px 10px
+      rgba(0,0,0,.35)
+    );
 }
 
 .badge.ok{
-  background:#18A558;
+  background:#18a558;
   color:#ffffff;
+
   cursor:default;
 }
 
-/* DEBUG DES ZONES */
+/* ======================================================
+   DEBUG DES ZONES
+====================================================== */
 
 .debug-zone{
   position:absolute;
-  display:none;
 
   z-index:160;
 
-  background:rgba(191,75,34,.18);
-  outline:3px solid rgba(191,75,34,.75);
+  display:none;
+
   border-radius:18px;
+
+  outline:
+    3px solid
+    rgba(191,75,34,.75);
+
+  background:rgba(191,75,34,.18);
 
   pointer-events:none;
 }
@@ -207,29 +260,37 @@ body.debug .debug-zone{
   display:block;
 }
 
-/* BRAVO DE FIN */
+/* ======================================================
+   BRAVO DE FIN
+====================================================== */
 
 .bloc-enigme3.gagnee .partie-3a,
 .bloc-enigme3.gagnee .partie-3b{
   opacity:.5;
+
   filter:saturate(.5);
-  transition:opacity .45s ease, filter .45s ease;
+
+  transition:
+    opacity .45s ease,
+    filter .45s ease;
 }
 
 .bravi-final{
   position:absolute;
   inset:0;
 
+  z-index:2600;
+
   display:flex;
   justify-content:center;
   align-items:center;
 
   opacity:0;
+
   pointer-events:none;
 
-  z-index:2600;
-
-  transition:opacity .45s ease;
+  transition:
+    opacity .45s ease;
 }
 
 .bravi-final.visible{
@@ -237,26 +298,39 @@ body.debug .debug-zone{
 }
 
 .bravi-final img{
+  display:block;
+
   width:50%;
   height:auto;
-  display:block;
-  filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
+
+  filter:
+    drop-shadow(
+      0 10px 20px
+      rgba(0,0,0,.35)
+    );
 }
 
-/* SAC */
+/* ======================================================
+   SAC
+====================================================== */
 
 .inventaire{
   position:absolute;
+
   left:-70px;
   top:0;
-  height:716px;
+
   z-index:3000;
+
+  height:716px;
 }
 
 .inventaire-tab{
   position:absolute;
+
   left:0;
   top:25px;
+
   width:70px;
 
   display:flex;
@@ -267,15 +341,21 @@ body.debug .debug-zone{
 }
 
 .inventaire-tab img{
+  display:block;
+
   width:80px;
   height:auto;
-  display:block;
 
   pointer-events:none;
 
-  transition:transform .25s;
+  transition:
+    transform .25s;
 
-  filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
+  filter:
+    drop-shadow(
+      0 6px 10px
+      rgba(0,0,0,.45)
+    );
 }
 
 .inventaire:hover .inventaire-tab img{
@@ -284,6 +364,7 @@ body.debug .debug-zone{
 
 .inventaire-content{
   position:absolute;
+
   left:70px;
   top:10px;
 
@@ -292,17 +373,20 @@ body.debug .debug-zone{
 
   overflow:hidden;
 
+  border-radius:0 18px 18px 0;
+
   background:rgba(255,255,255,.30);
+  color:#044e61;
 
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
 
-  color:#044e61;
+  box-shadow:
+    0 6px 18px
+    rgba(0,0,0,.25);
 
-  transition:width .35s ease;
-
-  border-radius:0 18px 18px 0;
-  box-shadow:0 6px 18px rgba(0,0,0,.25);
+  transition:
+    width .35s ease;
 }
 
 .inventaire:hover .inventaire-content{
@@ -312,15 +396,20 @@ body.debug .debug-zone{
 .inventaire-content-inner{
   width:230px;
   height:200px;
+
   padding:25px 18px;
+
   overflow-y:auto;
+
   line-height:1.3;
 }
 
 .inventaire-content h3{
-  font-size:18px;
   margin-bottom:18px;
+
   color:#044e61;
+
+  font-size:18px;
 }
 
 .inventaire-content ul{
@@ -333,31 +422,37 @@ body.debug .debug-zone{
   margin-bottom:10px;
   padding:10px;
 
-  line-height:18px;
-
   border-radius:10px;
 
   background:rgba(255,255,255,.55);
   color:#044e61;
 
-  font-weight:bold;
   font-size:14px;
+  font-weight:bold;
+  line-height:18px;
 }
 
-/* LOUPE */
+/* ======================================================
+   LOUPE
+====================================================== */
 
 .navigation-enigmes{
   position:absolute;
+
   left:-70px;
   top:90px;
-  height:716px;
+
   z-index:2990;
+
+  height:716px;
 }
 
 .navigation-tab{
   position:absolute;
+
   left:0;
   top:25px;
+
   width:70px;
 
   display:flex;
@@ -368,45 +463,51 @@ body.debug .debug-zone{
 }
 
 .navigation-tab img{
+  display:block;
+
   width:80px;
   height:auto;
-  display:block;
 
   pointer-events:none;
 
-  transition:transform .25s;
+  transition:
+    transform .25s;
 
-  filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
+  filter:
+    drop-shadow(
+      0 6px 10px
+      rgba(0,0,0,.45)
+    );
 }
 
 .navigation-enigmes:hover .navigation-tab img{
   transform:scale(1.08);
 }
 
-/*
-Le tiroir n’a plus de hauteur fixe.
-Sa hauteur s’adapte automatiquement aux cinq énigmes.
-*/
-
 .navigation-content{
   position:absolute;
+
   left:70px;
   top:10px;
 
   width:0;
+
   overflow:hidden;
 
+  border-radius:0 18px 18px 0;
+
   background:rgba(255,255,255,.30);
+  color:#044e61;
 
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
 
-  color:#044e61;
+  box-shadow:
+    0 6px 18px
+    rgba(0,0,0,.25);
 
-  transition:width .35s ease;
-
-  border-radius:0 18px 18px 0;
-  box-shadow:0 6px 18px rgba(0,0,0,.25);
+  transition:
+    width .35s ease;
 }
 
 .navigation-enigmes:hover .navigation-content{
@@ -415,15 +516,20 @@ Sa hauteur s’adapte automatiquement aux cinq énigmes.
 
 .navigation-content-inner{
   width:230px;
+
   padding:22px 18px 16px;
+
   overflow:visible;
+
   line-height:1.3;
 }
 
 .navigation-content h3{
-  font-size:18px;
   margin-bottom:18px;
+
   color:#044e61;
+
+  font-size:18px;
 }
 
 .navigation-content a{
@@ -432,15 +538,15 @@ Sa hauteur s’adapte automatiquement aux cinq énigmes.
   margin-bottom:8px;
   padding:9px 10px;
 
-  line-height:18px;
-
   border-radius:10px;
 
   background:rgba(255,255,255,.55);
   color:#044e61;
 
-  font-weight:bold;
   font-size:14px;
+  font-weight:bold;
+  line-height:18px;
+
   text-decoration:none;
 }
 
@@ -453,38 +559,112 @@ Sa hauteur s’adapte automatiquement aux cinq énigmes.
   color:#ffffff;
 }
 
-/* FLÈCHE */
+/* ======================================================
+   FLÈCHE
+====================================================== */
 
 .next-arrow{
   position:fixed;
+
   top:50%;
   right:35px;
 
-  transform:translateY(-50%) translateX(12px);
+  z-index:999;
+
+  color:#ffffff;
 
   font-size:62px;
   font-weight:200;
 
-  color:#ffffff;
   text-decoration:none;
 
   opacity:0;
+
+  transform:
+    translateY(-50%)
+    translateX(12px);
+
   pointer-events:none;
 
   transition:.35s ease;
-
-  z-index:999;
 }
 
 .next-arrow.visible{
   opacity:.45;
+
+  transform:
+    translateY(-50%)
+    translateX(0);
+
   pointer-events:auto;
-  transform:translateY(-50%) translateX(0);
 }
 
 .next-arrow:hover{
   opacity:1;
-  transform:translateY(-50%) translateX(6px);
+
+  transform:
+    translateY(-50%)
+    translateX(6px);
+}
+
+/* ======================================================
+   COPYRIGHT SOUS L’IMAGE
+====================================================== */
+
+.copyright-rebond{
+  width:1000px;
+
+  margin:11px auto 30px;
+
+  color:rgba(255,255,255,.88);
+
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:11px;
+  font-weight:500;
+
+  line-height:1.2;
+  letter-spacing:.3px;
+
+  text-align:center;
+
+  pointer-events:none;
+  user-select:none;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media screen and (max-width:1080px){
+
+  body{
+    overflow-x:auto;
+  }
+
+  .page-enigme3{
+    align-items:flex-start;
+  }
+
+  .bloc-enigme3{
+    margin-left:40px;
+    margin-right:40px;
+  }
+
+  .copyright-rebond{
+    margin-left:40px;
+    margin-right:40px;
+  }
+
+}
+
+@media screen and (max-width:600px){
+
+  .copyright-rebond{
+    margin-top:8px;
+
+    font-size:9px;
+  }
+
 }
 </style>
 </head>
@@ -497,12 +677,16 @@ Sa hauteur s’adapte automatiquement aux cinq énigmes.
 
     <!-- SAC INVENTAIRE -->
 
-    <div class="inventaire" id="inventaire">
+    <div
+      class="inventaire"
+      id="inventaire">
 
       <div class="inventaire-tab">
+
         <img
           src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png"
           alt="Inventaire">
+
       </div>
 
       <div class="inventaire-content">
@@ -521,12 +705,16 @@ Sa hauteur s’adapte automatiquement aux cinq énigmes.
 
     <!-- NAVIGATION DES ÉNIGMES -->
 
-    <div class="navigation-enigmes" id="navigationEnigmes">
+    <div
+      class="navigation-enigmes"
+      id="navigationEnigmes">
 
       <div class="navigation-tab">
+
         <img
           src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png"
           alt="Énigmes">
+
       </div>
 
       <div class="navigation-content">
@@ -535,11 +723,25 @@ Sa hauteur s’adapte automatiquement aux cinq énigmes.
 
           <h3>Énigmes</h3>
 
-          <a href="enigme1.html">Énigme 1</a>
-          <a href="enigme2.html">Énigme 2</a>
-          <a href="enigme3.html">Énigme 3</a>
-          <a href="enigme4.html">Énigme 4</a>
-          <a href="enigme5.html">Énigme 5</a>
+          <a href="enigme1.html">
+            Énigme 1
+          </a>
+
+          <a href="enigme2.html">
+            Énigme 2
+          </a>
+
+          <a href="enigme3.html">
+            Énigme 3
+          </a>
+
+          <a href="enigme4.html">
+            Énigme 4
+          </a>
+
+          <a href="enigme5.html">
+            Énigme 5
+          </a>
 
         </div>
 
@@ -549,7 +751,9 @@ Sa hauteur s’adapte automatiquement aux cinq énigmes.
 
     <!-- BRAVO FINAL -->
 
-    <div class="bravi-final" id="braviFinal">
+    <div
+      class="bravi-final"
+      id="braviFinal">
 
       <img
         src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi3.png"
@@ -570,41 +774,53 @@ Sa hauteur s’adapte automatiquement aux cinq énigmes.
         class="reponse-corps"
         type="text"
         autocomplete="off"
-        maxlength="14">
+        spellcheck="false"
+        maxlength="14"
+        aria-label="Première partie du corps">
 
       <input
         id="mot2"
         class="reponse-corps"
         type="text"
         autocomplete="off"
-        maxlength="14">
+        spellcheck="false"
+        maxlength="14"
+        aria-label="Deuxième partie du corps">
 
       <input
         id="mot3"
         class="reponse-corps"
         type="text"
         autocomplete="off"
-        maxlength="14">
+        spellcheck="false"
+        maxlength="14"
+        aria-label="Troisième partie du corps">
 
       <input
         id="mot4"
         class="reponse-corps"
         type="text"
         autocomplete="off"
-        maxlength="14">
+        spellcheck="false"
+        maxlength="14"
+        aria-label="Quatrième partie du corps">
 
       <input
         id="mot5"
         class="reponse-corps"
         type="text"
         autocomplete="off"
-        maxlength="14">
+        spellcheck="false"
+        maxlength="14"
+        aria-label="Cinquième partie du corps">
 
     </div>
 
     <!-- PARTIE DROITE -->
 
-    <div class="partie-3b" id="zoneImage">
+    <div
+      class="partie-3b"
+      id="zoneImage">
 
       <video
         class="animation-3b"
@@ -625,6 +841,12 @@ Sa hauteur s’adapte automatiquement aux cinq énigmes.
 
   </div>
 
+  <div
+    class="copyright-rebond"
+    aria-label="Copyright Rebond">
+    © Rebond
+  </div>
+
 </div>
 
 <!-- FLÈCHE ÉNIGME SUIVANTE -->
@@ -638,21 +860,28 @@ Sa hauteur s’adapte automatiquement aux cinq énigmes.
 </a>
 
 <script>
-/*
-Active le mode debug en mettant true,
-ou en ajoutant ?debug=1 à l’URL.
-*/
+/* ======================================================
+   MODE DEBUG
+====================================================== */
 
 const DEBUG_ZONES = false;
 
 if(
   DEBUG_ZONES ||
-  new URLSearchParams(window.location.search).get("debug") === "1"
+  new URLSearchParams(
+    window.location.search
+  ).get("debug") === "1"
 ){
-  document.body.classList.add("debug");
+
+  document.body.classList.add(
+    "debug"
+  );
+
 }
 
-/* MOTS AUTORISÉS */
+/* ======================================================
+   MOTS AUTORISÉS
+====================================================== */
 
 const motsPossibles = [
   "FESSES",
@@ -663,7 +892,9 @@ const motsPossibles = [
   "ENTREJAMBE"
 ];
 
-/* NORMALISATION DES MOTS */
+/* ======================================================
+   NORMALISATION DES MOTS
+====================================================== */
 
 const motsCanoniques = {
   FESSES:"FESSES",
@@ -674,7 +905,9 @@ const motsCanoniques = {
   ENTREJAMBE:"ENTREJAMBE"
 };
 
-/* ZONES DE DÉPÔT */
+/* ======================================================
+   ZONES DE DÉPÔT
+====================================================== */
 
 const zonesDepot = [
 
@@ -758,351 +991,663 @@ const zonesDepot = [
 
 ];
 
-/* VARIABLES DU JEU */
+/* ======================================================
+   VARIABLES DU JEU
+====================================================== */
 
-const motsTrouves = new Set();
+const motsTrouves =
+  new Set();
+
 const motsParCase = {};
-const badgesPlaces = new Set();
 
-const nextBtn = document.getElementById("nextBtn");
-const zoneImage = document.getElementById("zoneImage");
-const badgesPanel = document.getElementById("badgesPanel");
-const debugZones = document.getElementById("debugZones");
-const inputs = document.querySelectorAll(".reponse-corps");
-const braviFinal = document.getElementById("braviFinal");
+const badgesPlaces =
+  new Set();
+
+const nextBtn =
+  document.getElementById(
+    "nextBtn"
+  );
+
+const zoneImage =
+  document.getElementById(
+    "zoneImage"
+  );
+
+const badgesPanel =
+  document.getElementById(
+    "badgesPanel"
+  );
+
+const debugZones =
+  document.getElementById(
+    "debugZones"
+  );
+
+const inputs =
+  document.querySelectorAll(
+    ".reponse-corps"
+  );
+
+const braviFinal =
+  document.getElementById(
+    "braviFinal"
+  );
 
 let badgeActif = null;
 let offsetX = 0;
 let offsetY = 0;
+let jeuTermine = false;
 
-/* INITIALISATION */
+/* ======================================================
+   ENREGISTREMENT DE LA PROGRESSION
+====================================================== */
+
+localStorage.setItem(
+  "rebondCurrentPage",
+  "enigme3.html"
+);
+
+/* ======================================================
+   INITIALISATION
+====================================================== */
 
 afficherMotsTrouves();
 creerZonesDebug();
 
-/* SAISIE DES MOTS */
+/* ======================================================
+   SAISIE DES MOTS
+====================================================== */
 
-inputs.forEach(input => {
+inputs.forEach(
+  function(input){
 
-  input.addEventListener("input", () => {
+    input.addEventListener(
+      "input",
+      function(){
 
-    input.value = input.value.toUpperCase();
-    input.classList.remove("erreur");
+        input.value =
+          input.value
+            .toUpperCase();
 
-    const valeur = nettoyerTexte(input.value);
+        input.classList.remove(
+          "erreur"
+        );
 
-    if(motsPossibles.includes(valeur)){
+        const valeur =
+          nettoyerTexte(
+            input.value
+          );
 
-      const canonique = motsCanoniques[valeur];
+        if(
+          motsPossibles.includes(
+            valeur
+          )
+        ){
 
-      if(!motsTrouves.has(canonique)){
-        verrouillerMot(input, canonique);
+          const canonique =
+            motsCanoniques[
+              valeur
+            ];
+
+          if(
+            !motsTrouves.has(
+              canonique
+            )
+          ){
+
+            verrouillerMot(
+              input,
+              canonique
+            );
+
+          }
+
+        }
+
       }
+    );
 
-    }
+  }
+);
 
-  });
-
-});
-
-/* NETTOYAGE DU TEXTE */
+/* ======================================================
+   NETTOYAGE DU TEXTE
+====================================================== */
 
 function nettoyerTexte(texte){
 
-  return texte
+  return String(
+    texte || ""
+  )
     .trim()
     .toUpperCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^A-Z]/g, "");
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .replace(
+      /[^A-Z]/g,
+      ""
+    );
 
 }
 
-/* VERROUILLAGE D’UN MOT */
+/* ======================================================
+   VERROUILLAGE D’UN MOT
+====================================================== */
 
-function verrouillerMot(input, mot){
+function verrouillerMot(
+  input,
+  mot
+){
 
-  input.classList.add("ok");
-  input.readOnly = true;
-  input.value = mot;
+  input.classList.add(
+    "ok"
+  );
+
+  input.readOnly =
+    true;
+
+  input.value =
+    mot;
+
   input.blur();
 
-  motsTrouves.add(mot);
-  motsParCase[input.id] = mot;
+  motsTrouves.add(
+    mot
+  );
+
+  motsParCase[
+    input.id
+  ] = mot;
 
   verifierMots();
 
 }
 
-/* CONTRÔLE DES CINQ MOTS */
+/* ======================================================
+   CONTRÔLE DES CINQ MOTS
+====================================================== */
 
 function verifierMots(){
 
-  if(motsTrouves.size === 5){
+  if(
+    motsTrouves.size === 5
+  ){
 
     creerChiffresSelonReponses();
-    badgesPanel.classList.add("visible");
+
+    badgesPanel.classList.add(
+      "visible"
+    );
 
   }
 
 }
 
-/* CRÉATION DES BADGES */
+/* ======================================================
+   CRÉATION DES BADGES
+====================================================== */
 
 function creerChiffresSelonReponses(){
 
-  badgesPanel.innerHTML = "";
+  badgesPanel.innerHTML =
+    "";
 
-  inputs.forEach((input, index) => {
+  inputs.forEach(
+    function(input,index){
 
-    const mot = motsParCase[input.id];
+      const mot =
+        motsParCase[
+          input.id
+        ];
 
-    if(!mot){
-      return;
+      if(!mot){
+        return;
+      }
+
+      const badge =
+        document.createElement(
+          "div"
+        );
+
+      badge.className =
+        "badge";
+
+      badge.id =
+        "badge" +
+        (index + 1);
+
+      badge.dataset.word =
+        mot;
+
+      badge.textContent =
+        String(
+          index + 1
+        );
+
+      badge.addEventListener(
+        "pointerdown",
+        commencerDrag
+      );
+
+      badgesPanel.appendChild(
+        badge
+      );
+
     }
-
-    const badge = document.createElement("div");
-
-    badge.className = "badge";
-    badge.id = "badge" + (index + 1);
-    badge.dataset.word = mot;
-    badge.textContent = String(index + 1);
-
-    badge.addEventListener(
-      "pointerdown",
-      commencerDrag
-    );
-
-    badgesPanel.appendChild(badge);
-
-  });
-
-}
-
-/* ZONES DE DEBUG */
-
-function creerZonesDebug(){
-
-  debugZones.innerHTML = "";
-
-  zonesDepot.forEach(zone => {
-
-    const div = document.createElement("div");
-
-    div.className = "debug-zone";
-
-    div.style.left = zone.x + "px";
-    div.style.top = zone.y + "px";
-    div.style.width = zone.w + "px";
-    div.style.height = zone.h + "px";
-
-    debugZones.appendChild(div);
-
-  });
-
-}
-
-/* DÉBUT DU GLISSER-DÉPOSER */
-
-function commencerDrag(e){
-
-  if(e.currentTarget.classList.contains("ok")){
-    return;
-  }
-
-  e.preventDefault();
-
-  badgeActif = e.currentTarget;
-
-  const rect = badgeActif.getBoundingClientRect();
-
-  offsetX = e.clientX - rect.left;
-  offsetY = e.clientY - rect.top;
-
-  document.body.appendChild(badgeActif);
-
-  badgeActif.classList.add("dragging");
-
-  badgeActif.style.position = "fixed";
-  badgeActif.style.left = rect.left + "px";
-  badgeActif.style.top = rect.top + "px";
-  badgeActif.style.zIndex = "9999";
-
-}
-
-/* DÉPLACEMENT DU BADGE */
-
-document.addEventListener("pointermove", e => {
-
-  if(!badgeActif){
-    return;
-  }
-
-  badgeActif.style.left =
-    (e.clientX - offsetX) + "px";
-
-  badgeActif.style.top =
-    (e.clientY - offsetY) + "px";
-
-});
-
-/* FIN DU GLISSER-DÉPOSER */
-
-document.addEventListener("pointerup", () => {
-
-  if(!badgeActif){
-    return;
-  }
-
-  const badgeRect =
-    badgeActif.getBoundingClientRect();
-
-  const centrePageX =
-    badgeRect.left + badgeRect.width / 2;
-
-  const centrePageY =
-    badgeRect.top + badgeRect.height / 2;
-
-  const imageRect =
-    zoneImage.getBoundingClientRect();
-
-  const centreImageX =
-    centrePageX - imageRect.left;
-
-  const centreImageY =
-    centrePageY - imageRect.top;
-
-  const zoneTrouvee =
-    trouverZone(centreImageX, centreImageY);
-
-  if(
-    zoneTrouvee &&
-    zoneTrouvee.mot === badgeActif.dataset.word
-  ){
-
-    placerBadgeDansZone(
-      badgeActif,
-      zoneTrouvee
-    );
-
-  } else {
-
-    retourDepart(badgeActif);
-
-  }
-
-  badgeActif = null;
-
-});
-
-/* RECHERCHE DE LA ZONE */
-
-function trouverZone(x, y){
-
-  return zonesDepot.find(zone =>
-
-    x >= zone.x &&
-    x <= zone.x + zone.w &&
-    y >= zone.y &&
-    y <= zone.y + zone.h
-
   );
 
 }
 
-/* PLACEMENT DU BADGE */
+/* ======================================================
+   ZONES DE DEBUG
+====================================================== */
 
-function placerBadgeDansZone(badge, zone){
+function creerZonesDebug(){
 
-  zoneImage.appendChild(badge);
+  debugZones.innerHTML =
+    "";
 
-  badge.classList.remove("dragging");
-  badge.classList.add("ok");
+  zonesDepot.forEach(
+    function(zone){
 
-  badge.style.position = "absolute";
+      const div =
+        document.createElement(
+          "div"
+        );
+
+      div.className =
+        "debug-zone";
+
+      div.style.left =
+        zone.x + "px";
+
+      div.style.top =
+        zone.y + "px";
+
+      div.style.width =
+        zone.w + "px";
+
+      div.style.height =
+        zone.h + "px";
+
+      debugZones.appendChild(
+        div
+      );
+
+    }
+  );
+
+}
+
+/* ======================================================
+   DÉBUT DU GLISSER-DÉPOSER
+====================================================== */
+
+function commencerDrag(event){
+
+  if(
+    event.currentTarget
+      .classList
+      .contains("ok")
+  ){
+    return;
+  }
+
+  event.preventDefault();
+
+  badgeActif =
+    event.currentTarget;
+
+  const rect =
+    badgeActif
+      .getBoundingClientRect();
+
+  offsetX =
+    event.clientX -
+    rect.left;
+
+  offsetY =
+    event.clientY -
+    rect.top;
+
+  document.body.appendChild(
+    badgeActif
+  );
+
+  badgeActif.classList.add(
+    "dragging"
+  );
+
+  badgeActif.style.position =
+    "fixed";
+
+  badgeActif.style.left =
+    rect.left + "px";
+
+  badgeActif.style.top =
+    rect.top + "px";
+
+  badgeActif.style.zIndex =
+    "9999";
+
+}
+
+/* ======================================================
+   DÉPLACEMENT DU BADGE
+====================================================== */
+
+document.addEventListener(
+  "pointermove",
+  function(event){
+
+    if(!badgeActif){
+      return;
+    }
+
+    badgeActif.style.left =
+      (
+        event.clientX -
+        offsetX
+      ) + "px";
+
+    badgeActif.style.top =
+      (
+        event.clientY -
+        offsetY
+      ) + "px";
+
+  }
+);
+
+/* ======================================================
+   FIN DU GLISSER-DÉPOSER
+====================================================== */
+
+document.addEventListener(
+  "pointerup",
+  function(){
+
+    if(!badgeActif){
+      return;
+    }
+
+    const badgeRect =
+      badgeActif
+        .getBoundingClientRect();
+
+    const centrePageX =
+      badgeRect.left +
+      badgeRect.width / 2;
+
+    const centrePageY =
+      badgeRect.top +
+      badgeRect.height / 2;
+
+    const imageRect =
+      zoneImage
+        .getBoundingClientRect();
+
+    const centreImageX =
+      centrePageX -
+      imageRect.left;
+
+    const centreImageY =
+      centrePageY -
+      imageRect.top;
+
+    const zoneTrouvee =
+      trouverZone(
+        centreImageX,
+        centreImageY
+      );
+
+    if(
+      zoneTrouvee &&
+      zoneTrouvee.mot ===
+      badgeActif.dataset.word
+    ){
+
+      placerBadgeDansZone(
+        badgeActif,
+        zoneTrouvee
+      );
+
+    }
+    else{
+
+      retourDepart(
+        badgeActif
+      );
+
+    }
+
+    badgeActif =
+      null;
+
+  }
+);
+
+/* ======================================================
+   RECHERCHE DE LA ZONE
+====================================================== */
+
+function trouverZone(x,y){
+
+  return zonesDepot.find(
+    function(zone){
+
+      return (
+        x >= zone.x &&
+        x <= zone.x + zone.w &&
+        y >= zone.y &&
+        y <= zone.y + zone.h
+      );
+
+    }
+  );
+
+}
+
+/* ======================================================
+   PLACEMENT DU BADGE
+====================================================== */
+
+function placerBadgeDansZone(
+  badge,
+  zone
+){
+
+  zoneImage.appendChild(
+    badge
+  );
+
+  badge.classList.remove(
+    "dragging"
+  );
+
+  badge.classList.add(
+    "ok"
+  );
+
+  badge.style.position =
+    "absolute";
 
   badge.style.left =
-    (zone.x + zone.w / 2 - 24) + "px";
+    (
+      zone.x +
+      zone.w / 2 -
+      24
+    ) + "px";
 
   badge.style.top =
-    (zone.y + zone.h / 2 - 24) + "px";
+    (
+      zone.y +
+      zone.h / 2 -
+      24
+    ) + "px";
 
-  badge.style.transform = "";
-  badge.style.zIndex = "180";
-  badge.style.pointerEvents = "none";
+  badge.style.transform =
+    "";
 
-  badgesPlaces.add(badge.id);
+  badge.style.zIndex =
+    "180";
+
+  badge.style.pointerEvents =
+    "none";
+
+  badgesPlaces.add(
+    badge.id
+  );
 
   verifierFin();
 
 }
 
-/* RETOUR À LA POSITION DE DÉPART */
+/* ======================================================
+   RETOUR À LA POSITION DE DÉPART
+====================================================== */
 
 function retourDepart(badge){
 
-  badgesPanel.appendChild(badge);
+  badgesPanel.appendChild(
+    badge
+  );
 
-  badge.classList.remove("dragging");
+  badge.classList.remove(
+    "dragging"
+  );
 
-  badge.style.position = "";
-  badge.style.left = "";
-  badge.style.top = "";
-  badge.style.transform = "";
-  badge.style.zIndex = "";
+  badge.style.position =
+    "";
+
+  badge.style.left =
+    "";
+
+  badge.style.top =
+    "";
+
+  badge.style.transform =
+    "";
+
+  badge.style.zIndex =
+    "";
 
 }
 
-/* FIN DE L’ÉNIGME */
+/* ======================================================
+   FIN DE L’ÉNIGME
+====================================================== */
 
 function verifierFin(){
 
-  if(badgesPlaces.size === 5){
+  if(
+    jeuTermine ||
+    badgesPlaces.size !== 5
+  ){
+    return;
+  }
 
-    ajouterMotTrouve(
-      "Énigme 3",
-      "ENSEMBLE"
+  jeuTermine =
+    true;
+
+  ajouterMotTrouve(
+    "Énigme 3",
+    "ENSEMBLE"
+  );
+
+  document
+    .querySelector(
+      ".bloc-enigme3"
+    )
+    .classList.add(
+      "gagnee"
     );
 
-    document
-      .querySelector(".bloc-enigme3")
-      .classList.add("gagnee");
+  braviFinal.classList.add(
+    "visible"
+  );
 
-    braviFinal.classList.add("visible");
+  window.setTimeout(
+    function(){
 
-    setTimeout(() => {
+      nextBtn.classList.add(
+        "visible"
+      );
 
-      nextBtn.classList.add("visible");
+    },
+    1000
+  );
 
-    }, 1000);
+}
+
+/* ======================================================
+   LECTURE SÉCURISÉE DE L’INVENTAIRE
+====================================================== */
+
+function lireMotsTrouves(){
+
+  try{
+
+    const donnees =
+      JSON.parse(
+        localStorage.getItem(
+          "motsEscapeRebond"
+        )
+      );
+
+    return Array.isArray(
+      donnees
+    )
+      ? donnees
+      : [];
+
+  }
+  catch(error){
+
+    return [];
 
   }
 
 }
 
-/* AJOUT DU MOT DANS L’INVENTAIRE */
+/* ======================================================
+   AJOUT DU MOT DANS L’INVENTAIRE
+====================================================== */
 
-function ajouterMotTrouve(enigme, mot){
+function ajouterMotTrouve(
+  enigme,
+  mot
+){
 
   const mots =
-    JSON.parse(
-      localStorage.getItem("motsEscapeRebond")
-    ) || [];
+    lireMotsTrouves();
 
   if(
     !mots.some(
-      item => item.enigme === enigme
+      function(item){
+
+        return (
+          item.enigme ===
+          enigme
+        );
+
+      }
     )
   ){
 
     mots.push({
-      enigme,
-      mot
+      enigme:enigme,
+      mot:mot
     });
 
     localStorage.setItem(
       "motsEscapeRebond",
-      JSON.stringify(mots)
+      JSON.stringify(
+        mots
+      )
     );
 
   }
@@ -1111,44 +1656,75 @@ function ajouterMotTrouve(enigme, mot){
 
 }
 
-/* AFFICHAGE DE L’INVENTAIRE */
+/* ======================================================
+   AFFICHAGE DE L’INVENTAIRE
+====================================================== */
 
 function afficherMotsTrouves(){
 
   const liste =
-    document.getElementById("listeMots");
+    document.getElementById(
+      "listeMots"
+    );
 
   if(!liste){
     return;
   }
 
   const mots =
-    JSON.parse(
-      localStorage.getItem("motsEscapeRebond")
-    ) || [];
+    lireMotsTrouves();
 
-  liste.innerHTML = "";
+  liste.innerHTML =
+    "";
 
-  if(mots.length === 0){
+  if(
+    mots.length === 0
+  ){
 
-    liste.innerHTML = "<li>Aucun mot</li>";
+    liste.innerHTML =
+      "<li>Aucun mot</li>";
+
     return;
 
   }
 
-  mots.forEach(item => {
+  mots.forEach(
+    function(item){
 
-    const li =
-      document.createElement("li");
+      const li =
+        document.createElement(
+          "li"
+        );
 
-    li.textContent =
-      item.enigme + " : " + item.mot;
+      li.textContent =
+        item.enigme +
+        " : " +
+        item.mot;
 
-    liste.appendChild(li);
+      liste.appendChild(
+        li
+      );
 
-  });
+    }
+  );
 
 }
+
+/* ======================================================
+   CONFIRMATION AU CHARGEMENT
+====================================================== */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    localStorage.setItem(
+      "rebondCurrentPage",
+      "enigme3.html"
+    );
+
+  }
+);
 </script>
 
 </body>

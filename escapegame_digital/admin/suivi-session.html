@@ -2,9 +2,12 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Rebond — Suivi de la session</title>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
+
+<title>Rebond — Tableau de bord</title>
 
 <style>
 *{
@@ -17,156 +20,590 @@ html,
 body{
   width:100%;
   min-height:100%;
+
   background:#1b5f6e;
-  font-family:Arial, Helvetica, sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
   color:#044e61;
 }
 
 body{
-  padding:40px 18px;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+
+  min-height:100vh;
+  min-height:100dvh;
+
+  padding:22px 12px;
 }
+
+/* ======================================================
+   CONTENEUR GÉNÉRAL
+
+   L’image valid_3.png mesure environ 1320 × 1139 px.
+====================================================== */
 
 .page{
   width:100%;
-  max-width:940px;
-  margin:0 auto;
+  max-width:970px;
 }
 
-.carte{
+.tableau-bord{
+  position:relative;
+
   width:100%;
-  padding:34px;
-  background:#ffffff;
-  border-radius:24px;
+
+  aspect-ratio:1320 / 1139;
+
+  background:
+    transparent
+    url("valid_3.png")
+    center center / 100% 100%
+    no-repeat;
+
+  overflow:hidden;
 }
 
-h1{
-  margin-bottom:12px;
-  font-size:34px;
-  line-height:1.1;
-}
+/* ======================================================
+   INFORMATIONS DE SESSION
+====================================================== */
 
-.introduction{
-  color:#476b73;
-  font-size:17px;
-  line-height:1.5;
-}
+.info-session{
+  position:absolute;
 
-.resume{
-  display:none;
-  margin-top:25px;
-  padding:22px;
-  border-radius:18px;
-  background:#eaf5f2;
-}
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 
-.resume.visible{
-  display:block;
-}
+  overflow:hidden;
 
-.resume h2{
-  margin-bottom:14px;
-  font-size:25px;
-}
+  color:#044e61;
 
-.grille-infos{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-}
-
-.info{
-  padding:14px;
-  border-radius:12px;
-  background:#ffffff;
+  line-height:1.15;
 }
 
 .info-label{
   display:block;
-  margin-bottom:5px;
-  color:#688086;
-  font-size:12px;
+
+  margin-bottom:3px;
+
+  color:#71878c;
+
+  font-size:clamp(
+    7px,
+    1vw,
+    12px
+  );
+
   font-weight:bold;
   text-transform:uppercase;
 }
 
 .info-valeur{
   display:block;
+
+  overflow:hidden;
+
   color:#044e61;
-  font-size:17px;
+
+  font-size:clamp(
+    10px,
+    1.45vw,
+    18px
+  );
+
+  font-weight:bold;
+
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+/*
+  Première rangée :
+  structure, classe, date.
+*/
+
+.info-structure{
+  left:8.5%;
+  top:31.5%;
+
+  width:27.4%;
+  height:7.3%;
+}
+
+.info-classe{
+  left:37.5%;
+  top:31.5%;
+
+  width:27.2%;
+  height:7.3%;
+}
+
+.info-date{
+  left:66.2%;
+  top:31.5%;
+
+  width:26.8%;
+  height:7.3%;
+}
+
+/*
+  Deuxième rangée :
+  encadrant et participants.
+*/
+
+.info-encadrant{
+  left:8.5%;
+  top:41.1%;
+
+  width:27.4%;
+  height:7.3%;
+}
+
+.info-participants{
+  left:37.5%;
+  top:41.1%;
+
+  width:27.2%;
+  height:7.3%;
+}
+
+/* ======================================================
+   LES TROIS INDICATEURS
+====================================================== */
+
+.indicateur{
+  position:absolute;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  color:#ffffff;
+
+  text-align:center;
+
+  line-height:1;
+}
+
+.indicateur-inscrites{
+  left:9.3%;
+  top:54.2%;
+
+  width:26.4%;
+  height:10.2%;
+}
+
+.indicateur-enjeu{
+  left:37.7%;
+  top:54.2%;
+
+  width:26.3%;
+  height:10.2%;
+}
+
+.indicateur-terminees{
+  left:66.2%;
+  top:54.2%;
+
+  width:26.2%;
+  height:10.2%;
+}
+
+.indicateur-nombre{
+  display:block;
+
+  font-size:clamp(
+    18px,
+    3.1vw,
+    38px
+  );
+
+  font-weight:900;
+}
+
+.indicateur-label{
+  display:block;
+
+  margin-top:5px;
+
+  font-size:clamp(
+    7px,
+    1vw,
+    12px
+  );
+
+  font-weight:bold;
+
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+
+/* ======================================================
+   TABLEAU DES ÉQUIPES
+====================================================== */
+
+.zone-equipes{
+  position:absolute;
+
+  left:8%;
+  top:66.8%;
+
+  width:84%;
+  height:15.7%;
+
+  overflow:hidden;
+
+  color:#044e61;
+}
+
+.entete-equipes{
+  display:grid;
+
+  grid-template-columns:
+    minmax(130px,1.7fr)
+    minmax(80px,.8fr)
+    minmax(100px,1fr)
+    minmax(90px,.85fr);
+
+  align-items:center;
+
+  min-height:26px;
+
+  padding:0 12px;
+
+  border-bottom:
+    1px solid
+    rgba(4,78,97,.25);
+
+  color:#486e76;
+
+  font-size:clamp(
+    8px,
+    1vw,
+    12px
+  );
+
+  font-weight:bold;
+
+  text-transform:uppercase;
+}
+
+.liste-equipes{
+  height:calc(100% - 26px);
+
+  overflow-y:auto;
+
+  scrollbar-width:thin;
+  scrollbar-color:
+    rgba(4,78,97,.35)
+    transparent;
+}
+
+.ligne-equipe{
+  display:grid;
+
+  grid-template-columns:
+    minmax(130px,1.7fr)
+    minmax(80px,.8fr)
+    minmax(100px,1fr)
+    minmax(90px,.85fr);
+
+  align-items:center;
+
+  min-height:34px;
+
+  padding:4px 12px;
+
+  border-bottom:
+    1px solid
+    rgba(4,78,97,.13);
+
+  font-size:clamp(
+    9px,
+    1.15vw,
+    14px
+  );
+}
+
+.nom-equipe{
+  display:flex;
+  align-items:center;
+
+  min-width:0;
+
   font-weight:bold;
 }
 
-.indicateurs{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-top:16px;
+.nom-equipe-texte{
+  overflow:hidden;
+
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
-.indicateur{
-  padding:16px 12px;
-  border-radius:14px;
-  background:#044e61;
-  color:#ffffff;
+.puce-statut{
+  flex:0 0 auto;
+
+  width:9px;
+  height:9px;
+
+  margin-right:9px;
+
+  border-radius:50%;
+
+  background:#aebec1;
+}
+
+.puce-statut.attente{
+  background:#aebec1;
+}
+
+.puce-statut.encours{
+  background:#4fa4b4;
+}
+
+.puce-statut.terminee{
+  background:#e76f42;
+}
+
+.heure,
+.duree{
+  font-variant-numeric:
+    tabular-nums;
+}
+
+.statut{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  justify-self:start;
+
+  min-width:70px;
+
+  padding:4px 9px;
+
+  border:
+    1px solid
+    currentColor;
+
+  border-radius:999px;
+
+  font-size:clamp(
+    7px,
+    .9vw,
+    11px
+  );
+
+  font-weight:bold;
+
+  text-align:center;
+  text-transform:uppercase;
+}
+
+.statut.attente{
+  color:#71878c;
+}
+
+.statut.encours{
+  color:#157b8d;
+}
+
+.statut.terminee{
+  color:#d85f36;
+}
+
+/* ======================================================
+   AUCUNE ÉQUIPE
+====================================================== */
+
+.aucune-equipe{
+  display:none;
+
+  height:100%;
+
+  align-items:center;
+  justify-content:center;
+
+  padding:20px;
+
+  color:#647f85;
+
+  font-size:clamp(
+    10px,
+    1.2vw,
+    15px
+  );
+
+  font-weight:bold;
+
   text-align:center;
 }
 
-.indicateur:nth-child(2){
-  background:#edb01a;
-  color:#044e61;
+.aucune-equipe.visible{
+  display:flex;
 }
 
-.indicateur strong{
-  display:block;
-  font-size:26px;
-}
-
-.indicateur span{
-  display:block;
-  margin-top:4px;
-  font-size:13px;
-  font-weight:bold;
-}
-
-.actions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-  margin-top:24px;
-}
+/* ======================================================
+   BOUTONS TRANSPARENTS SUR L’IMAGE
+====================================================== */
 
 .bouton{
-  width:100%;
-  min-height:56px;
-  padding:12px 22px;
+  position:absolute;
+
+  padding:0;
+
   border:0;
   border-radius:999px;
-  background:#edb01a;
-  color:#044e61;
-  font-size:18px;
-  font-weight:bold;
+
+  outline:none;
+  box-shadow:none;
+
+  background:transparent;
+  color:transparent;
+
+  font-size:0;
+
   cursor:pointer;
-  text-decoration:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+
+  -webkit-tap-highlight-color:
+    transparent;
 }
 
-.bouton-compte-rendu{
-  background:#044e61;
-  color:#ffffff;
+.bouton:hover,
+.bouton:focus,
+.bouton:focus-visible,
+.bouton:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+  background:transparent;
 }
 
 .bouton:disabled{
-  opacity:.55;
+  opacity:.48;
   cursor:wait;
 }
 
-.message{
-  min-height:24px;
-  margin-top:18px;
-  font-size:15px;
+/*
+  ACTIVER LE SUIVI
+*/
+
+.bouton-suivi{
+  left:9.8%;
+  top:84.4%;
+
+  width:36.8%;
+  height:7.6%;
+}
+
+/*
+  GÉNÉRER LE COMPTE RENDU
+*/
+
+.bouton-compte-rendu{
+  left:52.2%;
+  top:84.4%;
+
+  width:36.7%;
+  height:7.6%;
+}
+
+/* ======================================================
+   INDICATEUR DU SUIVI AUTOMATIQUE
+====================================================== */
+
+.etat-direct{
+  position:absolute;
+
+  left:10.7%;
+  top:82.3%;
+
+  z-index:4;
+
+  display:none;
+  align-items:center;
+
+  color:#087f52;
+
+  font-size:clamp(
+    8px,
+    1vw,
+    12px
+  );
+
   font-weight:bold;
+}
+
+.etat-direct.visible{
+  display:flex;
+}
+
+.point-direct{
+  width:9px;
+  height:9px;
+
+  margin-right:7px;
+
+  border-radius:50%;
+
+  background:#1ac87b;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(26,200,123,.18);
+}
+
+/* ======================================================
+   MESSAGE
+====================================================== */
+
+.message{
+  position:absolute;
+
+  left:25%;
+  top:81.4%;
+
+  z-index:5;
+
+  width:50%;
+  min-height:24px;
+
+  display:none;
+  align-items:center;
+  justify-content:center;
+
+  padding:4px 12px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.95);
+
+  color:#044e61;
+
+  font-size:clamp(
+    8px,
+    1vw,
+    12px
+  );
+
+  font-weight:bold;
+
+  text-align:center;
+
+  pointer-events:none;
+}
+
+.message:not(:empty){
+  display:flex;
 }
 
 .message.erreur{
@@ -177,71 +614,92 @@ h1{
   color:#16824a;
 }
 
-.tableau-wrapper{
-  width:100%;
-  margin-top:26px;
-  overflow-x:auto;
-}
+/* ======================================================
+   TEXTE ACCESSIBLE
+====================================================== */
 
-table{
-  width:100%;
-  border-collapse:collapse;
-}
+.visuellement-cache{
+  position:absolute;
 
-th,
-td{
-  padding:14px 10px;
-  border-bottom:1px solid #d6e3e6;
-  text-align:left;
+  width:1px;
+  height:1px;
+
+  margin:-1px;
+  padding:0;
+
+  overflow:hidden;
+
+  clip:rect(0,0,0,0);
+  clip-path:inset(50%);
+
   white-space:nowrap;
+
+  border:0;
 }
 
-th{
-  color:#476b73;
-  font-size:13px;
-  text-transform:uppercase;
-}
-
-.statut{
-  font-weight:bold;
-}
-
-.statut.terminee{
-  color:#16824a;
-}
-
-.statut.encours{
-  color:#a46b00;
-}
-
-.aucune-equipe{
-  display:none;
-  margin-top:25px;
-  padding:22px;
-  border-radius:16px;
-  background:#f3f6f6;
-  color:#56747b;
-  text-align:center;
-}
-
-.aucune-equipe.visible{
-  display:block;
-}
+/* ======================================================
+   RESPONSIVE
+====================================================== */
 
 @media screen and (max-width:720px){
 
   body{
-    padding:18px 12px;
+    padding:8px 3px;
   }
 
-  .carte{
-    padding:25px 18px;
+  .page{
+    width:100%;
   }
 
-  .grille-infos,
-  .indicateurs,
-  .actions{
-    grid-template-columns:1fr;
+  .entete-equipes,
+  .ligne-equipe{
+    grid-template-columns:
+      minmax(90px,1.5fr)
+      minmax(56px,.75fr)
+      minmax(70px,1fr)
+      minmax(62px,.8fr);
+
+    padding-left:6px;
+    padding-right:6px;
+  }
+
+  .puce-statut{
+    width:6px;
+    height:6px;
+
+    margin-right:5px;
+  }
+
+  .statut{
+    min-width:48px;
+
+    padding:3px 4px;
+  }
+
+}
+
+/* Très petit écran */
+
+@media screen and (max-width:470px){
+
+  .entete-equipes{
+    display:none;
+  }
+
+  .liste-equipes{
+    height:100%;
+  }
+
+  .ligne-equipe{
+    grid-template-columns:
+      minmax(80px,1.5fr)
+      minmax(48px,.7fr)
+      minmax(60px,.9fr)
+      minmax(50px,.8fr);
+
+    min-height:25px;
+
+    font-size:7px;
   }
 
 }
@@ -252,122 +710,208 @@ th{
 
 <main class="page">
 
-  <section class="carte">
+  <section class="tableau-bord">
 
-    <h1>Suivi de la session</h1>
+    <h1 class="visuellement-cache">
+      Tableau de bord de la session
+    </h1>
 
-    <p class="introduction">
-      Consulte les équipes, leurs horaires
-      et leur durée de jeu.
-    </p>
+    <!-- INFORMATIONS DE SESSION -->
 
-    <section id="resume" class="resume">
+    <div class="info-session info-structure">
 
-      <h2 id="nomEcole"></h2>
+      <span class="info-label">
+        Nom de la structure
+      </span>
 
-      <div class="grille-infos">
+      <span
+        id="nomEcole"
+        class="info-valeur">
+        —
+      </span>
 
-        <div class="info">
-          <span class="info-label">Classe</span>
-          <span id="nomClasse" class="info-valeur"></span>
-        </div>
+    </div>
 
-        <div class="info">
-          <span class="info-label">Enseignant·e</span>
-          <span id="nomEnseignant" class="info-valeur"></span>
-        </div>
+    <div class="info-session info-classe">
 
-        <div class="info">
-          <span class="info-label">Nombre d’élèves</span>
-          <span id="nombreEleves" class="info-valeur"></span>
-        </div>
+      <span class="info-label">
+        Classe / Groupe
+      </span>
 
-        <div class="info">
-          <span class="info-label">Date</span>
-          <span id="dateSession" class="info-valeur"></span>
-        </div>
+      <span
+        id="nomClasse"
+        class="info-valeur">
+        —
+      </span>
 
-        <div class="info">
-          <span class="info-label">Code</span>
-          <span id="codeSession" class="info-valeur"></span>
-        </div>
+    </div>
+
+    <div class="info-session info-date">
+
+      <span class="info-label">
+        Date de la session
+      </span>
+
+      <span
+        id="dateSession"
+        class="info-valeur">
+        —
+      </span>
+
+    </div>
+
+    <div class="info-session info-encadrant">
+
+      <span class="info-label">
+        Encadrant
+      </span>
+
+      <span
+        id="nomEnseignant"
+        class="info-valeur">
+        —
+      </span>
+
+    </div>
+
+    <div class="info-session info-participants">
+
+      <span class="info-label">
+        Participants
+      </span>
+
+      <span
+        id="nombreEleves"
+        class="info-valeur">
+        —
+      </span>
+
+    </div>
+
+    <!-- INDICATEURS -->
+
+    <div class="indicateur indicateur-inscrites">
+
+      <strong
+        id="nombreEquipes"
+        class="indicateur-nombre">
+        0
+      </strong>
+
+      <span class="indicateur-label">
+        Équipes inscrites
+      </span>
+
+    </div>
+
+    <div class="indicateur indicateur-enjeu">
+
+      <strong
+        id="nombreEnJeu"
+        class="indicateur-nombre">
+        0
+      </strong>
+
+      <span class="indicateur-label">
+        En jeu
+      </span>
+
+    </div>
+
+    <div class="indicateur indicateur-terminees">
+
+      <strong
+        id="nombreTerminees"
+        class="indicateur-nombre">
+        0
+      </strong>
+
+      <span class="indicateur-label">
+        Terminées
+      </span>
+
+    </div>
+
+    <!-- TABLEAU DES ÉQUIPES -->
+
+    <section class="zone-equipes">
+
+      <div class="entete-equipes">
+
+        <span>Équipe</span>
+        <span>Début</span>
+        <span>Temps écoulé</span>
+        <span>État</span>
 
       </div>
 
-      <div class="indicateurs">
+      <div
+        id="listeEquipes"
+        class="liste-equipes">
+      </div>
 
-        <div class="indicateur">
-          <strong id="nombreEquipes">0</strong>
-          <span>équipes inscrites</span>
-        </div>
+      <div
+        id="aucuneEquipe"
+        class="aucune-equipe">
 
-        <div class="indicateur">
-          <strong id="nombreTerminees">0</strong>
-          <span>équipes terminées</span>
-        </div>
-
-        <div class="indicateur">
-          <strong id="tempsMoyen">—</strong>
-          <span>temps moyen</span>
-        </div>
+        Aucune équipe n’a encore rejoint
+        cette session.
 
       </div>
 
     </section>
 
-    <div class="actions">
+    <!-- ÉTAT DU SUIVI -->
 
-      <button
-        id="boutonActualiser"
-        class="bouton"
-        type="button">
-        Actualiser le suivi
-      </button>
+    <div
+      id="etatDirect"
+      class="etat-direct">
 
-      <a
-        id="boutonCompteRendu"
-        class="bouton bouton-compte-rendu"
-        href="#">
-        Générer le compte rendu
-      </a>
+      <span class="point-direct"></span>
+
+      Suivi en direct activé
 
     </div>
+
+    <!-- BOUTONS -->
+
+    <button
+      id="boutonActualiser"
+      class="bouton bouton-suivi"
+      type="button"
+      aria-label="Activer ou désactiver le suivi en direct">
+
+      <span class="visuellement-cache">
+        Activer le suivi
+      </span>
+
+    </button>
+
+    <a
+      id="boutonCompteRendu"
+      class="bouton bouton-compte-rendu"
+      href="#"
+      aria-label="Générer le compte rendu">
+
+      <span class="visuellement-cache">
+        Générer le compte rendu
+      </span>
+
+    </a>
 
     <div
       id="message"
       class="message"
-      aria-live="polite">
-    </div>
-
-    <div class="tableau-wrapper">
-
-      <table id="tableauEquipes">
-
-        <thead>
-          <tr>
-            <th>Équipe</th>
-            <th>Statut</th>
-            <th>Début</th>
-            <th>Fin</th>
-            <th>Durée</th>
-          </tr>
-        </thead>
-
-        <tbody id="listeEquipes"></tbody>
-
-      </table>
-
-    </div>
-
-    <div id="aucuneEquipe" class="aucune-equipe">
-      Aucune équipe n’a encore rejoint cette session.
-    </div>
+      aria-live="polite"></div>
 
   </section>
 
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
+
 <script src="../js/config.js"></script>
 <script src="../js/supabase.js"></script>
 
@@ -383,23 +927,44 @@ const code =
 const cleGestion =
   parametres.get("cle");
 
-const resume =
-  document.getElementById("resume");
-
-const tableauEquipes =
-  document.getElementById("tableauEquipes");
+const listeEquipes =
+  document.getElementById(
+    "listeEquipes"
+  );
 
 const aucuneEquipe =
-  document.getElementById("aucuneEquipe");
+  document.getElementById(
+    "aucuneEquipe"
+  );
 
 const boutonActualiser =
-  document.getElementById("boutonActualiser");
+  document.getElementById(
+    "boutonActualiser"
+  );
 
 const boutonCompteRendu =
-  document.getElementById("boutonCompteRendu");
+  document.getElementById(
+    "boutonCompteRendu"
+  );
+
+const etatDirect =
+  document.getElementById(
+    "etatDirect"
+  );
 
 const message =
-  document.getElementById("message");
+  document.getElementById(
+    "message"
+  );
+
+let suiviAutomatique = false;
+let minuterieSuivi = null;
+let minuterieHorloges = null;
+let equipesCourantes = [];
+
+/* ======================================================
+   FORMATAGE DE LA DATE
+====================================================== */
 
 function afficherDate(dateBrute){
 
@@ -415,13 +980,17 @@ function afficherDate(dateBrute){
   return date.toLocaleDateString(
     "fr-FR",
     {
-      day:"numeric",
-      month:"long",
+      day:"2-digit",
+      month:"2-digit",
       year:"numeric"
     }
   );
 
 }
+
+/* ======================================================
+   FORMATAGE DE L’HEURE
+====================================================== */
 
 function afficherHeure(dateBrute){
 
@@ -429,30 +998,42 @@ function afficherHeure(dateBrute){
     return "—";
   }
 
-  return new Date(
-    dateBrute
-  ).toLocaleTimeString(
+  const date =
+    new Date(dateBrute);
+
+  if(Number.isNaN(date.getTime())){
+    return "—";
+  }
+
+  return date.toLocaleTimeString(
     "fr-FR",
     {
       hour:"2-digit",
-      minute:"2-digit",
-      second:"2-digit"
+      minute:"2-digit"
     }
   );
 
 }
 
+/* ======================================================
+   FORMATAGE D’UNE DURÉE
+====================================================== */
+
 function afficherDuree(secondes){
 
   if(
     secondes === null ||
-    secondes === undefined
+    secondes === undefined ||
+    Number.isNaN(Number(secondes))
   ){
     return "—";
   }
 
   const total =
-    Number(secondes);
+    Math.max(
+      0,
+      Math.floor(Number(secondes))
+    );
 
   const heures =
     Math.floor(total / 3600);
@@ -466,20 +1047,94 @@ function afficherDuree(secondes){
     total % 60;
 
   if(heures > 0){
+
     return (
-      heures + " h " +
-      String(minutes).padStart(2,"0") +
+      heures +
+      " h " +
+      String(minutes)
+        .padStart(2,"0") +
       " min"
     );
+
   }
 
   return (
-    minutes + " min " +
-    String(reste).padStart(2,"0") +
+    String(minutes)
+      .padStart(2,"0") +
+    " min " +
+    String(reste)
+      .padStart(2,"0") +
     " s"
   );
 
 }
+
+/* ======================================================
+   CALCUL DE LA DURÉE EN COURS
+====================================================== */
+
+function calculerDureeEquipe(equipe){
+
+  if(equipe.completed){
+
+    return equipe.duration_seconds;
+
+  }
+
+  if(!equipe.started_at){
+
+    return null;
+
+  }
+
+  const debut =
+    new Date(
+      equipe.started_at
+    ).getTime();
+
+  if(Number.isNaN(debut)){
+    return null;
+  }
+
+  return Math.max(
+    0,
+    Math.floor(
+      (Date.now() - debut) / 1000
+    )
+  );
+
+}
+
+/* ======================================================
+   STATUT DE L’ÉQUIPE
+====================================================== */
+
+function obtenirStatut(equipe){
+
+  if(equipe.completed){
+    return {
+      classe:"terminee",
+      texte:"Terminée"
+    };
+  }
+
+  if(equipe.started_at){
+    return {
+      classe:"encours",
+      texte:"En jeu"
+    };
+  }
+
+  return {
+    classe:"attente",
+    texte:"En attente"
+  };
+
+}
+
+/* ======================================================
+   LIEN DU COMPTE RENDU
+====================================================== */
 
 function preparerLienCompteRendu(){
 
@@ -511,18 +1166,183 @@ function preparerLienCompteRendu(){
 
 }
 
-async function chargerSession(){
+/* ======================================================
+   CRÉATION D’UNE LIGNE D’ÉQUIPE
+====================================================== */
 
-  message.textContent = "";
-  message.className = "message";
+function creerLigneEquipe(equipe){
 
-  document
-    .getElementById("listeEquipes")
-    .innerHTML = "";
+  const statut =
+    obtenirStatut(equipe);
+
+  const ligne =
+    document.createElement("div");
+
+  ligne.className =
+    "ligne-equipe";
+
+  const celluleNom =
+    document.createElement("div");
+
+  celluleNom.className =
+    "nom-equipe";
+
+  const puce =
+    document.createElement("span");
+
+  puce.className =
+    "puce-statut " +
+    statut.classe;
+
+  const nom =
+    document.createElement("span");
+
+  nom.className =
+    "nom-equipe-texte";
+
+  nom.textContent =
+    equipe.team_name;
+
+  celluleNom.appendChild(puce);
+  celluleNom.appendChild(nom);
+
+  const celluleDebut =
+    document.createElement("div");
+
+  celluleDebut.className =
+    "heure";
+
+  celluleDebut.textContent =
+    afficherHeure(
+      equipe.started_at
+    );
+
+  const celluleDuree =
+    document.createElement("div");
+
+  celluleDuree.className =
+    "duree";
+
+  celluleDuree.dataset.teamId =
+    equipe.id || "";
+
+  celluleDuree.textContent =
+    afficherDuree(
+      calculerDureeEquipe(equipe)
+    );
+
+  const celluleStatut =
+    document.createElement("div");
+
+  const badge =
+    document.createElement("span");
+
+  badge.className =
+    "statut " +
+    statut.classe;
+
+  badge.textContent =
+    statut.texte;
+
+  celluleStatut.appendChild(
+    badge
+  );
+
+  ligne.appendChild(
+    celluleNom
+  );
+
+  ligne.appendChild(
+    celluleDebut
+  );
+
+  ligne.appendChild(
+    celluleDuree
+  );
+
+  ligne.appendChild(
+    celluleStatut
+  );
+
+  return ligne;
+
+}
+
+/* ======================================================
+   AFFICHAGE DES ÉQUIPES
+====================================================== */
+
+function afficherEquipes(equipes){
+
+  listeEquipes.innerHTML = "";
+
+  equipesCourantes =
+    equipes.slice();
+
+  if(equipes.length === 0){
+
+    aucuneEquipe.classList.add(
+      "visible"
+    );
+
+    return;
+
+  }
 
   aucuneEquipe.classList.remove(
     "visible"
   );
+
+  equipes.forEach(
+    function(equipe){
+
+      listeEquipes.appendChild(
+        creerLigneEquipe(equipe)
+      );
+
+    }
+  );
+
+}
+
+/* ======================================================
+   ACTUALISATION LOCALE DES CHRONOMÈTRES
+====================================================== */
+
+function actualiserChronometres(){
+
+  const cellules =
+    listeEquipes.querySelectorAll(
+      ".duree"
+    );
+
+  cellules.forEach(
+    function(cellule,index){
+
+      const equipe =
+        equipesCourantes[index];
+
+      if(!equipe){
+        return;
+      }
+
+      cellule.textContent =
+        afficherDuree(
+          calculerDureeEquipe(equipe)
+        );
+
+    }
+  );
+
+}
+
+/* ======================================================
+   CHARGEMENT DE LA SESSION
+====================================================== */
+
+async function chargerSession(
+  afficherConfirmation = true
+){
 
   if(
     !code ||
@@ -535,33 +1355,31 @@ async function chargerSession(){
     message.textContent =
       "Le lien de suivi est incomplet.";
 
-    tableauEquipes.style.display =
-      "none";
-
     return;
 
   }
 
-  boutonActualiser.disabled = true;
-
-  boutonActualiser.textContent =
-    "Actualisation…";
+  boutonActualiser.disabled =
+    true;
 
   try{
 
     const donnees =
-      await window.REBOND_DB.chargerSuivi({
-        code,
-        cleGestion
-      });
+      await window.REBOND_DB
+        .chargerSuivi({
+          code,
+          cleGestion
+        });
 
     if(
       !donnees ||
       donnees.length === 0
     ){
+
       throw new Error(
         "Aucune donnée de session reçue."
       );
+
     }
 
     const session =
@@ -570,22 +1388,26 @@ async function chargerSession(){
     document
       .getElementById("nomEcole")
       .textContent =
-        session.school_name || "Établissement";
+        session.school_name ||
+        "Établissement";
 
     document
       .getElementById("nomClasse")
       .textContent =
-        session.class_name || "—";
+        session.class_name ||
+        "—";
 
     document
       .getElementById("nomEnseignant")
       .textContent =
-        session.teacher_name || "—";
+        session.teacher_name ||
+        "—";
 
     document
       .getElementById("nombreEleves")
       .textContent =
-        session.student_count ?? "—";
+        session.student_count ??
+        "—";
 
     document
       .getElementById("dateSession")
@@ -594,54 +1416,39 @@ async function chargerSession(){
           session.session_date
         );
 
-    document
-      .getElementById("codeSession")
-      .textContent =
-        code;
-
     const equipes =
       donnees.filter(
         function(ligne){
+
           return Boolean(
             ligne.team_name
           );
+
+        }
+      );
+
+    const enJeu =
+      equipes.filter(
+        function(equipe){
+
+          return (
+            Boolean(equipe.started_at) &&
+            equipe.completed !== true
+          );
+
         }
       );
 
     const terminees =
       equipes.filter(
         function(equipe){
-          return equipe.completed === true;
+
+          return (
+            equipe.completed === true
+          );
+
         }
       );
-
-    const durees =
-      terminees
-        .map(
-          function(equipe){
-            return equipe.duration_seconds;
-          }
-        )
-        .filter(
-          function(duree){
-            return (
-              duree !== null &&
-              duree !== undefined
-            );
-          }
-        );
-
-    const moyenne =
-      durees.length
-        ? Math.round(
-            durees.reduce(
-              function(total,duree){
-                return total + Number(duree);
-              },
-              0
-            ) / durees.length
-          )
-        : null;
 
     document
       .getElementById("nombreEquipes")
@@ -649,109 +1456,42 @@ async function chargerSession(){
         equipes.length;
 
     document
+      .getElementById("nombreEnJeu")
+      .textContent =
+        enJeu.length;
+
+    document
       .getElementById("nombreTerminees")
       .textContent =
         terminees.length;
 
-    document
-      .getElementById("tempsMoyen")
-      .textContent =
-        moyenne === null
-          ? "—"
-          : afficherDuree(moyenne);
-
-    resume.classList.add(
-      "visible"
+    afficherEquipes(
+      equipes
     );
 
-    if(equipes.length === 0){
+    if(afficherConfirmation){
 
-      tableauEquipes.style.display =
-        "none";
+      message.className =
+        "message succes";
 
-      aucuneEquipe.classList.add(
-        "visible"
+      message.textContent =
+        "Le suivi a été actualisé.";
+
+      window.setTimeout(
+        function(){
+
+          message.textContent = "";
+
+        },
+        1700
       );
 
     }
-    else{
-
-      tableauEquipes.style.display =
-        "table";
-
-      const listeEquipes =
-        document.getElementById(
-          "listeEquipes"
-        );
-
-      equipes.forEach(
-        function(equipe){
-
-          const ligne =
-            document.createElement("tr");
-
-          ligne.innerHTML = `
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-          `;
-
-          ligne.children[0].textContent =
-            equipe.team_name;
-
-          ligne.children[1].textContent =
-            equipe.completed
-              ? "Terminée ✓"
-              : "En cours";
-
-          ligne.children[1].className =
-            equipe.completed
-              ? "statut terminee"
-              : "statut encours";
-
-          ligne.children[2].textContent =
-            afficherHeure(
-              equipe.started_at
-            );
-
-          ligne.children[3].textContent =
-            afficherHeure(
-              equipe.completed_at
-            );
-
-          ligne.children[4].textContent =
-            afficherDuree(
-              equipe.duration_seconds
-            );
-
-          listeEquipes.appendChild(
-            ligne
-          );
-
-        }
-      );
-
-    }
-
-    message.className =
-      "message succes";
-
-    message.textContent =
-      "Le suivi a été actualisé.";
 
   }
   catch(error){
 
     console.error(error);
-
-    resume.classList.remove(
-      "visible"
-    );
-
-    tableauEquipes.style.display =
-      "none";
 
     message.className =
       "message erreur";
@@ -763,22 +1503,143 @@ async function chargerSession(){
   }
   finally{
 
-    boutonActualiser.disabled = false;
-
-    boutonActualiser.textContent =
-      "Actualiser le suivi";
+    boutonActualiser.disabled =
+      false;
 
   }
 
 }
 
+/* ======================================================
+   ACTIVATION DU SUIVI EN DIRECT
+====================================================== */
+
+function activerSuivi(){
+
+  suiviAutomatique = true;
+
+  etatDirect.classList.add(
+    "visible"
+  );
+
+  chargerSession(false);
+
+  minuterieSuivi =
+    window.setInterval(
+      function(){
+
+        chargerSession(false);
+
+      },
+      5000
+    );
+
+}
+
+/* ======================================================
+   DÉSACTIVATION DU SUIVI
+====================================================== */
+
+function desactiverSuivi(){
+
+  suiviAutomatique = false;
+
+  etatDirect.classList.remove(
+    "visible"
+  );
+
+  if(minuterieSuivi){
+
+    window.clearInterval(
+      minuterieSuivi
+    );
+
+    minuterieSuivi = null;
+
+  }
+
+}
+
+/* ======================================================
+   CLIC SUR LE BOUTON DE SUIVI
+====================================================== */
+
 boutonActualiser.addEventListener(
   "click",
-  chargerSession
+  function(){
+
+    if(suiviAutomatique){
+
+      desactiverSuivi();
+
+      message.className =
+        "message";
+
+      message.textContent =
+        "Suivi en direct désactivé.";
+
+    }
+    else{
+
+      activerSuivi();
+
+      message.className =
+        "message succes";
+
+      message.textContent =
+        "Suivi en direct activé.";
+
+    }
+
+    window.setTimeout(
+      function(){
+
+        message.textContent = "";
+
+      },
+      1700
+    );
+
+  }
 );
 
+/* ======================================================
+   CHRONOMÈTRES LOCAUX
+====================================================== */
+
+minuterieHorloges =
+  window.setInterval(
+    actualiserChronometres,
+    1000
+  );
+
+/* ======================================================
+   NETTOYAGE À LA FERMETURE DE LA PAGE
+====================================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function(){
+
+    desactiverSuivi();
+
+    if(minuterieHorloges){
+
+      window.clearInterval(
+        minuterieHorloges
+      );
+
+    }
+
+  }
+);
+
+/* ======================================================
+   DÉMARRAGE
+====================================================== */
+
 preparerLienCompteRendu();
-chargerSession();
+chargerSession(false);
 </script>
 
 </body>

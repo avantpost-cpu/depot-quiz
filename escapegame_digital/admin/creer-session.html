@@ -40,7 +40,6 @@ body{
 
 /* ======================================================
    CONTENEUR PRINCIPAL
-   Réduit à 70 % de la taille précédente
 ====================================================== */
 
 .page{
@@ -48,9 +47,54 @@ body{
   max-width:553px;
 }
 
-/*
-  L’image d’origine mesure 1756 × 1652 px.
-*/
+/* ======================================================
+   BOUTON RETOUR À L’ACCUEIL
+====================================================== */
+
+.retour-accueil{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-height:38px;
+
+  margin-bottom:14px;
+  padding:8px 17px;
+
+  border:0;
+  border-radius:999px;
+
+  outline:none;
+  box-shadow:none;
+
+  background:#ffffff;
+  color:#044e61;
+
+  font-size:14px;
+  font-weight:bold;
+  line-height:1;
+  text-decoration:none;
+
+  cursor:pointer;
+
+  -webkit-tap-highlight-color:transparent;
+}
+
+.retour-accueil:hover,
+.retour-accueil:focus,
+.retour-accueil:focus-visible,
+.retour-accueil:active{
+  border:0;
+  outline:none;
+  box-shadow:none;
+
+  background:#ffffff;
+  color:#044e61;
+}
+
+/* ======================================================
+   IMAGE DU FORMULAIRE
+====================================================== */
 
 .carte-session{
   position:relative;
@@ -122,7 +166,8 @@ body{
 }
 
 /*
-  Les intitulés sont déjà présents dans l’image.
+  Les titres des champs sont déjà présents
+  dans l’image valid_2.png.
 */
 
 .champ label{
@@ -154,6 +199,7 @@ body{
   border-radius:16px;
 
   outline:none;
+  box-shadow:none;
 
   background:transparent;
   color:#044e61;
@@ -162,19 +208,8 @@ body{
   font-size:16px;
   font-weight:bold;
 
-  box-shadow:none;
-
-  /*
-    Supprime l’apparence bleue ou jaune
-    ajoutée par certains navigateurs.
-  */
-
   -webkit-tap-highlight-color:transparent;
 }
-
-/*
-  Aucun contour ni effet au clic.
-*/
 
 .champ input:hover,
 .champ input:focus,
@@ -209,7 +244,7 @@ body{
 }
 
 /* ======================================================
-   BOUTON TRANSPARENT
+   BOUTON CRÉER LA SESSION
 ====================================================== */
 
 .bouton{
@@ -226,11 +261,11 @@ body{
   border:0;
   border-radius:999px;
 
-  background:transparent;
-  color:transparent;
-
   outline:none;
   box-shadow:none;
+
+  background:transparent;
+  color:transparent;
 
   font-size:0;
 
@@ -239,19 +274,17 @@ body{
   -webkit-tap-highlight-color:transparent;
 }
 
-/*
-  Aucun mouvement, contour ou ombre.
-*/
-
 .bouton:hover,
 .bouton:active,
 .bouton:focus,
 .bouton:focus-visible{
-  transform:none;
   border:0;
   outline:none;
   box-shadow:none;
+
   background:transparent;
+
+  transform:none;
 }
 
 .bouton:disabled{
@@ -259,13 +292,12 @@ body{
 
   cursor:wait;
 
-  transform:none;
   outline:none;
   box-shadow:none;
 }
 
 /* ======================================================
-   MESSAGE DE CONNEXION OU D’ERREUR
+   MESSAGE
 ====================================================== */
 
 .message{
@@ -298,11 +330,6 @@ body{
 
   pointer-events:none;
 }
-
-/*
-  Le message n’apparaît que lorsqu’il
-  contient réellement du texte.
-*/
 
 .message:not(:empty){
   display:flex;
@@ -404,6 +431,7 @@ body{
   color:#ffffff;
 
   outline:none;
+  box-shadow:none;
 
   font-size:14px;
   font-weight:bold;
@@ -414,9 +442,10 @@ body{
 .lien-suivi:focus,
 .lien-suivi:focus-visible,
 .lien-suivi:active{
-  transform:none;
   outline:none;
   box-shadow:none;
+
+  transform:none;
 }
 
 .avertissement{
@@ -504,6 +533,17 @@ body{
     width:100%;
   }
 
+  .retour-accueil{
+    margin-left:6px;
+    margin-bottom:8px;
+
+    min-height:34px;
+
+    padding:7px 13px;
+
+    font-size:12px;
+  }
+
   .champ input{
     border-radius:8px;
   }
@@ -535,6 +575,13 @@ body{
 <body>
 
 <main class="page">
+
+  <a
+    class="retour-accueil"
+    href="../index.html"
+    aria-label="Retour à la page d’accueil">
+    ← Retour à l’accueil
+  </a>
 
   <section class="carte-session">
 
@@ -741,6 +788,10 @@ const dateSession =
   document.getElementById(
     "dateSession"
   );
+
+/*
+  Date proposée automatiquement.
+*/
 
 dateSession.value =
   new Date()

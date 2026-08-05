@@ -2,68 +2,140 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 
 <title>Escape Game Rebond - Énigme 4</title>
 
 <style>
-*{ margin:0; padding:0; box-sizing:border-box; }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-html, body{
+html,
+body{
   width:100%;
   min-height:100%;
+
   background:#1b5f6e;
+
   font-family:Arial, Helvetica, sans-serif;
 }
 
 .page-enigme4{
   min-height:100vh;
+
   display:flex;
   flex-direction:column;
   align-items:center;
+
   padding-top:40px;
 }
 
 .bloc-enigme4{
   position:relative;
+
   width:999px;
   height:716px;
+
   line-height:0;
   font-size:0;
 }
 
 .animation-4{
   display:block;
+
   width:999px;
   height:716px;
+
   border:0;
 }
 
+/* ======================================================
+   ZONES DE DÉPÔT
+====================================================== */
+
 .drop-zone{
   position:absolute;
+
   z-index:20;
+
   border-radius:8px;
 }
 
-#zone1{ left:115px; top:226px; width:272px; height:42px; }
-#zone2{ left:107px; top:292px; width:271px; height:54px; }
-#zone3{ left:101px; top:377px; width:268px; height:53px; }
-#zone4{ left:92px; top:440px; width:267px; height:52px; }
-#zone5{ left:84px; top:498px; width:267px; height:48px; }
-#zone6{ left:75px; top:558px; width:271px; height:53px; }
+#zone1{
+  left:115px;
+  top:226px;
+
+  width:272px;
+  height:42px;
+}
+
+#zone2{
+  left:107px;
+  top:292px;
+
+  width:271px;
+  height:54px;
+}
+
+#zone3{
+  left:101px;
+  top:377px;
+
+  width:268px;
+  height:53px;
+}
+
+#zone4{
+  left:92px;
+  top:440px;
+
+  width:267px;
+  height:52px;
+}
+
+#zone5{
+  left:84px;
+  top:498px;
+
+  width:267px;
+  height:48px;
+}
+
+#zone6{
+  left:75px;
+  top:558px;
+
+  width:271px;
+  height:53px;
+}
+
+/* ======================================================
+   ÉTIQUETTES À DÉPLACER
+====================================================== */
 
 .lettres-panel{
   position:absolute;
+
   left:535px;
   top:378px;
-  width:320px;
-  height:auto;
+
+  z-index:50;
+
   display:none;
-  gap:6px;
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  z-index:50;
+
+  width:320px;
+  height:auto;
+
+  gap:6px;
 }
 
 .lettres-panel.visible{
@@ -72,44 +144,64 @@ html, body{
 
 .lettre{
   min-width:210px;
-  padding:6px 10px;
   min-height:46px;
-  border-radius:12px;
-  background:#9e608b;
-  color:#ffffff;
-  font-size:14px;
-  line-height:1.2;
+
   display:flex;
   align-items:center;
   justify-content:center;
-  text-align:center;
+
+  padding:6px 10px;
+
+  border-radius:12px;
+
+  background:#9e608b;
+  color:#ffffff;
+
+  font-size:14px;
   font-weight:bold;
+  line-height:1.2;
+
   text-align:center;
+
   cursor:grab;
+
   user-select:none;
   touch-action:none;
-  box-shadow:0 3px 8px rgba(0,0,0,.25);
+
+  box-shadow:
+    0 3px 8px
+    rgba(0,0,0,.25);
 }
 
 .lettre.dragging{
-  cursor:grabbing;
-  transform:scale(1.08);
   z-index:9999;
+
+  cursor:grabbing;
+
+  transform:scale(1.08);
 }
 
 .lettre.ok{
-  background:#18A558;
+  background:#18a558;
   color:#ffffff;
 }
 
+/* ======================================================
+   DEUXIÈME JEU
+====================================================== */
+
 .jeu2{
   position:absolute;
+
   left:460px;
   top:370px;
+
+  z-index:45;
+
+  display:none;
+
   width:500px;
   height:auto;
-  display:none;
-  z-index:45;
 }
 
 .jeu2.visible{
@@ -118,21 +210,30 @@ html, body{
 
 .reponse-jeu2{
   position:absolute;
+
   left:620px;
   top:498px;
+
+  z-index:70;
+
+  display:none;
+
   width:155px;
   height:38px;
-  z-index:70;
+
   border:none;
   outline:none;
+
   background:transparent;
+  color:#111111;
+
   font-size:28px;
   font-weight:bold;
+
   text-align:center;
   text-transform:uppercase;
+
   letter-spacing:4px;
-  color:#111;
-  display:none;
 }
 
 .reponse-jeu2.visible{
@@ -140,19 +241,28 @@ html, body{
 }
 
 .reponse-jeu2.ok{
-  background:#18A558;
-  color:#ffffff;
   border-radius:8px;
+
+  background:#18a558;
+  color:#ffffff;
+}
+
+.reponse-jeu2[readonly]{
+  pointer-events:none;
+
+  -webkit-text-fill-color:#ffffff;
 }
 
 .reponse-jeu2.erreur{
+  border-radius:8px;
+
   background:#c0392b;
   color:#ffffff;
-  border-radius:8px;
 }
 
-
-/* BRAVI DE FIN */
+/* ======================================================
+   BRAVO DE FIN
+====================================================== */
 
 .bloc-enigme4.gagnee .animation-4,
 .bloc-enigme4.gagnee .drop-zone,
@@ -160,20 +270,30 @@ html, body{
 .bloc-enigme4.gagnee .jeu2,
 .bloc-enigme4.gagnee .reponse-jeu2{
   opacity:.5;
+
   filter:saturate(.5);
-  transition:opacity .45s ease, filter .45s ease;
+
+  transition:
+    opacity .45s ease,
+    filter .45s ease;
 }
 
 .bravi-final{
   position:absolute;
   inset:0;
+
+  z-index:2600;
+
   display:flex;
   justify-content:center;
   align-items:center;
+
   opacity:0;
+
   pointer-events:none;
-  z-index:2600;
-  transition:opacity .45s ease;
+
+  transition:
+    opacity .45s ease;
 }
 
 .bravi-final.visible{
@@ -181,134 +301,186 @@ html, body{
 }
 
 .bravi-final img{
+  display:block;
+
   width:50%;
   height:auto;
-  display:block;
-  filter:drop-shadow(0 10px 20px rgba(0,0,0,.35));
+
+  filter:
+    drop-shadow(
+      0 10px 20px
+      rgba(0,0,0,.35)
+    );
 }
 
-/* ONGLET INVENTAIRE */
-
-/* Sac */
+/* ======================================================
+   ONGLET INVENTAIRE
+====================================================== */
 
 .inventaire{
-    position:absolute;
-    left:-70px;
-    top:0;
-    height:716px;
-    z-index:3000;
+  position:absolute;
+
+  left:-70px;
+  top:0;
+
+  z-index:3000;
+
+  height:716px;
 }
 
 .inventaire-tab{
-    position:absolute;
-    left:0;
-    top:25px;
-    width:70px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
+  position:absolute;
+
+  left:0;
+  top:25px;
+
+  width:70px;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  cursor:pointer;
 }
 
 .inventaire-tab img{
-    width:80px;
-    height:auto;
-    transition:transform .25s;
-  filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
+  display:block;
+
+  width:80px;
+  height:auto;
+
+  pointer-events:none;
+
+  filter:
+    drop-shadow(
+      0 6px 10px
+      rgba(0,0,0,.45)
+    );
+
+  transition:
+    transform .25s;
 }
 
 .inventaire:hover .inventaire-tab img{
-    transform:scale(1.08);
+  transform:scale(1.08);
 }
 
-/* Tiroir */
-
 .inventaire-content{
-    position:absolute;
-    left:70px;
-    top:10px;
+  position:absolute;
 
-    width:0;
-    height:200px;
+  left:70px;
+  top:10px;
 
-    overflow:hidden;
+  width:0;
+  height:200px;
 
-background:rgba(255,255,255,.30);   /* blanc à 30 % */
-backdrop-filter:blur(8px);
--webkit-backdrop-filter:blur(8px);
+  overflow:hidden;
 
-color:#044e61;
+  border-radius:0 18px 18px 0;
 
-    transition:width .35s ease;
+  background:rgba(255,255,255,.30);
+  color:#044e61;
 
-    border-radius:0 18px 18px 0;
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
 
-    box-shadow:0 6px 18px rgba(0,0,0,.25);
+  box-shadow:
+    0 6px 18px
+    rgba(0,0,0,.25);
+
+  transition:
+    width .35s ease;
 }
 
 .inventaire:hover .inventaire-content{
-    width:230px;
+  width:230px;
 }
 
 .inventaire-content-inner{
   width:230px;
   height:200px;
+
   padding:25px 18px;
+
   overflow-y:auto;
+
   line-height:1.3;
 }
 
 .inventaire-content h3{
-    font-size:14px;
-    margin-bottom:18px;
-    color:#044e61;
+  margin-bottom:18px;
+
+  color:#044e61;
+
+  font-size:14px;
 }
 
 .inventaire-content ul{
-    list-style:none;
+  list-style:none;
 }
 
 .inventaire-content li{
   display:block;
-  line-height:18px;
+
   margin-bottom:10px;
   padding:10px;
+
   border-radius:10px;
+
   background:rgba(255,255,255,.55);
   color:#044e61;
-  font-weight:bold;
+
   font-size:14px;
+  font-weight:bold;
+  line-height:18px;
 }
 
-
-/* ONGLET LOUPE */
+/* ======================================================
+   ONGLET LOUPE
+====================================================== */
 
 .navigation-enigmes{
   position:absolute;
+
   left:-70px;
   top:90px;
-  height:716px;
+
   z-index:2990;
+
+  height:716px;
 }
 
 .navigation-tab{
   position:absolute;
+
   left:0;
   top:25px;
+
   width:70px;
+
   display:flex;
   justify-content:center;
   align-items:center;
+
   cursor:pointer;
 }
 
 .navigation-tab img{
+  display:block;
+
   width:80px;
   height:auto;
-  display:block;
+
   pointer-events:none;
-  transition:transform .25s;
-  filter:drop-shadow(0 6px 10px rgba(0,0,0,.45));
+
+  filter:
+    drop-shadow(
+      0 6px 10px
+      rgba(0,0,0,.45)
+    );
+
+  transition:
+    transform .25s;
 }
 
 .navigation-enigmes:hover .navigation-tab img{
@@ -317,17 +489,28 @@ color:#044e61;
 
 .navigation-content{
   position:absolute;
+
   left:70px;
   top:10px;
+
   width:0;
+
   overflow:hidden;
+
+  border-radius:0 18px 18px 0;
+
   background:rgba(255,255,255,.30);
+  color:#044e61;
+
   backdrop-filter:blur(8px);
   -webkit-backdrop-filter:blur(8px);
-  color:#044e61;
-  transition:width .35s ease;
-  border-radius:0 18px 18px 0;
-  box-shadow:0 6px 18px rgba(0,0,0,.25);
+
+  box-shadow:
+    0 6px 18px
+    rgba(0,0,0,.25);
+
+  transition:
+    width .35s ease;
 }
 
 .navigation-enigmes:hover .navigation-content{
@@ -336,27 +519,37 @@ color:#044e61;
 
 .navigation-content-inner{
   width:230px;
+
   padding:22px 18px 16px;
+
   overflow:visible;
+
   line-height:1.3;
 }
 
 .navigation-content h3{
-  font-size:14px;
   margin-bottom:18px;
+
   color:#044e61;
+
+  font-size:14px;
 }
 
 .navigation-content a{
   display:block;
-  line-height:18px;
+
   margin-bottom:8px;
   padding:9px 10px;
+
   border-radius:10px;
+
   background:rgba(255,255,255,.55);
   color:#044e61;
-  font-weight:bold;
+
   font-size:14px;
+  font-weight:bold;
+  line-height:18px;
+
   text-decoration:none;
 }
 
@@ -369,30 +562,112 @@ color:#044e61;
   color:#ffffff;
 }
 
+/* ======================================================
+   FLÈCHE
+====================================================== */
+
 .next-arrow{
   position:fixed;
+
   top:50%;
   right:35px;
-  transform:translateY(-50%) translateX(12px);
+
+  z-index:999;
+
+  color:#ffffff;
+
   font-size:62px;
   font-weight:200;
-  color:#ffffff;
+
   text-decoration:none;
+
   opacity:0;
+
+  transform:
+    translateY(-50%)
+    translateX(12px);
+
   pointer-events:none;
+
   transition:.35s ease;
-  z-index:999;
 }
 
 .next-arrow.visible{
   opacity:.45;
+
+  transform:
+    translateY(-50%)
+    translateX(0);
+
   pointer-events:auto;
-  transform:translateY(-50%) translateX(0);
 }
 
 .next-arrow:hover{
   opacity:1;
-  transform:translateY(-50%) translateX(6px);
+
+  transform:
+    translateY(-50%)
+    translateX(6px);
+}
+
+/* ======================================================
+   COPYRIGHT SOUS L’IMAGE
+====================================================== */
+
+.copyright-rebond{
+  width:999px;
+
+  margin:11px auto 30px;
+
+  color:rgba(255,255,255,.88);
+
+  font-family:Arial, Helvetica, sans-serif;
+  font-size:11px;
+  font-weight:500;
+
+  line-height:1.2;
+  letter-spacing:.3px;
+
+  text-align:center;
+
+  pointer-events:none;
+  user-select:none;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
+@media screen and (max-width:1080px){
+
+  body{
+    overflow-x:auto;
+  }
+
+  .page-enigme4{
+    align-items:flex-start;
+  }
+
+  .bloc-enigme4{
+    margin-left:40px;
+    margin-right:40px;
+  }
+
+  .copyright-rebond{
+    margin-left:40px;
+    margin-right:40px;
+  }
+
+}
+
+@media screen and (max-width:600px){
+
+  .copyright-rebond{
+    margin-top:8px;
+
+    font-size:9px;
+  }
+
 }
 </style>
 </head>
@@ -401,42 +676,97 @@ color:#044e61;
 
 <div class="page-enigme4">
 
-  <div class="bloc-enigme4" id="zoneImage">
+  <div
+    class="bloc-enigme4"
+    id="zoneImage">
 
-    <div class="inventaire" id="inventaire">
+    <!-- SAC INVENTAIRE -->
+
+    <div
+      class="inventaire"
+      id="inventaire">
+
       <div class="inventaire-tab">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png" alt="Inventaire">
+
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/sac.png"
+          alt="Inventaire">
+
       </div>
 
       <div class="inventaire-content">
+
         <div class="inventaire-content-inner">
+
           <h3>Mots trouvés</h3>
+
           <ul id="listeMots"></ul>
+
         </div>
+
       </div>
+
     </div>
 
+    <!-- NAVIGATION ÉNIGMES -->
 
-    <div class="navigation-enigmes" id="navigationEnigmes">
+    <div
+      class="navigation-enigmes"
+      id="navigationEnigmes">
+
       <div class="navigation-tab">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png" alt="Énigmes">
+
+        <img
+          src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/loupe.png"
+          alt="Énigmes">
+
       </div>
 
       <div class="navigation-content">
+
         <div class="navigation-content-inner">
+
           <h3>Énigmes</h3>
-          <a href="enigme1.html">Énigme 1</a>
-          <a href="enigme2.html">Énigme 2</a>
-          <a href="enigme3.html">Énigme 3</a>
-          <a href="enigme4.html">Énigme 4</a>
-          <a href="enigme5.html">Énigme 5</a>
+
+          <a href="enigme1.html">
+            Énigme 1
+          </a>
+
+          <a href="enigme2.html">
+            Énigme 2
+          </a>
+
+          <a href="enigme3.html">
+            Énigme 3
+          </a>
+
+          <a href="enigme4.html">
+            Énigme 4
+          </a>
+
+          <a href="enigme5.html">
+            Énigme 5
+          </a>
+
         </div>
+
       </div>
+
     </div>
 
-    <div class="bravi-final" id="braviFinal">
-      <img src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi4.png" alt="Bravo énigme 4">
+    <!-- BRAVO FINAL -->
+
+    <div
+      class="bravi-final"
+      id="braviFinal">
+
+      <img
+        src="https://avantpost-cpu.github.io/depot-quiz/escapegame_digital/bravi4.png"
+        alt="Bravo énigme 4">
+
     </div>
+
+    <!-- VIDÉO PRINCIPALE -->
 
     <video
       id="videoEnigme4"
@@ -447,21 +777,89 @@ color:#044e61;
       playsinline>
     </video>
 
-    <div class="drop-zone" id="zone1" data-answer="E"></div>
-    <div class="drop-zone" id="zone2" data-answer="A"></div>
-    <div class="drop-zone" id="zone3" data-answer="C"></div>
-    <div class="drop-zone" id="zone4" data-answer="D"></div>
-    <div class="drop-zone" id="zone5" data-answer="B"></div>
-    <div class="drop-zone" id="zone6" data-answer="F"></div>
+    <!-- ZONES DE DÉPÔT -->
 
-    <div class="lettres-panel" id="lettresPanel">
-      <div class="lettre" data-letter="A">A : perte de plaisir</div>
-      <div class="lettre" data-letter="B">B : Isolement</div>
-      <div class="lettre" data-letter="C">C : blessures inexpliquées</div>
-      <div class="lettre" data-letter="D">D : Retrait/crainte de l’adulte</div>
-      <div class="lettre" data-letter="E">E : Peur inhabituelle</div>
-      <div class="lettre" data-letter="F">F : Baisse soudaine de performance</div>
+    <div
+      class="drop-zone"
+      id="zone1"
+      data-answer="E">
     </div>
+
+    <div
+      class="drop-zone"
+      id="zone2"
+      data-answer="A">
+    </div>
+
+    <div
+      class="drop-zone"
+      id="zone3"
+      data-answer="C">
+    </div>
+
+    <div
+      class="drop-zone"
+      id="zone4"
+      data-answer="D">
+    </div>
+
+    <div
+      class="drop-zone"
+      id="zone5"
+      data-answer="B">
+    </div>
+
+    <div
+      class="drop-zone"
+      id="zone6"
+      data-answer="F">
+    </div>
+
+    <!-- ÉTIQUETTES -->
+
+    <div
+      class="lettres-panel"
+      id="lettresPanel">
+
+      <div
+        class="lettre"
+        data-letter="A">
+        A : perte de plaisir
+      </div>
+
+      <div
+        class="lettre"
+        data-letter="B">
+        B : Isolement
+      </div>
+
+      <div
+        class="lettre"
+        data-letter="C">
+        C : blessures inexpliquées
+      </div>
+
+      <div
+        class="lettre"
+        data-letter="D">
+        D : Retrait/crainte de l’adulte
+      </div>
+
+      <div
+        class="lettre"
+        data-letter="E">
+        E : Peur inhabituelle
+      </div>
+
+      <div
+        class="lettre"
+        data-letter="F">
+        F : Baisse soudaine de performance
+      </div>
+
+    </div>
+
+    <!-- DEUXIÈME JEU -->
 
     <img
       id="jeu2"
@@ -474,197 +872,653 @@ color:#044e61;
       class="reponse-jeu2"
       type="text"
       maxlength="6"
-      autocomplete="off">
+      autocomplete="off"
+      spellcheck="false"
+      aria-label="Réponse au second jeu">
 
+  </div>
+
+  <div
+    class="copyright-rebond"
+    aria-label="Copyright Rebond">
+    © Rebond
   </div>
 
 </div>
 
-<a href="enigme5.html" class="next-arrow" id="nextBtn" title="Énigme suivante">→</a>
+<a
+  href="enigme5.html"
+  class="next-arrow"
+  id="nextBtn"
+  title="Énigme suivante">
+  →
+</a>
 
 <script>
-const videoEnigme4 = document.getElementById("videoEnigme4");
-const lettresPanel = document.getElementById("lettresPanel");
-const nextBtn = document.getElementById("nextBtn");
-const jeu2 = document.getElementById("jeu2");
-const reponseJeu2 = document.getElementById("reponseJeu2");
-const braviFinal = document.getElementById("braviFinal");
+const videoEnigme4 =
+  document.getElementById(
+    "videoEnigme4"
+  );
+
+const lettresPanel =
+  document.getElementById(
+    "lettresPanel"
+  );
+
+const nextBtn =
+  document.getElementById(
+    "nextBtn"
+  );
+
+const jeu2 =
+  document.getElementById(
+    "jeu2"
+  );
+
+const reponseJeu2 =
+  document.getElementById(
+    "reponseJeu2"
+  );
+
+const braviFinal =
+  document.getElementById(
+    "braviFinal"
+  );
 
 let lettreActive = null;
 let offsetX = 0;
 let offsetY = 0;
+let jeuTermine = false;
+
+/* ======================================================
+   ENREGISTREMENT DE LA PROGRESSION
+====================================================== */
+
+localStorage.setItem(
+  "rebondCurrentPage",
+  "enigme4.html"
+);
+
+/* ======================================================
+   INITIALISATION
+====================================================== */
 
 afficherMotsTrouves();
 
-videoEnigme4.addEventListener("ended", () => {
-  lettresPanel.classList.add("visible");
-});
+/* ======================================================
+   AFFICHAGE DU PREMIER JEU APRÈS LA VIDÉO
+====================================================== */
 
-document.querySelectorAll(".lettre").forEach(lettre => {
-  lettre.addEventListener("pointerdown", commencerDrag);
-});
+videoEnigme4.addEventListener(
+  "ended",
+  function(){
 
-function commencerDrag(e){
-  if(e.currentTarget.classList.contains("ok")) return;
+    lettresPanel.classList.add(
+      "visible"
+    );
 
-  e.preventDefault();
+  }
+);
 
-  lettreActive = e.currentTarget;
+/*
+  Si la vidéo est déjà terminée ou n’a pas pu être lue,
+  le jeu peut tout de même apparaître.
+*/
 
-  const rect = lettreActive.getBoundingClientRect();
+videoEnigme4.addEventListener(
+  "error",
+  function(){
 
-  offsetX = e.clientX - rect.left;
-  offsetY = e.clientY - rect.top;
+    lettresPanel.classList.add(
+      "visible"
+    );
 
-  document.body.appendChild(lettreActive);
+  }
+);
 
-  lettreActive.classList.add("dragging");
-  lettreActive.style.position = "fixed";
-  lettreActive.style.left = rect.left + "px";
-  lettreActive.style.top = rect.top + "px";
-  lettreActive.style.zIndex = "9999";
-}
+/* ======================================================
+   DÉBUT DU GLISSER-DÉPOSER
+====================================================== */
 
-document.addEventListener("pointermove", e => {
-  if(!lettreActive) return;
+document
+  .querySelectorAll(
+    ".lettre"
+  )
+  .forEach(
+    function(lettre){
 
-  lettreActive.style.left = (e.clientX - offsetX) + "px";
-  lettreActive.style.top = (e.clientY - offsetY) + "px";
-});
+      lettre.addEventListener(
+        "pointerdown",
+        commencerDrag
+      );
 
-document.addEventListener("pointerup", e => {
-  if(!lettreActive) return;
-
-  let zoneTrouvee = null;
-
-  document.querySelectorAll(".drop-zone").forEach(zone => {
-    const rect = zone.getBoundingClientRect();
-
-    if(
-      e.clientX >= rect.left &&
-      e.clientX <= rect.right &&
-      e.clientY >= rect.top &&
-      e.clientY <= rect.bottom
-    ){
-      zoneTrouvee = zone;
     }
-  });
+  );
 
-  if(zoneTrouvee && lettreActive.dataset.letter === zoneTrouvee.dataset.answer){
-    zoneTrouvee.appendChild(lettreActive);
+function commencerDrag(event){
 
-    lettreActive.classList.remove("dragging");
-    lettreActive.classList.add("ok");
-
-    lettreActive.style.position = "absolute";
-    lettreActive.style.left = "50%";
-    lettreActive.style.top = "50%";
-    lettreActive.style.transform = "translate(-50%, -50%) rotate(3deg)";
-    lettreActive.style.zIndex = "80";
-    lettreActive.style.pointerEvents = "none";
-
-    verifierFinJeu1();
-
-  } else {
-    retourDepart(lettreActive);
-  }
-
-  lettreActive = null;
-});
-
-function retourDepart(lettre){
-  lettresPanel.appendChild(lettre);
-
-  lettre.classList.remove("dragging");
-  lettre.style.position = "";
-  lettre.style.left = "";
-  lettre.style.top = "";
-  lettre.style.transform = "";
-  lettre.style.zIndex = "";
-}
-
-function verifierFinJeu1(){
-  const lettresOk = document.querySelectorAll(".lettre.ok");
-
-  if(lettresOk.length === 6){
-    lettresPanel.style.display = "none";
-    jeu2.classList.add("visible");
-    reponseJeu2.classList.add("visible");
-    reponseJeu2.focus();
-  }
-}
-
-reponseJeu2.addEventListener("input", () => {
-  reponseJeu2.value = reponseJeu2.value.toUpperCase();
-
-  const valeur = nettoyerTexte(reponseJeu2.value);
-
-  reponseJeu2.classList.remove("erreur");
-
-  if(valeur === "ALERTE"){
-    reponseJeu2.classList.add("ok");
-    reponseJeu2.readOnly = true;
-
-    ajouterMotTrouve("Énigme 4", "L'ENFANCE");
-
-    document.querySelector(".bloc-enigme4").classList.add("gagnee");
-    braviFinal.classList.add("visible");
-
-    setTimeout(() => {
-      nextBtn.classList.add("visible");
-    }, 1000);
-  }
-});
-
-reponseJeu2.addEventListener("blur", () => {
-  const valeur = nettoyerTexte(reponseJeu2.value);
-
-  if(valeur.length > 0 && valeur !== "ALERTE"){
-    reponseJeu2.classList.add("erreur");
-  }
-});
-
-function nettoyerTexte(texte){
-  return texte
-    .trim()
-    .toUpperCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g,"")
-    .replace(/[^A-Z]/g,"");
-}
-
-function ajouterMotTrouve(enigme, mot){
-  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
-  const existeDeja = mots.some(item => item.enigme === enigme);
-
-  if(!existeDeja){
-    mots.push({ enigme, mot });
-    localStorage.setItem("motsEscapeRebond", JSON.stringify(mots));
-  }
-
-  afficherMotsTrouves();
-}
-
-function afficherMotsTrouves(){
-  const liste = document.getElementById("listeMots");
-  if(!liste) return;
-
-  const mots = JSON.parse(localStorage.getItem("motsEscapeRebond")) || [];
-  liste.innerHTML = "";
-
-  if(mots.length === 0){
-    const li = document.createElement("li");
-    li.textContent = "Aucun mot";
-    liste.appendChild(li);
+  if(
+    event.currentTarget
+      .classList
+      .contains("ok")
+  ){
     return;
   }
 
-  mots.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item.enigme + " : " + item.mot;
-    liste.appendChild(li);
-  });
+  event.preventDefault();
+
+  lettreActive =
+    event.currentTarget;
+
+  const rect =
+    lettreActive
+      .getBoundingClientRect();
+
+  offsetX =
+    event.clientX -
+    rect.left;
+
+  offsetY =
+    event.clientY -
+    rect.top;
+
+  document.body.appendChild(
+    lettreActive
+  );
+
+  lettreActive.classList.add(
+    "dragging"
+  );
+
+  lettreActive.style.position =
+    "fixed";
+
+  lettreActive.style.left =
+    rect.left + "px";
+
+  lettreActive.style.top =
+    rect.top + "px";
+
+  lettreActive.style.zIndex =
+    "9999";
+
 }
+
+/* ======================================================
+   DÉPLACEMENT
+====================================================== */
+
+document.addEventListener(
+  "pointermove",
+  function(event){
+
+    if(!lettreActive){
+      return;
+    }
+
+    lettreActive.style.left =
+      (
+        event.clientX -
+        offsetX
+      ) + "px";
+
+    lettreActive.style.top =
+      (
+        event.clientY -
+        offsetY
+      ) + "px";
+
+  }
+);
+
+/* ======================================================
+   FIN DU GLISSER-DÉPOSER
+====================================================== */
+
+document.addEventListener(
+  "pointerup",
+  function(event){
+
+    if(!lettreActive){
+      return;
+    }
+
+    let zoneTrouvee = null;
+
+    document
+      .querySelectorAll(
+        ".drop-zone"
+      )
+      .forEach(
+        function(zone){
+
+          const rect =
+            zone
+              .getBoundingClientRect();
+
+          if(
+            event.clientX >= rect.left &&
+            event.clientX <= rect.right &&
+            event.clientY >= rect.top &&
+            event.clientY <= rect.bottom
+          ){
+
+            zoneTrouvee =
+              zone;
+
+          }
+
+        }
+      );
+
+    if(
+      zoneTrouvee &&
+      lettreActive.dataset.letter ===
+      zoneTrouvee.dataset.answer
+    ){
+
+      zoneTrouvee.appendChild(
+        lettreActive
+      );
+
+      lettreActive.classList.remove(
+        "dragging"
+      );
+
+      lettreActive.classList.add(
+        "ok"
+      );
+
+      lettreActive.style.position =
+        "absolute";
+
+      lettreActive.style.left =
+        "50%";
+
+      lettreActive.style.top =
+        "50%";
+
+      lettreActive.style.transform =
+        "translate(-50%, -50%) rotate(3deg)";
+
+      lettreActive.style.zIndex =
+        "80";
+
+      lettreActive.style.pointerEvents =
+        "none";
+
+      verifierFinJeu1();
+
+    }
+    else{
+
+      retourDepart(
+        lettreActive
+      );
+
+    }
+
+    lettreActive =
+      null;
+
+  }
+);
+
+/* ======================================================
+   RETOUR À LA POSITION DE DÉPART
+====================================================== */
+
+function retourDepart(lettre){
+
+  lettresPanel.appendChild(
+    lettre
+  );
+
+  lettre.classList.remove(
+    "dragging"
+  );
+
+  lettre.style.position =
+    "";
+
+  lettre.style.left =
+    "";
+
+  lettre.style.top =
+    "";
+
+  lettre.style.transform =
+    "";
+
+  lettre.style.zIndex =
+    "";
+
+}
+
+/* ======================================================
+   FIN DU PREMIER JEU
+====================================================== */
+
+function verifierFinJeu1(){
+
+  const lettresOk =
+    document.querySelectorAll(
+      ".lettre.ok"
+    );
+
+  if(
+    lettresOk.length === 6
+  ){
+
+    lettresPanel.style.display =
+      "none";
+
+    jeu2.classList.add(
+      "visible"
+    );
+
+    reponseJeu2.classList.add(
+      "visible"
+    );
+
+    reponseJeu2.focus();
+
+  }
+
+}
+
+/* ======================================================
+   SECOND JEU
+====================================================== */
+
+reponseJeu2.addEventListener(
+  "input",
+  function(){
+
+    if(jeuTermine){
+      return;
+    }
+
+    reponseJeu2.value =
+      reponseJeu2.value
+        .toUpperCase();
+
+    const valeur =
+      nettoyerTexte(
+        reponseJeu2.value
+      );
+
+    reponseJeu2.classList.remove(
+      "erreur"
+    );
+
+    if(
+      valeur === "ALERTE"
+    ){
+
+      terminerEnigme();
+
+    }
+
+  }
+);
+
+reponseJeu2.addEventListener(
+  "blur",
+  function(){
+
+    if(jeuTermine){
+      return;
+    }
+
+    const valeur =
+      nettoyerTexte(
+        reponseJeu2.value
+      );
+
+    if(
+      valeur.length > 0 &&
+      valeur !== "ALERTE"
+    ){
+
+      reponseJeu2.classList.add(
+        "erreur"
+      );
+
+    }
+
+  }
+);
+
+/* ======================================================
+   FIN DE L’ÉNIGME
+====================================================== */
+
+function terminerEnigme(){
+
+  if(jeuTermine){
+    return;
+  }
+
+  jeuTermine =
+    true;
+
+  reponseJeu2.classList.remove(
+    "erreur"
+  );
+
+  reponseJeu2.classList.add(
+    "ok"
+  );
+
+  reponseJeu2.readOnly =
+    true;
+
+  ajouterMotTrouve(
+    "Énigme 4",
+    "L'ENFANCE"
+  );
+
+  document
+    .querySelector(
+      ".bloc-enigme4"
+    )
+    .classList.add(
+      "gagnee"
+    );
+
+  braviFinal.classList.add(
+    "visible"
+  );
+
+  window.setTimeout(
+    function(){
+
+      nextBtn.classList.add(
+        "visible"
+      );
+
+    },
+    1000
+  );
+
+}
+
+/* ======================================================
+   NETTOYAGE DU TEXTE
+====================================================== */
+
+function nettoyerTexte(texte){
+
+  return String(
+    texte || ""
+  )
+    .trim()
+    .toUpperCase()
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .replace(
+      /[^A-Z]/g,
+      ""
+    );
+
+}
+
+/* ======================================================
+   LECTURE SÉCURISÉE DE L’INVENTAIRE
+====================================================== */
+
+function lireMotsTrouves(){
+
+  try{
+
+    const donnees =
+      JSON.parse(
+        localStorage.getItem(
+          "motsEscapeRebond"
+        )
+      );
+
+    return Array.isArray(
+      donnees
+    )
+      ? donnees
+      : [];
+
+  }
+  catch(error){
+
+    return [];
+
+  }
+
+}
+
+/* ======================================================
+   AJOUT DU MOT DANS L’INVENTAIRE
+====================================================== */
+
+function ajouterMotTrouve(
+  enigme,
+  mot
+){
+
+  const mots =
+    lireMotsTrouves();
+
+  const existeDeja =
+    mots.some(
+      function(item){
+
+        return (
+          item.enigme ===
+          enigme
+        );
+
+      }
+    );
+
+  if(!existeDeja){
+
+    mots.push({
+      enigme:enigme,
+      mot:mot
+    });
+
+    localStorage.setItem(
+      "motsEscapeRebond",
+      JSON.stringify(
+        mots
+      )
+    );
+
+  }
+
+  afficherMotsTrouves();
+
+}
+
+/* ======================================================
+   AFFICHAGE DE L’INVENTAIRE
+====================================================== */
+
+function afficherMotsTrouves(){
+
+  const liste =
+    document.getElementById(
+      "listeMots"
+    );
+
+  if(!liste){
+    return;
+  }
+
+  const mots =
+    lireMotsTrouves();
+
+  liste.innerHTML =
+    "";
+
+  if(
+    mots.length === 0
+  ){
+
+    const li =
+      document.createElement(
+        "li"
+      );
+
+    li.textContent =
+      "Aucun mot";
+
+    liste.appendChild(
+      li
+    );
+
+    return;
+
+  }
+
+  mots.forEach(
+    function(item){
+
+      const li =
+        document.createElement(
+          "li"
+        );
+
+      li.textContent =
+        item.enigme +
+        " : " +
+        item.mot;
+
+      liste.appendChild(
+        li
+      );
+
+    }
+  );
+
+}
+
+/* ======================================================
+   CONFIRMATION DE LA PROGRESSION AU CHARGEMENT
+====================================================== */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    localStorage.setItem(
+      "rebondCurrentPage",
+      "enigme4.html"
+    );
+
+  }
+);
 </script>
 
 </body>

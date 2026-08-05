@@ -2,7 +2,10 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0">
 
 <title>Escape Game Rebond - Introduction</title>
 
@@ -17,22 +20,28 @@ html,
 body{
   width:100%;
   min-height:100%;
+
   background:#1b5f6e;
+
   font-family:Arial, Helvetica, sans-serif;
 }
 
 .page-intro{
   min-height:100vh;
+
   display:flex;
   flex-direction:column;
   align-items:center;
+
   padding-top:40px;
 }
 
 .bloc-intro{
   position:relative;
+
   width:999px;
   height:716px;
+
   line-height:0;
   font-size:0;
 }
@@ -43,9 +52,12 @@ body{
 
 .video-intro{
   display:none;
+
   width:999px;
   height:716px;
+
   object-fit:fill;
+
   border:0;
   background:#000000;
 }
@@ -60,16 +72,21 @@ body{
 
 .bouton-go{
   position:absolute;
+
   left:50%;
   top:50%;
+
   transform:translate(-50%,-50%);
+
   z-index:100;
 
   width:260px;
   height:auto;
 
   display:block;
+
   cursor:pointer;
+
   user-select:none;
   -webkit-user-drag:none;
 
@@ -79,11 +96,15 @@ body{
 }
 
 .bouton-go:hover{
-  transform:translate(-50%,-50%) scale(1.05);
+  transform:
+    translate(-50%,-50%)
+    scale(1.05);
 }
 
 .bouton-go:active{
-  transform:translate(-50%,-50%) scale(.97);
+  transform:
+    translate(-50%,-50%)
+    scale(.97);
 }
 
 .bouton-go:focus-visible{
@@ -98,15 +119,14 @@ body{
 .inscription-overlay{
   position:absolute;
   inset:0;
+
   z-index:150;
 
   display:none;
   align-items:center;
   justify-content:center;
 
-  padding:36px;
-
-  background:rgba(27,95,110,.92);
+  background:#1b5f6e;
 
   line-height:normal;
   font-size:16px;
@@ -116,119 +136,223 @@ body{
   display:flex;
 }
 
+/*
+  La carte reprend exactement les proportions
+  de l’image valid_1.png : 1390 × 1087 px.
+
+  Sa largeur permet de tenir dans le bloc
+  999 × 716 px sans déformation.
+*/
+
 .inscription-carte{
-  width:560px;
+  position:relative;
+
+  width:916px;
+  height:716px;
+
   max-width:100%;
 
-  padding:30px;
+  background:
+    transparent
+    url("valid_1.png")
+    center center / 100% 100%
+    no-repeat;
 
-  background:#ffffff;
   color:#044e61;
-
-  border-radius:24px;
 }
 
-.inscription-carte h1{
-  margin-bottom:10px;
-
-  font-size:30px;
-  line-height:1.1;
-}
-
-.inscription-carte .introduction{
-  margin-bottom:24px;
-
-  color:#476b73;
-
-  font-size:16px;
-  line-height:1.45;
-}
+/* ======================================================
+   CHAMPS FONCTIONNELS POSITIONNÉS SUR L’IMAGE
+====================================================== */
 
 .champ{
-  display:flex;
-  flex-direction:column;
-  gap:7px;
+  position:absolute;
 
-  margin-bottom:17px;
+  width:88.3%;
+  height:10.9%;
+}
+
+.champ-code{
+  left:5.8%;
+  top:41.2%;
+}
+
+.champ-equipe{
+  left:5.8%;
+  top:63.7%;
 }
 
 .champ label{
-  font-size:15px;
-  font-weight:bold;
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  padding:0;
+  margin:-1px;
+
+  overflow:hidden;
+
+  clip:rect(0,0,0,0);
+  clip-path:inset(50%);
+
+  white-space:nowrap;
+
+  border:0;
 }
 
 .champ input{
   width:100%;
-  height:52px;
+  height:100%;
 
-  padding:0 14px;
+  padding:
+    0
+    28px;
 
-  border:2px solid #bed1d5;
-  border-radius:12px;
+  border:0;
+  border-radius:22px;
 
   outline:none;
 
-  background:#ffffff;
-  color:#163f48;
+  /*
+    Les rectangles blancs font déjà partie
+    de l’image de fond.
+  */
 
-  font-size:17px;
+  background:transparent;
+  color:#044e61;
 
-  transition:
-    border-color .2s ease,
-    box-shadow .2s ease;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  font-size:27px;
+  font-weight:bold;
+
+  line-height:1;
+}
+
+.champ input::placeholder{
+  color:#95a8ac;
+  opacity:.75;
 }
 
 .champ input:focus{
-  border-color:#edb01a;
-  box-shadow:0 0 0 4px rgba(237,176,26,.20);
+  box-shadow:
+    0 0 0 5px
+    rgba(237,176,26,.48);
 }
 
 #codeSession{
   text-transform:uppercase;
-  letter-spacing:2px;
-  font-weight:bold;
+
+  letter-spacing:3px;
+  font-weight:900;
 }
 
-.bouton-commencer{
-  width:100%;
-  min-height:58px;
+/* ======================================================
+   BOUTON POSITIONNÉ SUR LE BOUTON ORANGE DE L’IMAGE
+====================================================== */
 
-  margin-top:5px;
-  padding:12px 24px;
+.bouton-commencer{
+  position:absolute;
+
+  left:6.3%;
+  top:80.2%;
+
+  width:87.9%;
+  height:13.5%;
+
+  padding:0;
 
   border:0;
   border-radius:999px;
 
-  background:#edb01a;
-  color:#044e61;
+  /*
+    Le bouton orange et son texte sont déjà dessinés
+    dans l’image. Le véritable bouton HTML reste donc
+    transparent.
+  */
 
-  font-size:19px;
-  font-weight:bold;
+  background:transparent;
+  color:transparent;
+
+  font-size:0;
 
   cursor:pointer;
 
   transition:
-    transform .2s ease,
-    opacity .2s ease;
+    transform .18s ease,
+    box-shadow .18s ease,
+    opacity .18s ease;
 }
 
 .bouton-commencer:hover{
-  transform:translateY(-2px);
+  transform:scale(1.012);
+
+  box-shadow:
+    0 10px 25px
+    rgba(4,78,97,.23);
+}
+
+.bouton-commencer:active{
+  transform:scale(.992);
+}
+
+.bouton-commencer:focus-visible{
+  outline:5px solid #044e61;
+  outline-offset:5px;
 }
 
 .bouton-commencer:disabled{
   opacity:.55;
   cursor:wait;
   transform:none;
+  box-shadow:none;
 }
 
+/* ======================================================
+   MESSAGE D’INFORMATION OU D’ERREUR
+====================================================== */
+
 .message{
-  min-height:23px;
-  margin-top:15px;
+  position:absolute;
+
+  left:8%;
+  top:75.4%;
+
+  z-index:5;
+
+  width:84%;
+  min-height:30px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:5px 14px;
+
+  border-radius:999px;
+
+  background:rgba(255,255,255,.94);
+
+  color:#044e61;
 
   font-size:14px;
-  line-height:1.4;
+  line-height:1.3;
   font-weight:bold;
+
+  text-align:center;
+
+  opacity:0;
+  pointer-events:none;
+
+  transition:opacity .2s ease;
+}
+
+.message:not(:empty){
+  opacity:1;
 }
 
 .message.erreur{
@@ -239,27 +363,122 @@ body{
   color:#16824a;
 }
 
+/* ======================================================
+   TEXTE ACCESSIBLE MAIS INVISIBLE
+====================================================== */
+
+.visuellement-cache{
+  position:absolute;
+
+  width:1px;
+  height:1px;
+
+  padding:0;
+  margin:-1px;
+
+  overflow:hidden;
+
+  clip:rect(0,0,0,0);
+  clip-path:inset(50%);
+
+  white-space:nowrap;
+
+  border:0;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+
 @media screen and (max-width:1080px){
 
   .page-intro{
     align-items:flex-start;
+
     padding-left:20px;
+  }
+
+}
+
+@media screen and (max-width:960px){
+
+  .page-intro{
+    align-items:center;
+
+    min-height:auto;
+
+    padding:
+      18px
+      10px;
+  }
+
+  .bloc-intro{
+    width:100%;
+    height:auto;
+
+    aspect-ratio:999 / 716;
+  }
+
+  .video-intro{
+    width:100%;
+    height:100%;
+  }
+
+  .inscription-carte{
+    width:91.7%;
+    height:auto;
+
+    aspect-ratio:1390 / 1087;
+  }
+
+  .champ input{
+    padding:
+      0
+      2.5%;
+
+    border-radius:18px;
+
+    font-size:clamp(
+      16px,
+      2.8vw,
+      27px
+    );
+  }
+
+  .message{
+    font-size:clamp(
+      10px,
+      1.7vw,
+      14px
+    );
   }
 
 }
 
 @media screen and (max-width:620px){
 
-  .inscription-overlay{
-    padding:18px;
+  .page-intro{
+    padding:
+      8px
+      4px;
   }
 
-  .inscription-carte{
-    padding:24px 18px;
+  .bouton-go{
+    width:32%;
+    min-width:130px;
   }
 
-  .inscription-carte h1{
-    font-size:27px;
+  .champ input{
+    border-radius:12px;
+  }
+
+  .bouton-commencer{
+    border-radius:35px;
+  }
+
+  .message{
+    min-height:20px;
+    padding:3px 8px;
   }
 
 }
@@ -294,7 +513,10 @@ body{
       tabindex="0"
       draggable="false">
 
-    <!-- FORMULAIRE AFFICHÉ À LA FIN DE LA VIDÉO -->
+    <!--
+      FORMULAIRE FONCTIONNEL AFFICHÉ
+      AU-DESSUS DE L’IMAGE VALID_1.PNG
+    -->
 
     <div
       id="inscriptionOverlay"
@@ -304,17 +526,19 @@ body{
         id="formulaireEquipe"
         class="inscription-carte">
 
-        <h1>Rejoindre la partie</h1>
+        <h1 class="visuellement-cache">
+          Rejoins la partie
+        </h1>
 
-        <p class="introduction">
-          Entre le code transmis par l’adulte
-          et choisis un nom pour ton équipe.
+        <p class="visuellement-cache">
+          Entre le code qui t’a été transmis
+          et inscris ton nom ou celui de ton équipe.
         </p>
 
-        <div class="champ">
+        <div class="champ champ-code">
 
           <label for="codeSession">
-            Code de session *
+            Code de session
           </label>
 
           <input
@@ -328,10 +552,10 @@ body{
 
         </div>
 
-        <div class="champ">
+        <div class="champ champ-equipe">
 
           <label for="nomEquipe">
-            Nom de l’équipe ou du participant *
+            Nom de l’équipe ou du participant
           </label>
 
           <input
@@ -346,8 +570,13 @@ body{
         <button
           id="boutonRejoindre"
           class="bouton-commencer"
-          type="submit">
-          Commencer l’enquête
+          type="submit"
+          aria-label="Commencer la partie">
+
+          <span class="visuellement-cache">
+            Commencer la partie
+          </span>
+
         </button>
 
         <div
@@ -380,25 +609,44 @@ body{
 
 <script>
 const videoIntro =
-  document.getElementById("videoIntro");
+  document.getElementById(
+    "videoIntro"
+  );
 
 const boutonGo =
-  document.getElementById("boutonGo");
+  document.getElementById(
+    "boutonGo"
+  );
 
 const inscriptionOverlay =
-  document.getElementById("inscriptionOverlay");
+  document.getElementById(
+    "inscriptionOverlay"
+  );
 
 const formulaireEquipe =
-  document.getElementById("formulaireEquipe");
+  document.getElementById(
+    "formulaireEquipe"
+  );
 
 const boutonRejoindre =
-  document.getElementById("boutonRejoindre");
+  document.getElementById(
+    "boutonRejoindre"
+  );
 
 const message =
-  document.getElementById("message");
+  document.getElementById(
+    "message"
+  );
 
 const champCode =
-  document.getElementById("codeSession");
+  document.getElementById(
+    "codeSession"
+  );
+
+const champEquipe =
+  document.getElementById(
+    "nomEquipe"
+  );
 
 let introDemarree = false;
 
@@ -414,8 +662,11 @@ function lancerIntroduction(){
 
   introDemarree = true;
 
-  boutonGo.style.opacity = "0";
-  boutonGo.style.pointerEvents = "none";
+  boutonGo.style.opacity =
+    "0";
+
+  boutonGo.style.pointerEvents =
+    "none";
 
   videoIntro.classList.add(
     "visible"
@@ -430,17 +681,22 @@ function lancerIntroduction(){
 
   if(
     lecture &&
-    typeof lecture.catch === "function"
+    typeof lecture.catch ===
+    "function"
   ){
 
     lecture
       .then(function(){
 
-        window.setTimeout(function(){
+        window.setTimeout(
+          function(){
 
-          boutonGo.style.display = "none";
+            boutonGo.style.display =
+              "none";
 
-        }, 200);
+          },
+          200
+        );
 
       })
       .catch(function(){
@@ -453,9 +709,14 @@ function lancerIntroduction(){
           "visible"
         );
 
-        boutonGo.style.display = "block";
-        boutonGo.style.opacity = "1";
-        boutonGo.style.pointerEvents = "auto";
+        boutonGo.style.display =
+          "block";
+
+        boutonGo.style.opacity =
+          "1";
+
+        boutonGo.style.pointerEvents =
+          "auto";
 
       });
 
@@ -478,6 +739,7 @@ boutonGo.addEventListener(
     ){
 
       event.preventDefault();
+
       lancerIntroduction();
 
     }
@@ -499,11 +761,14 @@ videoIntro.addEventListener(
       "visible"
     );
 
-    window.setTimeout(function(){
+    window.setTimeout(
+      function(){
 
-      champCode.focus();
+        champCode.focus();
 
-    }, 80);
+      },
+      80
+    );
 
   }
 );
@@ -519,7 +784,10 @@ champCode.addEventListener(
     champCode.value =
       champCode.value
         .toUpperCase()
-        .replace(/[^A-Z0-9-]/g, "");
+        .replace(
+          /[^A-Z0-9-]/g,
+          ""
+        );
 
   }
 );
@@ -535,7 +803,8 @@ formulaireEquipe.addEventListener(
     event.preventDefault();
 
     message.textContent = "";
-    message.className = "message";
+    message.className =
+      "message";
 
     const code =
       champCode.value
@@ -543,9 +812,7 @@ formulaireEquipe.addEventListener(
         .toUpperCase();
 
     const equipe =
-      document
-        .getElementById("nomEquipe")
-        .value
+      champEquipe.value
         .trim();
 
     if(
@@ -563,17 +830,28 @@ formulaireEquipe.addEventListener(
 
     }
 
-    boutonRejoindre.disabled = true;
+    boutonRejoindre.disabled =
+      true;
 
-    boutonRejoindre.textContent =
+    /*
+      Le texte du bouton est dessiné dans l’image.
+      Le message visible indique donc l’état
+      de la connexion.
+    */
+
+    message.className =
+      "message";
+
+    message.textContent =
       "Connexion à la session…";
 
     try{
 
-      await window.REBOND_DB.rejoindreSession({
-        code:code,
-        equipe:equipe
-      });
+      await window.REBOND_DB
+        .rejoindreSession({
+          code:code,
+          equipe:equipe
+        });
 
       message.className =
         "message succes";
@@ -585,7 +863,8 @@ formulaireEquipe.addEventListener(
         function(){
 
           window.location.href =
-            window.REBOND_CONFIG.enigme1Url;
+            window.REBOND_CONFIG
+              .enigme1Url;
 
         },
         700
@@ -603,10 +882,8 @@ formulaireEquipe.addEventListener(
         error.message ||
         "Impossible de rejoindre cette session.";
 
-      boutonRejoindre.disabled = false;
-
-      boutonRejoindre.textContent =
-        "Commencer l’enquête";
+      boutonRejoindre.disabled =
+        false;
 
     }
 

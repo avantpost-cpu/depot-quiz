@@ -33,7 +33,7 @@ body{
 
 .wrapper{
   width:1000px;
-  margin:40px auto;
+  margin:40px auto 0;
 }
 
 .enigme{
@@ -701,16 +701,13 @@ body{
 }
 
 /* ======================================================
-   COPYRIGHT
+   COPYRIGHT SOUS L’IMAGE
 ====================================================== */
 
 .copyright-rebond{
-  position:fixed;
+  width:1000px;
 
-  right:16px;
-  bottom:10px;
-
-  z-index:5000;
+  margin:11px auto 30px;
 
   color:rgba(255,255,255,.88);
 
@@ -718,9 +715,10 @@ body{
   font-size:11px;
   font-weight:500;
 
-  line-height:1;
-
+  line-height:1.2;
   letter-spacing:.3px;
+
+  text-align:center;
 
   pointer-events:none;
   user-select:none;
@@ -741,13 +739,17 @@ body{
     margin-right:40px;
   }
 
+  .copyright-rebond{
+    margin-left:40px;
+    margin-right:40px;
+  }
+
 }
 
 @media screen and (max-width:600px){
 
   .copyright-rebond{
-    right:9px;
-    bottom:7px;
+    margin-top:8px;
 
     font-size:9px;
   }
@@ -925,6 +927,12 @@ body{
 
 </div>
 
+<div
+  class="copyright-rebond"
+  aria-label="Copyright Rebond">
+  © Rebond
+</div>
+
 <img
   id="angeFin"
   class="ange-fin"
@@ -938,12 +946,6 @@ body{
   title="Énigme suivante">
   →
 </a>
-
-<div
-  class="copyright-rebond"
-  aria-hidden="true">
-  © Rebond
-</div>
 
 <script>
 const letters = [
@@ -1048,6 +1050,15 @@ let voixInstructionLancee = false;
 
 const motsTrouvesGrille =
   new Set();
+
+/* ======================================================
+   ENREGISTREMENT DE LA PROGRESSION
+====================================================== */
+
+localStorage.setItem(
+  "rebondCurrentPage",
+  "enigme1.html"
+);
 
 afficherMotsTrouves();
 
@@ -1499,12 +1510,23 @@ function ajouterMotTrouve(
   mot
 ){
 
-  const mots =
-    JSON.parse(
-      localStorage.getItem(
-        "motsEscapeRebond"
-      )
-    ) || [];
+  let mots = [];
+
+  try{
+
+    mots =
+      JSON.parse(
+        localStorage.getItem(
+          "motsEscapeRebond"
+        )
+      ) || [];
+
+  }
+  catch(error){
+
+    mots = [];
+
+  }
 
   if(
     !mots.some(
@@ -1548,12 +1570,23 @@ function afficherMotsTrouves(){
     return;
   }
 
-  const mots =
-    JSON.parse(
-      localStorage.getItem(
-        "motsEscapeRebond"
-      )
-    ) || [];
+  let mots = [];
+
+  try{
+
+    mots =
+      JSON.parse(
+        localStorage.getItem(
+          "motsEscapeRebond"
+        )
+      ) || [];
+
+  }
+  catch(error){
+
+    mots = [];
+
+  }
 
   liste.innerHTML = "";
 
@@ -1592,10 +1625,6 @@ function afficherMotsTrouves(){
 
 /* ======================================================
    VOIX DES INSTRUCTIONS
-
-   Le navigateur peut bloquer l’autoplay.
-   On essaie au chargement, puis au premier clic
-   ou toucher si nécessaire.
 ====================================================== */
 
 function demarrerVoixInstruction(){
@@ -1635,7 +1664,8 @@ function demarrerVoixInstruction(){
 
           /*
             La voix démarrera au premier geste
-            de l’utilisateur.
+            de l’utilisateur si l’autoplay
+            est bloqué.
           */
 
         }
@@ -1678,6 +1708,11 @@ document.addEventListener(
 window.addEventListener(
   "load",
   function(){
+
+    localStorage.setItem(
+      "rebondCurrentPage",
+      "enigme1.html"
+    );
 
     window.setTimeout(
       demarrerVoixInstruction,

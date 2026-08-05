@@ -26,6 +26,14 @@ body{
   font-family:Arial, Helvetica, sans-serif;
 }
 
+body{
+  overflow-x:auto;
+}
+
+/* ======================================================
+   CONTENEUR PRINCIPAL
+====================================================== */
+
 .page-intro{
   min-height:100vh;
   min-height:100dvh;
@@ -43,6 +51,8 @@ body{
 
   width:999px;
   height:716px;
+
+  flex:0 0 auto;
 
   line-height:0;
   font-size:0;
@@ -69,7 +79,7 @@ body{
 }
 
 /* ======================================================
-   BOUTON IMAGE CENTRAL
+   BOUTON DE LANCEMENT DE LA VIDÉO
 ====================================================== */
 
 .bouton-go{
@@ -78,19 +88,20 @@ body{
   left:50%;
   top:50%;
 
-  transform:translate(-50%,-50%);
-
   z-index:100;
+
+  display:block;
 
   width:260px;
   height:auto;
 
-  display:block;
+  transform:translate(-50%,-50%);
 
   cursor:pointer;
 
   user-select:none;
   -webkit-user-drag:none;
+  -webkit-tap-highlight-color:transparent;
 
   transition:
     transform .2s ease,
@@ -109,12 +120,13 @@ body{
     scale(.97);
 }
 
+.bouton-go:focus,
 .bouton-go:focus-visible{
   outline:none;
 }
 
 /* ======================================================
-   FORMULAIRE DE SESSION
+   ÉCRAN DU FORMULAIRE
 ====================================================== */
 
 .inscription-overlay{
@@ -138,19 +150,19 @@ body{
 }
 
 /*
-  La popup est affichée à environ 70 %
-  de sa taille d’origine.
+  L’image valid_1.png mesure 1390 × 1087 px.
+  Elle est affichée ici à une largeur de 641 px.
 */
 
 .inscription-carte{
   position:relative;
 
   width:641px;
-  height:auto;
+  max-width:100%;
 
   aspect-ratio:1390 / 1087;
 
-  max-width:100%;
+  overflow:hidden;
 
   background:
     transparent
@@ -162,7 +174,7 @@ body{
 }
 
 /* ======================================================
-   CHAMPS RECALÉS DANS LES RECTANGLES BLANCS
+   CHAMPS SUPERPOSÉS AUX RECTANGLES BLANCS
 ====================================================== */
 
 .champ{
@@ -171,35 +183,37 @@ body{
   display:block;
 
   margin:0;
+  padding:0;
+
+  overflow:hidden;
 }
 
 /*
-  Champ du code de session
+  Code de session
 */
 
 .champ-code{
-  left:9.9%;
-  top:42.2%;
+  left:5.8%;
+  top:41.1%;
 
-  width:80.2%;
-  height:8.1%;
+  width:88.4%;
+  height:10.7%;
 }
 
 /*
-  Champ du nom de l’équipe
+  Nom de l’équipe
 */
 
 .champ-equipe{
-  left:9.9%;
-  top:64.7%;
+  left:5.8%;
+  top:63.6%;
 
-  width:80.2%;
-  height:8.1%;
+  width:88.4%;
+  height:10.7%;
 }
 
 /*
-  Les intitulés sont déjà présents
-  dans l’image.
+  Les libellés sont déjà inscrits dans valid_1.png.
 */
 
 .champ label{
@@ -221,14 +235,20 @@ body{
   border:0;
 }
 
+/* ======================================================
+   APPARENCE DES CHAMPS
+====================================================== */
+
 .champ input{
   display:block;
 
   width:100%;
+  min-width:0;
+  max-width:100%;
   height:100%;
 
   margin:0;
-  padding:0 16px;
+  padding:0 18px;
 
   border:0;
   border-radius:14px;
@@ -236,14 +256,18 @@ body{
   outline:none;
   box-shadow:none;
 
+  appearance:none;
+  -webkit-appearance:none;
+
   background:transparent;
   color:#044e61;
 
   font-family:Arial, Helvetica, sans-serif;
   font-size:18px;
   font-weight:bold;
+  line-height:normal;
 
-  line-height:1;
+  text-align:left;
 
   -webkit-tap-highlight-color:transparent;
 }
@@ -265,24 +289,23 @@ body{
 }
 
 #codeSession{
-  text-transform:uppercase;
-
-  letter-spacing:2px;
   font-weight:900;
+  letter-spacing:2px;
+  text-transform:uppercase;
 }
 
 /* ======================================================
-   BOUTON POSITIONNÉ SUR LE BOUTON ORANGE
+   BOUTON TRANSPARENT SUR LE BOUTON ORANGE
 ====================================================== */
 
 .bouton-commencer{
   position:absolute;
 
-  left:10%;
-  top:81.3%;
+  left:5.8%;
+  top:80.7%;
 
-  width:80%;
-  height:10.4%;
+  width:88.4%;
+  height:13%;
 
   margin:0;
   padding:0;
@@ -292,6 +315,9 @@ body{
 
   outline:none;
   box-shadow:none;
+
+  appearance:none;
+  -webkit-appearance:none;
 
   background:transparent;
   color:transparent;
@@ -329,7 +355,7 @@ body{
   position:absolute;
 
   left:12%;
-  top:75.5%;
+  top:75.4%;
 
   z-index:5;
 
@@ -344,7 +370,7 @@ body{
 
   border-radius:999px;
 
-  background:rgba(255,255,255,.95);
+  background:rgba(255,255,255,.96);
   color:#044e61;
 
   font-size:11px;
@@ -425,12 +451,11 @@ body{
 
   .inscription-carte{
     width:70%;
-
     max-width:641px;
   }
 
   .champ input{
-    padding:0 2.6%;
+    padding:0 3.2%;
 
     border-radius:10px;
 
@@ -527,6 +552,8 @@ body{
           et inscris ton nom ou celui de ton équipe.
         </p>
 
+        <!-- CODE DE SESSION -->
+
         <div class="champ champ-code">
 
           <label for="codeSession">
@@ -539,10 +566,14 @@ body{
             type="text"
             placeholder="RBD-7K42"
             autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
             maxlength="8"
             required>
 
         </div>
+
+        <!-- NOM DE L’ÉQUIPE -->
 
         <div class="champ champ-equipe">
 
@@ -555,9 +586,13 @@ body{
             name="nomEquipe"
             type="text"
             autocomplete="off"
+            spellcheck="false"
+            maxlength="60"
             required>
 
         </div>
+
+        <!-- BOUTON ORANGE -->
 
         <button
           id="boutonRejoindre"
@@ -574,7 +609,8 @@ body{
         <div
           id="message"
           class="message"
-          aria-live="polite"></div>
+          aria-live="polite">
+        </div>
 
       </form>
 
@@ -588,8 +624,8 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js"></script>
-<script src="../js/supabase.js"></script>
+<script src="../js/config.js?v=5"></script>
+<script src="../js/supabase.js?v=5"></script>
 
 <script>
 const videoIntro =
@@ -670,39 +706,48 @@ function lancerIntroduction(){
   ){
 
     lecture
-      .then(function(){
+      .then(
+        function(){
 
-        window.setTimeout(
-          function(){
+          window.setTimeout(
+            function(){
 
-            boutonGo.style.display =
-              "none";
+              boutonGo.style.display =
+                "none";
 
-          },
-          200
-        );
+            },
+            200
+          );
 
-      })
-      .catch(function(){
+        }
+      )
+      .catch(
+        function(error){
 
-        introDemarree = false;
+          console.error(
+            "La vidéo n’a pas pu démarrer.",
+            error
+          );
 
-        videoIntro.pause();
+          introDemarree = false;
 
-        videoIntro.classList.remove(
-          "visible"
-        );
+          videoIntro.pause();
 
-        boutonGo.style.display =
-          "block";
+          videoIntro.classList.remove(
+            "visible"
+          );
 
-        boutonGo.style.opacity =
-          "1";
+          boutonGo.style.display =
+            "block";
 
-        boutonGo.style.pointerEvents =
-          "auto";
+          boutonGo.style.opacity =
+            "1";
 
-      });
+          boutonGo.style.pointerEvents =
+            "auto";
+
+        }
+      );
 
   }
 
@@ -732,7 +777,7 @@ boutonGo.addEventListener(
 );
 
 /* ======================================================
-   AFFICHAGE DU FORMULAIRE À LA FIN
+   AFFICHAGE DU FORMULAIRE À LA FIN DE LA VIDÉO
 ====================================================== */
 
 videoIntro.addEventListener(
@@ -761,17 +806,27 @@ videoIntro.addEventListener(
    MISE EN FORME DU CODE
 ====================================================== */
 
+function nettoyerCode(valeur){
+
+  return String(
+    valeur || ""
+  )
+    .toUpperCase()
+    .replace(
+      /[^A-Z0-9-]/g,
+      ""
+    );
+
+}
+
 champCode.addEventListener(
   "input",
   function(){
 
     champCode.value =
-      champCode.value
-        .toUpperCase()
-        .replace(
-          /[^A-Z0-9-]/g,
-          ""
-        );
+      nettoyerCode(
+        champCode.value
+      );
 
   }
 );
@@ -793,9 +848,9 @@ formulaireEquipe.addEventListener(
       "message";
 
     const code =
-      champCode.value
-        .trim()
-        .toUpperCase();
+      nettoyerCode(
+        champCode.value
+      ).trim();
 
     const equipe =
       champEquipe.value
@@ -837,7 +892,7 @@ formulaireEquipe.addEventListener(
         "message succes";
 
       message.textContent =
-        "Équipe enregistrée. Ouverture de l’énigme…";
+        "Équipe enregistrée. Ouverture du jeu…";
 
       window.setTimeout(
         function(){

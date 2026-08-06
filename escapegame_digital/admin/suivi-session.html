@@ -722,11 +722,15 @@ body{
   position:fixed;
   inset:0;
   z-index:10000;
+
   display:none;
   align-items:center;
   justify-content:center;
+
   padding:20px;
+
   background:rgba(4,78,97,.78);
+
   backdrop-filter:blur(4px);
   -webkit-backdrop-filter:blur(4px);
 }
@@ -738,22 +742,31 @@ body{
 .modale-email-carte{
   width:100%;
   max-width:470px;
+
   padding:28px;
+
   border-radius:22px;
+
   background:#ffffff;
   color:#044e61;
-  box-shadow:0 18px 50px rgba(0,0,0,.28);
+
+  box-shadow:
+    0 18px 50px
+    rgba(0,0,0,.28);
 }
 
 .modale-email-carte h2{
   margin-bottom:9px;
+
   font-size:24px;
   line-height:1.15;
 }
 
 .modale-email-carte p{
   margin-bottom:18px;
+
   color:#58777e;
+
   font-size:14px;
   line-height:1.45;
 }
@@ -761,11 +774,16 @@ body{
 .champ-email-envoi{
   width:100%;
   height:50px;
+
   padding:0 16px;
+
   border:2px solid #d6e4e6;
   border-radius:14px;
+
   outline:none;
+
   color:#044e61;
+
   font-size:15px;
   font-weight:bold;
 }
@@ -777,17 +795,23 @@ body{
 .actions-email{
   display:flex;
   gap:10px;
+
   margin-top:16px;
 }
 
 .action-email{
   flex:1;
+
   min-height:46px;
+
   padding:10px 15px;
+
   border:0;
   border-radius:999px;
+
   font-size:14px;
   font-weight:800;
+
   cursor:pointer;
 }
 
@@ -801,19 +825,48 @@ body{
   color:#044e61;
 }
 
+.action-email:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+
 .message-email{
   min-height:18px;
+
   margin-top:12px;
+
   color:#b53030;
+
   font-size:12px;
   font-weight:bold;
   line-height:1.35;
 }
 
+.message-email.succes{
+  color:#16824a;
+}
+
+.iframe-envoi-cachee{
+  position:fixed;
+
+  width:1px;
+  height:1px;
+
+  left:-9999px;
+  top:-9999px;
+
+  border:0;
+
+  opacity:0;
+  pointer-events:none;
+}
+
 @media screen and (max-width:520px){
+
   .actions-email{
     flex-direction:column;
   }
+
 }
 
 /* ======================================================
@@ -1076,8 +1129,8 @@ body{
     </h2>
 
     <p>
-      Saisis l’adresse e-mail qui recevra le bilan
-      au format PDF.
+      Vérifie ou saisis l’adresse e-mail qui recevra
+      le bilan au format PDF.
     </p>
 
     <label
@@ -1107,7 +1160,7 @@ body{
         id="confirmerEmail"
         class="action-email action-email-envoyer"
         type="submit">
-        Générer et envoyer le PDF
+        Envoyer le PDF
       </button>
 
     </div>
@@ -1122,12 +1175,19 @@ body{
 
 </div>
 
+<iframe
+  id="iframeEnvoiCompteRendu"
+  class="iframe-envoi-cachee"
+  title="Envoi du compte rendu"
+  aria-hidden="true">
+</iframe>
+
 <script
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=10"></script>
-<script src="../js/supabase.js?v=10"></script>
+<script src="../js/config.js?v=11"></script>
+<script src="../js/supabase.js?v=11"></script>
 
 <script>
 const parametres =
@@ -1196,9 +1256,19 @@ const annulerEmail =
     "annulerEmail"
   );
 
+const confirmerEmail =
+  document.getElementById(
+    "confirmerEmail"
+  );
+
 const messageEmail =
   document.getElementById(
     "messageEmail"
+  );
+
+const iframeEnvoiCompteRendu =
+  document.getElementById(
+    "iframeEnvoiCompteRendu"
   );
 
 let suiviAutomatique = false;
@@ -1803,6 +1873,9 @@ async function chargerSession(
    ENVOI DU PDF PAR E-MAIL
 ====================================================== */
 
+let envoiEmailEnCours =
+  false;
+
 function ouvrirFenetreEmail(){
 
   if(
@@ -1819,6 +1892,9 @@ function ouvrirFenetreEmail(){
     return;
 
   }
+
+  messageEmail.className =
+    "message-email";
 
   messageEmail.textContent =
     "";
@@ -1849,6 +1925,10 @@ function ouvrirFenetreEmail(){
 
 function fermerFenetreEmail(){
 
+  if(envoiEmailEnCours){
+    return;
+  }
+
   modaleEmail.classList.remove(
     "visible"
   );
@@ -1863,11 +1943,31 @@ function fermerFenetreEmail(){
 
 }
 
+function terminerInterfaceEnvoi(){
+
+  envoiEmailEnCours =
+    false;
+
+  confirmerEmail.disabled =
+    false;
+
+  annulerEmail.disabled =
+    false;
+
+  confirmerEmail.textContent =
+    "Envoyer le PDF";
+
+}
+
 formulaireEmail.addEventListener(
   "submit",
   function(event){
 
     event.preventDefault();
+
+    if(envoiEmailEnCours){
+      return;
+    }
 
     const destinataire =
       emailDestinataire.value
@@ -1879,12 +1979,36 @@ formulaireEmail.addEventListener(
         .test(destinataire)
     ){
 
+      messageEmail.className =
+        "message-email";
+
       messageEmail.textContent =
         "Saisis une adresse e-mail valide.";
 
       return;
 
     }
+
+    envoiEmailEnCours =
+      true;
+
+    confirmerEmail.disabled =
+      true;
+
+    annulerEmail.disabled =
+      true;
+
+    confirmerEmail.textContent =
+      "Envoi en cours…";
+
+    messageEmail.className =
+      "message-email";
+
+    messageEmail.textContent =
+      "Création du PDF et envoi en cours…";
+
+    emailEncadrant =
+      destinataire;
 
     const adresse =
       new URL(
@@ -1912,42 +2036,106 @@ formulaireEmail.addEventListener(
       destinataire
     );
 
-    const fenetreEnvoi =
-      window.open(
-        adresse.toString(),
-        "rebondEnvoiCompteRendu",
-        "width=900,height=760"
-      );
+    adresse.searchParams.set(
+      "modeIntegre",
+      "1"
+    );
 
-    if(!fenetreEnvoi){
+    /*
+      Le compte rendu est chargé dans un iframe invisible.
+      Aucune nouvelle page ni fenêtre ne s’ouvre.
+    */
+
+    iframeEnvoiCompteRendu.src =
+      adresse.toString();
+
+  }
+);
+
+window.addEventListener(
+  "message",
+  function(event){
+
+    if(
+      event.origin !==
+      window.location.origin
+    ){
+      return;
+    }
+
+    const donnees =
+      event.data || {};
+
+    if(
+      donnees.type ===
+      "rebond-compte-rendu-envoye"
+    ){
+
+      terminerInterfaceEnvoi();
+
+      messageEmail.className =
+        "message-email succes";
 
       messageEmail.textContent =
-        "Autorise les fenêtres surgissantes pour poursuivre.";
+        "Le compte rendu a bien été envoyé à " +
+        donnees.destinataire +
+        " ✓";
 
-      return;
+      iframeEnvoiCompteRendu.src =
+        "about:blank";
+
+      window.setTimeout(
+        function(){
+
+          modaleEmail.classList.remove(
+            "visible"
+          );
+
+          modaleEmail.setAttribute(
+            "aria-hidden",
+            "true"
+          );
+
+          message.className =
+            "message succes";
+
+          message.textContent =
+            "Compte rendu envoyé par e-mail ✓";
+
+          window.setTimeout(
+            function(){
+
+              message.textContent =
+                "";
+
+            },
+            2600
+          );
+
+        },
+        1600
+      );
 
     }
 
-    emailEncadrant =
-      destinataire;
+    if(
+      donnees.type ===
+      "rebond-compte-rendu-erreur"
+    ){
 
-    fermerFenetreEmail();
+      terminerInterfaceEnvoi();
 
-    message.className =
-      "message";
+      messageEmail.className =
+        "message-email";
 
-    message.textContent =
-      "Création du PDF et envoi en cours…";
+      messageEmail.textContent =
+        donnees.message ||
+        "Impossible d’envoyer le compte rendu.";
 
-    window.setTimeout(
-      function(){
+      iframeEnvoiCompteRendu.src =
+        "about:blank";
 
-        message.textContent =
-          "";
-
-      },
-      4000
-    );
+    }
 
   }
 );
@@ -1961,7 +2149,9 @@ modaleEmail.addEventListener(
   "click",
   function(event){
 
-    if(event.target === modaleEmail){
+    if(
+      event.target === modaleEmail
+    ){
       fermerFenetreEmail();
     }
 

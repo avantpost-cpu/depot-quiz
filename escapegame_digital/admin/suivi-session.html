@@ -1160,8 +1160,12 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=12"></script>
-<script src="../js/supabase.js?v=12"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js">
+</script>
+
+<script src="../js/config.js?v=13"></script>
+<script src="../js/supabase.js?v=13"></script>
 
 <script>
 const parametres =
@@ -1239,6 +1243,7 @@ let suiviAutomatique = false;
 let minuterieSuivi = null;
 let minuterieHorloges = null;
 let equipesCourantes = [];
+let donneesSessionCourantes = [];
 let emailEncadrant = "";
 
 /* ======================================================
@@ -1695,6 +1700,9 @@ async function chargerSession(
 
     }
 
+    donneesSessionCourantes =
+      donnees.slice();
+
     const session =
       donnees[0];
 
@@ -1834,10 +1842,861 @@ async function chargerSession(
 }
 
 /* ======================================================
-   ENVOI DU PDF PAR E-MAIL — ÉTAPE 1
-   Cette étape ne génère pas encore le PDF.
-   Elle vérifie uniquement la fenêtre et l’adresse.
+   ENVOI DU PDF PAR E-MAIL — ÉTAPE 2
+   Génération directe du PDF depuis la page de suivi.
+   Aucune autre page et aucune fenêtre ne s’ouvrent.
 ====================================================== */
+
+function nettoyerNomFichier(valeur){
+
+  return String(
+    valeur || "bilan-rebond"
+  )
+    .normalize("NFD")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
+    .replace(
+      /[^a-zA-Z0-9_-]+/g,
+      "-"
+    )
+    .replace(
+      /-+/g,
+      "-"
+    )
+    .replace(
+      /^-|-$/g,
+      ""
+    )
+    .toLowerCase();
+
+}
+
+function afficherDureeCourte(secondes){
+
+  if(
+    secondes === null ||
+    secondes === undefined ||
+    Number.isNaN(
+      Number(secondes)
+    )
+  ){
+    return "—";
+  }
+
+  const total =
+    Math.max(
+      0,
+      Math.floor(
+        Number(secondes)
+      )
+    );
+
+  const heures =
+    Math.floor(
+      total / 3600
+    );
+
+  const minutes =
+    Math.floor(
+      (total % 3600) / 60
+    );
+
+  const reste =
+    total % 60;
+
+  if(heures > 0){
+
+    return (
+      heures +
+      " h " +
+      String(minutes)
+        .padStart(2,"0")
+    );
+
+  }
+
+  if(minutes > 0){
+
+    return (
+      minutes +
+      " min " +
+      String(reste)
+        .padStart(2,"0")
+    );
+
+  }
+
+  return reste + " s";
+
+}
+
+function creerNumeroBilan(
+  codeSession,
+  dateSession
+){
+
+  const annee =
+    dateSession
+      ? String(dateSession)
+          .slice(0,4)
+      : new Date()
+          .getFullYear();
+
+  const suffixe =
+    String(
+      codeSession || ""
+    )
+      .replace(
+        "RBD-",
+        ""
+      )
+      .toUpperCase();
+
+  return (
+    "RB-" +
+    annee +
+    "-" +
+    suffixe
+  );
+
+}
+
+function calculerStatistiquesPDF(
+  donnees
+){
+
+  const equipes =
+    donnees.filter(
+      function(ligne){
+
+        return Boolean(
+          ligne.team_name
+        );
+
+      }
+    );
+
+  const terminees =
+    equipes.filter(
+      function(equipe){
+
+        return (
+          equipe.completed ===
+          true
+        );
+
+      }
+    );
+
+  const durees =
+    terminees
+      .map(
+        function(equipe){
+
+          return Number(
+            equipe.duration_seconds
+          );
+
+        }
+      )
+      .filter(
+        function(duree){
+
+          return Number.isFinite(
+            duree
+          );
+
+        }
+      );
+
+  const moyenne =
+    durees.length
+      ? Math.round(
+          durees.reduce(
+            function(total,duree){
+
+              return (
+                total +
+                duree
+              );
+
+            },
+            0
+          ) /
+          durees.length
+        )
+      : null;
+
+  const taux =
+    equipes.length
+      ? Math.round(
+          terminees.length /
+          equipes.length *
+          100
+        )
+      : 0;
+
+  const minimum =
+    durees.length
+      ? Math.min(
+          ...durees
+        )
+      : null;
+
+  const maximum =
+    durees.length
+      ? Math.max(
+          ...durees
+        )
+      : null;
+
+  return {
+    equipes,
+    terminees,
+    moyenne,
+    taux,
+    minimum,
+    maximum,
+    ecart:
+      minimum !== null &&
+      maximum !== null
+        ? maximum -
+          minimum
+        : null
+  };
+
+}
+
+async function chargerImagePDF(
+  adresse
+){
+
+  const reponse =
+    await fetch(
+      adresse,
+      {
+        cache:"no-store"
+      }
+    );
+
+  if(!reponse.ok){
+
+    throw new Error(
+      "Impossible de charger une page du compte rendu."
+    );
+
+  }
+
+  const blob =
+    await reponse.blob();
+
+  return await new Promise(
+    function(resolve,reject){
+
+      const lecteur =
+        new FileReader();
+
+      lecteur.onload =
+        function(){
+
+          resolve(
+            lecteur.result
+          );
+
+        };
+
+      lecteur.onerror =
+        reject;
+
+      lecteur.readAsDataURL(
+        blob
+      );
+
+    }
+  );
+
+}
+
+function ecrireTextePDF(
+  pdf,
+  texte,
+  x,
+  y,
+  options = {}
+){
+
+  const taille =
+    options.taille ||
+    10;
+
+  const graisse =
+    options.graisse ||
+    "normal";
+
+  const couleur =
+    options.couleur ||
+    [4,78,97];
+
+  const largeur =
+    options.largeur ||
+    null;
+
+  const alignement =
+    options.alignement ||
+    "left";
+
+  pdf.setFont(
+    "helvetica",
+    graisse
+  );
+
+  pdf.setFontSize(
+    taille
+  );
+
+  pdf.setTextColor(
+    couleur[0],
+    couleur[1],
+    couleur[2]
+  );
+
+  let contenu =
+    String(
+      texte ?? "—"
+    );
+
+  if(largeur){
+
+    contenu =
+      pdf.splitTextToSize(
+        contenu,
+        largeur
+      );
+
+  }
+
+  pdf.text(
+    contenu,
+    x,
+    y,
+    {
+      align:alignement
+    }
+  );
+
+}
+
+async function genererCompteRenduPDF(){
+
+  if(
+    !window.jspdf ||
+    !window.jspdf.jsPDF
+  ){
+
+    throw new Error(
+      "L’outil de génération du PDF n’est pas chargé."
+    );
+
+  }
+
+  if(
+    !donneesSessionCourantes ||
+    donneesSessionCourantes.length ===
+    0
+  ){
+
+    throw new Error(
+      "Les données de la session ne sont pas encore chargées."
+    );
+
+  }
+
+  const session =
+    donneesSessionCourantes[0];
+
+  const stats =
+    calculerStatistiquesPDF(
+      donneesSessionCourantes
+    );
+
+  const base =
+    new URL(
+      ".",
+      window.location.href
+    );
+
+  const fonds =
+    await Promise.all(
+      [
+        "page_1.jpg",
+        "page_2.jpg",
+        "page_3.jpg",
+        "page_4.jpg"
+      ]
+        .map(
+          function(nom){
+
+            return chargerImagePDF(
+              new URL(
+                nom,
+                base
+              ).toString()
+            );
+
+          }
+        )
+    );
+
+  const jsPDF =
+    window.jspdf.jsPDF;
+
+  const pdf =
+    new jsPDF({
+      orientation:"portrait",
+      unit:"mm",
+      format:"a4",
+      compress:true
+    });
+
+  fonds.forEach(
+    function(image,index){
+
+      if(index > 0){
+
+        pdf.addPage(
+          "a4",
+          "portrait"
+        );
+
+      }
+
+      pdf.addImage(
+        image,
+        "JPEG",
+        0,
+        0,
+        210,
+        297,
+        undefined,
+        "FAST"
+      );
+
+    }
+  );
+
+  /* PAGE 1 */
+
+  pdf.setPage(1);
+
+  ecrireTextePDF(
+    pdf,
+    creerNumeroBilan(
+      code,
+      session.session_date
+    ),
+    181,
+    10,
+    {
+      taille:8,
+      graisse:"bold",
+      alignement:"center"
+    }
+  );
+
+  ecrireTextePDF(
+    pdf,
+    session.school_name ||
+    "—",
+    20,
+    97,
+    {
+      taille:11,
+      graisse:"bold",
+      largeur:75
+    }
+  );
+
+  ecrireTextePDF(
+    pdf,
+    session.class_name ||
+    "—",
+    20,
+    110,
+    {
+      taille:11,
+      graisse:"bold",
+      largeur:75
+    }
+  );
+
+  ecrireTextePDF(
+    pdf,
+    code,
+    20,
+    123,
+    {
+      taille:11,
+      graisse:"bold"
+    }
+  );
+
+  ecrireTextePDF(
+    pdf,
+    session.teacher_name ||
+    "—",
+    117,
+    97,
+    {
+      taille:11,
+      graisse:"bold",
+      largeur:70
+    }
+  );
+
+  ecrireTextePDF(
+    pdf,
+    afficherDate(
+      session.session_date
+    ),
+    117,
+    113,
+    {
+      taille:11,
+      graisse:"bold"
+    }
+  );
+
+  const kpiX =
+    [
+      36,
+      82,
+      128,
+      174
+    ];
+
+  const kpiValeurs =
+    [
+      session.student_count ??
+      "—",
+
+      stats.equipes.length,
+
+      afficherDureeCourte(
+        stats.moyenne
+      ),
+
+      stats.taux +
+      " %"
+    ];
+
+  kpiValeurs.forEach(
+    function(valeur,index){
+
+      ecrireTextePDF(
+        pdf,
+        valeur,
+        kpiX[index],
+        160,
+        {
+          taille:15,
+          graisse:"bold",
+          alignement:"center"
+        }
+      );
+
+    }
+  );
+
+  /* PAGE 2 */
+
+  pdf.setPage(2);
+
+  const kpiP2 =
+    [
+      session.student_count ??
+      "—",
+
+      stats.equipes.length,
+
+      afficherDureeCourte(
+        stats.moyenne
+      ),
+
+      stats.taux +
+      " %"
+    ];
+
+  kpiP2.forEach(
+    function(valeur,index){
+
+      ecrireTextePDF(
+        pdf,
+        valeur,
+        kpiX[index],
+        75,
+        {
+          taille:14,
+          graisse:"bold",
+          alignement:"center",
+          couleur:
+            index === 0 ||
+            index === 3
+              ? [255,255,255]
+              : [4,78,97]
+        }
+      );
+
+    }
+  );
+
+  const equipesAffichees =
+    stats.equipes.slice(
+      0,
+      8
+    );
+
+  equipesAffichees.forEach(
+    function(equipe,index){
+
+      const y =
+        111 +
+        index *
+        9.5;
+
+      ecrireTextePDF(
+        pdf,
+        equipe.team_name ||
+        "Équipe",
+        20,
+        y,
+        {
+          taille:7.5,
+          graisse:"bold",
+          largeur:72
+        }
+      );
+
+      ecrireTextePDF(
+        pdf,
+        afficherDureeCourte(
+          equipe.duration_seconds
+        ),
+        105,
+        y,
+        {
+          taille:7.5
+        }
+      );
+
+      ecrireTextePDF(
+        pdf,
+        equipe.completed
+          ? "100 %"
+          : "En cours",
+        135,
+        y,
+        {
+          taille:7.5
+        }
+      );
+
+      ecrireTextePDF(
+        pdf,
+        equipe.completed
+          ? "Terminée"
+          : "En cours",
+        171,
+        y,
+        {
+          taille:7.5,
+          graisse:"bold",
+          couleur:[20,120,108]
+        }
+      );
+
+    }
+  );
+
+  const dureeMax =
+    Math.max(
+      ...stats.equipes.map(
+        function(equipe){
+
+          return Number(
+            equipe.duration_seconds ||
+            0
+          );
+
+        }
+      ),
+      1
+    );
+
+  stats.equipes
+    .filter(
+      function(equipe){
+
+        return Number.isFinite(
+          Number(
+            equipe.duration_seconds
+          )
+        );
+
+      }
+    )
+    .slice(
+      0,
+      6
+    )
+    .forEach(
+      function(equipe,index){
+
+        const y =
+          190 +
+          index *
+          9;
+
+        const largeur =
+          Math.max(
+            4,
+            Number(
+              equipe.duration_seconds
+            ) /
+            dureeMax *
+            65
+          );
+
+        ecrireTextePDF(
+          pdf,
+          equipe.team_name ||
+          "Équipe",
+          20,
+          y,
+          {
+            taille:7,
+            graisse:"bold",
+            largeur:35
+          }
+        );
+
+        pdf.setFillColor(
+          225,
+          237,
+          239
+        );
+
+        pdf.roundedRect(
+          56,
+          y - 3.2,
+          65,
+          3.6,
+          1.8,
+          1.8,
+          "F"
+        );
+
+        pdf.setFillColor(
+          20,
+          120,
+          108
+        );
+
+        pdf.roundedRect(
+          56,
+          y - 3.2,
+          largeur,
+          3.6,
+          1.8,
+          1.8,
+          "F"
+        );
+
+        ecrireTextePDF(
+          pdf,
+          afficherDureeCourte(
+            equipe.duration_seconds
+          ),
+          126,
+          y,
+          {
+            taille:7
+          }
+        );
+
+      }
+    );
+
+  const phraseTerminees =
+    stats.equipes.length > 0 &&
+    stats.terminees.length ===
+    stats.equipes.length
+      ? "Toutes les équipes ont terminé."
+      : (
+          stats.terminees.length +
+          " équipe(s) sur " +
+          stats.equipes.length +
+          " ont terminé."
+        );
+
+  ecrireTextePDF(
+    pdf,
+    phraseTerminees +
+    "\nTemps moyen : " +
+    afficherDureeCourte(
+      stats.moyenne
+    ) +
+    ".\nÉcart maximal : " +
+    afficherDureeCourte(
+      stats.ecart
+    ) +
+    ".",
+    148,
+    189,
+    {
+      taille:7.5,
+      largeur:45
+    }
+  );
+
+  const nomFichier =
+    nettoyerNomFichier(
+      "bilan-rebond-" +
+      (
+        session.school_name ||
+        "session"
+      ) +
+      "-" +
+      (
+        session.class_name ||
+        code
+      )
+    ) +
+    ".pdf";
+
+  const dataUri =
+    pdf.output(
+      "datauristring"
+    );
+
+  const pdfBase64 =
+    dataUri.split(",")[1];
+
+  if(!pdfBase64){
+
+    throw new Error(
+      "Le PDF n’a pas pu être encodé."
+    );
+
+  }
+
+  return {
+    pdfBase64,
+    nomFichier
+  };
+
+}
 
 function ouvrirFenetreEmail(){
 
@@ -1904,7 +2763,7 @@ function fermerFenetreEmail(){
 
 formulaireEmail.addEventListener(
   "submit",
-  function(event){
+  async function(event){
 
     event.preventDefault();
 
@@ -1931,12 +2790,152 @@ formulaireEmail.addEventListener(
     emailEncadrant =
       destinataire;
 
+    const boutonEnvoi =
+      formulaireEmail.querySelector(
+        ".action-email-envoyer"
+      );
+
+    const boutonAnnuler =
+      formulaireEmail.querySelector(
+        ".action-email-annuler"
+      );
+
+    boutonEnvoi.disabled =
+      true;
+
+    boutonAnnuler.disabled =
+      true;
+
+    boutonEnvoi.textContent =
+      "Création du PDF…";
+
     messageEmail.className =
-      "message-email succes";
+      "message-email";
 
     messageEmail.textContent =
-      "Adresse validée : " +
-      destinataire;
+      "Préparation du compte rendu…";
+
+    try{
+
+      const fichier =
+        await genererCompteRenduPDF();
+
+      boutonEnvoi.textContent =
+        "Envoi en cours…";
+
+      messageEmail.textContent =
+        "Envoi du PDF à " +
+        destinataire +
+        "…";
+
+      const {
+        data,
+        error
+      } =
+        await window.REBOND_DB
+          .client
+          .functions
+          .invoke(
+            "envoyer-compte-rendu",
+            {
+              body:{
+                code:code,
+                cleGestion:cleGestion,
+                destinataire:
+                  destinataire,
+                pdfBase64:
+                  fichier.pdfBase64,
+                nomFichier:
+                  fichier.nomFichier
+              }
+            }
+          );
+
+      if(error){
+        throw error;
+      }
+
+      if(
+        !data ||
+        data.success !== true
+      ){
+
+        throw new Error(
+          data &&
+          data.message
+            ? data.message
+            : "L’envoi du compte rendu a échoué."
+        );
+
+      }
+
+      messageEmail.className =
+        "message-email succes";
+
+      messageEmail.textContent =
+        "Le compte rendu a bien été envoyé à " +
+        destinataire +
+        " ✓";
+
+      boutonEnvoi.textContent =
+        "Envoyé ✓";
+
+      window.setTimeout(
+        function(){
+
+          fermerFenetreEmail();
+
+          boutonEnvoi.disabled =
+            false;
+
+          boutonAnnuler.disabled =
+            false;
+
+          boutonEnvoi.textContent =
+            "Envoyer le PDF";
+
+          message.className =
+            "message succes";
+
+          message.textContent =
+            "Compte rendu envoyé par e-mail ✓";
+
+          window.setTimeout(
+            function(){
+
+              message.textContent =
+                "";
+
+            },
+            2500
+          );
+
+        },
+        1800
+      );
+
+    }
+    catch(error){
+
+      console.error(error);
+
+      messageEmail.className =
+        "message-email";
+
+      messageEmail.textContent =
+        error.message ||
+        "Impossible de générer ou d’envoyer le PDF.";
+
+      boutonEnvoi.disabled =
+        false;
+
+      boutonAnnuler.disabled =
+        false;
+
+      boutonEnvoi.textContent =
+        "Envoyer le PDF";
+
+    }
 
   }
 );

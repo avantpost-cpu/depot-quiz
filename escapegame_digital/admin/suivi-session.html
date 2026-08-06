@@ -515,56 +515,35 @@ body{
 /* Activer le suivi */
 
 .bouton-suivi{
-  left:21%;
+  left:9.25%;
   top:26.9%;
 
-  width:28.3%;
+  width:24.1%;
   height:5.9%;
 }
 
 /* Générer le compte rendu */
 
 .bouton-compte-rendu{
-  left:53.4%;
+  left:36.25%;
   top:26.9%;
 
-  width:28.3%;
+  width:25.95%;
   height:5.9%;
 }
 
-/* Envoyer le compte rendu par e-mail */
+/* Envoyer le compte rendu par e-mail
+   Zone transparente superposée au bouton dessiné
+   directement dans valid_3.png. */
 
 .bouton-email{
-  left:53.4%;
-  top:33.7%;
-  width:28.3%;
-  height:4.7%;
+  left:67.55%;
+  top:26.9%;
+
+  width:26.25%;
+  height:5.9%;
+
   z-index:7;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:0 14px;
-  background:#e76f42;
-  color:#ffffff;
-  font-size:12px;
-  font-weight:800;
-  line-height:1;
-  text-align:center;
-  box-shadow:0 4px 10px rgba(0,0,0,.18);
-}
-
-.bouton-email:hover,
-.bouton-email:focus,
-.bouton-email:focus-visible,
-.bouton-email:active{
-  background:#d95f34;
-  color:#ffffff;
-  box-shadow:0 4px 10px rgba(0,0,0,.18);
-}
-
-.bouton-email:disabled{
-  opacity:.55;
-  cursor:wait;
 }
 
 /* ======================================================
@@ -574,8 +553,8 @@ body{
 .temoin-suivi{
   position:absolute;
 
-  left:22.2%;
-  top:28.75%;
+  left:10.55%;
+  top:29.15%;
 
   z-index:5;
 
@@ -633,12 +612,12 @@ body{
 .message{
   position:absolute;
 
-  left:28%;
-  top:39.25%;
+  left:29%;
+  top:33.45%;
 
   z-index:8;
 
-  width:44%;
+  width:42%;
   min-height:22px;
 
   display:none;
@@ -901,7 +880,11 @@ body{
       class="bouton bouton-email"
       type="button"
       aria-label="Envoyer le compte rendu par e-mail">
-      Envoyer le compte rendu par e-mail
+
+      <span class="visuellement-cache">
+        Envoyer le compte rendu par e-mail
+      </span>
+
     </button>
 
     <div
@@ -917,8 +900,8 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=5"></script>
-<script src="../js/supabase.js?v=5"></script>
+<script src="../js/config.js?v=6"></script>
+<script src="../js/supabase.js?v=6"></script>
 
 <script>
 const parametres =

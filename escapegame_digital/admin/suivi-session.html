@@ -962,8 +962,8 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=8"></script>
-<script src="../js/supabase.js?v=8"></script>
+<script src="../js/config.js?v=9"></script>
+<script src="../js/supabase.js?v=9"></script>
 
 <script>
 const parametres =
@@ -1652,8 +1652,40 @@ function ouvrirEnvoiCompteRendu(){
     "1"
   );
 
-  window.location.href =
-    adresse.toString();
+  const fenetreEnvoi =
+    window.open(
+      adresse.toString(),
+      "rebondEnvoiCompteRendu",
+      "width=900,height=760"
+    );
+
+  if(!fenetreEnvoi){
+
+    message.className =
+      "message erreur";
+
+    message.textContent =
+      "Autorise les fenêtres surgissantes pour envoyer le compte rendu.";
+
+    return;
+
+  }
+
+  message.className =
+    "message";
+
+  message.textContent =
+    "Préparation et envoi du compte rendu…";
+
+  window.setTimeout(
+    function(){
+
+      message.textContent =
+        "";
+
+    },
+    3500
+  );
 
 }
 

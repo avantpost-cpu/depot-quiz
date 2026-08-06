@@ -580,6 +580,34 @@ body{
   box-shadow:none !important;
 }
 
+
+/* Les trois boutons sont dessinés dans valid_3.png.
+   Ces éléments HTML servent uniquement de zones cliquables invisibles. */
+.bouton-suivi,
+.bouton-compte-rendu,
+.bouton-email,
+.bouton-suivi:hover,
+.bouton-suivi:focus,
+.bouton-suivi:focus-visible,
+.bouton-suivi:active,
+.bouton-compte-rendu:hover,
+.bouton-compte-rendu:focus,
+.bouton-compte-rendu:focus-visible,
+.bouton-compte-rendu:active,
+.bouton-email:hover,
+.bouton-email:focus,
+.bouton-email:focus-visible,
+.bouton-email:active{
+  background:transparent !important;
+  color:transparent !important;
+  border:0 !important;
+  outline:0 !important;
+  box-shadow:none !important;
+  appearance:none !important;
+  -webkit-appearance:none !important;
+  font-size:0 !important;
+}
+
 /* ======================================================
    POINT VERT DU SUIVI
 ====================================================== */
@@ -934,8 +962,8 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=7"></script>
-<script src="../js/supabase.js?v=7"></script>
+<script src="../js/config.js?v=8"></script>
+<script src="../js/supabase.js?v=8"></script>
 
 <script>
 const parametres =
@@ -1583,70 +1611,55 @@ async function chargerSession(
 }
 
 /* ======================================================
-   ENVOI DU COMPTE RENDU PAR E-MAIL
+   ENVOI DU PDF PAR E-MAIL
 ====================================================== */
 
-async function envoyerCompteRenduParEmail(){
-  if(!code || !cleGestion){
-    message.className = "message erreur";
-    message.textContent = "Le lien de suivi est incomplet.";
+function ouvrirEnvoiCompteRendu(){
+
+  if(
+    !code ||
+    !cleGestion
+  ){
+
+    message.className =
+      "message erreur";
+
+    message.textContent =
+      "Le lien de suivi est incomplet.";
+
     return;
+
   }
 
-  let destinataire = emailEncadrant;
-
-  if(!destinataire){
-    destinataire = window.prompt(
-      "Adresse e-mail à laquelle envoyer le compte rendu :",
-      ""
-    ) || "";
-    destinataire = destinataire.trim();
-  }
-
-  if(!destinataire || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(destinataire)){
-    message.className = "message erreur";
-    message.textContent = "L’adresse e-mail est absente ou invalide.";
-    return;
-  }
-
-  boutonEmail.disabled = true;
-  boutonEmail.textContent = "Envoi en cours…";
-  message.className = "message";
-  message.textContent = "Envoi du compte rendu…";
-
-  try{
-    const { data, error } = await window.REBOND_DB.client.functions.invoke(
-      "envoyer-compte-rendu",
-      {
-        body:{ code:code, cleGestion:cleGestion, destinataire:destinataire }
-      }
+  const adresse =
+    new URL(
+      "compte-rendu.html",
+      window.location.href
     );
 
-    if(error){ throw error; }
-    if(!data || data.success !== true){
-      throw new Error(data && data.message ? data.message : "L’envoi du compte rendu a échoué.");
-    }
+  adresse.searchParams.set(
+    "code",
+    code
+  );
 
-    emailEncadrant = destinataire;
-    message.className = "message succes";
-    message.textContent = "Compte rendu envoyé à " + destinataire + " ✓";
+  adresse.searchParams.set(
+    "cle",
+    cleGestion
+  );
 
-    window.setTimeout(function(){ message.textContent = ""; }, 3500);
-  }
-  catch(error){
-    console.error(error);
-    message.className = "message erreur";
-    message.textContent = error.message || "Impossible d’envoyer le compte rendu.";
-  }
-  finally{
-    boutonEmail.disabled = false;
-    boutonEmail.textContent = "Envoyer le compte rendu par e-mail";
-  }
+  adresse.searchParams.set(
+    "autoEmail",
+    "1"
+  );
+
+  window.location.href =
+    adresse.toString();
+
 }
 
 boutonEmail.addEventListener(
   "click",
-  envoyerCompteRenduParEmail
+  ouvrirEnvoiCompteRendu
 );
 
 /* ======================================================

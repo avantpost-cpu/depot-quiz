@@ -532,6 +532,41 @@ body{
   height:5.9%;
 }
 
+/* Envoyer le compte rendu par e-mail */
+
+.bouton-email{
+  left:53.4%;
+  top:33.7%;
+  width:28.3%;
+  height:4.7%;
+  z-index:7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 14px;
+  background:#e76f42;
+  color:#ffffff;
+  font-size:12px;
+  font-weight:800;
+  line-height:1;
+  text-align:center;
+  box-shadow:0 4px 10px rgba(0,0,0,.18);
+}
+
+.bouton-email:hover,
+.bouton-email:focus,
+.bouton-email:focus-visible,
+.bouton-email:active{
+  background:#d95f34;
+  color:#ffffff;
+  box-shadow:0 4px 10px rgba(0,0,0,.18);
+}
+
+.bouton-email:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+
 /* ======================================================
    POINT VERT DU SUIVI
 ====================================================== */
@@ -598,12 +633,12 @@ body{
 .message{
   position:absolute;
 
-  left:31%;
-  top:33.55%;
+  left:28%;
+  top:39.25%;
 
-  z-index:6;
+  z-index:8;
 
-  width:38%;
+  width:44%;
   min-height:22px;
 
   display:none;
@@ -861,6 +896,14 @@ body{
 
     </a>
 
+    <button
+      id="boutonEmail"
+      class="bouton bouton-email"
+      type="button"
+      aria-label="Envoyer le compte rendu par e-mail">
+      Envoyer le compte rendu par e-mail
+    </button>
+
     <div
       id="message"
       class="message"
@@ -874,8 +917,8 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=4"></script>
-<script src="../js/supabase.js?v=4"></script>
+<script src="../js/config.js?v=5"></script>
+<script src="../js/supabase.js?v=5"></script>
 
 <script>
 const parametres =
@@ -909,6 +952,11 @@ const boutonCompteRendu =
     "boutonCompteRendu"
   );
 
+const boutonEmail =
+  document.getElementById(
+    "boutonEmail"
+  );
+
 const temoinSuivi =
   document.getElementById(
     "temoinSuivi"
@@ -923,6 +971,7 @@ let suiviAutomatique = false;
 let minuterieSuivi = null;
 let minuterieHorloges = null;
 let equipesCourantes = [];
+let emailEncadrant = "";
 
 /* ======================================================
    FORMATAGE DE LA DATE
@@ -1381,6 +1430,14 @@ async function chargerSession(
     const session =
       donnees[0];
 
+    emailEncadrant =
+      String(
+        session.organizer_email ||
+        session.teacher_email ||
+        session.email ||
+        ""
+      ).trim();
+
     document
       .getElementById("nomEcole")
       .textContent =
@@ -1507,6 +1564,73 @@ async function chargerSession(
   }
 
 }
+
+/* ======================================================
+   ENVOI DU COMPTE RENDU PAR E-MAIL
+====================================================== */
+
+async function envoyerCompteRenduParEmail(){
+  if(!code || !cleGestion){
+    message.className = "message erreur";
+    message.textContent = "Le lien de suivi est incomplet.";
+    return;
+  }
+
+  let destinataire = emailEncadrant;
+
+  if(!destinataire){
+    destinataire = window.prompt(
+      "Adresse e-mail à laquelle envoyer le compte rendu :",
+      ""
+    ) || "";
+    destinataire = destinataire.trim();
+  }
+
+  if(!destinataire || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(destinataire)){
+    message.className = "message erreur";
+    message.textContent = "L’adresse e-mail est absente ou invalide.";
+    return;
+  }
+
+  boutonEmail.disabled = true;
+  boutonEmail.textContent = "Envoi en cours…";
+  message.className = "message";
+  message.textContent = "Envoi du compte rendu…";
+
+  try{
+    const { data, error } = await window.REBOND_DB.client.functions.invoke(
+      "envoyer-compte-rendu",
+      {
+        body:{ code:code, cleGestion:cleGestion, destinataire:destinataire }
+      }
+    );
+
+    if(error){ throw error; }
+    if(!data || data.success !== true){
+      throw new Error(data && data.message ? data.message : "L’envoi du compte rendu a échoué.");
+    }
+
+    emailEncadrant = destinataire;
+    message.className = "message succes";
+    message.textContent = "Compte rendu envoyé à " + destinataire + " ✓";
+
+    window.setTimeout(function(){ message.textContent = ""; }, 3500);
+  }
+  catch(error){
+    console.error(error);
+    message.className = "message erreur";
+    message.textContent = error.message || "Impossible d’envoyer le compte rendu.";
+  }
+  finally{
+    boutonEmail.disabled = false;
+    boutonEmail.textContent = "Envoyer le compte rendu par e-mail";
+  }
+}
+
+boutonEmail.addEventListener(
+  "click",
+  envoyerCompteRenduParEmail
+);
 
 /* ======================================================
    ACTIVATION DU SUIVI EN DIRECT

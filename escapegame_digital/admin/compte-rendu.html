@@ -57,6 +57,16 @@ body{
   background:#ffffff;
 }
 
+.bouton-email{
+  background:#e76f42;
+  color:#ffffff;
+}
+
+.bouton:disabled{
+  opacity:.55;
+  cursor:wait;
+}
+
 .message{
   width:min(980px,100%);
   margin:0 auto 18px;
@@ -358,6 +368,13 @@ body{
     Télécharger / imprimer le compte rendu
   </button>
 
+  <button
+    id="envoyerEmail"
+    class="bouton bouton-email"
+    type="button">
+    Envoyer le PDF par e-mail
+  </button>
+
 </div>
 
 <div
@@ -518,8 +535,16 @@ body{
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js"></script>
-<script src="../js/supabase.js"></script>
+<script
+  src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js">
+</script>
+
+<script
+  src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js">
+</script>
+
+<script src="../js/config.js?v=11"></script>
+<script src="../js/supabase.js?v=11"></script>
 
 <script>
 const parametres =
@@ -541,6 +566,29 @@ const documentCompteRendu =
 
 const retourSuivi =
   document.getElementById("retourSuivi");
+
+const boutonImprimer =
+  document.getElementById("imprimer");
+
+const boutonEnvoyerEmail =
+  document.getElementById("envoyerEmail");
+
+const envoiAutomatique =
+  parametres.get("autoEmail") === "1";
+
+const destinataireAutomatique =
+  String(
+    parametres.get("destinataire") ||
+    ""
+  )
+    .trim()
+    .toLowerCase();
+
+const modeIntegre =
+  parametres.get("modeIntegre") === "1";
+
+let sessionCourante = null;
+let envoiDejaLance = false;
 
 function afficherDate(dateBrute){
 
@@ -789,6 +837,9 @@ async function chargerCompteRendu(){
 
     const session =
       donnees[0];
+
+    sessionCourante =
+      session;
 
     const stats =
       calculerStatistiques(
@@ -1039,6 +1090,20 @@ async function chargerCompteRendu(){
     documentCompteRendu.hidden =
       false;
 
+    if(
+      envoiAutomatique &&
+      !envoiDejaLance
+    ){
+
+      envoiDejaLance = true;
+
+      window.setTimeout(
+        envoyerCompteRenduParEmail,
+        350
+      );
+
+    }
+
   }
   catch(error){
 
@@ -1055,22 +1120,508 @@ async function chargerCompteRendu(){
 
 }
 
-document
-  .getElementById("imprimer")
-  .addEventListener(
-    "click",
-    async function(){
+function nettoyerNomFichier(valeur){
 
-      if(document.fonts){
-        await document.fonts.ready;
+  return String(valeur || "bilan-rebond")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9_-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "")
+    .toLowerCase();
+
+}
+
+async function attendreRessources(){
+
+  if(document.fonts){
+    await document.fonts.ready;
+  }
+
+  const images =
+    Array.from(
+      document.querySelectorAll(
+        ".page img"
+      )
+    );
+
+  await Promise.all(
+    images.map(
+      function(image){
+
+        if(image.complete){
+          return Promise.resolve();
+        }
+
+        return new Promise(
+          function(resolve){
+
+            image.addEventListener(
+              "load",
+              resolve,
+              {once:true}
+            );
+
+            image.addEventListener(
+              "error",
+              resolve,
+              {once:true}
+            );
+
+          }
+        );
+
+      }
+    )
+  );
+
+}
+
+async function genererPDF(){
+
+  if(
+    !window.html2canvas ||
+    !window.jspdf ||
+    !window.jspdf.jsPDF
+  ){
+    throw new Error(
+      "Les outils de génération du PDF ne sont pas chargés."
+    );
+  }
+
+  await attendreRessources();
+
+  const pages =
+    Array.from(
+      document.querySelectorAll(
+        ".page"
+      )
+    );
+
+  if(pages.length === 0){
+    throw new Error(
+      "Aucune page du compte rendu n’a été trouvée."
+    );
+  }
+
+  const jsPDF =
+    window.jspdf.jsPDF;
+
+  const pdf =
+    new jsPDF({
+      orientation:"portrait",
+      unit:"mm",
+      format:"a4",
+      compress:true
+    });
+
+  for(
+    let index = 0;
+    index < pages.length;
+    index += 1
+  ){
+
+    if(index > 0){
+      pdf.addPage("a4","portrait");
+    }
+
+    const canvas =
+      await window.html2canvas(
+        pages[index],
+        {
+          scale:1.55,
+          useCORS:true,
+          allowTaint:false,
+          backgroundColor:"#ffffff",
+          logging:false,
+          imageTimeout:15000,
+          windowWidth:980
+        }
+      );
+
+    const image =
+      canvas.toDataURL(
+        "image/jpeg",
+        .84
+      );
+
+    pdf.addImage(
+      image,
+      "JPEG",
+      0,
+      0,
+      210,
+      297,
+      undefined,
+      "FAST"
+    );
+
+  }
+
+  const nomStructure =
+    sessionCourante &&
+    sessionCourante.school_name
+      ? sessionCourante.school_name
+      : "rebond";
+
+  const nomClasse =
+    sessionCourante &&
+    sessionCourante.class_name
+      ? sessionCourante.class_name
+      : code;
+
+  const nomFichier =
+    nettoyerNomFichier(
+      "bilan-rebond-" +
+      nomStructure +
+      "-" +
+      nomClasse
+    ) +
+    ".pdf";
+
+  const dataUri =
+    pdf.output(
+      "datauristring"
+    );
+
+  const pdfBase64 =
+    dataUri.split(",")[1];
+
+  if(!pdfBase64){
+    throw new Error(
+      "Le fichier PDF n’a pas pu être encodé."
+    );
+  }
+
+  return {
+    pdf:pdf,
+    pdfBase64:pdfBase64,
+    nomFichier:nomFichier
+  };
+
+}
+
+function obtenirEmailEncadrant(){
+
+  if(
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      .test(destinataireAutomatique)
+  ){
+    return destinataireAutomatique;
+  }
+
+  const emailSession =
+    sessionCourante
+      ? String(
+          sessionCourante.organizer_email ||
+          sessionCourante.teacher_email ||
+          sessionCourante.email ||
+          ""
+        ).trim()
+      : "";
+
+  if(
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      .test(emailSession)
+  ){
+    return emailSession;
+  }
+
+  const emailSaisi =
+    window.prompt(
+      "Adresse e-mail à laquelle envoyer le compte rendu :",
+      emailSession
+    );
+
+  return String(
+    emailSaisi || ""
+  ).trim();
+
+}
+
+async function envoyerCompteRenduParEmail(){
+
+  if(
+    !code ||
+    !cleGestion
+  ){
+    message.className =
+      "message erreur";
+
+    message.textContent =
+      "Le lien du compte rendu est incomplet.";
+
+    message.style.display =
+      "block";
+
+    return;
+  }
+
+  const destinataire =
+    obtenirEmailEncadrant();
+
+  if(
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      .test(destinataire)
+  ){
+    message.className =
+      "message erreur";
+
+    message.textContent =
+      "L’adresse e-mail est absente ou invalide.";
+
+    message.style.display =
+      "block";
+
+    return;
+  }
+
+  boutonEnvoyerEmail.disabled =
+    true;
+
+  boutonImprimer.disabled =
+    true;
+
+  boutonEnvoyerEmail.textContent =
+    "Création du PDF…";
+
+  message.className =
+    "message";
+
+  message.textContent =
+    "Création du PDF et envoi en cours…";
+
+  message.style.display =
+    "block";
+
+  try{
+
+    const fichier =
+      await genererPDF();
+
+    boutonEnvoyerEmail.textContent =
+      "Envoi du PDF…";
+
+    const {
+      data,
+      error
+    } =
+      await window.REBOND_DB
+        .client
+        .functions
+        .invoke(
+          "envoyer-compte-rendu",
+          {
+            body:{
+              code:code,
+              cleGestion:cleGestion,
+              destinataire:destinataire,
+              pdfBase64:fichier.pdfBase64,
+              nomFichier:fichier.nomFichier
+            }
+          }
+        );
+
+    if(error){
+      throw error;
+    }
+
+    if(
+      !data ||
+      data.success !== true
+    ){
+      throw new Error(
+        data && data.message
+          ? data.message
+          : "L’envoi du compte rendu a échoué."
+      );
+    }
+
+    message.className =
+      "message";
+
+    message.style.color =
+      "#16824a";
+
+    message.textContent =
+      "Le PDF a bien été envoyé à " +
+      destinataire +
+      " ✓";
+
+    boutonEnvoyerEmail.textContent =
+      "PDF envoyé ✓";
+
+    if(
+      modeIntegre &&
+      window.parent !== window
+    ){
+
+      window.parent.postMessage(
+        {
+          type:
+            "rebond-compte-rendu-envoye",
+
+          destinataire:
+            destinataire
+        },
+        window.location.origin
+      );
+
+    }
+
+  }
+  catch(error){
+
+    console.error(error);
+
+    message.className =
+      "message erreur";
+
+    message.style.color =
+      "";
+
+    message.textContent =
+      error.message ||
+      "Impossible de générer ou d’envoyer le PDF.";
+
+    boutonEnvoyerEmail.textContent =
+      "Envoyer le PDF par e-mail";
+
+    if(
+      modeIntegre &&
+      window.parent !== window
+    ){
+
+      window.parent.postMessage(
+        {
+          type:
+            "rebond-compte-rendu-erreur",
+
+          message:
+            error.message ||
+            "Impossible de générer ou d’envoyer le PDF."
+        },
+        window.location.origin
+      );
+
+    }
+
+  }
+  finally{
+
+    boutonEnvoyerEmail.disabled =
+      false;
+
+    boutonImprimer.disabled =
+      false;
+
+  }
+
+}
+
+boutonImprimer.addEventListener(
+  "click",
+  async function(){
+
+    boutonImprimer.disabled =
+      true;
+
+    const texteInitial =
+      boutonImprimer.textContent;
+
+    boutonImprimer.textContent =
+      "Création du PDF…";
+
+    try{
+
+      const fichier =
+        await genererPDF();
+
+      fichier.pdf.save(
+        fichier.nomFichier
+      );
+
+    }
+    catch(error){
+
+      console.error(error);
+
+      message.className =
+        "message erreur";
+
+      message.textContent =
+        error.message ||
+        "Impossible de créer le PDF.";
+
+      message.style.display =
+        "block";
+
+    }
+    finally{
+
+      boutonImprimer.disabled =
+        false;
+
+      boutonImprimer.textContent =
+        texteInitial;
+
+    }
+
+  }
+);
+
+boutonEnvoyerEmail.addEventListener(
+  "click",
+  envoyerCompteRenduParEmail
+);
+
+chargerCompteRendu()
+  .then(
+    function(){
+
+      if(
+        envoiAutomatique &&
+        !envoiDejaLance
+      ){
+
+        envoiDejaLance =
+          true;
+
+        window.setTimeout(
+          envoyerCompteRenduParEmail,
+          350
+        );
+
       }
 
-      window.print();
+    }
+  )
+  .catch(
+    function(error){
+
+      console.error(error);
+
+      if(
+        modeIntegre &&
+        window.parent !== window
+      ){
+
+        window.parent.postMessage(
+          {
+            type:
+              "rebond-compte-rendu-erreur",
+
+            message:
+              error.message ||
+              "Impossible de charger le compte rendu."
+          },
+          window.location.origin
+        );
+
+      }
 
     }
   );
-
-chargerCompteRendu();
 </script>
 
 </body>

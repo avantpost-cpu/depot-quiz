@@ -721,6 +721,7 @@ body{
 .modale-email{
   position:fixed;
   inset:0;
+
   z-index:10000;
 
   display:none;
@@ -825,11 +826,6 @@ body{
   color:#044e61;
 }
 
-.action-email:disabled{
-  opacity:.55;
-  cursor:wait;
-}
-
 .message-email{
   min-height:18px;
 
@@ -844,21 +840,6 @@ body{
 
 .message-email.succes{
   color:#16824a;
-}
-
-.iframe-envoi-cachee{
-  position:fixed;
-
-  width:1px;
-  height:1px;
-
-  left:-9999px;
-  top:-9999px;
-
-  border:0;
-
-  opacity:0;
-  pointer-events:none;
 }
 
 @media screen and (max-width:520px){
@@ -1175,19 +1156,12 @@ body{
 
 </div>
 
-<iframe
-  id="iframeEnvoiCompteRendu"
-  class="iframe-envoi-cachee"
-  title="Envoi du compte rendu"
-  aria-hidden="true">
-</iframe>
-
 <script
   src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
 </script>
 
-<script src="../js/config.js?v=11"></script>
-<script src="../js/supabase.js?v=11"></script>
+<script src="../js/config.js?v=12"></script>
+<script src="../js/supabase.js?v=12"></script>
 
 <script>
 const parametres =
@@ -1256,19 +1230,9 @@ const annulerEmail =
     "annulerEmail"
   );
 
-const confirmerEmail =
-  document.getElementById(
-    "confirmerEmail"
-  );
-
 const messageEmail =
   document.getElementById(
     "messageEmail"
-  );
-
-const iframeEnvoiCompteRendu =
-  document.getElementById(
-    "iframeEnvoiCompteRendu"
   );
 
 let suiviAutomatique = false;
@@ -1870,11 +1834,10 @@ async function chargerSession(
 }
 
 /* ======================================================
-   ENVOI DU PDF PAR E-MAIL
+   ENVOI DU PDF PAR E-MAIL — ÉTAPE 1
+   Cette étape ne génère pas encore le PDF.
+   Elle vérifie uniquement la fenêtre et l’adresse.
 ====================================================== */
-
-let envoiEmailEnCours =
-  false;
 
 function ouvrirFenetreEmail(){
 
@@ -1925,10 +1888,6 @@ function ouvrirFenetreEmail(){
 
 function fermerFenetreEmail(){
 
-  if(envoiEmailEnCours){
-    return;
-  }
-
   modaleEmail.classList.remove(
     "visible"
   );
@@ -1943,31 +1902,11 @@ function fermerFenetreEmail(){
 
 }
 
-function terminerInterfaceEnvoi(){
-
-  envoiEmailEnCours =
-    false;
-
-  confirmerEmail.disabled =
-    false;
-
-  annulerEmail.disabled =
-    false;
-
-  confirmerEmail.textContent =
-    "Envoyer le PDF";
-
-}
-
 formulaireEmail.addEventListener(
   "submit",
   function(event){
 
     event.preventDefault();
-
-    if(envoiEmailEnCours){
-      return;
-    }
 
     const destinataire =
       emailDestinataire.value
@@ -1989,153 +1928,15 @@ formulaireEmail.addEventListener(
 
     }
 
-    envoiEmailEnCours =
-      true;
-
-    confirmerEmail.disabled =
-      true;
-
-    annulerEmail.disabled =
-      true;
-
-    confirmerEmail.textContent =
-      "Envoi en cours…";
-
-    messageEmail.className =
-      "message-email";
-
-    messageEmail.textContent =
-      "Création du PDF et envoi en cours…";
-
     emailEncadrant =
       destinataire;
 
-    const adresse =
-      new URL(
-        "compte-rendu.html",
-        window.location.href
-      );
+    messageEmail.className =
+      "message-email succes";
 
-    adresse.searchParams.set(
-      "code",
-      code
-    );
-
-    adresse.searchParams.set(
-      "cle",
-      cleGestion
-    );
-
-    adresse.searchParams.set(
-      "autoEmail",
-      "1"
-    );
-
-    adresse.searchParams.set(
-      "destinataire",
-      destinataire
-    );
-
-    adresse.searchParams.set(
-      "modeIntegre",
-      "1"
-    );
-
-    /*
-      Le compte rendu est chargé dans un iframe invisible.
-      Aucune nouvelle page ni fenêtre ne s’ouvre.
-    */
-
-    iframeEnvoiCompteRendu.src =
-      adresse.toString();
-
-  }
-);
-
-window.addEventListener(
-  "message",
-  function(event){
-
-    if(
-      event.origin !==
-      window.location.origin
-    ){
-      return;
-    }
-
-    const donnees =
-      event.data || {};
-
-    if(
-      donnees.type ===
-      "rebond-compte-rendu-envoye"
-    ){
-
-      terminerInterfaceEnvoi();
-
-      messageEmail.className =
-        "message-email succes";
-
-      messageEmail.textContent =
-        "Le compte rendu a bien été envoyé à " +
-        donnees.destinataire +
-        " ✓";
-
-      iframeEnvoiCompteRendu.src =
-        "about:blank";
-
-      window.setTimeout(
-        function(){
-
-          modaleEmail.classList.remove(
-            "visible"
-          );
-
-          modaleEmail.setAttribute(
-            "aria-hidden",
-            "true"
-          );
-
-          message.className =
-            "message succes";
-
-          message.textContent =
-            "Compte rendu envoyé par e-mail ✓";
-
-          window.setTimeout(
-            function(){
-
-              message.textContent =
-                "";
-
-            },
-            2600
-          );
-
-        },
-        1600
-      );
-
-    }
-
-    if(
-      donnees.type ===
-      "rebond-compte-rendu-erreur"
-    ){
-
-      terminerInterfaceEnvoi();
-
-      messageEmail.className =
-        "message-email";
-
-      messageEmail.textContent =
-        donnees.message ||
-        "Impossible d’envoyer le compte rendu.";
-
-      iframeEnvoiCompteRendu.src =
-        "about:blank";
-
-    }
+    messageEmail.textContent =
+      "Adresse validée : " +
+      destinataire;
 
   }
 );
@@ -2149,9 +1950,7 @@ modaleEmail.addEventListener(
   "click",
   function(event){
 
-    if(
-      event.target === modaleEmail
-    ){
+    if(event.target === modaleEmail){
       fermerFenetreEmail();
     }
 

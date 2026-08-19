@@ -13,12 +13,11 @@
 
 <title>Bon anniversaire Maman</title>
 
-
 <style>
 
-/* =========================
+/* =========================================================
    BASE
-   ========================= */
+   ========================================================= */
 
 *{
     margin:0;
@@ -51,9 +50,9 @@ body{
 }
 
 
-/* =========================
+/* =========================================================
    PAGE
-   ========================= */
+   ========================================================= */
 
 .page{
 
@@ -65,18 +64,19 @@ body{
     padding:
         calc(20px + env(safe-area-inset-top))
         14px
-        calc(50px + env(safe-area-inset-bottom));
+        calc(60px + env(safe-area-inset-bottom));
 
 }
 
 
-/* =========================
+/* =========================================================
    TITRE
-   ========================= */
+   ========================================================= */
 
 .header{
 
     width:100%;
+
     text-align:center;
 
     margin-bottom:24px;
@@ -97,46 +97,35 @@ body{
 }
 
 
-/* =========================
-   LISTE VIDÉOS
-   ========================= */
+/* =========================================================
+   LISTE
+   ========================================================= */
 
 .video-list{
 
     display:flex;
+
     flex-direction:column;
 
-    gap:22px;
+    gap:26px;
 
 }
 
 
-/* =========================
+/* =========================================================
    CARTE
-   ========================= */
+   ========================================================= */
 
 .video-card{
 
-    position:relative;
-
     width:100%;
-
-    overflow:hidden;
-
-    background:#000000;
-
-    border-radius:18px;
-
-    box-shadow:
-        0 6px 18px
-        rgba(0,0,0,.25);
 
 }
 
 
-/* =========================
-   VIDÉO
-   ========================= */
+/* =========================================================
+   ZONE VIDÉO
+   ========================================================= */
 
 .video-wrapper{
 
@@ -144,24 +133,36 @@ body{
 
     width:100%;
 
-    background:#000000;
-
-    overflow:hidden;
-
 }
 
+
+/* vidéos verticales */
 
 .video-wrapper.vertical{
+
     aspect-ratio:9 / 16;
+
 }
 
+
+/* vidéo 2 horizontale */
 
 .video-wrapper.horizontal{
+
     aspect-ratio:16 / 9;
+
 }
 
 
+/* =========================================================
+   VIDÉO
+   ========================================================= */
+
 .video-wrapper video{
+
+    position:absolute;
+
+    inset:0;
 
     display:block;
 
@@ -172,12 +173,14 @@ body{
 
     background:#000000;
 
+    border-radius:18px;
+
 }
 
 
-/* =========================
-   CADEAU
-   ========================= */
+/* =========================================================
+   IMAGE DU PAQUET
+   ========================================================= */
 
 .gift-cover{
 
@@ -185,222 +188,151 @@ body{
 
     inset:0;
 
-    z-index:5;
+    z-index:10;
 
     display:flex;
 
-    flex-direction:column;
-
-    justify-content:center;
     align-items:center;
-
-    gap:18px;
+    justify-content:center;
 
     cursor:pointer;
 
-    background:
-        linear-gradient(
-            135deg,
-            #b99abe,
-            #8d6f94
+    transition:
+        opacity .45s ease,
+        transform .45s ease;
+
+}
+
+
+/* image du paquet */
+
+.gift-image{
+
+    display:block;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    border-radius:18px;
+
+    /*
+       OMBRE PORTÉE
+    */
+
+    filter:
+        drop-shadow(
+            0 12px 14px rgba(0,0,0,.38)
         );
 
     transition:
-        opacity .5s ease,
-        transform .5s ease;
+        filter .4s ease,
+        opacity .45s ease,
+        transform .45s ease;
 
 }
 
 
-/* ruban vertical */
+/* =========================================================
+   PAQUET HORIZONTAL
+   VIDÉO 2
+   ========================================================= */
 
-.gift-cover::before{
+.video-wrapper.horizontal .gift-image{
 
-    content:"";
+    width:100%;
+    height:100%;
 
-    position:absolute;
+    object-fit:cover;
 
-    top:0;
-    bottom:0;
-
-    left:50%;
-
-    width:58px;
-
-    transform:translateX(-50%);
-
-    background:
-        rgba(255,255,255,.82);
+    object-position:center;
 
 }
 
 
-/* ruban horizontal */
-
-.gift-cover::after{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-    right:0;
-
-    top:50%;
-
-    height:58px;
-
-    transform:translateY(-50%);
-
-    background:
-        rgba(255,255,255,.82);
-
-}
-
-
-/* =========================
-   NOEUD
-   ========================= */
-
-.gift-bow{
-
-    position:relative;
-
-    z-index:2;
-
-    width:120px;
-    height:75px;
-
-}
-
-
-.gift-bow::before,
-.gift-bow::after{
-
-    content:"";
-
-    position:absolute;
-
-    top:10px;
-
-    width:65px;
-    height:50px;
-
-    background:#ffffff;
-
-    border-radius:
-        70% 40% 70% 40%;
-
-}
-
-
-.gift-bow::before{
-
-    left:4px;
-
-    transform:
-        rotate(-28deg);
-
-}
-
-
-.gift-bow::after{
-
-    right:4px;
-
-    transform:
-        scaleX(-1)
-        rotate(-28deg);
-
-}
-
-
-.gift-knot{
-
-    position:absolute;
-
-    z-index:3;
-
-    left:50%;
-    top:24px;
-
-    width:35px;
-    height:35px;
-
-    transform:
-        translateX(-50%)
-        rotate(45deg);
-
-    background:#ffffff;
-
-    border-radius:8px;
-
-}
-
-
-/* =========================
-   TEXTE CADEAU
-   ========================= */
-
-.gift-text{
-
-    position:relative;
-
-    z-index:3;
-
-    padding:
-        10px 18px;
-
-    border-radius:30px;
-
-    background:
-        rgba(0,0,0,.55);
-
-    color:#ffffff;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-    text-align:center;
-
-    box-shadow:
-        0 3px 10px
-        rgba(0,0,0,.18);
-
-}
-
-
-/* animation ouverture */
+/* =========================================================
+   OUVERTURE DU CADEAU
+   ========================================================= */
 
 .gift-cover.open{
 
     opacity:0;
 
-    transform:
-        scale(1.08);
+    transform:scale(1.025);
 
     pointer-events:none;
 
 }
 
 
-/* =========================
+/* disparition de l'ombre */
+
+.gift-cover.open .gift-image{
+
+    filter:
+        drop-shadow(
+            0 0 0 rgba(0,0,0,0)
+        );
+
+}
+
+
+/* =========================================================
+   INDICATION
+   ========================================================= */
+
+.gift-hint{
+
+    position:absolute;
+
+    left:50%;
+
+    bottom:18px;
+
+    z-index:20;
+
+    transform:translateX(-50%);
+
+    padding:
+        9px
+        16px;
+
+    border-radius:30px;
+
+    white-space:nowrap;
+
+    background:
+        rgba(0,0,0,.58);
+
+    color:#ffffff;
+
+    font-size:13px;
+
+    font-weight:bold;
+
+    letter-spacing:.2px;
+
+    box-shadow:
+        0 3px 10px
+        rgba(0,0,0,.18);
+
+    pointer-events:none;
+
+}
+
+
+/* =========================================================
    TÉLÉCHARGEMENT
-   ========================= */
+   ========================================================= */
 
 .download-zone{
 
     width:100%;
 
-    padding:
-        10px
-        10px
-        12px;
+    padding-top:12px;
 
     text-align:center;
-
-    background:#000000;
 
 }
 
@@ -415,8 +347,8 @@ body{
     gap:7px;
 
     padding:
-        8px
-        16px;
+        9px
+        17px;
 
     font-size:13px;
 
@@ -426,9 +358,13 @@ body{
 
     background:#9f80a6;
 
-    border-radius:20px;
-
     text-decoration:none;
+
+    border-radius:22px;
+
+    box-shadow:
+        0 4px 10px
+        rgba(0,0,0,.18);
 
     transition:
         transform .15s ease,
@@ -446,9 +382,9 @@ body{
 }
 
 
-/* =========================
+/* =========================================================
    RETOUR EN HAUT
-   ========================= */
+   ========================================================= */
 
 .back-to-top{
 
@@ -477,7 +413,7 @@ body{
     border-radius:50%;
 
     background:
-        rgba(0,0,0,.78);
+        rgba(80,52,84,.88);
 
     color:#ffffff;
 
@@ -516,9 +452,9 @@ body{
 }
 
 
-/* =========================
+/* =========================================================
    PETITS ÉCRANS
-   ========================= */
+   ========================================================= */
 
 @media(max-width:380px){
 
@@ -531,11 +467,12 @@ body{
 
     .video-list{
 
-        gap:16px;
+        gap:22px;
 
     }
 
-    .video-card{
+    .video-wrapper video,
+    .gift-image{
 
         border-radius:14px;
 
@@ -551,9 +488,40 @@ body{
 
     }
 
-    .gift-text{
+    .gift-hint{
 
-        font-size:14px;
+        bottom:12px;
+
+        font-size:12px;
+
+        padding:
+            8px
+            13px;
+
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITÉ
+   ========================================================= */
+
+@media(
+    prefers-reduced-motion:reduce
+){
+
+    html{
+
+        scroll-behavior:auto;
+
+    }
+
+    .gift-cover,
+    .gift-image,
+    .back-to-top{
+
+        transition:none;
 
     }
 
@@ -565,6 +533,7 @@ body{
 
 
 <body>
+
 
 <main
     class="page"
@@ -586,9 +555,10 @@ body{
 <section class="video-list">
 
 
-<!-- =================================================
+
+<!-- =====================================================
      VIDÉO 1 : MAMIE
-     ================================================= -->
+     ===================================================== -->
 
 <div class="video-card">
 
@@ -599,17 +569,23 @@ body{
             playsinline
             preload="none"
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/mamie.mp4"
+        ></video>
+
+
+        <div
+            class="gift-cover"
+            role="button"
+            tabindex="0"
+            aria-label="Ouvrir le cadeau"
         >
-        </video>
 
+            <img
+                class="gift-image"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet1.jpg"
+                alt=""
+            >
 
-        <div class="gift-cover">
-
-            <div class="gift-bow">
-                <div class="gift-knot"></div>
-            </div>
-
-            <div class="gift-text">
+            <div class="gift-hint">
                 Ouvre ton cadeau
             </div>
 
@@ -634,9 +610,10 @@ body{
 
 
 
-<!-- =================================================
+<!-- =====================================================
      VIDÉO 2 : TATA
-     ================================================= -->
+     HORIZONTALE
+     ===================================================== -->
 
 <div class="video-card">
 
@@ -647,17 +624,23 @@ body{
             playsinline
             preload="none"
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/tata.mp4"
+        ></video>
+
+
+        <div
+            class="gift-cover"
+            role="button"
+            tabindex="0"
+            aria-label="Ouvrir le cadeau"
         >
-        </video>
 
+            <img
+                class="gift-image"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet2.jpg"
+                alt=""
+            >
 
-        <div class="gift-cover">
-
-            <div class="gift-bow">
-                <div class="gift-knot"></div>
-            </div>
-
-            <div class="gift-text">
+            <div class="gift-hint">
                 Ouvre ton cadeau
             </div>
 
@@ -682,9 +665,9 @@ body{
 
 
 
-<!-- =================================================
+<!-- =====================================================
      VIDÉO 3 : RAOUL
-     ================================================= -->
+     ===================================================== -->
 
 <div class="video-card">
 
@@ -695,17 +678,23 @@ body{
             playsinline
             preload="none"
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/raoul.mp4"
+        ></video>
+
+
+        <div
+            class="gift-cover"
+            role="button"
+            tabindex="0"
+            aria-label="Ouvrir le cadeau"
         >
-        </video>
 
+            <img
+                class="gift-image"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet3.jpg"
+                alt=""
+            >
 
-        <div class="gift-cover">
-
-            <div class="gift-bow">
-                <div class="gift-knot"></div>
-            </div>
-
-            <div class="gift-text">
+            <div class="gift-hint">
                 Ouvre ton cadeau
             </div>
 
@@ -730,9 +719,9 @@ body{
 
 
 
-<!-- =================================================
+<!-- =====================================================
      VIDÉO 4 : CLAIRE
-     ================================================= -->
+     ===================================================== -->
 
 <div class="video-card">
 
@@ -743,17 +732,23 @@ body{
             playsinline
             preload="none"
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/claire.mp4"
+        ></video>
+
+
+        <div
+            class="gift-cover"
+            role="button"
+            tabindex="0"
+            aria-label="Ouvrir le cadeau"
         >
-        </video>
 
+            <img
+                class="gift-image"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet4.jpg"
+                alt=""
+            >
 
-        <div class="gift-cover">
-
-            <div class="gift-bow">
-                <div class="gift-knot"></div>
-            </div>
-
-            <div class="gift-text">
+            <div class="gift-hint">
                 Ouvre ton cadeau
             </div>
 
@@ -778,9 +773,9 @@ body{
 
 
 
-<!-- =================================================
+<!-- =====================================================
      VIDÉO 5 : OSAKA
-     ================================================= -->
+     ===================================================== -->
 
 <div class="video-card">
 
@@ -791,17 +786,23 @@ body{
             playsinline
             preload="none"
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/osaka.mp4"
+        ></video>
+
+
+        <div
+            class="gift-cover"
+            role="button"
+            tabindex="0"
+            aria-label="Ouvrir le cadeau"
         >
-        </video>
 
+            <img
+                class="gift-image"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet5.jpg"
+                alt=""
+            >
 
-        <div class="gift-cover">
-
-            <div class="gift-bow">
-                <div class="gift-knot"></div>
-            </div>
-
-            <div class="gift-text">
+            <div class="gift-hint">
                 Ouvre ton cadeau
             </div>
 
@@ -826,9 +827,9 @@ body{
 
 
 
-<!-- =================================================
+<!-- =====================================================
      VIDÉO 6 : MARCEL
-     ================================================= -->
+     ===================================================== -->
 
 <div class="video-card">
 
@@ -839,17 +840,23 @@ body{
             playsinline
             preload="none"
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/marcel.mp4"
+        ></video>
+
+
+        <div
+            class="gift-cover"
+            role="button"
+            tabindex="0"
+            aria-label="Ouvrir le cadeau"
         >
-        </video>
 
+            <img
+                class="gift-image"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet6.jpg"
+                alt=""
+            >
 
-        <div class="gift-cover">
-
-            <div class="gift-bow">
-                <div class="gift-knot"></div>
-            </div>
-
-            <div class="gift-text">
+            <div class="gift-hint">
                 Ouvre ton cadeau
             </div>
 
@@ -874,9 +881,9 @@ body{
 
 
 
-<!-- =================================================
+<!-- =====================================================
      VIDÉO 7 : COUPLE
-     ================================================= -->
+     ===================================================== -->
 
 <div class="video-card">
 
@@ -887,17 +894,23 @@ body{
             playsinline
             preload="none"
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/couple.mp4"
+        ></video>
+
+
+        <div
+            class="gift-cover"
+            role="button"
+            tabindex="0"
+            aria-label="Ouvrir le cadeau"
         >
-        </video>
 
+            <img
+                class="gift-image"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet7.jpg"
+                alt=""
+            >
 
-        <div class="gift-cover">
-
-            <div class="gift-bow">
-                <div class="gift-knot"></div>
-            </div>
-
-            <div class="gift-text">
+            <div class="gift-hint">
                 Ouvre ton cadeau
             </div>
 
@@ -927,7 +940,9 @@ body{
 
 
 
-<!-- RETOUR EN HAUT -->
+<!-- =====================================================
+     RETOUR EN HAUT
+     ===================================================== -->
 
 <button
     class="back-to-top"
@@ -941,9 +956,10 @@ body{
 
 <script>
 
-/* =================================================
+
+/* =========================================================
    ÉLÉMENTS
-   ================================================= */
+   ========================================================= */
 
 const videos =
     document.querySelectorAll("video");
@@ -955,9 +971,9 @@ const backToTop =
     document.getElementById("backToTop");
 
 
-/* =================================================
+/* =========================================================
    CHARGEMENT INTELLIGENT
-   ================================================= */
+   ========================================================= */
 
 const videoObserver =
     new IntersectionObserver(
@@ -966,12 +982,15 @@ const videoObserver =
 
             entries.forEach((entry) => {
 
-                if(!entry.isIntersecting){
+                if(
+                    !entry.isIntersecting
+                ){
                     return;
                 }
 
                 const video =
                     entry.target;
+
 
                 if(
                     !video.src &&
@@ -985,14 +1004,20 @@ const videoObserver =
 
                 }
 
-                videoObserver.unobserve(video);
+
+                videoObserver.unobserve(
+                    video
+                );
 
             });
 
         },
 
         {
-            rootMargin:"400px 0px"
+
+            rootMargin:
+                "350px 0px"
+
         }
 
     );
@@ -1000,96 +1025,126 @@ const videoObserver =
 
 videos.forEach((video) => {
 
-    videoObserver.observe(video);
+    videoObserver.observe(
+        video
+    );
 
 });
 
 
-/* =================================================
+/* =========================================================
    OUVERTURE DU CADEAU
-   ================================================= */
+   ========================================================= */
+
+async function openGift(gift){
+
+    if(
+        gift.classList.contains(
+            "open"
+        )
+    ){
+        return;
+    }
+
+
+    const wrapper =
+        gift.closest(
+            ".video-wrapper"
+        );
+
+
+    const video =
+        wrapper.querySelector(
+            "video"
+        );
+
+
+    /* charge la vidéo immédiatement */
+
+    if(
+        !video.src &&
+        video.dataset.src
+    ){
+
+        video.src =
+            video.dataset.src;
+
+        video.load();
+
+    }
+
+
+    /* disparition paquet + ombre */
+
+    gift.classList.add(
+        "open"
+    );
+
+
+    /* suppression réelle après animation */
+
+    setTimeout(
+        () => {
+
+            gift.style.display =
+                "none";
+
+        },
+        450
+    );
+
+
+    /* lancement vidéo */
+
+    try{
+
+        await video.play();
+
+    }
+    catch(error){
+
+        /*
+           Safari peut parfois
+           demander un second toucher.
+        */
+
+    }
+
+}
+
+
+/* =========================================================
+   CLIC / TOUCH
+   ========================================================= */
 
 gifts.forEach((gift) => {
 
     gift.addEventListener(
         "click",
-        async () => {
+        () => {
 
-            const wrapper =
-                gift.closest(
-                    ".video-wrapper"
-                );
+            openGift(
+                gift
+            );
 
-            const video =
-                wrapper.querySelector(
-                    "video"
-                );
+        }
+    );
 
 
-            /*
-            Charge immédiatement
-            la vidéo si nécessaire
-            */
+    gift.addEventListener(
+        "keydown",
+        (event) => {
 
             if(
-                !video.src &&
-                video.dataset.src
+                event.key === "Enter" ||
+                event.key === " "
             ){
 
-                video.src =
-                    video.dataset.src;
+                event.preventDefault();
 
-                video.load();
-
-            }
-
-
-            /*
-            Animation du cadeau
-            */
-
-            gift.classList.add(
-                "open"
-            );
-
-
-            /*
-            Retire réellement
-            le cadeau après animation
-            */
-
-            setTimeout(
-                () => {
-
-                    gift.style.display =
-                        "none";
-
-                },
-                500
-            );
-
-
-            /*
-            Lance la vidéo.
-            Le play() est appelé
-            directement après le clic
-            pour rester compatible
-            avec Safari iPhone.
-            */
-
-            try{
-
-                await video.play();
-
-            }
-            catch(error){
-
-                /*
-                Si iOS refuse
-                momentanément la lecture,
-                les contrôles restent
-                accessibles.
-                */
+                openGift(
+                    gift
+                );
 
             }
 
@@ -1099,9 +1154,9 @@ gifts.forEach((gift) => {
 });
 
 
-/* =================================================
+/* =========================================================
    UNE SEULE VIDÉO À LA FOIS
-   ================================================= */
+   ========================================================= */
 
 videos.forEach((video) => {
 
@@ -1130,9 +1185,9 @@ videos.forEach((video) => {
 });
 
 
-/* =================================================
-   PAUSE SI LA VIDÉO SORT DE L'ÉCRAN
-   ================================================= */
+/* =========================================================
+   PAUSE HORS ÉCRAN
+   ========================================================= */
 
 const pauseObserver =
     new IntersectionObserver(
@@ -1144,6 +1199,7 @@ const pauseObserver =
 
                     const video =
                         entry.target;
+
 
                     if(
                         !entry.isIntersecting &&
@@ -1160,7 +1216,9 @@ const pauseObserver =
         },
 
         {
-            threshold:0.15
+
+            threshold:.12
+
         }
 
     );
@@ -1168,14 +1226,16 @@ const pauseObserver =
 
 videos.forEach((video) => {
 
-    pauseObserver.observe(video);
+    pauseObserver.observe(
+        video
+    );
 
 });
 
 
-/* =================================================
+/* =========================================================
    RETOUR EN HAUT
-   ================================================= */
+   ========================================================= */
 
 window.addEventListener(
     "scroll",
@@ -1199,9 +1259,13 @@ window.addEventListener(
         }
 
     },
+
     {
+
         passive:true
+
     }
+
 );
 
 
@@ -1210,12 +1274,16 @@ backToTop.addEventListener(
     () => {
 
         window.scrollTo({
+
             top:0,
+
             behavior:"smooth"
+
         });
 
     }
 );
+
 
 </script>
 

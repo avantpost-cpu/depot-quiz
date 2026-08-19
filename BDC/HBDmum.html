@@ -30,14 +30,10 @@ html{
 }
 
 body{
-
     min-height:100vh;
     min-height:100dvh;
 
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    font-family:Arial, Helvetica, sans-serif;
 
     background:
         #9f80a6
@@ -55,7 +51,6 @@ body{
    ========================================================= */
 
 .page{
-
     width:100%;
     max-width:620px;
 
@@ -65,7 +60,6 @@ body{
         calc(20px + env(safe-area-inset-top))
         14px
         calc(60px + env(safe-area-inset-bottom));
-
 }
 
 
@@ -74,17 +68,14 @@ body{
    ========================================================= */
 
 .header{
-
     width:100%;
 
     text-align:center;
 
     margin-bottom:24px;
-
 }
 
 .header img{
-
     display:block;
 
     width:100%;
@@ -93,22 +84,18 @@ body{
     height:auto;
 
     margin:0 auto;
-
 }
 
 
 /* =========================================================
-   LISTE
+   LISTE DES VIDÉOS
    ========================================================= */
 
 .video-list{
-
     display:flex;
-
     flex-direction:column;
 
-    gap:26px;
-
+    gap:28px;
 }
 
 
@@ -117,40 +104,32 @@ body{
    ========================================================= */
 
 .video-card{
-
     width:100%;
-
 }
 
 
 /* =========================================================
-   ZONE VIDÉO
+   ZONE VIDÉO / CADEAU
    ========================================================= */
 
 .video-wrapper{
-
     position:relative;
 
     width:100%;
-
 }
 
 
-/* vidéos verticales */
+/* 9:16 */
 
 .video-wrapper.vertical{
-
     aspect-ratio:9 / 16;
-
 }
 
 
-/* vidéo 2 horizontale */
+/* 16:9 */
 
 .video-wrapper.horizontal{
-
     aspect-ratio:16 / 9;
-
 }
 
 
@@ -159,7 +138,6 @@ body{
    ========================================================= */
 
 .video-wrapper video{
-
     position:absolute;
 
     inset:0;
@@ -174,16 +152,14 @@ body{
     background:#000000;
 
     border-radius:18px;
-
 }
 
 
 /* =========================================================
-   IMAGE DU PAQUET
+   CACHE CADEAU
    ========================================================= */
 
 .gift-cover{
-
     position:absolute;
 
     inset:0;
@@ -197,57 +173,57 @@ body{
 
     cursor:pointer;
 
+    opacity:1;
+
+    transform:scale(1);
+
     transition:
         opacity .45s ease,
         transform .45s ease;
-
 }
 
 
-/* image du paquet */
+/* =========================================================
+   IMAGE DU PAQUET
+   ========================================================= */
 
 .gift-image{
-
     display:block;
 
     width:100%;
     height:100%;
 
     object-fit:cover;
+    object-position:center;
 
     border-radius:18px;
 
     /*
-       OMBRE PORTÉE
+       OMBRE PORTÉE DU PAQUET
     */
 
     filter:
         drop-shadow(
-            0 12px 14px rgba(0,0,0,.38)
+            0 12px 14px rgba(0,0,0,.40)
         );
 
     transition:
-        filter .4s ease,
+        filter .45s ease,
         opacity .45s ease,
         transform .45s ease;
-
 }
 
 
 /* =========================================================
-   PAQUET HORIZONTAL
-   VIDÉO 2
+   PACK 2 HORIZONTAL
    ========================================================= */
 
 .video-wrapper.horizontal .gift-image{
-
     width:100%;
     height:100%;
 
     object-fit:cover;
-
     object-position:center;
-
 }
 
 
@@ -256,51 +232,46 @@ body{
    ========================================================= */
 
 .gift-cover.open{
-
     opacity:0;
 
     transform:scale(1.025);
 
     pointer-events:none;
-
 }
 
 
-/* disparition de l'ombre */
+/*
+   L'ombre portée disparaît
+   avec le paquet.
+*/
 
 .gift-cover.open .gift-image{
-
     filter:
         drop-shadow(
             0 0 0 rgba(0,0,0,0)
         );
-
 }
 
 
 /* =========================================================
-   INDICATION
+   "OUVRE TON CADEAU"
    ========================================================= */
 
 .gift-hint{
-
     position:absolute;
 
     left:50%;
-
     bottom:18px;
 
     z-index:20;
 
     transform:translateX(-50%);
 
-    padding:
-        9px
-        16px;
-
-    border-radius:30px;
+    padding:9px 16px;
 
     white-space:nowrap;
+
+    border-radius:30px;
 
     background:
         rgba(0,0,0,.58);
@@ -308,17 +279,14 @@ body{
     color:#ffffff;
 
     font-size:13px;
-
     font-weight:bold;
 
     letter-spacing:.2px;
 
     box-shadow:
-        0 3px 10px
-        rgba(0,0,0,.18);
+        0 3px 10px rgba(0,0,0,.20);
 
     pointer-events:none;
-
 }
 
 
@@ -327,18 +295,15 @@ body{
    ========================================================= */
 
 .download-zone{
-
     width:100%;
 
-    padding-top:12px;
+    padding-top:14px;
 
     text-align:center;
-
 }
 
 
 .download-btn{
-
     display:inline-flex;
 
     align-items:center;
@@ -346,12 +311,9 @@ body{
 
     gap:7px;
 
-    padding:
-        9px
-        17px;
+    padding:9px 17px;
 
     font-size:13px;
-
     font-weight:bold;
 
     color:#ffffff;
@@ -363,22 +325,18 @@ body{
     border-radius:22px;
 
     box-shadow:
-        0 4px 10px
-        rgba(0,0,0,.18);
+        0 4px 10px rgba(0,0,0,.20);
 
     transition:
         transform .15s ease,
         opacity .15s ease;
-
 }
 
 
 .download-btn:active{
-
     transform:scale(.96);
 
     opacity:.85;
-
 }
 
 
@@ -387,7 +345,6 @@ body{
    ========================================================= */
 
 .back-to-top{
-
     position:fixed;
 
     right:16px;
@@ -413,7 +370,7 @@ body{
     border-radius:50%;
 
     background:
-        rgba(80,52,84,.88);
+        rgba(80,52,84,.90);
 
     color:#ffffff;
 
@@ -422,33 +379,27 @@ body{
     cursor:pointer;
 
     box-shadow:
-        0 5px 15px
-        rgba(0,0,0,.3);
+        0 5px 15px rgba(0,0,0,.30);
 
     opacity:0;
 
     visibility:hidden;
 
-    transform:
-        translateY(10px);
+    transform:translateY(10px);
 
     transition:
         opacity .25s ease,
         transform .25s ease,
         visibility .25s;
-
 }
 
 
 .back-to-top.visible{
-
     opacity:1;
 
     visibility:visible;
 
-    transform:
-        translateY(0);
-
+    transform:translateY(0);
 }
 
 
@@ -459,45 +410,31 @@ body{
 @media(max-width:380px){
 
     .page{
-
         padding-left:10px;
         padding-right:10px;
-
     }
 
     .video-list{
-
-        gap:22px;
-
+        gap:24px;
     }
 
     .video-wrapper video,
     .gift-image{
-
         border-radius:14px;
-
     }
 
     .download-btn{
-
         font-size:12px;
 
-        padding:
-            8px
-            14px;
-
+        padding:8px 14px;
     }
 
     .gift-hint{
-
         bottom:12px;
 
         font-size:12px;
 
-        padding:
-            8px
-            13px;
-
+        padding:8px 13px;
     }
 
 }
@@ -507,22 +444,16 @@ body{
    ACCESSIBILITÉ
    ========================================================= */
 
-@media(
-    prefers-reduced-motion:reduce
-){
+@media(prefers-reduced-motion:reduce){
 
     html{
-
         scroll-behavior:auto;
-
     }
 
     .gift-cover,
     .gift-image,
     .back-to-top{
-
         transition:none;
-
     }
 
 }
@@ -557,7 +488,8 @@ body{
 
 
 <!-- =====================================================
-     VIDÉO 1 : MAMIE
+     1 — MAMIE
+     pack1.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -571,7 +503,6 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/mamie.mp4"
         ></video>
 
-
         <div
             class="gift-cover"
             role="button"
@@ -581,7 +512,7 @@ body{
 
             <img
                 class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet1.jpg"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack1.jpg"
                 alt=""
             >
 
@@ -611,8 +542,9 @@ body{
 
 
 <!-- =====================================================
-     VIDÉO 2 : TATA
-     HORIZONTALE
+     2 — TATA
+     pack2.jpg
+     HORIZONTAL 16:9
      ===================================================== -->
 
 <div class="video-card">
@@ -626,7 +558,6 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/tata.mp4"
         ></video>
 
-
         <div
             class="gift-cover"
             role="button"
@@ -636,7 +567,7 @@ body{
 
             <img
                 class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet2.jpg"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack2.jpg"
                 alt=""
             >
 
@@ -666,7 +597,8 @@ body{
 
 
 <!-- =====================================================
-     VIDÉO 3 : RAOUL
+     3 — RAOUL
+     pack3.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -680,7 +612,6 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/raoul.mp4"
         ></video>
 
-
         <div
             class="gift-cover"
             role="button"
@@ -690,7 +621,7 @@ body{
 
             <img
                 class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet3.jpg"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack3.jpg"
                 alt=""
             >
 
@@ -720,7 +651,8 @@ body{
 
 
 <!-- =====================================================
-     VIDÉO 4 : CLAIRE
+     4 — CLAIRE
+     pack4.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -734,7 +666,6 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/claire.mp4"
         ></video>
 
-
         <div
             class="gift-cover"
             role="button"
@@ -744,7 +675,7 @@ body{
 
             <img
                 class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet4.jpg"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack4.jpg"
                 alt=""
             >
 
@@ -774,7 +705,8 @@ body{
 
 
 <!-- =====================================================
-     VIDÉO 5 : OSAKA
+     5 — OSAKA
+     pack5.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -788,7 +720,6 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/osaka.mp4"
         ></video>
 
-
         <div
             class="gift-cover"
             role="button"
@@ -798,7 +729,7 @@ body{
 
             <img
                 class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet5.jpg"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack5.jpg"
                 alt=""
             >
 
@@ -828,7 +759,8 @@ body{
 
 
 <!-- =====================================================
-     VIDÉO 6 : MARCEL
+     6 — MARCEL
+     pack6.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -842,7 +774,6 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/marcel.mp4"
         ></video>
 
-
         <div
             class="gift-cover"
             role="button"
@@ -852,7 +783,7 @@ body{
 
             <img
                 class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet6.jpg"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack6.jpg"
                 alt=""
             >
 
@@ -882,7 +813,8 @@ body{
 
 
 <!-- =====================================================
-     VIDÉO 7 : COUPLE
+     7 — COUPLE
+     pack7.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -896,7 +828,6 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/couple.mp4"
         ></video>
 
-
         <div
             class="gift-cover"
             role="button"
@@ -906,7 +837,7 @@ body{
 
             <img
                 class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/paquet7.jpg"
+                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack7.jpg"
                 alt=""
             >
 
@@ -972,7 +903,7 @@ const backToTop =
 
 
 /* =========================================================
-   CHARGEMENT INTELLIGENT
+   CHARGEMENT INTELLIGENT DES VIDÉOS
    ========================================================= */
 
 const videoObserver =
@@ -982,15 +913,12 @@ const videoObserver =
 
             entries.forEach((entry) => {
 
-                if(
-                    !entry.isIntersecting
-                ){
+                if(!entry.isIntersecting){
                     return;
                 }
 
                 const video =
                     entry.target;
-
 
                 if(
                     !video.src &&
@@ -1004,7 +932,6 @@ const videoObserver =
 
                 }
 
-
                 videoObserver.unobserve(
                     video
                 );
@@ -1014,10 +941,7 @@ const videoObserver =
         },
 
         {
-
-            rootMargin:
-                "350px 0px"
-
+            rootMargin:"350px 0px"
         }
 
     );
@@ -1052,14 +976,13 @@ async function openGift(gift){
             ".video-wrapper"
         );
 
-
     const video =
         wrapper.querySelector(
             "video"
         );
 
 
-    /* charge la vidéo immédiatement */
+    /* charge immédiatement la vidéo */
 
     if(
         !video.src &&
@@ -1074,14 +997,20 @@ async function openGift(gift){
     }
 
 
-    /* disparition paquet + ombre */
+    /* -----------------------------------------------------
+       Le paquet commence à disparaître.
+       L'ombre disparaît en même temps.
+       ----------------------------------------------------- */
 
     gift.classList.add(
         "open"
     );
 
 
-    /* suppression réelle après animation */
+    /* -----------------------------------------------------
+       Suppression complète du paquet
+       après l'animation.
+       ----------------------------------------------------- */
 
     setTimeout(
         () => {
@@ -1094,7 +1023,11 @@ async function openGift(gift){
     );
 
 
-    /* lancement vidéo */
+    /* -----------------------------------------------------
+       Démarrage de la vidéo.
+       Le play() est déclenché directement
+       depuis le toucher pour Safari iPhone.
+       ----------------------------------------------------- */
 
     try{
 
@@ -1104,8 +1037,9 @@ async function openGift(gift){
     catch(error){
 
         /*
-           Safari peut parfois
-           demander un second toucher.
+           Si Safari demande un second toucher,
+           les contrôles de la vidéo
+           restent disponibles.
         */
 
     }
@@ -1114,7 +1048,7 @@ async function openGift(gift){
 
 
 /* =========================================================
-   CLIC / TOUCH
+   CLIC / TOUCHER SUR LES CADEAUX
    ========================================================= */
 
 gifts.forEach((gift) => {
@@ -1130,6 +1064,8 @@ gifts.forEach((gift) => {
         }
     );
 
+
+    /* clavier */
 
     gift.addEventListener(
         "keydown",
@@ -1186,7 +1122,7 @@ videos.forEach((video) => {
 
 
 /* =========================================================
-   PAUSE HORS ÉCRAN
+   PAUSE AUTOMATIQUE HORS ÉCRAN
    ========================================================= */
 
 const pauseObserver =
@@ -1199,7 +1135,6 @@ const pauseObserver =
 
                     const video =
                         entry.target;
-
 
                     if(
                         !entry.isIntersecting &&
@@ -1216,9 +1151,7 @@ const pauseObserver =
         },
 
         {
-
             threshold:.12
-
         }
 
     );
@@ -1261,9 +1194,7 @@ window.addEventListener(
     },
 
     {
-
         passive:true
-
     }
 
 );

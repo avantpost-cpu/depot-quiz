@@ -104,6 +104,51 @@ body{
     background:#000000;
 }
 
+
+/* =========================
+   BOUTON TÉLÉCHARGEMENT
+   ========================= */
+
+.download-zone{
+    width:100%;
+
+    padding:10px 10px 12px;
+
+    text-align:center;
+
+    background:#000000;
+}
+
+.download-btn{
+    display:inline-block;
+
+    padding:8px 16px;
+
+    font-size:13px;
+    font-weight:bold;
+
+    color:#ffffff;
+    background:#9f80a6;
+
+    text-decoration:none;
+
+    border-radius:20px;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+.download-btn:active{
+    transform:scale(.96);
+    opacity:.85;
+}
+
+
+/* =========================
+   PETITS ÉCRANS
+   ========================= */
+
 @media (max-width:380px){
 
     .page{
@@ -117,6 +162,11 @@ body{
 
     .video-card{
         border-radius:14px;
+    }
+
+    .download-btn{
+        font-size:12px;
+        padding:8px 14px;
     }
 
 }
@@ -138,10 +188,13 @@ body{
 
 </header>
 
+
 <section class="video-list">
 
 
-    <!-- VIDÉO 1 : MAMIE -->
+    <!-- =========================
+         VIDÉO 1 : MAMIE
+         ========================= -->
 
     <div class="video-card">
 
@@ -164,10 +217,25 @@ body{
 
         </div>
 
+        <div class="download-zone">
+
+            <a
+                class="download-btn"
+                href="https://avantpost-cpu.github.io/depot-quiz/BDC/mamie.mp4"
+                download="mamie.mp4"
+            >
+                Télécharger la vidéo
+            </a>
+
+        </div>
+
     </div>
 
 
-    <!-- VIDÉO 2 : TATA -->
+
+    <!-- =========================
+         VIDÉO 2 : TATA
+         ========================= -->
 
     <div class="video-card">
 
@@ -190,10 +258,25 @@ body{
 
         </div>
 
+        <div class="download-zone">
+
+            <a
+                class="download-btn"
+                href="https://avantpost-cpu.github.io/depot-quiz/BDC/tata.mp4"
+                download="tata.mp4"
+            >
+                Télécharger la vidéo
+            </a>
+
+        </div>
+
     </div>
 
 
-    <!-- VIDÉO 3 : RAOUL -->
+
+    <!-- =========================
+         VIDÉO 3 : RAOUL
+         ========================= -->
 
     <div class="video-card">
 
@@ -216,10 +299,25 @@ body{
 
         </div>
 
+        <div class="download-zone">
+
+            <a
+                class="download-btn"
+                href="https://avantpost-cpu.github.io/depot-quiz/BDC/raoul.mp4"
+                download="raoul.mp4"
+            >
+                Télécharger la vidéo
+            </a>
+
+        </div>
+
     </div>
 
 
-    <!-- VIDÉO 4 : CLAIRE -->
+
+    <!-- =========================
+         VIDÉO 4 : CLAIRE
+         ========================= -->
 
     <div class="video-card">
 
@@ -242,10 +340,25 @@ body{
 
         </div>
 
+        <div class="download-zone">
+
+            <a
+                class="download-btn"
+                href="https://avantpost-cpu.github.io/depot-quiz/BDC/claire.mp4"
+                download="claire.mp4"
+            >
+                Télécharger la vidéo
+            </a>
+
+        </div>
+
     </div>
 
 
-    <!-- VIDÉO 5 : OSAKA -->
+
+    <!-- =========================
+         VIDÉO 5 : OSAKA
+         ========================= -->
 
     <div class="video-card">
 
@@ -268,10 +381,25 @@ body{
 
         </div>
 
+        <div class="download-zone">
+
+            <a
+                class="download-btn"
+                href="https://avantpost-cpu.github.io/depot-quiz/BDC/osaka.mp4"
+                download="osaka.mp4"
+            >
+                Télécharger la vidéo
+            </a>
+
+        </div>
+
     </div>
 
 
-    <!-- VIDÉO 6 : MARCEL -->
+
+    <!-- =========================
+         VIDÉO 6 : MARCEL
+         ========================= -->
 
     <div class="video-card">
 
@@ -294,10 +422,25 @@ body{
 
         </div>
 
+        <div class="download-zone">
+
+            <a
+                class="download-btn"
+                href="https://avantpost-cpu.github.io/depot-quiz/BDC/marcel.mp4"
+                download="marcel.mp4"
+            >
+                Télécharger la vidéo
+            </a>
+
+        </div>
+
     </div>
 
 
-    <!-- VIDÉO 7 : COUPLE -->
+
+    <!-- =========================
+         VIDÉO 7 : COUPLE
+         ========================= -->
 
     <div class="video-card">
 
@@ -320,6 +463,18 @@ body{
 
         </div>
 
+        <div class="download-zone">
+
+            <a
+                class="download-btn"
+                href="https://avantpost-cpu.github.io/depot-quiz/BDC/couple.mp4"
+                download="couple.mp4"
+            >
+                Télécharger la vidéo
+            </a>
+
+        </div>
+
     </div>
 
 
@@ -327,7 +482,12 @@ body{
 
 </main>
 
+
 <script>
+
+/* =========================
+   UNE SEULE VIDÉO À LA FOIS
+   ========================= */
 
 const videos = document.querySelectorAll("video");
 
@@ -337,7 +497,10 @@ videos.forEach((video) => {
 
         videos.forEach((otherVideo) => {
 
-            if(otherVideo !== video && !otherVideo.paused){
+            if(
+                otherVideo !== video &&
+                !otherVideo.paused
+            ){
 
                 otherVideo.pause();
 

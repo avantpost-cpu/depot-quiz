@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
 
 <meta charset="UTF-8">
@@ -12,6 +13,7 @@
 <meta name="theme-color" content="#13283b">
 
 <title>Bon anniversaire Maman</title>
+
 
 <style>
 
@@ -223,10 +225,10 @@ body{
     font-size:13px;
     font-weight:bold;
 
-    box-shadow:
-        0 3px 10px rgba(0,0,0,.2);
-
     pointer-events:none;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.20);
 }
 
 
@@ -261,8 +263,8 @@ body{
 
     display:flex;
 
-    justify-content:center;
     align-items:center;
+    justify-content:center;
 
     flex-wrap:wrap;
 
@@ -298,6 +300,14 @@ body{
 
     box-shadow:
         0 4px 10px rgba(0,0,0,.20);
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+.action-btn:active{
+    transform:scale(.96);
 }
 
 .reply-btn{
@@ -316,7 +326,7 @@ body{
 .reply-panel{
     display:none;
 
-    width:90%;
+    width:94%;
 
     margin:20px auto 0;
 
@@ -353,6 +363,7 @@ body{
         rgba(255,255,255,.78);
 
     font-size:12px;
+
     line-height:1.45;
 
     text-align:center;
@@ -360,24 +371,32 @@ body{
 
 
 /* =========================================================
-   CHOIX COURONNES
+   COURONNES
    ========================================================= */
 
 .crown-zone{
-    display:grid;
+    display:flex;
 
-    grid-template-columns:
-        repeat(4,1fr);
+    justify-content:center;
 
-    gap:6px;
+    flex-wrap:wrap;
 
-    margin-bottom:12px;
+    gap:7px;
+
+    margin-bottom:13px;
 }
 
 .crown-btn{
-    min-height:44px;
+    flex:
+        1 1
+        calc(33.333% - 7px);
 
-    padding:6px 4px;
+    min-width:88px;
+    max-width:135px;
+
+    min-height:50px;
+
+    padding:6px;
 
     border:
         1px solid
@@ -396,6 +415,14 @@ body{
     font-weight:bold;
 
     cursor:pointer;
+
+    transition:
+        background .2s ease,
+        transform .15s ease;
+}
+
+.crown-btn:active{
+    transform:scale(.96);
 }
 
 .crown-btn.active{
@@ -404,12 +431,12 @@ body{
     border-color:#e26183;
 }
 
-.crown-icon{
+.crown-btn span{
     display:block;
 
     margin-bottom:2px;
 
-    font-size:18px;
+    font-size:20px;
 }
 
 
@@ -491,7 +518,7 @@ body{
 
 
 /* =========================================================
-   COMMANDES
+   COMMANDES CAMERA
    ========================================================= */
 
 .camera-actions{
@@ -522,35 +549,39 @@ body{
     font-weight:bold;
 
     cursor:pointer;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+.camera-btn:active{
+    transform:scale(.96);
 }
 
 .camera-btn.primary{
     background:#e26183;
-
     color:#fff;
 }
 
 .camera-btn.secondary{
     background:#fff;
-
     color:#253344;
 }
 
 .camera-btn.send{
     background:#6fa773;
-
     color:#fff;
 }
 
 .camera-btn:disabled{
     opacity:.45;
-
     cursor:default;
 }
 
 
 /* =========================================================
-   ETAT
+   STATUS
    ========================================================= */
 
 .status-message{
@@ -568,6 +599,7 @@ body{
     color:#fff;
 
     font-size:12px;
+
     line-height:1.45;
 
     text-align:center;
@@ -608,7 +640,7 @@ body{
     border-radius:50%;
 
     background:
-        rgba(80,52,84,.9);
+        rgba(80,52,84,.90);
 
     color:#fff;
 
@@ -617,10 +649,9 @@ body{
     cursor:pointer;
 
     box-shadow:
-        0 5px 15px rgba(0,0,0,.3);
+        0 5px 15px rgba(0,0,0,.30);
 
     opacity:0;
-
     visibility:hidden;
 
     transform:translateY(10px);
@@ -660,10 +691,12 @@ body{
     }
 
     .reply-panel{
-        width:94%;
+        width:96%;
     }
 
     .crown-btn{
+        min-width:82px;
+
         font-size:10px;
     }
 
@@ -701,7 +734,7 @@ body{
 
 
 <!-- =====================================================
-     REPONSE TEST VIDEO 8
+     TEST REPONSE VIDEO 8
      ===================================================== -->
 
 <div
@@ -715,70 +748,62 @@ body{
 
 
     <div class="reply-info">
-        Choisis ta couronne, enregistre ton message puis partage directement ta vidéo.
+        Choisis ton filtre, enregistre ton message puis partage directement ta vidéo.
     </div>
 
 
     <div class="crown-zone">
+
 
         <button
             class="crown-btn"
             data-crown="none"
             type="button"
         >
-
-            <span class="crown-icon">
-                🙂
-            </span>
-
+            <span>🙂</span>
             Normal
-
         </button>
 
 
         <button
             class="crown-btn active"
-            data-crown="roses"
+            data-crown="crown1"
             type="button"
         >
-
-            <span class="crown-icon">
-                🌹
-            </span>
-
+            <span>🌹</span>
             Roses
-
         </button>
 
 
         <button
             class="crown-btn"
-            data-crown="neon"
+            data-crown="crown2"
             type="button"
         >
-
-            <span class="crown-icon">
-                👑
-            </span>
-
-            Néon
-
-        </button>
-
-
-        <button
-            class="crown-btn"
-            data-crown="unicorn"
-            type="button"
-        >
-
-            <span class="crown-icon">
-                🦄
-            </span>
-
+            <span>🦄</span>
             Licorne
-
         </button>
+
+
+        <button
+            class="crown-btn"
+            data-crown="crown3"
+            type="button"
+        >
+            <span>💖</span>
+            Tiare
+        </button>
+
+
+        <button
+            class="crown-btn"
+            data-crown="crown4"
+            type="button"
+        >
+            <span>👑</span>
+            Néon
+        </button>
+
 
     </div>
 
@@ -792,6 +817,7 @@ body{
 
 
     <div class="camera-frame">
+
 
         <canvas
             id="partyCanvas"
@@ -814,10 +840,12 @@ body{
             00:00
         </div>
 
+
     </div>
 
 
     <div class="camera-actions">
+
 
         <button
             class="camera-btn primary"
@@ -857,6 +885,7 @@ body{
             Envoyer ma réponse
         </button>
 
+
     </div>
 
 
@@ -864,6 +893,7 @@ body{
         class="status-message"
         id="statusMessage"
     ></div>
+
 
 </div>
 
@@ -897,7 +927,7 @@ from
 
 
 /* =========================================================
-   DONNEES
+   CONFIG
    ========================================================= */
 
 const BASE =
@@ -959,7 +989,57 @@ const cards = [
 
 
 /* =========================================================
-   CONSTRUCTION CARTES
+   COURONNES PNG
+   ========================================================= */
+
+const crownImages = {};
+
+
+function createCrownImage(
+    name
+){
+
+    const image =
+        new Image();
+
+
+    image.src =
+        BASE +
+        name +
+        ".png";
+
+
+    return image;
+
+}
+
+
+crownImages.crown1 =
+    createCrownImage(
+        "crown1"
+    );
+
+
+crownImages.crown2 =
+    createCrownImage(
+        "crown2"
+    );
+
+
+crownImages.crown3 =
+    createCrownImage(
+        "crown3"
+    );
+
+
+crownImages.crown4 =
+    createCrownImage(
+        "crown4"
+    );
+
+
+/* =========================================================
+   CARTES
    ========================================================= */
 
 const videoList =
@@ -1000,9 +1080,13 @@ cards.forEach(
                 ></video>
 
 
-                <div class="gift-cover">
+                <div
+                    class="gift-cover"
+                >
 
-                    <div class="gift-package">
+                    <div
+                        class="gift-package"
+                    >
 
                         <img
                             class="gift-image"
@@ -1013,7 +1097,9 @@ cards.forEach(
                     </div>
 
 
-                    <div class="gift-hint">
+                    <div
+                        class="gift-hint"
+                    >
                         Ouvre ton cadeau
                     </div>
 
@@ -1023,6 +1109,7 @@ cards.forEach(
 
 
             <div class="action-zone">
+
 
                 <a
                     class="action-btn"
@@ -1048,6 +1135,7 @@ cards.forEach(
                     ""
                 }
 
+
             </div>
 
         `;
@@ -1065,13 +1153,13 @@ cards.forEach(
    ELEMENTS
    ========================================================= */
 
-const mainVideos =
+const videos =
     document.querySelectorAll(
         ".main-video"
     );
 
 
-const giftCovers =
+const gifts =
     document.querySelectorAll(
         ".gift-cover"
     );
@@ -1149,15 +1237,15 @@ const recordTime =
     );
 
 
-const statusMessage =
-    document.getElementById(
-        "statusMessage"
-    );
-
-
 const crownButtons =
     document.querySelectorAll(
         ".crown-btn"
+    );
+
+
+const statusMessage =
+    document.getElementById(
+        "statusMessage"
     );
 
 
@@ -1168,7 +1256,7 @@ const backToTop =
 
 
 /* =========================================================
-   VARIABLES
+   ETAT
    ========================================================= */
 
 let cameraStream =
@@ -1192,18 +1280,14 @@ let latestLandmarks =
 
 
 let selectedCrown =
-    "roses";
+    "crown1";
 
 
 let recorder =
     null;
 
 
-let outputStream =
-    null;
-
-
-let chunks =
+let recordedChunks =
     [];
 
 
@@ -1215,10 +1299,6 @@ let objectURL =
     null;
 
 
-let animationFrame =
-    null;
-
-
 let timer =
     null;
 
@@ -1227,8 +1307,34 @@ let secondsRecorded =
     0;
 
 
+let animationFrame =
+    null;
+
+
 let lastDetection =
     0;
+
+
+/*
+   Cette variable mémorise
+   exactement la position
+   de l'image selfie dans
+   le canvas.
+
+   C'est IMPORTANT pour que
+   la couronne soit parfaitement
+   alignée sur l'image affichée.
+*/
+
+let selfieFrame = {
+
+    x:0,
+    y:0,
+
+    width:720,
+    height:1280
+
+};
 
 
 /* =========================================================
@@ -1237,20 +1343,22 @@ let lastDetection =
 
 const confetti =
     Array.from(
+
         {
             length:42
         },
+
         () => ({
 
             x:
                 Math.random()
                 *
-                720,
+                canvas.width,
 
             y:
                 Math.random()
                 *
-                1280,
+                canvas.height,
 
             speed:
                 1
@@ -1260,17 +1368,29 @@ const confetti =
                 2,
 
             size:
-                5
+                4
                 +
                 Math.random()
                 *
                 8,
 
+            rotation:
+                Math.random()
+                *
+                Math.PI,
+
+            spin:
+                .01
+                +
+                Math.random()
+                *
+                .04,
+
             color:[
-                "#ef79a6",
-                "#ffd34e",
+                "#f47ca4",
+                "#ffd851",
                 "#ffffff",
-                "#73d5dd"
+                "#7ad4dc"
             ][
                 Math.floor(
                     Math.random()
@@ -1280,14 +1400,15 @@ const confetti =
             ]
 
         })
+
     );
 
 
 /* =========================================================
-   CHARGEMENT VIDEO
+   LAZY LOAD VIDEOS
    ========================================================= */
 
-const observer =
+const videoObserver =
     new IntersectionObserver(
 
         entries => {
@@ -1315,14 +1436,16 @@ const observer =
                         video.src =
                             video.dataset.src;
 
+
                         video.load();
 
                     }
 
 
-                    observer.unobserve(
-                        video
-                    );
+                    videoObserver
+                        .unobserve(
+                            video
+                        );
 
                 }
             );
@@ -1330,17 +1453,21 @@ const observer =
         },
 
         {
-            rootMargin:"350px 0px"
+            rootMargin:
+                "350px 0px"
         }
 
     );
 
 
-mainVideos.forEach(
-    video =>
-        observer.observe(
+videos.forEach(
+    video => {
+
+        videoObserver.observe(
             video
-        )
+        );
+
+    }
 );
 
 
@@ -1348,12 +1475,21 @@ mainVideos.forEach(
    OUVERTURE CADEAUX
    ========================================================= */
 
-giftCovers.forEach(
+gifts.forEach(
     gift => {
 
         gift.addEventListener(
             "click",
             async () => {
+
+                if(
+                    gift.classList.contains(
+                        "opening"
+                    )
+                ){
+                    return;
+                }
+
 
                 const card =
                     gift.closest(
@@ -1369,10 +1505,13 @@ giftCovers.forEach(
 
                 if(
                     !video.src
+                    &&
+                    video.dataset.src
                 ){
 
                     video.src =
                         video.dataset.src;
+
 
                     video.load();
 
@@ -1383,6 +1522,11 @@ giftCovers.forEach(
                     "opening"
                 );
 
+
+                /*
+                   Répondre seulement
+                   sur la huitième vidéo
+                */
 
                 if(
                     card.dataset.index
@@ -1428,23 +1572,25 @@ giftCovers.forEach(
    UNE SEULE VIDEO
    ========================================================= */
 
-mainVideos.forEach(
+videos.forEach(
     video => {
 
         video.addEventListener(
             "play",
             () => {
 
-                mainVideos.forEach(
-                    other => {
+                videos.forEach(
+                    otherVideo => {
 
                         if(
-                            other !== video
+                            otherVideo
+                            !==
+                            video
                             &&
-                            !other.paused
+                            !otherVideo.paused
                         ){
 
-                            other.pause();
+                            otherVideo.pause();
 
                         }
 
@@ -1459,7 +1605,7 @@ mainVideos.forEach(
 
 
 /* =========================================================
-   SELECTION COURONNE
+   CHOIX COURONNE
    ========================================================= */
 
 crownButtons.forEach(
@@ -1474,19 +1620,19 @@ crownButtons.forEach(
 
 
                 crownButtons.forEach(
-                    b =>
-                        b.classList
-                            .remove(
-                                "active"
-                            )
+                    btn => {
+
+                        btn.classList.remove(
+                            "active"
+                        );
+
+                    }
                 );
 
 
-                button
-                    .classList
-                    .add(
-                        "active"
-                    );
+                button.classList.add(
+                    "active"
+                );
 
 
                 if(
@@ -1495,7 +1641,7 @@ crownButtons.forEach(
                     "none"
                 ){
 
-                    initTracking();
+                    initFaceTracking();
 
                 }
 
@@ -1532,26 +1678,38 @@ replyButton.addEventListener(
         );
 
 
+        hideStatus();
+
+
         try{
+
+            /*
+               On demande volontairement
+               une caméra relativement large.
+
+               Cela évite l'effet "visage énorme".
+            */
 
             cameraStream =
                 await navigator.mediaDevices
                     .getUserMedia({
 
                         video:{
+
                             facingMode:"user",
 
                             width:{
-                                ideal:720
+                                ideal:1280
                             },
 
                             height:{
-                                ideal:1280
+                                ideal:720
                             },
 
                             frameRate:{
                                 ideal:30
                             }
+
                         },
 
                         audio:true
@@ -1577,7 +1735,7 @@ replyButton.addEventListener(
             drawFrame();
 
 
-            initTracking();
+            initFaceTracking();
 
 
             replyPanel.scrollIntoView({
@@ -1590,6 +1748,11 @@ replyButton.addEventListener(
 
         }
         catch(error){
+
+            console.error(
+                error
+            );
+
 
             showStatus(
                 "Impossible d'accéder à la caméra ou au micro."
@@ -1605,7 +1768,7 @@ replyButton.addEventListener(
    MEDIAPIPE
    ========================================================= */
 
-async function initTracking(){
+async function initFaceTracking(){
 
     if(
         trackingReady
@@ -1655,7 +1818,13 @@ async function initTracking(){
 
                         runningMode:"VIDEO",
 
-                        numFaces:1
+                        numFaces:1,
+
+                        minFaceDetectionConfidence:.5,
+
+                        minFacePresenceConfidence:.5,
+
+                        minTrackingConfidence:.5
 
                     }
 
@@ -1677,7 +1846,7 @@ async function initTracking(){
 
 
         showStatus(
-            "Le décor fonctionne mais le suivi du visage n'a pas pu être chargé."
+            "Impossible de charger le suivi du visage."
         );
 
     }
@@ -1692,7 +1861,7 @@ async function initTracking(){
 
 
 /* =========================================================
-   DESSIN CAMERA
+   DESSIN
    ========================================================= */
 
 function drawFrame(){
@@ -1719,7 +1888,7 @@ function drawFrame(){
         2
     ){
 
-        drawCameraCover(
+        drawSelfieScene(
             W,
             H
         );
@@ -1727,24 +1896,37 @@ function drawFrame(){
     }
 
 
+    /*
+       DETECTION VISAGE
+    */
+
     if(
         trackingReady
         &&
         selectedCrown
         !==
         "none"
+        &&
+        cameraSource.readyState
+        >=
+        2
     ){
 
         const now =
             performance.now();
 
 
+        /*
+           environ 15 détections/sec :
+           plus léger pour l'iPhone.
+        */
+
         if(
             now
             -
             lastDetection
             >
-            60
+            65
         ){
 
             lastDetection =
@@ -1783,20 +1965,24 @@ function drawFrame(){
     }
 
 
+    /*
+       DECOR FESTIF
+    */
+
     if(
         selectedCrown
         !==
         "none"
     ){
 
-        drawPartyDecor();
+        drawPartyDecoration();
 
 
         if(
             latestLandmarks
         ){
 
-            drawSelectedCrown(
+            drawCrown(
                 latestLandmarks
             );
 
@@ -1814,10 +2000,10 @@ function drawFrame(){
 
 
 /* =========================================================
-   CAMERA COVER MIROIR
+   SELFIE + ARRIERE PLAN FLOU
    ========================================================= */
 
-function drawCameraCover(
+function drawSelfieScene(
     W,
     H
 ){
@@ -1830,67 +2016,139 @@ function drawCameraCover(
         cameraSource.videoHeight;
 
 
-    const vr =
-        vw / vh;
+    if(
+        !vw
+        ||
+        !vh
+    ){
+        return;
+    }
 
 
-    const cr =
-        W / H;
+    /*
+       ---------------------------------
+       1. ARRIERE-PLAN FLOU
+       ---------------------------------
+    */
+
+    drawBlurredBackground(
+        W,
+        H
+    );
 
 
-    let dw;
-    let dh;
-    let dx;
-    let dy;
+    /*
+       ---------------------------------
+       2. SELFIE PRINCIPAL
+       ---------------------------------
+
+       82 % du canvas.
+
+       On conserve toute l'image
+       de la caméra.
+
+       Donc beaucoup moins de zoom.
+    */
+
+    const availableW =
+        W
+        *
+        .82;
+
+
+    const availableH =
+        H
+        *
+        .82;
+
+
+    const videoRatio =
+        vw
+        /
+        vh;
+
+
+    const availableRatio =
+        availableW
+        /
+        availableH;
+
+
+    let drawW;
+    let drawH;
 
 
     if(
-        vr > cr
+        videoRatio
+        >
+        availableRatio
     ){
 
-        dh =
-            H;
+        drawW =
+            availableW;
 
 
-        dw =
-            H * vr;
-
-
-        dx =
-            (
-                W - dw
-            )
+        drawH =
+            drawW
             /
-            2;
-
-
-        dy =
-            0;
+            videoRatio;
 
     }
     else{
 
-        dw =
-            W;
+        drawH =
+            availableH;
 
 
-        dh =
-            W / vr;
-
-
-        dx =
-            0;
-
-
-        dy =
-            (
-                H - dh
-            )
-            /
-            2;
+        drawW =
+            drawH
+            *
+            videoRatio;
 
     }
 
+
+    const x =
+        (
+            W
+            -
+            drawW
+        )
+        /
+        2;
+
+
+    const y =
+        (
+            H
+            -
+            drawH
+        )
+        /
+        2;
+
+
+    /*
+       On sauvegarde ce cadrage.
+
+       MediaPipe devra être converti
+       exactement dans ce rectangle.
+    */
+
+    selfieFrame = {
+
+        x:x,
+        y:y,
+
+        width:drawW,
+        height:drawH
+
+    };
+
+
+    /*
+       Image miroir
+    */
 
     ctx.save();
 
@@ -1911,10 +2169,17 @@ function drawCameraCover(
 
         cameraSource,
 
-        dx,
-        dy,
-        dw,
-        dh
+        W
+        -
+        x
+        -
+        drawW,
+
+        y,
+
+        drawW,
+
+        drawH
 
     );
 
@@ -1925,10 +2190,403 @@ function drawCameraCover(
 
 
 /* =========================================================
-   DECOR
+   BACKGROUND FLOU
    ========================================================= */
 
-function drawPartyDecor(){
+function drawBlurredBackground(
+    W,
+    H
+){
+
+    const vw =
+        cameraSource.videoWidth;
+
+
+    const vh =
+        cameraSource.videoHeight;
+
+
+    const videoRatio =
+        vw
+        /
+        vh;
+
+
+    const canvasRatio =
+        W
+        /
+        H;
+
+
+    let drawW;
+    let drawH;
+
+
+    if(
+        videoRatio
+        >
+        canvasRatio
+    ){
+
+        drawH =
+            H
+            *
+            1.12;
+
+
+        drawW =
+            drawH
+            *
+            videoRatio;
+
+    }
+    else{
+
+        drawW =
+            W
+            *
+            1.12;
+
+
+        drawH =
+            drawW
+            /
+            videoRatio;
+
+    }
+
+
+    const x =
+        (
+            W
+            -
+            drawW
+        )
+        /
+        2;
+
+
+    const y =
+        (
+            H
+            -
+            drawH
+        )
+        /
+        2;
+
+
+    ctx.save();
+
+
+    ctx.filter =
+        "blur(35px) brightness(.60) saturate(.85)";
+
+
+    ctx.translate(
+        W,
+        0
+    );
+
+
+    ctx.scale(
+        -1,
+        1
+    );
+
+
+    ctx.drawImage(
+
+        cameraSource,
+
+        W
+        -
+        x
+        -
+        drawW,
+
+        y,
+
+        drawW,
+
+        drawH
+
+    );
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   TRANSFORMATION COORDONNEES MEDIAPIPE
+   ========================================================= */
+
+function landmarkToCanvas(
+    landmark
+){
+
+    /*
+       X inversé car selfie miroir.
+    */
+
+    return {
+
+        x:
+            selfieFrame.x
+            +
+            (
+                1
+                -
+                landmark.x
+            )
+            *
+            selfieFrame.width,
+
+        y:
+            selfieFrame.y
+            +
+            landmark.y
+            *
+            selfieFrame.height
+
+    };
+
+}
+
+
+/* =========================================================
+   POSITION DE LA COURONNE
+   ========================================================= */
+
+function getCrownTransform(
+    points
+){
+
+    /*
+       côtés du visage
+    */
+
+    const leftFace =
+        landmarkToCanvas(
+            points[234]
+        );
+
+
+    const rightFace =
+        landmarkToCanvas(
+            points[454]
+        );
+
+
+    /*
+       sommet du front
+    */
+
+    const forehead =
+        landmarkToCanvas(
+            points[10]
+        );
+
+
+    /*
+       yeux pour inclinaison
+    */
+
+    const leftEye =
+        landmarkToCanvas(
+            points[33]
+        );
+
+
+    const rightEye =
+        landmarkToCanvas(
+            points[263]
+        );
+
+
+    const faceWidth =
+        Math.hypot(
+
+            rightFace.x
+            -
+            leftFace.x,
+
+            rightFace.y
+            -
+            leftFace.y
+
+        );
+
+
+    const angle =
+        Math.atan2(
+
+            rightEye.y
+            -
+            leftEye.y,
+
+            rightEye.x
+            -
+            leftEye.x
+
+        );
+
+
+    /*
+       PLUS GRANDE QU'AVANT
+
+       1.60 × largeur du visage.
+    */
+
+    const width =
+        faceWidth
+        *
+        1.60;
+
+
+    /*
+       On remonte fortement
+       au-dessus du front.
+    */
+
+    const y =
+        forehead.y
+        -
+        faceWidth
+        *
+        .23;
+
+
+    return {
+
+        x:
+            forehead.x,
+
+        y:y,
+
+        width:width,
+
+        angle:angle
+
+    };
+
+}
+
+
+/* =========================================================
+   COURONNE PNG
+   ========================================================= */
+
+function drawCrown(
+    points
+){
+
+    if(
+        selectedCrown
+        ===
+        "none"
+    ){
+        return;
+    }
+
+
+    const image =
+        crownImages[
+            selectedCrown
+        ];
+
+
+    if(
+        !image
+        ||
+        !image.complete
+        ||
+        !image.naturalWidth
+    ){
+        return;
+    }
+
+
+    const p =
+        getCrownTransform(
+            points
+        );
+
+
+    const ratio =
+        image.naturalHeight
+        /
+        image.naturalWidth;
+
+
+    const width =
+        p.width;
+
+
+    const height =
+        width
+        *
+        ratio;
+
+
+    ctx.save();
+
+
+    ctx.translate(
+        p.x,
+        p.y
+    );
+
+
+    ctx.rotate(
+        p.angle
+    );
+
+
+    ctx.shadowColor =
+        "rgba(0,0,0,.28)";
+
+
+    ctx.shadowBlur =
+        14;
+
+
+    /*
+       La partie basse du PNG
+       vient se poser sur le front.
+
+       Si besoin, c'est cette valeur
+       -0.72 qui permettra ensuite
+       un réglage très fin.
+    */
+
+    ctx.drawImage(
+
+        image,
+
+        -width / 2,
+
+        -height * .72,
+
+        width,
+
+        height
+
+    );
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   DECOR FESTIF
+   ========================================================= */
+
+function drawPartyDecoration(){
 
     const W =
         canvas.width;
@@ -1938,6 +2596,10 @@ function drawPartyDecor(){
         canvas.height;
 
 
+    /*
+       CONFETTIS
+    */
+
     confetti.forEach(
         c => {
 
@@ -1945,16 +2607,40 @@ function drawPartyDecor(){
                 c.speed;
 
 
+            c.rotation +=
+                c.spin;
+
+
             if(
                 c.y
                 >
-                H
+                H + 15
             ){
 
                 c.y =
-                    -10;
+                    -20;
+
+
+                c.x =
+                    Math.random()
+                    *
+                    W;
 
             }
+
+
+            ctx.save();
+
+
+            ctx.translate(
+                c.x,
+                c.y
+            );
+
+
+            ctx.rotate(
+                c.rotation
+            );
 
 
             ctx.fillStyle =
@@ -1963,17 +2649,26 @@ function drawPartyDecor(){
 
             ctx.fillRect(
 
-                c.x,
-                c.y,
+                -c.size / 2,
+
+                -c.size,
 
                 c.size,
-                c.size * 1.7
+
+                c.size * 2
 
             );
+
+
+            ctx.restore();
 
         }
     );
 
+
+    /*
+       FONDU BAS
+    */
 
     const gradient =
         ctx.createLinearGradient(
@@ -1995,7 +2690,7 @@ function drawPartyDecor(){
 
     gradient.addColorStop(
         1,
-        "rgba(0,0,0,.42)"
+        "rgba(5,10,25,.48)"
     );
 
 
@@ -2014,12 +2709,27 @@ function drawPartyDecor(){
     );
 
 
+    /*
+       TEXTE
+    */
+
+    ctx.save();
+
+
     ctx.textAlign =
         "center";
 
 
     ctx.fillStyle =
-        "#ffffff";
+        "#fff";
+
+
+    ctx.shadowColor =
+        "rgba(0,0,0,.55)";
+
+
+    ctx.shadowBlur =
+        12;
 
 
     ctx.font =
@@ -2032,7 +2742,7 @@ function drawPartyDecor(){
 
         W / 2,
 
-        H - 105
+        H - 108
 
     );
 
@@ -2047,901 +2757,9 @@ function drawPartyDecor(){
 
         W / 2,
 
-        H - 62
+        H - 64
 
     );
-
-}
-
-
-/* =========================================================
-   POSITION COURONNE
-   ========================================================= */
-
-function getCrownTransform(
-    landmarks
-){
-
-    const W =
-        canvas.width;
-
-
-    const H =
-        canvas.height;
-
-
-    const eyeA =
-        landmarks[33];
-
-
-    const eyeB =
-        landmarks[263];
-
-
-    /*
-       point supérieur du front
-    */
-
-    const forehead =
-        landmarks[10];
-
-
-    const ax =
-        (
-            1
-            -
-            eyeA.x
-        )
-        *
-        W;
-
-
-    const ay =
-        eyeA.y
-        *
-        H;
-
-
-    const bx =
-        (
-            1
-            -
-            eyeB.x
-        )
-        *
-        W;
-
-
-    const by =
-        eyeB.y
-        *
-        H;
-
-
-    const fx =
-        (
-            1
-            -
-            forehead.x
-        )
-        *
-        W;
-
-
-    const fy =
-        forehead.y
-        *
-        H;
-
-
-    const eyeDistance =
-        Math.hypot(
-
-            bx - ax,
-
-            by - ay
-
-        );
-
-
-    const angle =
-        Math.atan2(
-
-            by - ay,
-
-            bx - ax
-
-        );
-
-
-    /*
-       IMPORTANT :
-       la couronne est remontée
-       par rapport au sommet du front
-    */
-
-    return {
-
-        x:fx,
-
-        y:
-            fy
-            -
-            eyeDistance
-            *
-            .52,
-
-        width:
-            eyeDistance
-            *
-            2.55,
-
-        angle:angle
-
-    };
-
-}
-
-
-/* =========================================================
-   DESSIN MODELE CHOISI
-   ========================================================= */
-
-function drawSelectedCrown(
-    landmarks
-){
-
-    const p =
-        getCrownTransform(
-            landmarks
-        );
-
-
-    switch(
-        selectedCrown
-    ){
-
-        case "roses":
-
-            drawRoseCrown(
-                p
-            );
-
-            break;
-
-
-        case "neon":
-
-            drawNeonCrown(
-                p
-            );
-
-            break;
-
-
-        case "unicorn":
-
-            drawUnicornCrown(
-                p
-            );
-
-            break;
-
-    }
-
-}
-
-
-/* =========================================================
-   COURONNE ROSES
-   ========================================================= */
-
-function drawRoseCrown(
-    p
-){
-
-    ctx.save();
-
-
-    ctx.translate(
-        p.x,
-        p.y
-    );
-
-
-    ctx.rotate(
-        p.angle
-    );
-
-
-    const w =
-        p.width;
-
-
-    const flowerCount =
-        7;
-
-
-    for(
-        let i = 0;
-        i < flowerCount;
-        i++
-    ){
-
-        const t =
-            i
-            /
-            (
-                flowerCount
-                -
-                1
-            );
-
-
-        const x =
-            -w * .42
-            +
-            t
-            *
-            w * .84;
-
-
-        const curve =
-            Math.pow(
-                (
-                    t - .5
-                )
-                *
-                2,
-                2
-            );
-
-
-        const y =
-            curve
-            *
-            w
-            *
-            .09;
-
-
-        const r =
-            w
-            *
-            (
-                i === 3
-                ?
-                .115
-                :
-                .09
-            );
-
-
-        drawFlower(
-            x,
-            y,
-            r,
-            i % 2
-                ?
-                "#f8b7c5"
-                :
-                "#f0678c"
-        );
-
-    }
-
-
-    /*
-       feuilles
-    */
-
-    ctx.fillStyle =
-        "#3f783e";
-
-
-    for(
-        let i = 0;
-        i < 8;
-        i++
-    ){
-
-        const x =
-            -w * .38
-            +
-            i
-            *
-            w * .11;
-
-
-        ctx.save();
-
-
-        ctx.translate(
-            x,
-            w * .07
-        );
-
-
-        ctx.rotate(
-            i % 2
-                ?
-                .5
-                :
-                -.5
-        );
-
-
-        ctx.beginPath();
-
-
-        ctx.ellipse(
-
-            0,
-            0,
-
-            w * .035,
-            w * .07,
-
-            0,
-            0,
-            Math.PI * 2
-
-        );
-
-
-        ctx.fill();
-
-
-        ctx.restore();
-
-    }
-
-
-    ctx.restore();
-
-}
-
-
-/* =========================================================
-   FLEUR
-   ========================================================= */
-
-function drawFlower(
-    x,
-    y,
-    radius,
-    color
-){
-
-    ctx.save();
-
-
-    ctx.translate(
-        x,
-        y
-    );
-
-
-    for(
-        let i = 0;
-        i < 8;
-        i++
-    ){
-
-        const a =
-            i
-            /
-            8
-            *
-            Math.PI
-            *
-            2;
-
-
-        ctx.beginPath();
-
-
-        ctx.ellipse(
-
-            Math.cos(a)
-            *
-            radius
-            *
-            .4,
-
-            Math.sin(a)
-            *
-            radius
-            *
-            .4,
-
-            radius * .42,
-            radius * .25,
-
-            a,
-            0,
-            Math.PI * 2
-
-        );
-
-
-        ctx.fillStyle =
-            color;
-
-
-        ctx.fill();
-
-    }
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-
-        0,
-        0,
-
-        radius * .32,
-
-        0,
-        Math.PI * 2
-
-    );
-
-
-    ctx.fillStyle =
-        "#ffd6a0";
-
-
-    ctx.fill();
-
-
-    ctx.restore();
-
-}
-
-
-/* =========================================================
-   COURONNE NEON
-   ========================================================= */
-
-function drawNeonCrown(
-    p
-){
-
-    ctx.save();
-
-
-    ctx.translate(
-        p.x,
-        p.y
-    );
-
-
-    ctx.rotate(
-        p.angle
-    );
-
-
-    const w =
-        p.width;
-
-
-    const h =
-        w * .48;
-
-
-    ctx.strokeStyle =
-        "#fff8a0";
-
-
-    ctx.lineWidth =
-        Math.max(
-            5,
-            w * .025
-        );
-
-
-    ctx.lineJoin =
-        "round";
-
-
-    ctx.shadowColor =
-        "#ffc400";
-
-
-    ctx.shadowBlur =
-        w * .10;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        -w / 2,
-        h * .38
-    );
-
-
-    ctx.lineTo(
-        -w * .42,
-        -h * .28
-    );
-
-
-    ctx.lineTo(
-        -w * .20,
-        h * .03
-    );
-
-
-    ctx.lineTo(
-        0,
-        -h * .53
-    );
-
-
-    ctx.lineTo(
-        w * .20,
-        h * .03
-    );
-
-
-    ctx.lineTo(
-        w * .42,
-        -h * .28
-    );
-
-
-    ctx.lineTo(
-        w / 2,
-        h * .38
-    );
-
-
-    ctx.quadraticCurveTo(
-
-        0,
-        h * .15,
-
-        -w / 2,
-        h * .38
-
-    );
-
-
-    ctx.stroke();
-
-
-    const points = [
-
-        [-w*.42,-h*.28],
-        [-w*.20,h*.03],
-        [0,-h*.53],
-        [w*.20,h*.03],
-        [w*.42,-h*.28]
-
-    ];
-
-
-    points.forEach(
-        point => {
-
-            ctx.beginPath();
-
-
-            ctx.arc(
-
-                point[0],
-                point[1],
-
-                w * .038,
-
-                0,
-                Math.PI * 2
-
-            );
-
-
-            ctx.stroke();
-
-        }
-    );
-
-
-    ctx.shadowBlur =
-        0;
-
-
-    ctx.restore();
-
-}
-
-
-/* =========================================================
-   COURONNE LICORNE
-   ========================================================= */
-
-function drawUnicornCrown(
-    p
-){
-
-    ctx.save();
-
-
-    ctx.translate(
-        p.x,
-        p.y
-    );
-
-
-    ctx.rotate(
-        p.angle
-    );
-
-
-    const w =
-        p.width;
-
-
-    /*
-       oreilles
-    */
-
-    drawUnicornEar(
-        -w * .31,
-        0,
-        -0.20,
-        w
-    );
-
-
-    drawUnicornEar(
-        w * .31,
-        0,
-        0.20,
-        w
-    );
-
-
-    /*
-       corne
-    */
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        -w * .075,
-        0
-    );
-
-
-    ctx.lineTo(
-        0,
-        -w * .55
-    );
-
-
-    ctx.lineTo(
-        w * .075,
-        0
-    );
-
-
-    ctx.closePath();
-
-
-    const horn =
-        ctx.createLinearGradient(
-
-            -w * .05,
-            0,
-
-            w * .05,
-            -w * .5
-
-        );
-
-
-    horn.addColorStop(
-        0,
-        "#db9b19"
-    );
-
-
-    horn.addColorStop(
-        .5,
-        "#fff0a7"
-    );
-
-
-    horn.addColorStop(
-        1,
-        "#d28b0c"
-    );
-
-
-    ctx.fillStyle =
-        horn;
-
-
-    ctx.fill();
-
-
-    /*
-       spirales corne
-    */
-
-    ctx.strokeStyle =
-        "rgba(130,70,0,.45)";
-
-
-    ctx.lineWidth =
-        w * .012;
-
-
-    for(
-        let i = 1;
-        i <= 4;
-        i++
-    ){
-
-        const y =
-            -w
-            *
-            .10
-            *
-            i;
-
-
-        ctx.beginPath();
-
-
-        ctx.moveTo(
-            -w * .045,
-            y
-        );
-
-
-        ctx.lineTo(
-            w * .045,
-            y - w * .035
-        );
-
-
-        ctx.stroke();
-
-    }
-
-
-    /*
-       fleurs
-    */
-
-    const flowerData = [
-
-        [-.25,"#ef76a6"],
-        [-.12,"#8c62ca"],
-        [0,"#f0649a"],
-        [.12,"#56bfcf"],
-        [.25,"#ef76a6"]
-
-    ];
-
-
-    flowerData.forEach(
-        f => {
-
-            drawFlower(
-
-                f[0]
-                *
-                w,
-
-                w * .04,
-
-                w * .075,
-
-                f[1]
-
-            );
-
-        }
-    );
-
-
-    ctx.restore();
-
-}
-
-
-/* =========================================================
-   OREILLE LICORNE
-   ========================================================= */
-
-function drawUnicornEar(
-    x,
-    y,
-    rotation,
-    w
-){
-
-    ctx.save();
-
-
-    ctx.translate(
-        x,
-        y
-    );
-
-
-    ctx.rotate(
-        rotation
-    );
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        -w * .09,
-        0
-    );
-
-
-    ctx.lineTo(
-        0,
-        -w * .30
-    );
-
-
-    ctx.lineTo(
-        w * .09,
-        0
-    );
-
-
-    ctx.closePath();
-
-
-    ctx.fillStyle =
-        "#fff5f7";
-
-
-    ctx.fill();
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        -w * .045,
-        -w * .02
-    );
-
-
-    ctx.lineTo(
-        0,
-        -w * .22
-    );
-
-
-    ctx.lineTo(
-        w * .045,
-        -w * .02
-    );
-
-
-    ctx.closePath();
-
-
-    ctx.fillStyle =
-        "#f29abb";
-
-
-    ctx.fill();
 
 
     ctx.restore();
@@ -2953,7 +2771,7 @@ function drawUnicornEar(
    MIME
    ========================================================= */
 
-function getMime(){
+function getSupportedMimeType(){
 
     const types = [
 
@@ -3001,12 +2819,22 @@ startRecord.addEventListener(
     "click",
     () => {
 
-        chunks =
+        if(
+            !cameraStream
+        ){
+            return;
+        }
+
+
+        recordedChunks =
             [];
 
 
         recordedFile =
             null;
+
+
+        hideStatus();
 
 
         const canvasStream =
@@ -3015,57 +2843,83 @@ startRecord.addEventListener(
             );
 
 
-        outputStream =
+        const outputStream =
             new MediaStream();
 
+
+        /*
+           VIDEO DU CANVAS
+        */
 
         canvasStream
             .getVideoTracks()
             .forEach(
-                track =>
-                    outputStream
-                        .addTrack(
-                            track
-                        )
+                track => {
+
+                    outputStream.addTrack(
+                        track
+                    );
+
+                }
             );
 
+
+        /*
+           AUDIO DU MICRO
+        */
 
         cameraStream
             .getAudioTracks()
             .forEach(
-                track =>
-                    outputStream
-                        .addTrack(
-                            track
-                        )
-            );
+                track => {
 
-
-        const mime =
-            getMime();
-
-
-        recorder =
-            mime
-            ?
-            new MediaRecorder(
-
-                outputStream,
-
-                {
-
-                    mimeType:mime,
-
-                    videoBitsPerSecond:
-                        2200000
+                    outputStream.addTrack(
+                        track
+                    );
 
                 }
-
-            )
-            :
-            new MediaRecorder(
-                outputStream
             );
+
+
+        const mimeType =
+            getSupportedMimeType();
+
+
+        try{
+
+            recorder =
+                mimeType
+                ?
+                new MediaRecorder(
+
+                    outputStream,
+
+                    {
+
+                        mimeType:
+                            mimeType,
+
+                        videoBitsPerSecond:
+                            2300000
+
+                    }
+
+                )
+                :
+                new MediaRecorder(
+                    outputStream
+                );
+
+        }
+        catch(error){
+
+            showStatus(
+                "Impossible d'enregistrer cette vidéo."
+            );
+
+            return;
+
+        }
 
 
         recorder.addEventListener(
@@ -3073,12 +2927,14 @@ startRecord.addEventListener(
             event => {
 
                 if(
+                    event.data
+                    &&
                     event.data.size
                     >
                     0
                 ){
 
-                    chunks.push(
+                    recordedChunks.push(
                         event.data
                     );
 
@@ -3101,7 +2957,7 @@ startRecord.addEventListener(
                 const blob =
                     new Blob(
 
-                        chunks,
+                        recordedChunks,
 
                         {
                             type:type
@@ -3110,18 +2966,22 @@ startRecord.addEventListener(
                     );
 
 
+                const extension =
+                    type.includes(
+                        "webm"
+                    )
+                    ?
+                    "webm"
+                    :
+                    "mp4";
+
+
                 recordedFile =
                     new File(
 
                         [blob],
 
-                        type.includes(
-                            "webm"
-                        )
-                        ?
-                        "ma-reponse.webm"
-                        :
-                        "ma-reponse.mp4",
+                        `ma-reponse.${extension}`,
 
                         {
                             type:type
@@ -3175,9 +3035,11 @@ startRecord.addEventListener(
                     "inline-block";
 
 
-                recordTime.classList.remove(
-                    "visible"
-                );
+                recordTime
+                    .classList
+                    .remove(
+                        "visible"
+                    );
 
             }
         );
@@ -3194,9 +3056,11 @@ startRecord.addEventListener(
             "00:00";
 
 
-        recordTime.classList.add(
-            "visible"
-        );
+        recordTime
+            .classList
+            .add(
+                "visible"
+            );
 
 
         startRecord.disabled =
@@ -3216,12 +3080,16 @@ startRecord.addEventListener(
 
                     const minutes =
                         Math.floor(
-                            secondsRecorded / 60
+                            secondsRecorded
+                            /
+                            60
                         );
 
 
                     const seconds =
-                        secondsRecorded % 60;
+                        secondsRecorded
+                        %
+                        60;
 
 
                     recordTime.textContent =
@@ -3307,6 +3175,10 @@ restartRecord.addEventListener(
     "click",
     () => {
 
+        recordedFile =
+            null;
+
+
         recordedPreview.pause();
 
 
@@ -3349,12 +3221,15 @@ restartRecord.addEventListener(
         stopRecord.disabled =
             true;
 
+
+        hideStatus();
+
     }
 );
 
 
 /* =========================================================
-   PARTAGER
+   PARTAGE
    ========================================================= */
 
 shareRecord.addEventListener(
@@ -3373,7 +3248,28 @@ shareRecord.addEventListener(
         ){
 
             showStatus(
-                "Le partage direct n'est pas disponible."
+                "Le partage direct n'est pas disponible sur ce navigateur."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            navigator.canShare
+            &&
+            !navigator.canShare({
+
+                files:[
+                    recordedFile
+                ]
+
+            })
+        ){
+
+            showStatus(
+                "Cette vidéo ne peut pas être partagée directement."
             );
 
             return;
@@ -3444,6 +3340,55 @@ function hideStatus(){
 
 
 /* =========================================================
+   PAUSE HORS ECRAN
+   ========================================================= */
+
+const pauseObserver =
+    new IntersectionObserver(
+
+        entries => {
+
+            entries.forEach(
+                entry => {
+
+                    const video =
+                        entry.target;
+
+
+                    if(
+                        !entry.isIntersecting
+                        &&
+                        !video.paused
+                    ){
+
+                        video.pause();
+
+                    }
+
+                }
+            );
+
+        },
+
+        {
+            threshold:.12
+        }
+
+    );
+
+
+videos.forEach(
+    video => {
+
+        pauseObserver.observe(
+            video
+        );
+
+    }
+);
+
+
+/* =========================================================
    RETOUR HAUT
    ========================================================= */
 
@@ -3455,9 +3400,7 @@ window.addEventListener(
 
             "visible",
 
-            window.scrollY
-            >
-            700
+            window.scrollY > 700
 
         );
 
@@ -3505,8 +3448,11 @@ window.addEventListener(
             cameraStream
                 .getTracks()
                 .forEach(
-                    track =>
-                        track.stop()
+                    track => {
+
+                        track.stop();
+
+                    }
                 );
 
         }

@@ -1,148 +1,3616 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<meta name="theme-color" content="#13283b">
+
+<title>Bon anniversaire Maman</title>
+
+
+<style>
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    min-height:100dvh;
+
+    font-family:Arial, Helvetica, sans-serif;
+
+    background:
+        #13283b
+        url("https://avantpost-cpu.github.io/depot-quiz/BDC/motif.jpg")
+        repeat;
+
+    background-size:300px;
+
+    overflow-x:hidden;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page{
+    width:100%;
+    max-width:620px;
+
+    margin:0 auto;
+
+    padding:
+        calc(20px + env(safe-area-inset-top))
+        14px
+        calc(70px + env(safe-area-inset-bottom));
+}
+
+
+/* =========================================================
+   TITRE
+   ========================================================= */
+
+.header{
+    width:100%;
+
+    text-align:center;
+
+    margin-bottom:24px;
+}
+
+.header img{
+    display:block;
+
+    width:100%;
+    max-width:420px;
+
+    height:auto;
+
+    margin:0 auto;
+}
+
+
+/* =========================================================
+   LISTE
+   ========================================================= */
+
+.video-list{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:36px;
+}
+
+
+/* =========================================================
+   CARTE
+   ========================================================= */
+
+.video-card{
+    width:100%;
+}
+
+
+/* =========================================================
+   VIDÉO + CADEAU
+   ========================================================= */
+
+.video-wrapper{
+    position:relative;
+
+    width:82%;
+
+    margin:0 auto;
+}
+
+.video-wrapper.vertical{
+    aspect-ratio:9 / 16;
+}
+
+.video-wrapper.horizontal{
+    width:88%;
+
+    aspect-ratio:16 / 9;
+}
+
+
+/* =========================================================
+   VIDÉO PRINCIPALE
+   ========================================================= */
+
+.main-video{
+    position:absolute;
+
+    inset:0;
+
+    display:block;
+
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+
+    background:#000;
+
+    border-radius:14px;
+}
+
+
+/* =========================================================
+   CADEAU
+   ========================================================= */
+
+.gift-cover{
+    position:absolute;
+
+    inset:0;
+
+    z-index:10;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    opacity:1;
+
+    transition:
+        opacity .45s ease,
+        transform .45s ease;
+}
+
+.gift-package{
+    position:relative;
+
+    width:100%;
+    height:100%;
+
+    filter:
+        drop-shadow(
+            0 14px 18px rgba(0,0,0,.42)
+        );
+
+    transition:
+        filter .45s ease,
+        transform .45s ease;
+}
+
+.gift-image{
+    display:block;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+    object-position:center;
+
+    border-radius:14px;
+}
+
+
+/* =========================================================
+   OUVRE TON CADEAU
+   ========================================================= */
+
+.gift-hint{
+    position:absolute;
+
+    left:50%;
+    bottom:18px;
+
+    z-index:20;
+
+    transform:translateX(-50%);
+
+    padding:9px 16px;
+
+    white-space:nowrap;
+
+    border-radius:30px;
+
+    background:
+        rgba(0,0,0,.58);
+
+    color:#fff;
+
+    font-size:13px;
+    font-weight:bold;
+
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.20);
+
+    pointer-events:none;
+
+    transition:
+        opacity .25s ease;
+}
+
+
+/* =========================================================
+   OUVERTURE
+   ========================================================= */
+
+.gift-cover.opening{
+    opacity:0;
+
+    transform:scale(1.035);
+
+    pointer-events:none;
+}
+
+.gift-cover.opening .gift-package{
+    filter:
+        drop-shadow(
+            0 0 0 rgba(0,0,0,0)
+        );
+}
+
+.gift-cover.opening .gift-hint{
+    opacity:0;
+}
+
+
+/* =========================================================
+   ACTIONS SOUS LES VIDÉOS
+   ========================================================= */
+
+.action-zone{
+    width:100%;
+
+    padding-top:14px;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    gap:9px;
+
+    flex-wrap:wrap;
+}
+
+.action-btn{
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    min-height:40px;
+
+    padding:9px 17px;
+
+    border:0;
+
+    border-radius:22px;
+
+    font-family:inherit;
+
+    font-size:13px;
+    font-weight:bold;
+
+    text-decoration:none;
+
+    cursor:pointer;
+
+    color:#fff;
+
+    background:#9f80a6;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,.20);
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+.action-btn:active{
+    transform:scale(.96);
+}
+
+.reply-btn{
+    background:#e26183;
+}
+
+.hidden{
+    display:none !important;
+}
+
+
+/* =========================================================
+   MODULE RÉPONSE VIDÉO
+   ========================================================= */
+
+.reply-panel{
+    display:none;
+
+    width:88%;
+
+    margin:
+        18px auto
+        0;
+
+    padding:14px;
+
+    background:
+        rgba(9,20,31,.95);
+
+    border-radius:18px;
+
+    box-shadow:
+        0 8px 22px rgba(0,0,0,.32);
+}
+
+.reply-panel.visible{
+    display:block;
+}
+
+.reply-title{
+    margin-bottom:7px;
+
+    color:#fff;
+
+    font-size:17px;
+    font-weight:bold;
+
+    text-align:center;
+}
+
+.reply-info{
+    margin-bottom:12px;
+
+    color:
+        rgba(255,255,255,.78);
+
+    font-size:12px;
+
+    line-height:1.45;
+
+    text-align:center;
+}
+
+
+/* =========================================================
+   FILTRES
+   ========================================================= */
+
+.filter-zone{
+    display:flex;
+
+    justify-content:center;
+
+    gap:8px;
+
+    margin-bottom:12px;
+}
+
+.filter-btn{
+    padding:8px 15px;
+
+    border:1px solid rgba(255,255,255,.3);
+
+    border-radius:20px;
+
+    background:
+        rgba(255,255,255,.09);
+
+    color:#fff;
+
+    font-family:inherit;
+
+    font-size:12px;
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.filter-btn.active{
+    background:#e26183;
+
+    border-color:#e26183;
+}
+
+
+/* =========================================================
+   CANVAS / CAMÉRA
+   ========================================================= */
+
+.camera-frame{
+    position:relative;
+
+    width:100%;
+
+    aspect-ratio:9 / 16;
+
+    overflow:hidden;
+
+    background:#000;
+
+    border-radius:14px;
+}
+
+#partyCanvas{
+    display:block;
+
+    width:100%;
+    height:100%;
+
+    background:#000;
+}
+
+#cameraSource{
+    display:none;
+}
+
+
+/* =========================================================
+   RELECTURE
+   ========================================================= */
+
+#recordedPreview{
+    display:none;
+
+    width:100%;
+    height:100%;
+
+    object-fit:contain;
+
+    background:#000;
+}
+
+
+/* =========================================================
+   COMPTEUR
+   ========================================================= */
+
+.record-time{
+    position:absolute;
+
+    top:10px;
+    left:50%;
+
+    z-index:10;
+
+    transform:translateX(-50%);
+
+    display:none;
+
+    padding:6px 11px;
+
+    border-radius:20px;
+
+    background:
+        rgba(0,0,0,.72);
+
+    color:#fff;
+
+    font-size:13px;
+    font-weight:bold;
+}
+
+.record-time.visible{
+    display:block;
+}
+
+
+/* =========================================================
+   CONTRÔLES
+   ========================================================= */
+
+.camera-actions{
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:8px;
+
+    margin-top:12px;
+}
+
+.camera-btn{
+    min-height:42px;
+
+    padding:9px 15px;
+
+    border:0;
+
+    border-radius:22px;
+
+    font-family:inherit;
+
+    font-size:13px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+.camera-btn:active{
+    transform:scale(.96);
+}
+
+.camera-btn.primary{
+    background:#e26183;
+    color:#fff;
+}
+
+.camera-btn.secondary{
+    background:#fff;
+    color:#253344;
+}
+
+.camera-btn.send{
+    background:#6fa773;
+    color:#fff;
+}
+
+.camera-btn:disabled{
+    opacity:.45;
+
+    cursor:default;
+}
+
+
+/* =========================================================
+   ÉTAT
+   ========================================================= */
+
+.status-message{
+    display:none;
+
+    margin-top:12px;
+
+    padding:11px;
+
+    border-radius:12px;
+
+    background:
+        rgba(255,255,255,.10);
+
+    color:#fff;
+
+    font-size:12px;
+
+    line-height:1.45;
+
+    text-align:center;
+}
+
+.status-message.visible{
+    display:block;
+}
+
+
+/* =========================================================
+   RETOUR HAUT
+   ========================================================= */
+
+.back-to-top{
+    position:fixed;
+
+    right:16px;
+
+    bottom:
+        calc(
+            18px +
+            env(safe-area-inset-bottom)
+        );
+
+    z-index:100;
+
+    width:48px;
+    height:48px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border:0;
+
+    border-radius:50%;
+
+    background:
+        rgba(80,52,84,.90);
+
+    color:#fff;
+
+    font-size:24px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.30);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transform:translateY(10px);
+
+    transition:
+        opacity .25s ease,
+        transform .25s ease,
+        visibility .25s;
+}
+
+.back-to-top.visible{
+    opacity:1;
+
+    visibility:visible;
+
+    transform:translateY(0);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:380px){
+
+    .page{
+        padding-left:10px;
+        padding-right:10px;
+    }
+
+    .video-wrapper{
+        width:80%;
+    }
+
+    .video-wrapper.horizontal{
+        width:88%;
+    }
+
+    .reply-panel{
+        width:92%;
+    }
+
+    .action-btn,
+    .camera-btn{
+        font-size:12px;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITÉ
+   ========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    html{
+        scroll-behavior:auto;
+    }
+
+    .gift-cover{
+        transition:none;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<main
+    class="page"
+    id="top"
+>
+
+
+<header class="header">
+
+    <img
+        src="https://avantpost-cpu.github.io/depot-quiz/BDC/titre.png"
+        alt="Bon anniversaire Maman"
+    >
+
+</header>
+
+
+<section
+    class="video-list"
+    id="videoList"
+></section>
+
+
+
 <!-- =====================================================
-     8 — TEST AVEC HABILLAGE GRAPHIQUE
+     MODULE TEST RÉPONSE — UNIQUEMENT VIDÉO 8
      ===================================================== -->
 
-<div class="video-card" id="graphicTestCard">
+<div
+    class="reply-panel"
+    id="replyPanel"
+>
 
-    <div class="video-wrapper vertical">
+    <div class="reply-title">
+        Ta réponse vidéo
+    </div>
+
+
+    <div class="reply-info">
+        Choisis ton filtre, enregistre ton message puis envoie-le directement.
+    </div>
+
+
+    <div class="filter-zone">
+
+        <button
+            class="filter-btn"
+            id="normalFilter"
+            type="button"
+        >
+            Normal
+        </button>
+
+
+        <button
+            class="filter-btn active"
+            id="partyFilter"
+            type="button"
+        >
+            Fête 👑
+        </button>
+
+    </div>
+
+
+    <!-- caméra brute cachée -->
+
+    <video
+        id="cameraSource"
+        autoplay
+        muted
+        playsinline
+    ></video>
+
+
+    <div class="camera-frame">
+
+        <canvas
+            id="partyCanvas"
+            width="720"
+            height="1280"
+        ></canvas>
+
 
         <video
-            class="main-video"
+            id="recordedPreview"
             controls
             playsinline
-            preload="none"
-            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/test.mp4"
         ></video>
 
-        <div class="gift-cover">
 
-            <div class="gift-package">
-
-                <img
-                    class="gift-image"
-                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack8.jpg"
-                    alt=""
-                >
-
-            </div>
-
-            <div class="gift-hint">
-                Ouvre ton cadeau
-            </div>
-
+        <div
+            class="record-time"
+            id="recordTime"
+        >
+            00:00
         </div>
 
     </div>
 
-    <div class="action-zone">
+
+    <div class="camera-actions">
 
         <button
-            class="action-btn reply-btn hidden"
-            id="graphicReplyButton"
+            class="camera-btn primary"
+            id="startRecord"
             type="button"
         >
-            Répondre en vidéo
+            ● Enregistrer
+        </button>
+
+
+        <button
+            class="camera-btn secondary"
+            id="stopRecord"
+            type="button"
+            disabled
+        >
+            Terminer
+        </button>
+
+
+        <button
+            class="camera-btn secondary"
+            id="restartRecord"
+            type="button"
+            style="display:none;"
+        >
+            Recommencer
+        </button>
+
+
+        <button
+            class="camera-btn send"
+            id="shareRecord"
+            type="button"
+            style="display:none;"
+        >
+            Envoyer ma réponse
         </button>
 
     </div>
 
 
     <div
-        class="reply-panel"
-        id="graphicReplyPanel"
-    >
-
-        <div class="reply-title">
-            Ta réponse vidéo
-        </div>
-
-        <div class="reply-info">
-            Le décor sera directement intégré dans ta vidéo.
-        </div>
-
-
-        <!-- CAMÉRA SOURCE CACHÉE -->
-
-        <video
-            id="graphicCameraSource"
-            autoplay
-            muted
-            playsinline
-            style="display:none;"
-        ></video>
-
-
-        <!-- CANVAS FINAL -->
-
-        <div class="camera-frame">
-
-            <canvas
-                id="graphicCanvas"
-                width="720"
-                height="1280"
-            ></canvas>
-
-            <video
-                id="graphicRecordedPreview"
-                controls
-                playsinline
-                style="display:none;"
-            ></video>
-
-            <div
-                class="record-time"
-                id="graphicRecordTime"
-            >
-                00:00
-            </div>
-
-        </div>
-
-
-        <div class="camera-actions">
-
-            <button
-                class="camera-btn primary"
-                id="graphicStartRecord"
-                type="button"
-            >
-                ● Enregistrer
-            </button>
-
-            <button
-                class="camera-btn secondary"
-                id="graphicStopRecord"
-                type="button"
-                disabled
-            >
-                Terminer
-            </button>
-
-            <button
-                class="camera-btn secondary"
-                id="graphicRestartRecord"
-                type="button"
-                style="display:none;"
-            >
-                Recommencer
-            </button>
-
-            <button
-                class="camera-btn send"
-                id="graphicShareRecord"
-                type="button"
-                style="display:none;"
-            >
-                Envoyer ma réponse
-            </button>
-
-        </div>
-
-        <div
-            class="status-message"
-            id="graphicStatus"
-        ></div>
-
-    </div>
+        class="status-message"
+        id="statusMessage"
+    ></div>
 
 </div>
+
+
+</main>
+
+
+
+<button
+    class="back-to-top"
+    id="backToTop"
+    aria-label="Retour en haut"
+>
+    ↑
+</button>
+
+
+
+<script type="module">
+
+/* =========================================================
+   MEDIAPIPE
+   ========================================================= */
+
+import {
+    FaceLandmarker,
+    FilesetResolver
+}
+from
+"https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/+esm";
+
+
+/* =========================================================
+   DONNÉES DES 8 VIDÉOS
+   ========================================================= */
+
+const cards = [
+
+    {
+        name:"Mamie",
+        video:"mamie.mp4",
+        pack:"pack1.jpg",
+        format:"vertical",
+        reply:false
+    },
+
+    {
+        name:"Tata",
+        video:"tata.mp4",
+        pack:"pack2.jpg",
+        format:"horizontal",
+        reply:false
+    },
+
+    {
+        name:"Raoul",
+        video:"raoul.mp4",
+        pack:"pack3.jpg",
+        format:"vertical",
+        reply:false
+    },
+
+    {
+        name:"Claire",
+        video:"claire.mp4",
+        pack:"pack4.jpg",
+        format:"vertical",
+        reply:false
+    },
+
+    {
+        name:"Osaka",
+        video:"osaka.mp4",
+        pack:"pack5.jpg",
+        format:"vertical",
+        reply:false
+    },
+
+    {
+        name:"Marcel",
+        video:"marcel.mp4",
+        pack:"pack6.jpg",
+        format:"vertical",
+        reply:false
+    },
+
+    {
+        name:"Couple",
+        video:"couple.mp4",
+        pack:"pack7.jpg",
+        format:"vertical",
+        reply:false
+    },
+
+    {
+        name:"Test",
+        video:"test.mp4",
+        pack:"pack8.jpg",
+        format:"vertical",
+        reply:true
+    }
+
+];
+
+
+const BASE =
+    "https://avantpost-cpu.github.io/depot-quiz/BDC/";
+
+
+
+/* =========================================================
+   CONSTRUCTION DES 8 CARTES
+   ========================================================= */
+
+const videoList =
+    document.getElementById(
+        "videoList"
+    );
+
+
+cards.forEach(
+    (item,index) => {
+
+        const card =
+            document.createElement(
+                "div"
+            );
+
+
+        card.className =
+            "video-card";
+
+
+        card.dataset.index =
+            index;
+
+
+        card.innerHTML = `
+
+            <div
+                class="video-wrapper ${item.format}"
+            >
+
+                <video
+                    class="main-video"
+                    controls
+                    playsinline
+                    preload="none"
+                    data-src="${BASE}${item.video}"
+                ></video>
+
+
+                <div
+                    class="gift-cover"
+                >
+
+                    <div
+                        class="gift-package"
+                    >
+
+                        <img
+                            class="gift-image"
+                            src="${BASE}${item.pack}"
+                            alt=""
+                        >
+
+                    </div>
+
+
+                    <div class="gift-hint">
+                        Ouvre ton cadeau
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="action-zone">
+
+                <a
+                    class="action-btn"
+                    href="${BASE}${item.video}"
+                    download="${item.video}"
+                >
+                    ↓ Télécharger
+                </a>
+
+
+                ${
+                    item.reply
+                    ?
+                    `
+                    <button
+                        class="action-btn reply-btn hidden"
+                        type="button"
+                    >
+                        Répondre en vidéo
+                    </button>
+                    `
+                    :
+                    ""
+                }
+
+            </div>
+
+        `;
+
+
+        videoList.appendChild(
+            card
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   ÉLÉMENTS PRINCIPAUX
+   ========================================================= */
+
+const mainVideos =
+    document.querySelectorAll(
+        ".main-video"
+    );
+
+
+const giftCovers =
+    document.querySelectorAll(
+        ".gift-cover"
+    );
+
+
+const replyButton =
+    document.querySelector(
+        ".reply-btn"
+    );
+
+
+const testCard =
+    document.querySelector(
+        '.video-card[data-index="7"]'
+    );
+
+
+const replyPanel =
+    document.getElementById(
+        "replyPanel"
+    );
+
+
+const backToTop =
+    document.getElementById(
+        "backToTop"
+    );
+
+
+
+/* =========================================================
+   CHARGEMENT DIFFÉRÉ
+   ========================================================= */
+
+const videoObserver =
+    new IntersectionObserver(
+
+        entries => {
+
+            entries.forEach(
+                entry => {
+
+                    if(
+                        !entry.isIntersecting
+                    ){
+                        return;
+                    }
+
+
+                    const video =
+                        entry.target;
+
+
+                    if(
+                        !video.src &&
+                        video.dataset.src
+                    ){
+
+                        video.src =
+                            video.dataset.src;
+
+                        video.load();
+
+                    }
+
+
+                    videoObserver
+                        .unobserve(
+                            video
+                        );
+
+                }
+            );
+
+        },
+
+        {
+            rootMargin:
+                "350px 0px"
+        }
+
+    );
+
+
+mainVideos.forEach(
+    video => {
+
+        videoObserver
+            .observe(
+                video
+            );
+
+    }
+);
+
+
+
+/* =========================================================
+   OUVERTURE DES CADEAUX
+   ========================================================= */
+
+giftCovers.forEach(
+    gift => {
+
+        gift.addEventListener(
+            "click",
+            async () => {
+
+                if(
+                    gift.classList
+                        .contains(
+                            "opening"
+                        )
+                ){
+                    return;
+                }
+
+
+                const card =
+                    gift.closest(
+                        ".video-card"
+                    );
+
+
+                const video =
+                    card.querySelector(
+                        ".main-video"
+                    );
+
+
+                if(
+                    !video.src &&
+                    video.dataset.src
+                ){
+
+                    video.src =
+                        video.dataset.src;
+
+                    video.load();
+
+                }
+
+
+                gift.classList.add(
+                    "opening"
+                );
+
+
+                /*
+                   UNIQUEMENT 8e CARTE
+                */
+
+                if(
+                    card.dataset.index
+                    ===
+                    "7"
+                ){
+
+                    replyButton
+                        .classList
+                        .remove(
+                            "hidden"
+                        );
+
+                }
+
+
+                try{
+
+                    await video.play();
+
+                }
+                catch(error){}
+
+
+                setTimeout(
+                    () => {
+
+                        gift.style.display =
+                            "none";
+
+                    },
+                    450
+                );
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   UNE SEULE VIDÉO À LA FOIS
+   ========================================================= */
+
+mainVideos.forEach(
+    video => {
+
+        video.addEventListener(
+            "play",
+            () => {
+
+                mainVideos.forEach(
+                    other => {
+
+                        if(
+                            other !== video
+                            &&
+                            !other.paused
+                        ){
+
+                            other.pause();
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   MODULE CAMERA
+   ========================================================= */
+
+const cameraSource =
+    document.getElementById(
+        "cameraSource"
+    );
+
+
+const partyCanvas =
+    document.getElementById(
+        "partyCanvas"
+    );
+
+
+const ctx =
+    partyCanvas.getContext(
+        "2d"
+    );
+
+
+const recordedPreview =
+    document.getElementById(
+        "recordedPreview"
+    );
+
+
+const startRecord =
+    document.getElementById(
+        "startRecord"
+    );
+
+
+const stopRecord =
+    document.getElementById(
+        "stopRecord"
+    );
+
+
+const restartRecord =
+    document.getElementById(
+        "restartRecord"
+    );
+
+
+const shareRecord =
+    document.getElementById(
+        "shareRecord"
+    );
+
+
+const recordTime =
+    document.getElementById(
+        "recordTime"
+    );
+
+
+const statusMessage =
+    document.getElementById(
+        "statusMessage"
+    );
+
+
+const normalFilter =
+    document.getElementById(
+        "normalFilter"
+    );
+
+
+const partyFilter =
+    document.getElementById(
+        "partyFilter"
+    );
+
+
+
+/* =========================================================
+   VARIABLES
+   ========================================================= */
+
+let cameraStream =
+    null;
+
+
+let faceLandmarker =
+    null;
+
+
+let faceTrackingReady =
+    false;
+
+
+let faceTrackingLoading =
+    false;
+
+
+let latestLandmarks =
+    null;
+
+
+let currentFilter =
+    "party";
+
+
+let recorder =
+    null;
+
+
+let outputStream =
+    null;
+
+
+let recordedChunks =
+    [];
+
+
+let recordedFile =
+    null;
+
+
+let objectURL =
+    null;
+
+
+let animationFrame =
+    null;
+
+
+let timer =
+    null;
+
+
+let secondsRecorded =
+    0;
+
+
+let lastDetection =
+    0;
+
+
+
+/* =========================================================
+   CONFETTIS
+   ========================================================= */
+
+const confetti = [];
+
+
+for(
+    let i = 0;
+    i < 55;
+    i++
+){
+
+    confetti.push({
+
+        x:
+            Math.random()
+            *
+            720,
+
+        y:
+            Math.random()
+            *
+            1280,
+
+        speed:
+            1.2
+            +
+            Math.random()
+            *
+            2.6,
+
+        size:
+            5
+            +
+            Math.random()
+            *
+            9,
+
+        rotation:
+            Math.random()
+            *
+            Math.PI,
+
+        spin:
+            .015
+            +
+            Math.random()
+            *
+            .04,
+
+        type:
+            Math.floor(
+                Math.random()
+                *
+                4
+            )
+
+    });
+
+}
+
+
+
+/* =========================================================
+   CHOIX FILTRE
+   ========================================================= */
+
+normalFilter.addEventListener(
+    "click",
+    () => {
+
+        currentFilter =
+            "normal";
+
+
+        normalFilter
+            .classList
+            .add(
+                "active"
+            );
+
+
+        partyFilter
+            .classList
+            .remove(
+                "active"
+            );
+
+    }
+);
+
+
+partyFilter.addEventListener(
+    "click",
+    () => {
+
+        currentFilter =
+            "party";
+
+
+        partyFilter
+            .classList
+            .add(
+                "active"
+            );
+
+
+        normalFilter
+            .classList
+            .remove(
+                "active"
+            );
+
+
+        initFaceTracking();
+
+    }
+);
+
+
+
+/* =========================================================
+   OUVERTURE MODULE RÉPONSE
+   ========================================================= */
+
+replyButton.addEventListener(
+    "click",
+    async () => {
+
+        const video =
+            testCard.querySelector(
+                ".main-video"
+            );
+
+
+        video.pause();
+
+
+        testCard.insertAdjacentElement(
+            "afterend",
+            replyPanel
+        );
+
+
+        replyPanel
+            .classList
+            .add(
+                "visible"
+            );
+
+
+        statusMessage
+            .classList
+            .remove(
+                "visible"
+            );
+
+
+        try{
+
+            cameraStream =
+                await navigator
+                    .mediaDevices
+                    .getUserMedia({
+
+                        video:{
+
+                            facingMode:
+                                "user",
+
+                            width:{
+                                ideal:720
+                            },
+
+                            height:{
+                                ideal:1280
+                            },
+
+                            frameRate:{
+                                ideal:30
+                            }
+
+                        },
+
+                        audio:true
+
+                    });
+
+
+            cameraSource.srcObject =
+                cameraStream;
+
+
+            await cameraSource.play();
+
+
+            recordedPreview.style.display =
+                "none";
+
+
+            partyCanvas.style.display =
+                "block";
+
+
+            startDrawing();
+
+
+            /*
+               Chargement du suivi
+               pendant que la caméra
+               est déjà visible.
+            */
+
+            initFaceTracking();
+
+
+            replyPanel.scrollIntoView({
+
+                behavior:"smooth",
+
+                block:"center"
+
+            });
+
+        }
+        catch(error){
+
+            showStatus(
+                "Impossible d'accéder à la caméra ou au micro."
+            );
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   CHARGEMENT MEDIAPIPE
+   ========================================================= */
+
+async function initFaceTracking(){
+
+    if(
+        faceTrackingReady
+        ||
+        faceTrackingLoading
+    ){
+        return;
+    }
+
+
+    faceTrackingLoading =
+        true;
+
+
+    showStatus(
+        "Chargement du filtre Fête…"
+    );
+
+
+    try{
+
+        const vision =
+            await FilesetResolver
+                .forVisionTasks(
+
+                    "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/wasm"
+
+                );
+
+
+        /*
+           Essai GPU
+        */
+
+        try{
+
+            faceLandmarker =
+                await FaceLandmarker
+                    .createFromOptions(
+
+                        vision,
+
+                        {
+
+                            baseOptions:{
+
+                                modelAssetPath:
+                                    "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+
+                                delegate:
+                                    "GPU"
+
+                            },
+
+                            runningMode:
+                                "VIDEO",
+
+                            numFaces:
+                                1,
+
+                            minFaceDetectionConfidence:
+                                .5,
+
+                            minFacePresenceConfidence:
+                                .5,
+
+                            minTrackingConfidence:
+                                .5
+
+                        }
+
+                    );
+
+        }
+        catch(error){
+
+            /*
+               Repli CPU
+            */
+
+            faceLandmarker =
+                await FaceLandmarker
+                    .createFromOptions(
+
+                        vision,
+
+                        {
+
+                            baseOptions:{
+
+                                modelAssetPath:
+                                    "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+
+                                delegate:
+                                    "CPU"
+
+                            },
+
+                            runningMode:
+                                "VIDEO",
+
+                            numFaces:
+                                1
+
+                        }
+
+                    );
+
+        }
+
+
+        faceTrackingReady =
+            true;
+
+
+        hideStatus();
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        showStatus(
+            "Le décor fonctionne, mais le suivi de la couronne n'a pas pu être chargé."
+        );
+
+    }
+    finally{
+
+        faceTrackingLoading =
+            false;
+
+    }
+
+}
+
+
+
+/* =========================================================
+   DESSIN CAMERA
+   ========================================================= */
+
+function startDrawing(){
+
+    cancelAnimationFrame(
+        animationFrame
+    );
+
+
+    drawFrame();
+
+}
+
+
+
+function drawFrame(){
+
+    const W =
+        partyCanvas.width;
+
+
+    const H =
+        partyCanvas.height;
+
+
+    ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    /* =====================================================
+       CAMERA EN MODE COVER
+       ===================================================== */
+
+    if(
+        cameraSource.readyState
+        >=
+        2
+    ){
+
+        const videoW =
+            cameraSource.videoWidth
+            ||
+            720;
+
+
+        const videoH =
+            cameraSource.videoHeight
+            ||
+            1280;
+
+
+        const videoRatio =
+            videoW
+            /
+            videoH;
+
+
+        const canvasRatio =
+            W
+            /
+            H;
+
+
+        let dw;
+        let dh;
+        let dx;
+        let dy;
+
+
+        if(
+            videoRatio
+            >
+            canvasRatio
+        ){
+
+            dh =
+                H;
+
+
+            dw =
+                H
+                *
+                videoRatio;
+
+
+            dx =
+                (
+                    W
+                    -
+                    dw
+                )
+                /
+                2;
+
+
+            dy =
+                0;
+
+        }
+        else{
+
+            dw =
+                W;
+
+
+            dh =
+                W
+                /
+                videoRatio;
+
+
+            dx =
+                0;
+
+
+            dy =
+                (
+                    H
+                    -
+                    dh
+                )
+                /
+                2;
+
+        }
+
+
+        /*
+           miroir selfie
+        */
+
+        ctx.save();
+
+
+        ctx.translate(
+            W,
+            0
+        );
+
+
+        ctx.scale(
+            -1,
+            1
+        );
+
+
+        ctx.drawImage(
+
+            cameraSource,
+
+            dx,
+            dy,
+            dw,
+            dh
+
+        );
+
+
+        ctx.restore();
+
+    }
+
+
+    /* =====================================================
+       SUIVI VISAGE
+       ===================================================== */
+
+    if(
+        currentFilter
+        ===
+        "party"
+        &&
+        faceTrackingReady
+        &&
+        cameraSource.readyState
+        >=
+        2
+    ){
+
+        const now =
+            performance.now();
+
+
+        /*
+           On ne fait pas l'inférence
+           à chaque frame afin de
+           soulager l'iPhone.
+        */
+
+        if(
+            now
+            -
+            lastDetection
+            >
+            65
+        ){
+
+            lastDetection =
+                now;
+
+
+            try{
+
+                const result =
+                    faceLandmarker
+                        .detectForVideo(
+
+                            cameraSource,
+
+                            now
+
+                        );
+
+
+                if(
+                    result.faceLandmarks
+                    &&
+                    result.faceLandmarks.length
+                ){
+
+                    latestLandmarks =
+                        result
+                            .faceLandmarks[0];
+
+                }
+
+            }
+            catch(error){
+
+                console.warn(
+                    error
+                );
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       FILTRE FÊTE
+       ===================================================== */
+
+    if(
+        currentFilter
+        ===
+        "party"
+    ){
+
+        drawPartyDecoration();
+
+
+        if(
+            latestLandmarks
+        ){
+
+            drawTrackedCrown(
+                latestLandmarks
+            );
+
+        }
+        else{
+
+            drawFallbackCrown();
+
+        }
+
+    }
+
+
+    animationFrame =
+        requestAnimationFrame(
+            drawFrame
+        );
+
+}
+
+
+
+/* =========================================================
+   DECOR DE FÊTE
+   ========================================================= */
+
+function drawPartyDecoration(){
+
+    const W =
+        partyCanvas.width;
+
+
+    const H =
+        partyCanvas.height;
+
+
+    /*
+       léger voile bas
+    */
+
+    const gradient =
+        ctx.createLinearGradient(
+
+            0,
+            H * .65,
+
+            0,
+            H
+
+        );
+
+
+    gradient.addColorStop(
+        0,
+        "rgba(0,0,0,0)"
+    );
+
+
+    gradient.addColorStop(
+        1,
+        "rgba(15,10,30,.47)"
+    );
+
+
+    ctx.fillStyle =
+        gradient;
+
+
+    ctx.fillRect(
+        0,
+        H * .60,
+        W,
+        H * .40
+    );
+
+
+    /*
+       confettis
+    */
+
+    confetti.forEach(
+        c => {
+
+            c.y +=
+                c.speed;
+
+
+            c.rotation +=
+                c.spin;
+
+
+            if(
+                c.y
+                >
+                H + 20
+            ){
+
+                c.y =
+                    -20;
+
+
+                c.x =
+                    Math.random()
+                    *
+                    W;
+
+            }
+
+
+            ctx.save();
+
+
+            ctx.translate(
+                c.x,
+                c.y
+            );
+
+
+            ctx.rotate(
+                c.rotation
+            );
+
+
+            const colors = [
+
+                "#ffcf4a",
+                "#ef79a6",
+                "#ffffff",
+                "#8fd5dc"
+
+            ];
+
+
+            ctx.fillStyle =
+                colors[
+                    c.type
+                ];
+
+
+            if(
+                c.type
+                %
+                2
+                ===
+                0
+            ){
+
+                ctx.fillRect(
+                    -c.size / 2,
+                    -c.size,
+                    c.size,
+                    c.size * 2
+                );
+
+            }
+            else{
+
+                ctx.beginPath();
+
+
+                ctx.arc(
+                    0,
+                    0,
+                    c.size / 2,
+                    0,
+                    Math.PI * 2
+                );
+
+
+                ctx.fill();
+
+            }
+
+
+            ctx.restore();
+
+        }
+    );
+
+
+    /*
+       coins décoratifs
+    */
+
+    drawSparkle(
+        64,
+        95,
+        20
+    );
+
+
+    drawSparkle(
+        W - 65,
+        130,
+        14
+    );
+
+
+    drawSparkle(
+        85,
+        H - 170,
+        13
+    );
+
+
+    drawSparkle(
+        W - 75,
+        H - 215,
+        20
+    );
+
+
+    /*
+       texte
+    */
+
+    ctx.textAlign =
+        "center";
+
+
+    ctx.fillStyle =
+        "#ffffff";
+
+
+    ctx.shadowColor =
+        "rgba(0,0,0,.55)";
+
+
+    ctx.shadowBlur =
+        12;
+
+
+    ctx.font =
+        "bold 65px Arial";
+
+
+    ctx.fillText(
+        "MERCI ❤️",
+        W / 2,
+        H - 112
+    );
+
+
+    ctx.font =
+        "30px Arial";
+
+
+    ctx.fillText(
+        "pour ton message",
+        W / 2,
+        H - 65
+    );
+
+
+    ctx.shadowBlur =
+        0;
+
+}
+
+
+
+/* =========================================================
+   ÉTOILE
+   ========================================================= */
+
+function drawSparkle(
+    x,
+    y,
+    r
+){
+
+    ctx.save();
+
+
+    ctx.translate(
+        x,
+        y
+    );
+
+
+    ctx.fillStyle =
+        "#ffffff";
+
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        0,
+        -r
+    );
+
+
+    ctx.lineTo(
+        r * .22,
+        -r * .22
+    );
+
+
+    ctx.lineTo(
+        r,
+        0
+    );
+
+
+    ctx.lineTo(
+        r * .22,
+        r * .22
+    );
+
+
+    ctx.lineTo(
+        0,
+        r
+    );
+
+
+    ctx.lineTo(
+        -r * .22,
+        r * .22
+    );
+
+
+    ctx.lineTo(
+        -r,
+        0
+    );
+
+
+    ctx.lineTo(
+        -r * .22,
+        -r * .22
+    );
+
+
+    ctx.closePath();
+
+
+    ctx.fill();
+
+
+    ctx.restore();
+
+}
+
+
+
+/* =========================================================
+   COURONNE QUI SUIT LE VISAGE
+   ========================================================= */
+
+function drawTrackedCrown(
+    landmarks
+){
+
+    /*
+       33  : coin œil
+       263 : coin autre œil
+
+       Les coordonnées X sont
+       inversées car l'image
+       caméra est affichée
+       en miroir.
+    */
+
+    const W =
+        partyCanvas.width;
+
+
+    const H =
+        partyCanvas.height;
+
+
+    const leftEye =
+        landmarks[33];
+
+
+    const rightEye =
+        landmarks[263];
+
+
+    if(
+        !leftEye
+        ||
+        !rightEye
+    ){
+        return;
+    }
+
+
+    const lx =
+        (
+            1
+            -
+            leftEye.x
+        )
+        *
+        W;
+
+
+    const ly =
+        leftEye.y
+        *
+        H;
+
+
+    const rx =
+        (
+            1
+            -
+            rightEye.x
+        )
+        *
+        W;
+
+
+    const ry =
+        rightEye.y
+        *
+        H;
+
+
+    const eyeDistance =
+        Math.hypot(
+
+            rx - lx,
+
+            ry - ly
+
+        );
+
+
+    const centerX =
+        (
+            lx + rx
+        )
+        /
+        2;
+
+
+    const centerY =
+        (
+            ly + ry
+        )
+        /
+        2
+        -
+        eyeDistance
+        *
+        1.18;
+
+
+    const crownWidth =
+        eyeDistance
+        *
+        2.25;
+
+
+    const crownHeight =
+        crownWidth
+        *
+        .48;
+
+
+    const angle =
+        Math.atan2(
+
+            ry - ly,
+
+            rx - lx
+
+        );
+
+
+    drawCrown(
+
+        centerX,
+        centerY,
+
+        crownWidth,
+        crownHeight,
+
+        angle
+
+    );
+
+}
+
+
+
+/* =========================================================
+   COURONNE DE SECOURS
+   ========================================================= */
+
+function drawFallbackCrown(){
+
+    drawCrown(
+
+        partyCanvas.width / 2,
+
+        225,
+
+        255,
+
+        115,
+
+        0
+
+    );
+
+}
+
+
+
+/* =========================================================
+   DESSIN COURONNE
+   ========================================================= */
+
+function drawCrown(
+    x,
+    y,
+    width,
+    height,
+    angle
+){
+
+    ctx.save();
+
+
+    ctx.translate(
+        x,
+        y
+    );
+
+
+    ctx.rotate(
+        angle
+    );
+
+
+    ctx.shadowColor =
+        "rgba(0,0,0,.40)";
+
+
+    ctx.shadowBlur =
+        18;
+
+
+    /*
+       forme principale
+    */
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        -width / 2,
+        height / 2
+    );
+
+
+    ctx.lineTo(
+        -width * .43,
+        -height * .25
+    );
+
+
+    ctx.lineTo(
+        -width * .19,
+        height * .03
+    );
+
+
+    ctx.lineTo(
+        0,
+        -height / 2
+    );
+
+
+    ctx.lineTo(
+        width * .19,
+        height * .03
+    );
+
+
+    ctx.lineTo(
+        width * .43,
+        -height * .25
+    );
+
+
+    ctx.lineTo(
+        width / 2,
+        height / 2
+    );
+
+
+    ctx.closePath();
+
+
+    const gold =
+        ctx.createLinearGradient(
+
+            0,
+            -height / 2,
+
+            0,
+            height / 2
+
+        );
+
+
+    gold.addColorStop(
+        0,
+        "#fff1a8"
+    );
+
+
+    gold.addColorStop(
+        .45,
+        "#ffd54c"
+    );
+
+
+    gold.addColorStop(
+        1,
+        "#e5a51c"
+    );
+
+
+    ctx.fillStyle =
+        gold;
+
+
+    ctx.fill();
+
+
+    ctx.lineWidth =
+        Math.max(
+            3,
+            width * .018
+        );
+
+
+    ctx.strokeStyle =
+        "#fff3b2";
+
+
+    ctx.stroke();
+
+
+    /*
+       bande basse
+    */
+
+    ctx.fillStyle =
+        "#e8ac27";
+
+
+    ctx.fillRect(
+
+        -width / 2,
+
+        height * .31,
+
+        width,
+
+        height * .20
+
+    );
+
+
+    /*
+       pierres
+    */
+
+    const jewels = [
+
+        {
+            x:-width*.28,
+            color:"#ef6696"
+        },
+
+        {
+            x:0,
+            color:"#83d4e7"
+        },
+
+        {
+            x:width*.28,
+            color:"#ef6696"
+        }
+
+    ];
+
+
+    jewels.forEach(
+        jewel => {
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+
+                jewel.x,
+
+                height * .40,
+
+                width * .035,
+
+                0,
+
+                Math.PI * 2
+
+            );
+
+
+            ctx.fillStyle =
+                jewel.color;
+
+
+            ctx.fill();
+
+        }
+    );
+
+
+    ctx.shadowBlur =
+        0;
+
+
+    ctx.restore();
+
+}
+
+
+
+/* =========================================================
+   FORMAT ENREGISTREMENT
+   ========================================================= */
+
+function getSupportedMimeType(){
+
+    const types = [
+
+        "video/mp4",
+
+        "video/webm;codecs=vp9,opus",
+
+        "video/webm;codecs=vp8,opus",
+
+        "video/webm"
+
+    ];
+
+
+    for(
+        const type
+        of
+        types
+    ){
+
+        if(
+            MediaRecorder
+                .isTypeSupported(
+                    type
+                )
+        ){
+
+            return type;
+
+        }
+
+    }
+
+
+    return "";
+
+}
+
+
+
+/* =========================================================
+   ENREGISTRER LE CANVAS
+   ========================================================= */
+
+startRecord.addEventListener(
+    "click",
+    () => {
+
+        if(
+            !cameraStream
+        ){
+            return;
+        }
+
+
+        recordedChunks =
+            [];
+
+
+        recordedFile =
+            null;
+
+
+        hideStatus();
+
+
+        const canvasStream =
+            partyCanvas
+                .captureStream(
+                    30
+                );
+
+
+        outputStream =
+            new MediaStream();
+
+
+        canvasStream
+            .getVideoTracks()
+            .forEach(
+                track => {
+
+                    outputStream
+                        .addTrack(
+                            track
+                        );
+
+                }
+            );
+
+
+        cameraStream
+            .getAudioTracks()
+            .forEach(
+                track => {
+
+                    outputStream
+                        .addTrack(
+                            track
+                        );
+
+                }
+            );
+
+
+        const mimeType =
+            getSupportedMimeType();
+
+
+        try{
+
+            if(
+                mimeType
+            ){
+
+                recorder =
+                    new MediaRecorder(
+
+                        outputStream,
+
+                        {
+
+                            mimeType:
+                                mimeType,
+
+                            videoBitsPerSecond:
+                                2200000
+
+                        }
+
+                    );
+
+            }
+            else{
+
+                recorder =
+                    new MediaRecorder(
+                        outputStream
+                    );
+
+            }
+
+        }
+        catch(error){
+
+            showStatus(
+                "Impossible d'enregistrer la vidéo sur ce navigateur."
+            );
+
+            return;
+
+        }
+
+
+        recorder.addEventListener(
+            "dataavailable",
+            event => {
+
+                if(
+                    event.data
+                    &&
+                    event.data.size
+                    >
+                    0
+                ){
+
+                    recordedChunks
+                        .push(
+                            event.data
+                        );
+
+                }
+
+            }
+        );
+
+
+        recorder.addEventListener(
+            "stop",
+            () => {
+
+                const type =
+                    recorder.mimeType
+                    ||
+                    "video/mp4";
+
+
+                const blob =
+                    new Blob(
+
+                        recordedChunks,
+
+                        {
+                            type:type
+                        }
+
+                    );
+
+
+                const extension =
+                    type.includes(
+                        "webm"
+                    )
+                    ?
+                    "webm"
+                    :
+                    "mp4";
+
+
+                recordedFile =
+                    new File(
+
+                        [blob],
+
+                        `ma-reponse.${extension}`,
+
+                        {
+                            type:type
+                        }
+
+                    );
+
+
+                if(
+                    objectURL
+                ){
+
+                    URL.revokeObjectURL(
+                        objectURL
+                    );
+
+                }
+
+
+                objectURL =
+                    URL.createObjectURL(
+                        blob
+                    );
+
+
+                recordedPreview.src =
+                    objectURL;
+
+
+                partyCanvas.style.display =
+                    "none";
+
+
+                recordedPreview.style.display =
+                    "block";
+
+
+                startRecord.style.display =
+                    "none";
+
+
+                stopRecord.style.display =
+                    "none";
+
+
+                restartRecord.style.display =
+                    "inline-block";
+
+
+                shareRecord.style.display =
+                    "inline-block";
+
+
+                recordTime
+                    .classList
+                    .remove(
+                        "visible"
+                    );
+
+            }
+        );
+
+
+        recorder.start();
+
+
+        secondsRecorded =
+            0;
+
+
+        recordTime.textContent =
+            "00:00";
+
+
+        recordTime
+            .classList
+            .add(
+                "visible"
+            );
+
+
+        startRecord.disabled =
+            true;
+
+
+        stopRecord.disabled =
+            false;
+
+
+        timer =
+            setInterval(
+                () => {
+
+                    secondsRecorded++;
+
+
+                    const minutes =
+                        Math.floor(
+                            secondsRecorded
+                            /
+                            60
+                        );
+
+
+                    const seconds =
+                        secondsRecorded
+                        %
+                        60;
+
+
+                    recordTime.textContent =
+                        String(minutes)
+                            .padStart(
+                                2,
+                                "0"
+                            )
+                        +
+                        ":"
+                        +
+                        String(seconds)
+                            .padStart(
+                                2,
+                                "0"
+                            );
+
+
+                    if(
+                        secondsRecorded
+                        >=
+                        60
+                    ){
+
+                        stopRecording();
+
+                    }
+
+                },
+                1000
+            );
+
+    }
+);
+
+
+
+/* =========================================================
+   STOP
+   ========================================================= */
+
+function stopRecording(){
+
+    if(
+        !recorder
+        ||
+        recorder.state
+        ===
+        "inactive"
+    ){
+        return;
+    }
+
+
+    recorder.stop();
+
+
+    clearInterval(
+        timer
+    );
+
+
+    startRecord.disabled =
+        false;
+
+
+    stopRecord.disabled =
+        true;
+
+}
+
+
+stopRecord.addEventListener(
+    "click",
+    stopRecording
+);
+
+
+
+/* =========================================================
+   RECOMMENCER
+   ========================================================= */
+
+restartRecord.addEventListener(
+    "click",
+    () => {
+
+        recordedFile =
+            null;
+
+
+        recordedPreview.pause();
+
+
+        recordedPreview
+            .removeAttribute(
+                "src"
+            );
+
+
+        recordedPreview.load();
+
+
+        recordedPreview.style.display =
+            "none";
+
+
+        partyCanvas.style.display =
+            "block";
+
+
+        restartRecord.style.display =
+            "none";
+
+
+        shareRecord.style.display =
+            "none";
+
+
+        startRecord.style.display =
+            "inline-block";
+
+
+        startRecord.disabled =
+            false;
+
+
+        stopRecord.style.display =
+            "inline-block";
+
+
+        stopRecord.disabled =
+            true;
+
+
+        hideStatus();
+
+    }
+);
+
+
+
+/* =========================================================
+   PARTAGE NATIF IPHONE
+   ========================================================= */
+
+shareRecord.addEventListener(
+    "click",
+    async () => {
+
+        if(
+            !recordedFile
+        ){
+            return;
+        }
+
+
+        if(
+            !navigator.share
+        ){
+
+            showStatus(
+                "Le partage direct n'est pas disponible sur ce navigateur."
+            );
+
+            return;
+
+        }
+
+
+        if(
+            navigator.canShare
+            &&
+            !navigator.canShare({
+
+                files:[
+                    recordedFile
+                ]
+
+            })
+        ){
+
+            showStatus(
+                "Cette vidéo ne peut pas être partagée directement."
+            );
+
+            return;
+
+        }
+
+
+        try{
+
+            await navigator.share({
+
+                files:[
+                    recordedFile
+                ],
+
+                title:
+                    "Ma réponse vidéo"
+
+            });
+
+
+            showStatus(
+                "La réponse a été partagée."
+            );
+
+        }
+        catch(error){
+
+            if(
+                error.name
+                !==
+                "AbortError"
+            ){
+
+                showStatus(
+                    "Impossible de partager la vidéo."
+                );
+
+            }
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   STATUT
+   ========================================================= */
+
+function showStatus(
+    message
+){
+
+    statusMessage.textContent =
+        message;
+
+
+    statusMessage
+        .classList
+        .add(
+            "visible"
+        );
+
+}
+
+
+function hideStatus(){
+
+    statusMessage
+        .classList
+        .remove(
+            "visible"
+        );
+
+}
+
+
+
+/* =========================================================
+   PAUSE HORS ÉCRAN
+   ========================================================= */
+
+const pauseObserver =
+    new IntersectionObserver(
+
+        entries => {
+
+            entries.forEach(
+                entry => {
+
+                    const video =
+                        entry.target;
+
+
+                    if(
+                        !entry.isIntersecting
+                        &&
+                        !video.paused
+                    ){
+
+                        video.pause();
+
+                    }
+
+                }
+            );
+
+        },
+
+        {
+            threshold:.12
+        }
+
+    );
+
+
+mainVideos.forEach(
+    video => {
+
+        pauseObserver
+            .observe(
+                video
+            );
+
+    }
+);
+
+
+
+/* =========================================================
+   RETOUR HAUT
+   ========================================================= */
+
+window.addEventListener(
+    "scroll",
+    () => {
+
+        if(
+            window.scrollY
+            >
+            700
+        ){
+
+            backToTop
+                .classList
+                .add(
+                    "visible"
+                );
+
+        }
+        else{
+
+            backToTop
+                .classList
+                .remove(
+                    "visible"
+                );
+
+        }
+
+    },
+
+    {
+        passive:true
+    }
+);
+
+
+backToTop.addEventListener(
+    "click",
+    () => {
+
+        window.scrollTo({
+
+            top:0,
+
+            behavior:"smooth"
+
+        });
+
+    }
+);
+
+
+
+/* =========================================================
+   NETTOYAGE
+   ========================================================= */
+
+window.addEventListener(
+    "beforeunload",
+    () => {
+
+        cancelAnimationFrame(
+            animationFrame
+        );
+
+
+        if(
+            cameraStream
+        ){
+
+            cameraStream
+                .getTracks()
+                .forEach(
+                    track =>
+                        track.stop()
+                );
+
+        }
+
+
+        if(
+            objectURL
+        ){
+
+            URL.revokeObjectURL(
+                objectURL
+            );
+
+        }
+
+
+        if(
+            faceLandmarker
+        ){
+
+            try{
+
+                faceLandmarker.close();
+
+            }
+            catch(error){}
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>

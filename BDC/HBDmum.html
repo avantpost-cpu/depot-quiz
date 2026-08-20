@@ -78,6 +78,7 @@ body{
 
     width:100%;
     max-width:420px;
+
     height:auto;
 
     margin:0 auto;
@@ -100,13 +101,14 @@ body{
 
 
 /* =========================================================
-   WRAPPER VIDÉO / CADEAU
+   WRAPPER
    ========================================================= */
 
 .video-wrapper{
     position:relative;
 
     width:82%;
+
     margin:0 auto;
 }
 
@@ -116,6 +118,7 @@ body{
 
 .video-wrapper.horizontal{
     width:88%;
+
     aspect-ratio:16 / 9;
 }
 
@@ -124,7 +127,7 @@ body{
    VIDÉOS
    ========================================================= */
 
-.video-wrapper > video.main-video{
+.main-video{
     position:absolute;
     inset:0;
 
@@ -152,10 +155,13 @@ body{
     z-index:10;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
     cursor:pointer;
+
+    opacity:1;
 
     transition:
         opacity .45s ease,
@@ -175,8 +181,7 @@ body{
 
     transition:
         filter .45s ease,
-        transform .45s ease,
-        opacity .45s ease;
+        transform .45s ease;
 }
 
 .gift-image{
@@ -193,7 +198,7 @@ body{
 
 
 /* =========================================================
-   INDICATION CADEAU
+   INDICATION
    ========================================================= */
 
 .gift-hint{
@@ -208,11 +213,12 @@ body{
 
     padding:9px 16px;
 
-    white-space:nowrap;
-
     border-radius:30px;
 
-    background:rgba(0,0,0,.58);
+    white-space:nowrap;
+
+    background:
+        rgba(0,0,0,.58);
 
     color:#fff;
 
@@ -231,17 +237,17 @@ body{
 
 
 /* =========================================================
-   OUVERTURE CADEAU
+   OUVERTURE
    ========================================================= */
 
 .gift-cover.opening{
-    pointer-events:none;
-
     opacity:0;
 
     transform:
-        scale(1.04)
+        scale(1.035)
         rotate(-1deg);
+
+    pointer-events:none;
 }
 
 .gift-cover.opening .gift-package{
@@ -249,8 +255,6 @@ body{
         drop-shadow(
             0 0 0 rgba(0,0,0,0)
         );
-
-    transform:scale(1.03);
 }
 
 .gift-cover.opening .gift-hint{
@@ -259,7 +263,7 @@ body{
 
 
 /* =========================================================
-   BOUTONS SOUS VIDÉOS
+   ZONE ACTIONS
    ========================================================= */
 
 .action-zone{
@@ -306,6 +310,10 @@ body{
 
     box-shadow:
         0 4px 10px rgba(0,0,0,.20);
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
 }
 
 .action-btn:active{
@@ -316,16 +324,13 @@ body{
     background:#e26183;
 }
 
-
-/* masqué jusqu'à ouverture du cadeau */
-
-.reply-btn.hidden{
-    display:none;
+.hidden{
+    display:none !important;
 }
 
 
 /* =========================================================
-   MODULE RÉPONSE VIDÉO
+   MODULE RÉPONSE
    ========================================================= */
 
 .reply-panel{
@@ -340,12 +345,12 @@ body{
     padding:14px;
 
     background:
-        rgba(10,20,32,.88);
+        rgba(9,20,31,.94);
 
     border-radius:18px;
 
     box-shadow:
-        0 8px 22px rgba(0,0,0,.28);
+        0 8px 22px rgba(0,0,0,.30);
 }
 
 .reply-panel.visible{
@@ -353,11 +358,11 @@ body{
 }
 
 .reply-title{
-    margin-bottom:10px;
+    margin-bottom:8px;
 
     color:#fff;
 
-    font-size:15px;
+    font-size:16px;
     font-weight:bold;
 
     text-align:center;
@@ -366,11 +371,12 @@ body{
 .reply-info{
     margin-bottom:12px;
 
-    color:rgba(255,255,255,.78);
+    color:
+        rgba(255,255,255,.78);
 
     font-size:12px;
 
-    line-height:1.4;
+    line-height:1.45;
 
     text-align:center;
 }
@@ -405,13 +411,15 @@ body{
     background:#000;
 }
 
+
+/* aperçu caméra miroir */
+
 #cameraPreview{
     transform:scaleX(-1);
 }
 
 
-/* lecture de l'enregistrement :
-   pas d'effet miroir */
+/* vidéo enregistrée normale */
 
 #recordedPreview{
     transform:none;
@@ -428,25 +436,23 @@ body{
     top:10px;
     left:50%;
 
-    transform:translateX(-50%);
-
     z-index:5;
 
-    padding:
-        6px
-        11px;
+    transform:translateX(-50%);
+
+    display:none;
+
+    padding:6px 11px;
 
     border-radius:20px;
 
     background:
-        rgba(0,0,0,.65);
+        rgba(0,0,0,.70);
 
     color:#fff;
 
     font-size:13px;
     font-weight:bold;
-
-    display:none;
 }
 
 .record-time.visible{
@@ -474,9 +480,7 @@ body{
 .camera-btn{
     min-height:42px;
 
-    padding:
-        9px
-        15px;
+    padding:9px 15px;
 
     border:0;
 
@@ -488,6 +492,14 @@ body{
     font-weight:bold;
 
     cursor:pointer;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+.camera-btn:active{
+    transform:scale(.96);
 }
 
 .camera-btn.primary{
@@ -505,38 +517,82 @@ body{
     color:#fff;
 }
 
+.camera-btn.message{
+    background:#3c83d5;
+    color:#fff;
+}
+
 .camera-btn:disabled{
-    opacity:.4;
+    opacity:.45;
+
     cursor:default;
 }
 
 
 /* =========================================================
-   MESSAGE FINAL TEST
+   ÉTAT UPLOAD
    ========================================================= */
 
-.send-message{
+.upload-status{
     display:none;
 
     margin-top:12px;
 
-    padding:11px;
+    padding:11px 12px;
 
     border-radius:12px;
 
     background:
-        rgba(111,167,115,.20);
+        rgba(255,255,255,.10);
 
     color:#fff;
 
     font-size:13px;
-    line-height:1.4;
+
+    line-height:1.45;
 
     text-align:center;
 }
 
-.send-message.visible{
+.upload-status.visible{
     display:block;
+}
+
+.upload-status.success{
+    background:
+        rgba(111,167,115,.24);
+}
+
+.upload-status.error{
+    background:
+        rgba(190,70,70,.28);
+}
+
+
+/* =========================================================
+   LIEN DE LA VIDÉO
+   ========================================================= */
+
+.video-link-zone{
+    display:none;
+
+    margin-top:10px;
+
+    text-align:center;
+}
+
+.video-link-zone.visible{
+    display:block;
+}
+
+.video-link{
+    color:#fff;
+
+    font-size:11px;
+
+    word-break:break-all;
+
+    opacity:.75;
 }
 
 
@@ -566,6 +622,7 @@ body{
     justify-content:center;
 
     border:0;
+
     border-radius:50%;
 
     background:
@@ -581,9 +638,11 @@ body{
         0 5px 15px rgba(0,0,0,.30);
 
     opacity:0;
+
     visibility:hidden;
 
-    transform:translateY(10px);
+    transform:
+        translateY(10px);
 
     transition:
         opacity .25s ease,
@@ -593,6 +652,7 @@ body{
 
 .back-to-top.visible{
     opacity:1;
+
     visibility:visible;
 
     transform:translateY(0);
@@ -619,12 +679,29 @@ body{
     }
 
     .reply-panel{
-        width:88%;
+        width:90%;
     }
 
     .action-btn,
     .camera-btn{
         font-size:12px;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITÉ
+   ========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    html{
+        scroll-behavior:auto;
+    }
+
+    .gift-cover{
+        transition:none;
     }
 
 }
@@ -635,6 +712,7 @@ body{
 
 
 <body>
+
 
 <main
     class="page"
@@ -655,6 +733,7 @@ body{
 <section class="video-list">
 
 
+
 <!-- =====================================================
      1 — MAMIE
      ===================================================== -->
@@ -670,6 +749,7 @@ body{
             preload="none"
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/mamie.mp4"
         ></video>
+
 
         <div class="gift-cover">
 
@@ -691,6 +771,7 @@ body{
 
     </div>
 
+
     <div class="action-zone">
 
         <a
@@ -708,7 +789,7 @@ body{
 
 
 <!-- =====================================================
-     2 — TATA — HORIZONTAL
+     2 — TATA
      ===================================================== -->
 
 <div class="video-card">
@@ -722,6 +803,7 @@ body{
             preload="none"
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/tata.mp4"
         ></video>
+
 
         <div class="gift-cover">
 
@@ -742,6 +824,7 @@ body{
         </div>
 
     </div>
+
 
     <div class="action-zone">
 
@@ -775,6 +858,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/raoul.mp4"
         ></video>
 
+
         <div class="gift-cover">
 
             <div class="gift-package">
@@ -794,6 +878,7 @@ body{
         </div>
 
     </div>
+
 
     <div class="action-zone">
 
@@ -827,6 +912,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/claire.mp4"
         ></video>
 
+
         <div class="gift-cover">
 
             <div class="gift-package">
@@ -846,6 +932,7 @@ body{
         </div>
 
     </div>
+
 
     <div class="action-zone">
 
@@ -879,6 +966,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/osaka.mp4"
         ></video>
 
+
         <div class="gift-cover">
 
             <div class="gift-package">
@@ -898,6 +986,7 @@ body{
         </div>
 
     </div>
+
 
     <div class="action-zone">
 
@@ -931,6 +1020,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/marcel.mp4"
         ></video>
 
+
         <div class="gift-cover">
 
             <div class="gift-package">
@@ -950,6 +1040,7 @@ body{
         </div>
 
     </div>
+
 
     <div class="action-zone">
 
@@ -983,6 +1074,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/couple.mp4"
         ></video>
 
+
         <div class="gift-cover">
 
             <div class="gift-package">
@@ -1003,6 +1095,7 @@ body{
 
     </div>
 
+
     <div class="action-zone">
 
         <a
@@ -1020,8 +1113,7 @@ body{
 
 
 <!-- =====================================================
-     8 — TEST RÉPONSE VIDÉO
-     pack8.jpg + test.mp4
+     8 — TEST RÉPONSE
      ===================================================== -->
 
 <div
@@ -1038,6 +1130,7 @@ body{
             preload="none"
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/test.mp4"
         ></video>
+
 
         <div
             class="gift-cover"
@@ -1073,6 +1166,7 @@ body{
             ↓ Télécharger
         </a>
 
+
         <button
             class="action-btn reply-btn hidden"
             id="replyButton"
@@ -1086,7 +1180,7 @@ body{
 
 
     <!-- =================================================
-         MODULE CAMÉRA
+         MODULE RÉPONSE
          ================================================= -->
 
     <div
@@ -1098,9 +1192,10 @@ body{
             Ta réponse vidéo
         </div>
 
+
         <div class="reply-info">
-            Regarde la caméra et enregistre un petit message.
-            Pour ce test, rien n'est encore envoyé sur Internet.
+            Enregistre ton message puis vérifie-le avant de l’envoyer.
+            Durée maximale : 60 secondes.
         </div>
 
 
@@ -1113,12 +1208,14 @@ body{
                 playsinline
             ></video>
 
+
             <video
                 id="recordedPreview"
                 controls
                 playsinline
                 style="display:none;"
             ></video>
+
 
             <div
                 class="record-time"
@@ -1140,6 +1237,7 @@ body{
                 ● Enregistrer
             </button>
 
+
             <button
                 class="camera-btn secondary"
                 id="stopRecord"
@@ -1148,6 +1246,7 @@ body{
             >
                 Terminer
             </button>
+
 
             <button
                 class="camera-btn secondary"
@@ -1158,23 +1257,49 @@ body{
                 Recommencer
             </button>
 
+
             <button
                 class="camera-btn send"
                 id="sendRecord"
                 type="button"
                 style="display:none;"
             >
-                Envoyer
+                Envoyer la vidéo
+            </button>
+
+
+            <button
+                class="camera-btn message"
+                id="messageRecord"
+                type="button"
+                style="display:none;"
+            >
+                Envoyer par Messages
             </button>
 
         </div>
 
 
         <div
-            class="send-message"
-            id="sendMessage"
+            class="upload-status"
+            id="uploadStatus"
+        ></div>
+
+
+        <div
+            class="video-link-zone"
+            id="videoLinkZone"
         >
-            Test réussi : la vidéo est prête à être envoyée.
+
+            <div class="reply-info">
+                Lien temporaire de la réponse :
+            </div>
+
+            <div
+                class="video-link"
+                id="videoLink"
+            ></div>
+
         </div>
 
     </div>
@@ -1201,21 +1326,39 @@ body{
 <script>
 
 /* =========================================================
-   VIDÉOS PRINCIPALES
+   CONFIGURATION TEST
    ========================================================= */
 
-const mainVideos =
-    document.querySelectorAll(".main-video");
+const UPLOAD_ENDPOINT =
+    "https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/dynamic-function";
 
-const giftCovers =
-    document.querySelectorAll(".gift-cover");
 
-const backToTop =
-    document.getElementById("backToTop");
+const TEST_PHONE =
+    "+33628323223";
 
 
 /* =========================================================
-   CHARGEMENT DIFFÉRÉ
+   ÉLÉMENTS
+   ========================================================= */
+
+const mainVideos =
+    document.querySelectorAll(
+        ".main-video"
+    );
+
+const giftCovers =
+    document.querySelectorAll(
+        ".gift-cover"
+    );
+
+const backToTop =
+    document.getElementById(
+        "backToTop"
+    );
+
+
+/* =========================================================
+   CHARGEMENT INTELLIGENT
    ========================================================= */
 
 const videoObserver =
@@ -1223,14 +1366,88 @@ const videoObserver =
 
         entries => {
 
-            entries.forEach(entry => {
+            entries.forEach(
+                entry => {
 
-                if(!entry.isIntersecting){
+                    if(
+                        !entry.isIntersecting
+                    ){
+                        return;
+                    }
+
+
+                    const video =
+                        entry.target;
+
+
+                    if(
+                        !video.src &&
+                        video.dataset.src
+                    ){
+
+                        video.src =
+                            video.dataset.src;
+
+                        video.load();
+
+                    }
+
+
+                    videoObserver
+                        .unobserve(video);
+
+                }
+            );
+
+        },
+
+        {
+            rootMargin:"350px 0px"
+        }
+
+    );
+
+
+mainVideos.forEach(
+    video => {
+
+        videoObserver.observe(video);
+
+    }
+);
+
+
+/* =========================================================
+   OUVERTURE DES CADEAUX
+   ========================================================= */
+
+giftCovers.forEach(
+    gift => {
+
+        gift.addEventListener(
+            "click",
+            async () => {
+
+                if(
+                    gift.classList.contains(
+                        "opening"
+                    )
+                ){
                     return;
                 }
 
+
+                const wrapper =
+                    gift.closest(
+                        ".video-wrapper"
+                    );
+
+
                 const video =
-                    entry.target;
+                    wrapper.querySelector(
+                        ".main-video"
+                    );
+
 
                 if(
                     !video.src &&
@@ -1244,150 +1461,94 @@ const videoObserver =
 
                 }
 
-                videoObserver.unobserve(
-                    video
-                );
 
-            });
-
-        },
-
-        {
-            rootMargin:"350px 0px"
-        }
-
-    );
-
-
-mainVideos.forEach(video => {
-
-    videoObserver.observe(video);
-
-});
-
-
-/* =========================================================
-   OUVERTURE CADEAU
-   ========================================================= */
-
-giftCovers.forEach(gift => {
-
-    gift.addEventListener(
-        "click",
-        async () => {
-
-            if(
-                gift.classList.contains(
+                gift.classList.add(
                     "opening"
-                )
-            ){
-                return;
-            }
-
-            const wrapper =
-                gift.closest(
-                    ".video-wrapper"
-                );
-
-            const video =
-                wrapper.querySelector(
-                    ".main-video"
                 );
 
 
-            if(
-                !video.src &&
-                video.dataset.src
-            ){
+                /*
+                   8e case :
+                   affichage de Répondre
+                */
 
-                video.src =
-                    video.dataset.src;
+                if(
+                    gift.dataset.reply
+                    ===
+                    "true"
+                ){
 
-                video.load();
-
-            }
-
-
-            gift.classList.add(
-                "opening"
-            );
-
-
-            /*
-               Si cette case possède
-               la fonction réponse,
-               on affiche le bouton.
-            */
-
-            if(
-                gift.dataset.reply === "true"
-            ){
-
-                const replyButton =
-                    document.getElementById(
-                        "replyButton"
-                    );
-
-                replyButton.classList.remove(
-                    "hidden"
-                );
-
-            }
-
-
-            try{
-
-                await video.play();
-
-            }
-            catch(error){}
-
-
-            setTimeout(
-                () => {
-
-                    gift.style.display =
-                        "none";
-
-                },
-                450
-            );
-
-        }
-    );
-
-});
-
-
-/* =========================================================
-   UNE SEULE VIDÉO PRINCIPALE À LA FOIS
-   ========================================================= */
-
-mainVideos.forEach(video => {
-
-    video.addEventListener(
-        "play",
-        () => {
-
-            mainVideos.forEach(
-                otherVideo => {
-
-                    if(
-                        otherVideo !== video &&
-                        !otherVideo.paused
-                    ){
-
-                        otherVideo.pause();
-
-                    }
+                    document
+                        .getElementById(
+                            "replyButton"
+                        )
+                        .classList
+                        .remove(
+                            "hidden"
+                        );
 
                 }
-            );
 
-        }
-    );
 
-});
+                try{
+
+                    await video.play();
+
+                }
+                catch(error){}
+
+
+                setTimeout(
+                    () => {
+
+                        gift.style.display =
+                            "none";
+
+                    },
+                    450
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   UNE SEULE VIDÉO À LA FOIS
+   ========================================================= */
+
+mainVideos.forEach(
+    video => {
+
+        video.addEventListener(
+            "play",
+            () => {
+
+                mainVideos.forEach(
+                    otherVideo => {
+
+                        if(
+                            otherVideo
+                                !==
+                                video
+                            &&
+                            !otherVideo.paused
+                        ){
+
+                            otherVideo.pause();
+
+                        }
+
+                    }
+                );
+
+            }
+        );
+
+    }
+);
 
 
 /* =========================================================
@@ -1434,14 +1595,29 @@ const sendRecord =
         "sendRecord"
     );
 
+const messageRecord =
+    document.getElementById(
+        "messageRecord"
+    );
+
 const recordTime =
     document.getElementById(
         "recordTime"
     );
 
-const sendMessage =
+const uploadStatus =
     document.getElementById(
-        "sendMessage"
+        "uploadStatus"
+    );
+
+const videoLinkZone =
+    document.getElementById(
+        "videoLinkZone"
+    );
+
+const videoLink =
+    document.getElementById(
+        "videoLink"
     );
 
 
@@ -1453,13 +1629,17 @@ let recordedChunks = [];
 
 let recordedBlob = null;
 
+let recordedObjectURL = null;
+
+let uploadedVideoURL = null;
+
 let recordTimer = null;
 
 let secondsRecorded = 0;
 
 
 /* =========================================================
-   OUVRIR LA CAMÉRA
+   OUVRIR CAMÉRA
    ========================================================= */
 
 replyButton.addEventListener(
@@ -1470,36 +1650,41 @@ replyButton.addEventListener(
             "visible"
         );
 
-        sendMessage.classList.remove(
-            "visible"
-        );
 
+        uploadStatus.className =
+            "upload-status";
 
-        /*
-           Stoppe la vidéo test
-        */
+        uploadStatus.textContent =
+            "";
+
 
         const testVideo =
             document.querySelector(
                 "#testCard .main-video"
             );
 
+
         testVideo.pause();
 
-
-        /*
-           La caméra demande ici
-           l'autorisation sur l'iPhone.
-        */
 
         try{
 
             cameraStream =
-                await navigator.mediaDevices
+                await navigator
+                    .mediaDevices
                     .getUserMedia({
 
                         video:{
-                            facingMode:"user"
+                            facingMode:
+                                "user",
+
+                            width:{
+                                ideal:720
+                            },
+
+                            height:{
+                                ideal:1280
+                            }
                         },
 
                         audio:true
@@ -1513,6 +1698,7 @@ replyButton.addEventListener(
 
             cameraPreview.style.display =
                 "block";
+
 
             recordedPreview.style.display =
                 "none";
@@ -1540,7 +1726,7 @@ replyButton.addEventListener(
 
 
 /* =========================================================
-   TYPE DE VIDÉO COMPATIBLE
+   FORMAT COMPATIBLE
    ========================================================= */
 
 function getSupportedMimeType(){
@@ -1558,7 +1744,9 @@ function getSupportedMimeType(){
     ];
 
 
-    for(const type of types){
+    for(
+        const type of types
+    ){
 
         if(
             MediaRecorder
@@ -1571,13 +1759,14 @@ function getSupportedMimeType(){
 
     }
 
+
     return "";
 
 }
 
 
 /* =========================================================
-   DÉMARRER ENREGISTREMENT
+   DÉMARRER
    ========================================================= */
 
 startRecord.addEventListener(
@@ -1593,6 +1782,24 @@ startRecord.addEventListener(
 
         recordedBlob = null;
 
+        uploadedVideoURL = null;
+
+
+        uploadStatus.className =
+            "upload-status";
+
+        uploadStatus.textContent =
+            "";
+
+
+        videoLinkZone.classList.remove(
+            "visible"
+        );
+
+
+        messageRecord.style.display =
+            "none";
+
 
         const mimeType =
             getSupportedMimeType();
@@ -1606,7 +1813,11 @@ startRecord.addEventListener(
                     new MediaRecorder(
                         cameraStream,
                         {
-                            mimeType:mimeType
+                            mimeType:
+                                mimeType,
+
+                            videoBitsPerSecond:
+                                1800000
                         }
                     );
 
@@ -1632,83 +1843,120 @@ startRecord.addEventListener(
         }
 
 
-        mediaRecorder.addEventListener(
-            "dataavailable",
-            event => {
+        mediaRecorder
+            .addEventListener(
+                "dataavailable",
+                event => {
 
-                if(
-                    event.data &&
-                    event.data.size > 0
-                ){
+                    if(
+                        event.data &&
+                        event.data.size > 0
+                    ){
 
-                    recordedChunks.push(
-                        event.data
-                    );
+                        recordedChunks
+                            .push(
+                                event.data
+                            );
+
+                    }
 
                 }
-
-            }
-        );
+            );
 
 
-        mediaRecorder.addEventListener(
-            "stop",
-            () => {
+        mediaRecorder
+            .addEventListener(
+                "stop",
+                () => {
 
-                const type =
-                    mediaRecorder.mimeType ||
-                    "video/mp4";
-
-
-                recordedBlob =
-                    new Blob(
-                        recordedChunks,
-                        {
-                            type:type
-                        }
-                    );
+                    const type =
+                        mediaRecorder.mimeType
+                        ||
+                        "video/mp4";
 
 
-                const videoURL =
-                    URL.createObjectURL(
-                        recordedBlob
-                    );
+                    recordedBlob =
+                        new Blob(
+                            recordedChunks,
+                            {
+                                type:type
+                            }
+                        );
 
 
-                cameraPreview.style.display =
-                    "none";
+                    if(
+                        recordedObjectURL
+                    ){
+
+                        URL.revokeObjectURL(
+                            recordedObjectURL
+                        );
+
+                    }
 
 
-                recordedPreview.style.display =
-                    "block";
+                    recordedObjectURL =
+                        URL.createObjectURL(
+                            recordedBlob
+                        );
 
 
-                recordedPreview.src =
-                    videoURL;
+                    cameraPreview
+                        .style
+                        .display =
+                        "none";
 
 
-                restartRecord.style.display =
-                    "inline-block";
+                    recordedPreview
+                        .style
+                        .display =
+                        "block";
 
 
-                sendRecord.style.display =
-                    "inline-block";
+                    recordedPreview.src =
+                        recordedObjectURL;
 
 
-                startRecord.style.display =
-                    "none";
+                    restartRecord
+                        .style
+                        .display =
+                        "inline-block";
 
 
-                stopRecord.style.display =
-                    "none";
+                    sendRecord
+                        .style
+                        .display =
+                        "inline-block";
 
 
-                recordTime.classList.remove(
-                    "visible"
-                );
+                    sendRecord.disabled =
+                        false;
 
-            }
-        );
+
+                    sendRecord.textContent =
+                        "Envoyer la vidéo";
+
+
+                    startRecord
+                        .style
+                        .display =
+                        "none";
+
+
+                    stopRecord
+                        .style
+                        .display =
+                        "none";
+
+
+                    recordTime
+                        .classList
+                        .remove(
+                            "visible"
+                        );
+
+                }
+            );
 
 
         mediaRecorder.start();
@@ -1721,9 +1969,11 @@ startRecord.addEventListener(
             "00:00";
 
 
-        recordTime.classList.add(
-            "visible"
-        );
+        recordTime
+            .classList
+            .add(
+                "visible"
+            );
 
 
         startRecord.disabled =
@@ -1738,10 +1988,6 @@ startRecord.addEventListener(
             "inline-block";
 
 
-        /*
-           compteur
-        */
-
         recordTimer =
             setInterval(
                 () => {
@@ -1751,31 +1997,38 @@ startRecord.addEventListener(
 
                     const minutes =
                         Math.floor(
-                            secondsRecorded / 60
+                            secondsRecorded
+                            /
+                            60
                         );
 
 
                     const seconds =
-                        secondsRecorded % 60;
+                        secondsRecorded
+                        %
+                        60;
 
 
                     recordTime.textContent =
                         String(minutes)
-                            .padStart(2,"0")
+                            .padStart(
+                                2,
+                                "0"
+                            )
                         +
                         ":"
                         +
                         String(seconds)
-                            .padStart(2,"0");
+                            .padStart(
+                                2,
+                                "0"
+                            );
 
-
-                    /*
-                       limite test :
-                       60 secondes
-                    */
 
                     if(
-                        secondsRecorded >= 60
+                        secondsRecorded
+                        >=
+                        60
                     ){
 
                         stopRecording();
@@ -1791,15 +2044,17 @@ startRecord.addEventListener(
 
 
 /* =========================================================
-   ARRÊT
+   ARRÊTER
    ========================================================= */
 
 function stopRecording(){
 
     if(
-        !mediaRecorder ||
-        mediaRecorder.state ===
-            "inactive"
+        !mediaRecorder
+        ||
+        mediaRecorder.state
+        ===
+        "inactive"
     ){
         return;
     }
@@ -1841,33 +2096,54 @@ restartRecord.addEventListener(
 
         recordedChunks = [];
 
+        uploadedVideoURL = null;
+
 
         recordedPreview.pause();
 
-        recordedPreview.removeAttribute(
-            "src"
-        );
+
+        recordedPreview
+            .removeAttribute(
+                "src"
+            );
+
 
         recordedPreview.load();
 
 
-        recordedPreview.style.display =
+        recordedPreview
+            .style
+            .display =
             "none";
 
 
-        cameraPreview.style.display =
+        cameraPreview
+            .style
+            .display =
             "block";
 
 
-        restartRecord.style.display =
+        restartRecord
+            .style
+            .display =
             "none";
 
 
-        sendRecord.style.display =
+        sendRecord
+            .style
+            .display =
             "none";
 
 
-        startRecord.style.display =
+        messageRecord
+            .style
+            .display =
+            "none";
+
+
+        startRecord
+            .style
+            .display =
             "inline-block";
 
 
@@ -1875,7 +2151,9 @@ restartRecord.addEventListener(
             false;
 
 
-        stopRecord.style.display =
+        stopRecord
+            .style
+            .display =
             "inline-block";
 
 
@@ -1883,40 +2161,35 @@ restartRecord.addEventListener(
             true;
 
 
-        sendMessage.classList.remove(
-            "visible"
-        );
+        uploadStatus.className =
+            "upload-status";
+
+
+        uploadStatus.textContent =
+            "";
+
+
+        videoLinkZone
+            .classList
+            .remove(
+                "visible"
+            );
 
     }
 );
 
 
 /* =========================================================
-   ENVOYER — MODE TEST
+   UPLOAD SUPABASE
    ========================================================= */
 
 sendRecord.addEventListener(
     "click",
-    () => {
+    async () => {
 
         if(!recordedBlob){
             return;
         }
-
-
-        /*
-           Pour l'instant :
-           aucun upload.
-
-           À la prochaine étape,
-           recordedBlob sera envoyé
-           à Supabase Storage.
-        */
-
-
-        sendMessage.classList.add(
-            "visible"
-        );
 
 
         sendRecord.disabled =
@@ -1924,14 +2197,254 @@ sendRecord.addEventListener(
 
 
         sendRecord.textContent =
-            "Vidéo prête ✓";
+            "Envoi…";
+
+
+        uploadStatus.className =
+            "upload-status visible";
+
+
+        uploadStatus.textContent =
+            "Envoi de ta vidéo…";
+
+
+        const formData =
+            new FormData();
+
+
+        /*
+           Le nom "video" doit correspondre
+           à celui attendu par l'Edge Function.
+        */
+
+        const extension =
+            recordedBlob.type
+                .includes("webm")
+                ?
+                "webm"
+                :
+                "mp4";
+
+
+        const file =
+            new File(
+                [recordedBlob],
+                `reponse-test.${extension}`,
+                {
+                    type:
+                        recordedBlob.type
+                        ||
+                        "video/mp4"
+                }
+            );
+
+
+        formData.append(
+            "video",
+            file
+        );
+
+
+        try{
+
+            const response =
+                await fetch(
+                    UPLOAD_ENDPOINT,
+                    {
+                        method:"POST",
+
+                        body:formData
+                    }
+                );
+
+
+            /*
+               On lit d'abord le texte :
+               ainsi on peut afficher
+               une erreur même si Supabase
+               ne renvoie pas du JSON.
+            */
+
+            const rawText =
+                await response.text();
+
+
+            let result;
+
+
+            try{
+
+                result =
+                    JSON.parse(
+                        rawText
+                    );
+
+            }
+            catch{
+
+                throw new Error(
+                    rawText
+                    ||
+                    "Réponse invalide du serveur"
+                );
+
+            }
+
+
+            if(
+                !response.ok
+                ||
+                !result.success
+            ){
+
+                throw new Error(
+                    result.error
+                    ||
+                    "Échec de l'envoi"
+                );
+
+            }
+
+
+            uploadedVideoURL =
+                result.url;
+
+
+            uploadStatus.className =
+                "upload-status visible success";
+
+
+            uploadStatus.textContent =
+                "Ta vidéo a bien été envoyée ✓";
+
+
+            sendRecord.textContent =
+                "Vidéo envoyée ✓";
+
+
+            videoLink.textContent =
+                uploadedVideoURL;
+
+
+            videoLinkZone
+                .classList
+                .add(
+                    "visible"
+                );
+
+
+            /*
+               Le bouton Messages
+               apparaît seulement
+               APRÈS un upload réussi.
+            */
+
+            messageRecord.style.display =
+                "inline-block";
+
+
+            /*
+               Plus besoin de la caméra.
+               On coupe micro + caméra.
+            */
+
+            if(cameraStream){
+
+                cameraStream
+                    .getTracks()
+                    .forEach(
+                        track =>
+                            track.stop()
+                    );
+
+
+                cameraStream =
+                    null;
+
+            }
+
+        }
+        catch(error){
+
+            console.error(
+                error
+            );
+
+
+            uploadStatus.className =
+                "upload-status visible error";
+
+
+            uploadStatus.textContent =
+                "Erreur lors de l'envoi : "
+                +
+                (
+                    error instanceof Error
+                    ?
+                    error.message
+                    :
+                    "erreur inconnue"
+                );
+
+
+            sendRecord.disabled =
+                false;
+
+
+            sendRecord.textContent =
+                "Réessayer l'envoi";
+
+        }
 
     }
 );
 
 
 /* =========================================================
-   PAUSE HORS ÉCRAN
+   OUVRIR MESSAGES
+   ========================================================= */
+
+messageRecord.addEventListener(
+    "click",
+    () => {
+
+        if(!uploadedVideoURL){
+            return;
+        }
+
+
+        const message =
+            "Voici ma réponse vidéo ❤️ "
+            +
+            uploadedVideoURL;
+
+
+        /*
+           Test iPhone / Messages.
+           Le numéro est déjà renseigné.
+        */
+
+        const smsURL =
+            "sms:"
+            +
+            TEST_PHONE
+            +
+            "&body="
+            +
+            encodeURIComponent(
+                message
+            );
+
+
+        window.location.href =
+            smsURL;
+
+    }
+);
+
+
+/* =========================================================
+   PAUSE VIDÉOS HORS ÉCRAN
    ========================================================= */
 
 const pauseObserver =
@@ -1945,8 +2458,10 @@ const pauseObserver =
                     const video =
                         entry.target;
 
+
                     if(
-                        !entry.isIntersecting &&
+                        !entry.isIntersecting
+                        &&
                         !video.paused
                     ){
 
@@ -1966,11 +2481,13 @@ const pauseObserver =
     );
 
 
-mainVideos.forEach(video => {
+mainVideos.forEach(
+    video => {
 
-    pauseObserver.observe(video);
+        pauseObserver.observe(video);
 
-});
+    }
+);
 
 
 /* =========================================================
@@ -1985,16 +2502,20 @@ window.addEventListener(
             window.scrollY > 700
         ){
 
-            backToTop.classList.add(
-                "visible"
-            );
+            backToTop
+                .classList
+                .add(
+                    "visible"
+                );
 
         }
         else{
 
-            backToTop.classList.remove(
-                "visible"
-            );
+            backToTop
+                .classList
+                .remove(
+                    "visible"
+                );
 
         }
 
@@ -2003,7 +2524,6 @@ window.addEventListener(
     {
         passive:true
     }
-
 );
 
 
@@ -2024,7 +2544,7 @@ backToTop.addEventListener(
 
 
 /* =========================================================
-   COUPE LA CAMÉRA SI ON QUITTE LA PAGE
+   NETTOYAGE CAMÉRA
    ========================================================= */
 
 window.addEventListener(
@@ -2039,6 +2559,15 @@ window.addEventListener(
                     track =>
                         track.stop()
                 );
+
+        }
+
+
+        if(recordedObjectURL){
+
+            URL.revokeObjectURL(
+                recordedObjectURL
+            );
 
         }
 

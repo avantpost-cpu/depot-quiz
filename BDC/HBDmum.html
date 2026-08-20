@@ -71,9 +71,7 @@ body{
 
 .header{
     width:100%;
-
     text-align:center;
-
     margin-bottom:24px;
 }
 
@@ -994,7 +992,7 @@ const cards = [
 
 
 /* =========================================================
-   MOTIF DU CADRE
+   MOTIF
    ========================================================= */
 
 const motifImage =
@@ -1333,11 +1331,6 @@ let lastDetection =
     0;
 
 
-/*
-   Rectangle exact du selfie
-   dans le canvas.
-*/
-
 let selfieFrame = {
 
     x:0,
@@ -1350,14 +1343,14 @@ let selfieFrame = {
 
 
 /* =========================================================
-   CONFETTIS
+   ETOILES FEERIQUES
    ========================================================= */
 
-const confetti =
+const fairyStars =
     Array.from(
 
         {
-            length:42
+            length:36
         },
 
         () => ({
@@ -1372,44 +1365,38 @@ const confetti =
                 *
                 canvas.height,
 
-            speed:
-                1
+            radius:
+                2
                 +
                 Math.random()
+                *
+                5,
+
+            speed:
+                .003
+                +
+                Math.random()
+                *
+                .009,
+
+            phase:
+                Math.random()
+                *
+                Math.PI
                 *
                 2,
 
-            size:
-                4
+            drift:
+                .05
                 +
                 Math.random()
                 *
-                8,
+                .18,
 
-            rotation:
+            warm:
                 Math.random()
-                *
-                Math.PI,
-
-            spin:
-                .01
-                +
-                Math.random()
-                *
-                .04,
-
-            color:[
-                "#f47ca4",
-                "#ffd851",
-                "#ffffff",
-                "#7ad4dc"
-            ][
-                Math.floor(
-                    Math.random()
-                    *
-                    4
-                )
-            ]
+                >
+                .65
 
         })
 
@@ -1854,7 +1841,7 @@ async function initFaceTracking(){
 
 
 /* =========================================================
-   DESSIN
+   DESSIN PRINCIPAL
    ========================================================= */
 
 function drawFrame(){
@@ -1876,7 +1863,7 @@ function drawFrame(){
 
 
     /*
-       1 — FOND MOTIF
+       FOND MOTIF
     */
 
     drawMotifBackground(
@@ -1886,7 +1873,7 @@ function drawFrame(){
 
 
     /*
-       2 — SELFIE
+       SELFIE
     */
 
     if(
@@ -1904,7 +1891,7 @@ function drawFrame(){
 
 
     /*
-       3 — TRACKING
+       TRACKING
     */
 
     if(
@@ -1968,7 +1955,7 @@ function drawFrame(){
 
 
     /*
-       4 — DECOR
+       FILTRE FESTIF
     */
 
     if(
@@ -1977,7 +1964,10 @@ function drawFrame(){
         "none"
     ){
 
-        drawPartyDecoration();
+        drawFairyStars();
+
+
+        drawBottomTitle();
 
 
         if(
@@ -2010,10 +2000,6 @@ function drawMotifBackground(
     H
 ){
 
-    /*
-       Fond de secours
-    */
-
     ctx.fillStyle =
         "#13283b";
 
@@ -2035,17 +2021,6 @@ function drawMotifBackground(
     }
 
 
-    /*
-       On crée une répétition du motif
-       sur tout le canvas.
-
-       Le selfie sera ensuite posé par-dessus.
-
-       Résultat :
-       le motif ne reste visible que dans
-       la largeur réellement nécessaire.
-    */
-
     const pattern =
         ctx.createPattern(
             motifImage,
@@ -2060,11 +2035,6 @@ function drawMotifBackground(
 
     ctx.save();
 
-
-    /*
-       On réduit légèrement le motif
-       pour qu'il ressemble au fond du site.
-    */
 
     if(
         typeof DOMMatrix
@@ -2140,15 +2110,9 @@ function drawSelfieScene(
 
 
     /*
-       88 % de la largeur disponible.
-
-       Le motif reste donc en bord
-       seulement là où il est nécessaire.
-
-       Si tu souhaites ensuite un bord
-       plus fin, passe .88 à .92.
-
-       Plus large = bord plus fin.
+       88 % largeur :
+       juste ce qu'il faut pour
+       conserver un bord motif.
     */
 
     const maxW =
@@ -2156,11 +2120,6 @@ function drawSelfieScene(
         *
         .88;
 
-
-    /*
-       On laisse aussi un tout petit
-       retrait vertical.
-    */
 
     const maxH =
         H
@@ -2246,12 +2205,8 @@ function drawSelfieScene(
 
 
     /*
-       Petit contour subtil entre
-       photo et motif.
+       petit filet sombre
     */
-
-    ctx.save();
-
 
     ctx.fillStyle =
         "rgba(0,0,0,.25)";
@@ -2266,9 +2221,6 @@ function drawSelfieScene(
         drawH + 8
 
     );
-
-
-    ctx.restore();
 
 
     /*
@@ -2399,18 +2351,6 @@ function getCrownTransform(
         );
 
 
-    /*
-       ANGLE CORRIGE
-
-       À cause du miroir selfie,
-       MediaPipe peut fournir
-       une direction qui équivaut
-       à environ 180 degrés.
-
-       On normalise donc toujours
-       la couronne entre -90° et +90°.
-    */
-
     let angle =
         Math.atan2(
 
@@ -2425,9 +2365,12 @@ function getCrownTransform(
         );
 
 
+    /*
+       empêche retournement 180°
+    */
+
     if(
-        angle
-        >
+        angle >
         Math.PI / 2
     ){
 
@@ -2438,8 +2381,7 @@ function getCrownTransform(
 
 
     if(
-        angle
-        <
+        angle <
         -Math.PI / 2
     ){
 
@@ -2449,11 +2391,6 @@ function getCrownTransform(
     }
 
 
-    /*
-       Dimension généreuse
-       pour les PNG détaillés.
-    */
-
     const width =
         faceWidth
         *
@@ -2461,9 +2398,14 @@ function getCrownTransform(
 
 
     /*
-       Le point Y désigne maintenant
-       le point où vient se poser
-       le BAS de la couronne.
+       CORRECTION :
+       la couronne est maintenant
+       plus BASSE.
+
+       Avant : environ forehead.y
+
+       Maintenant :
+       + 18 % largeur visage.
     */
 
     const y =
@@ -2471,7 +2413,7 @@ function getCrownTransform(
         +
         faceWidth
         *
-        .01;
+        .18;
 
 
     return {
@@ -2491,7 +2433,7 @@ function getCrownTransform(
 
 
 /* =========================================================
-   DESSIN COURONNE
+   COURONNE
    ========================================================= */
 
 function drawCrown(
@@ -2555,31 +2497,22 @@ function drawCrown(
     );
 
 
-    /*
-       Couronne désormais
-       toujours dans le bon sens.
-    */
-
     ctx.rotate(
         p.angle
     );
 
 
     ctx.shadowColor =
-        "rgba(0,0,0,.25)";
+        "rgba(0,0,0,.22)";
 
 
     ctx.shadowBlur =
-        12;
+        10;
 
 
     /*
-       Le BAS du PNG correspond
-       approximativement au front.
-
-       C'est plus logique que de
-       calculer depuis le centre
-       de l'image.
+       BAS de la couronne
+       posé sur le front.
     */
 
     ctx.drawImage(
@@ -2603,10 +2536,229 @@ function drawCrown(
 
 
 /* =========================================================
-   DECOR FESTIF
+   PETITES ETOILES FEERIQUES
    ========================================================= */
 
-function drawPartyDecoration(){
+function drawFairyStars(){
+
+    const time =
+        performance.now();
+
+
+    fairyStars.forEach(
+        star => {
+
+            /*
+               très léger déplacement
+               vertical
+            */
+
+            star.y -=
+                star.drift;
+
+
+            if(
+                star.y
+                <
+                -20
+            ){
+
+                star.y =
+                    canvas.height
+                    +
+                    20;
+
+
+                star.x =
+                    Math.random()
+                    *
+                    canvas.width;
+
+            }
+
+
+            const pulse =
+                (
+                    Math.sin(
+                        time
+                        *
+                        star.speed
+                        +
+                        star.phase
+                    )
+                    +
+                    1
+                )
+                /
+                2;
+
+
+            const alpha =
+                .15
+                +
+                pulse
+                *
+                .75;
+
+
+            const radius =
+                star.radius
+                *
+                (
+                    .7
+                    +
+                    pulse
+                    *
+                    .65
+                );
+
+
+            drawFairyStar(
+
+                star.x,
+                star.y,
+
+                radius,
+                alpha,
+
+                star.warm
+
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   DESSIN UNE ETOILE
+   ========================================================= */
+
+function drawFairyStar(
+    x,
+    y,
+    r,
+    alpha,
+    warm
+){
+
+    ctx.save();
+
+
+    ctx.translate(
+        x,
+        y
+    );
+
+
+    ctx.globalAlpha =
+        alpha;
+
+
+    ctx.fillStyle =
+        warm
+        ?
+        "#fff1b8"
+        :
+        "#ffffff";
+
+
+    ctx.shadowColor =
+        warm
+        ?
+        "#ffd777"
+        :
+        "#ffffff";
+
+
+    ctx.shadowBlur =
+        r
+        *
+        2.7;
+
+
+    /*
+       étoile à 4 branches
+       fine et élégante
+    */
+
+    ctx.beginPath();
+
+
+    ctx.moveTo(
+        0,
+        -r * 2.3
+    );
+
+
+    ctx.quadraticCurveTo(
+        r * .13,
+        -r * .18,
+        r * 2.3,
+        0
+    );
+
+
+    ctx.quadraticCurveTo(
+        r * .13,
+        r * .18,
+        0,
+        r * 2.3
+    );
+
+
+    ctx.quadraticCurveTo(
+        -r * .13,
+        r * .18,
+        -r * 2.3,
+        0
+    );
+
+
+    ctx.quadraticCurveTo(
+        -r * .13,
+        -r * .18,
+        0,
+        -r * 2.3
+    );
+
+
+    ctx.closePath();
+
+
+    ctx.fill();
+
+
+    /*
+       petit cœur lumineux
+    */
+
+    ctx.beginPath();
+
+
+    ctx.arc(
+        0,
+        0,
+        r * .25,
+        0,
+        Math.PI * 2
+    );
+
+
+    ctx.fill();
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   MERCI
+   ========================================================= */
+
+function drawBottomTitle(){
 
     const W =
         canvas.width;
@@ -2617,84 +2769,15 @@ function drawPartyDecoration(){
 
 
     /*
-       CONFETTIS
-    */
-
-    confetti.forEach(
-        c => {
-
-            c.y +=
-                c.speed;
-
-
-            c.rotation +=
-                c.spin;
-
-
-            if(
-                c.y
-                >
-                H + 15
-            ){
-
-                c.y =
-                    -20;
-
-
-                c.x =
-                    Math.random()
-                    *
-                    W;
-
-            }
-
-
-            ctx.save();
-
-
-            ctx.translate(
-                c.x,
-                c.y
-            );
-
-
-            ctx.rotate(
-                c.rotation
-            );
-
-
-            ctx.fillStyle =
-                c.color;
-
-
-            ctx.fillRect(
-
-                -c.size / 2,
-
-                -c.size,
-
-                c.size,
-
-                c.size * 2
-
-            );
-
-
-            ctx.restore();
-
-        }
-    );
-
-
-    /*
-       FONDU BAS
+       léger fondu seulement
+       derrière le MERCI
     */
 
     const gradient =
         ctx.createLinearGradient(
 
             0,
-            H * .70,
+            H * .78,
 
             0,
             H
@@ -2710,7 +2793,7 @@ function drawPartyDecoration(){
 
     gradient.addColorStop(
         1,
-        "rgba(5,10,25,.43)"
+        "rgba(5,10,25,.42)"
     );
 
 
@@ -2721,17 +2804,13 @@ function drawPartyDecoration(){
     ctx.fillRect(
 
         0,
-        H * .65,
+        H * .75,
 
         W,
-        H * .35
+        H * .25
 
     );
 
-
-    /*
-       TEXTE
-    */
 
     ctx.save();
 
@@ -2741,7 +2820,7 @@ function drawPartyDecoration(){
 
 
     ctx.fillStyle =
-        "#fff";
+        "#ffffff";
 
 
     ctx.shadowColor =
@@ -2753,7 +2832,7 @@ function drawPartyDecoration(){
 
 
     ctx.font =
-        "bold 62px Arial";
+        "bold 64px Arial";
 
 
     ctx.fillText(
@@ -2762,22 +2841,7 @@ function drawPartyDecoration(){
 
         W / 2,
 
-        H - 108
-
-    );
-
-
-    ctx.font =
-        "28px Arial";
-
-
-    ctx.fillText(
-
-        "pour ton message",
-
-        W / 2,
-
-        H - 64
+        H - 65
 
     );
 

@@ -453,7 +453,7 @@ body{
 
     overflow:hidden;
 
-    background:#000;
+    background:#13283b;
 
     border-radius:14px;
 }
@@ -468,7 +468,7 @@ body{
     width:100%;
     height:100%;
 
-    background:#000;
+    background:#13283b;
 }
 
 #recordedPreview{
@@ -518,7 +518,7 @@ body{
 
 
 /* =========================================================
-   COMMANDES CAMERA
+   BOUTONS CAMERA
    ========================================================= */
 
 .camera-actions{
@@ -561,21 +561,25 @@ body{
 
 .camera-btn.primary{
     background:#e26183;
+
     color:#fff;
 }
 
 .camera-btn.secondary{
     background:#fff;
+
     color:#253344;
 }
 
 .camera-btn.send{
     background:#6fa773;
+
     color:#fff;
 }
 
 .camera-btn:disabled{
     opacity:.45;
+
     cursor:default;
 }
 
@@ -652,6 +656,7 @@ body{
         0 5px 15px rgba(0,0,0,.30);
 
     opacity:0;
+
     visibility:hidden;
 
     transform:translateY(10px);
@@ -748,7 +753,7 @@ body{
 
 
     <div class="reply-info">
-        Choisis ton filtre, enregistre ton message puis partage directement ta vidéo.
+        Choisis ta couronne, enregistre ton message puis partage directement ta vidéo.
     </div>
 
 
@@ -989,6 +994,23 @@ const cards = [
 
 
 /* =========================================================
+   MOTIF DU CADRE
+   ========================================================= */
+
+const motifImage =
+    new Image();
+
+
+motifImage.crossOrigin =
+    "anonymous";
+
+
+motifImage.src =
+    BASE +
+    "motif.jpg";
+
+
+/* =========================================================
    COURONNES PNG
    ========================================================= */
 
@@ -1001,6 +1023,10 @@ function createCrownImage(
 
     const image =
         new Image();
+
+
+    image.crossOrigin =
+        "anonymous";
 
 
     image.src =
@@ -1039,7 +1065,7 @@ crownImages.crown4 =
 
 
 /* =========================================================
-   CARTES
+   CREATION CARTES
    ========================================================= */
 
 const videoList =
@@ -1080,13 +1106,9 @@ cards.forEach(
                 ></video>
 
 
-                <div
-                    class="gift-cover"
-                >
+                <div class="gift-cover">
 
-                    <div
-                        class="gift-package"
-                    >
+                    <div class="gift-package">
 
                         <img
                             class="gift-image"
@@ -1097,9 +1119,7 @@ cards.forEach(
                     </div>
 
 
-                    <div
-                        class="gift-hint"
-                    >
+                    <div class="gift-hint">
                         Ouvre ton cadeau
                     </div>
 
@@ -1109,7 +1129,6 @@ cards.forEach(
 
 
             <div class="action-zone">
-
 
                 <a
                     class="action-btn"
@@ -1134,7 +1153,6 @@ cards.forEach(
                     :
                     ""
                 }
-
 
             </div>
 
@@ -1256,7 +1274,7 @@ const backToTop =
 
 
 /* =========================================================
-   ETAT
+   VARIABLES
    ========================================================= */
 
 let cameraStream =
@@ -1316,14 +1334,8 @@ let lastDetection =
 
 
 /*
-   Cette variable mémorise
-   exactement la position
-   de l'image selfie dans
-   le canvas.
-
-   C'est IMPORTANT pour que
-   la couronne soit parfaitement
-   alignée sur l'image affichée.
+   Rectangle exact du selfie
+   dans le canvas.
 */
 
 let selfieFrame = {
@@ -1405,7 +1417,7 @@ const confetti =
 
 
 /* =========================================================
-   LAZY LOAD VIDEOS
+   VIDEOS LAZY
    ========================================================= */
 
 const videoObserver =
@@ -1442,10 +1454,9 @@ const videoObserver =
                     }
 
 
-                    videoObserver
-                        .unobserve(
-                            video
-                        );
+                    videoObserver.unobserve(
+                        video
+                    );
 
                 }
             );
@@ -1461,13 +1472,10 @@ const videoObserver =
 
 
 videos.forEach(
-    video => {
-
+    video =>
         videoObserver.observe(
             video
-        );
-
-    }
+        )
 );
 
 
@@ -1505,8 +1513,6 @@ gifts.forEach(
 
                 if(
                     !video.src
-                    &&
-                    video.dataset.src
                 ){
 
                     video.src =
@@ -1523,22 +1529,15 @@ gifts.forEach(
                 );
 
 
-                /*
-                   Répondre seulement
-                   sur la huitième vidéo
-                */
-
                 if(
                     card.dataset.index
                     ===
                     "7"
                 ){
 
-                    replyButton
-                        .classList
-                        .remove(
-                            "hidden"
-                        );
+                    replyButton.classList.remove(
+                        "hidden"
+                    );
 
                 }
 
@@ -1569,7 +1568,7 @@ gifts.forEach(
 
 
 /* =========================================================
-   UNE SEULE VIDEO
+   UNE VIDEO A LA FOIS
    ========================================================= */
 
 videos.forEach(
@@ -1580,17 +1579,15 @@ videos.forEach(
             () => {
 
                 videos.forEach(
-                    otherVideo => {
+                    other => {
 
                         if(
-                            otherVideo
-                            !==
-                            video
+                            other !== video
                             &&
-                            !otherVideo.paused
+                            !other.paused
                         ){
 
-                            otherVideo.pause();
+                            other.pause();
 
                         }
 
@@ -1605,7 +1602,7 @@ videos.forEach(
 
 
 /* =========================================================
-   CHOIX COURONNE
+   COURONNE
    ========================================================= */
 
 crownButtons.forEach(
@@ -1620,13 +1617,10 @@ crownButtons.forEach(
 
 
                 crownButtons.forEach(
-                    btn => {
-
+                    btn =>
                         btn.classList.remove(
                             "active"
-                        );
-
-                    }
+                        )
                 );
 
 
@@ -1653,7 +1647,7 @@ crownButtons.forEach(
 
 
 /* =========================================================
-   OUVRIR CAMERA
+   CAMERA
    ========================================================= */
 
 replyButton.addEventListener(
@@ -1682,13 +1676,6 @@ replyButton.addEventListener(
 
 
         try{
-
-            /*
-               On demande volontairement
-               une caméra relativement large.
-
-               Cela évite l'effet "visage énorme".
-            */
 
             cameraStream =
                 await navigator.mediaDevices
@@ -1812,19 +1799,25 @@ async function initFaceTracking(){
                             modelAssetPath:
                                 "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
 
-                            delegate:"GPU"
+                            delegate:
+                                "GPU"
 
                         },
 
-                        runningMode:"VIDEO",
+                        runningMode:
+                            "VIDEO",
 
-                        numFaces:1,
+                        numFaces:
+                            1,
 
-                        minFaceDetectionConfidence:.5,
+                        minFaceDetectionConfidence:
+                            .5,
 
-                        minFacePresenceConfidence:.5,
+                        minFacePresenceConfidence:
+                            .5,
 
-                        minTrackingConfidence:.5
+                        minTrackingConfidence:
+                            .5
 
                     }
 
@@ -1882,6 +1875,20 @@ function drawFrame(){
     );
 
 
+    /*
+       1 — FOND MOTIF
+    */
+
+    drawMotifBackground(
+        W,
+        H
+    );
+
+
+    /*
+       2 — SELFIE
+    */
+
     if(
         cameraSource.readyState
         >=
@@ -1897,7 +1904,7 @@ function drawFrame(){
 
 
     /*
-       DETECTION VISAGE
+       3 — TRACKING
     */
 
     if(
@@ -1915,11 +1922,6 @@ function drawFrame(){
         const now =
             performance.now();
 
-
-        /*
-           environ 15 détections/sec :
-           plus léger pour l'iPhone.
-        */
 
         if(
             now
@@ -1966,7 +1968,7 @@ function drawFrame(){
 
 
     /*
-       DECOR FESTIF
+       4 — DECOR
     */
 
     if(
@@ -2000,7 +2002,119 @@ function drawFrame(){
 
 
 /* =========================================================
-   SELFIE + ARRIERE PLAN FLOU
+   FOND MOTIF
+   ========================================================= */
+
+function drawMotifBackground(
+    W,
+    H
+){
+
+    /*
+       Fond de secours
+    */
+
+    ctx.fillStyle =
+        "#13283b";
+
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    if(
+        !motifImage.complete
+        ||
+        !motifImage.naturalWidth
+    ){
+        return;
+    }
+
+
+    /*
+       On crée une répétition du motif
+       sur tout le canvas.
+
+       Le selfie sera ensuite posé par-dessus.
+
+       Résultat :
+       le motif ne reste visible que dans
+       la largeur réellement nécessaire.
+    */
+
+    const pattern =
+        ctx.createPattern(
+            motifImage,
+            "repeat"
+        );
+
+
+    if(!pattern){
+        return;
+    }
+
+
+    ctx.save();
+
+
+    /*
+       On réduit légèrement le motif
+       pour qu'il ressemble au fond du site.
+    */
+
+    if(
+        typeof DOMMatrix
+        !==
+        "undefined"
+    ){
+
+        const matrix =
+            new DOMMatrix();
+
+
+        matrix.a =
+            .62;
+
+
+        matrix.d =
+            .62;
+
+
+        try{
+
+            pattern.setTransform(
+                matrix
+            );
+
+        }
+        catch(error){}
+
+    }
+
+
+    ctx.fillStyle =
+        pattern;
+
+
+    ctx.fillRect(
+        0,
+        0,
+        W,
+        H
+    );
+
+
+    ctx.restore();
+
+}
+
+
+/* =========================================================
+   SELFIE
    ========================================================= */
 
 function drawSelfieScene(
@@ -2026,40 +2140,32 @@ function drawSelfieScene(
 
 
     /*
-       ---------------------------------
-       1. ARRIERE-PLAN FLOU
-       ---------------------------------
+       88 % de la largeur disponible.
+
+       Le motif reste donc en bord
+       seulement là où il est nécessaire.
+
+       Si tu souhaites ensuite un bord
+       plus fin, passe .88 à .92.
+
+       Plus large = bord plus fin.
     */
 
-    drawBlurredBackground(
-        W,
-        H
-    );
+    const maxW =
+        W
+        *
+        .88;
 
 
     /*
-       ---------------------------------
-       2. SELFIE PRINCIPAL
-       ---------------------------------
-
-       82 % du canvas.
-
-       On conserve toute l'image
-       de la caméra.
-
-       Donc beaucoup moins de zoom.
+       On laisse aussi un tout petit
+       retrait vertical.
     */
 
-    const availableW =
-        W
-        *
-        .82;
-
-
-    const availableH =
+    const maxH =
         H
         *
-        .82;
+        .94;
 
 
     const videoRatio =
@@ -2068,10 +2174,10 @@ function drawSelfieScene(
         vh;
 
 
-    const availableRatio =
-        availableW
+    const targetRatio =
+        maxW
         /
-        availableH;
+        maxH;
 
 
     let drawW;
@@ -2081,11 +2187,11 @@ function drawSelfieScene(
     if(
         videoRatio
         >
-        availableRatio
+        targetRatio
     ){
 
         drawW =
-            availableW;
+            maxW;
 
 
         drawH =
@@ -2097,7 +2203,7 @@ function drawSelfieScene(
     else{
 
         drawH =
-            availableH;
+            maxH;
 
 
         drawW =
@@ -2127,13 +2233,6 @@ function drawSelfieScene(
         /
         2;
 
-
-    /*
-       On sauvegarde ce cadrage.
-
-       MediaPipe devra être converti
-       exactement dans ce rectangle.
-    */
 
     selfieFrame = {
 
@@ -2147,7 +2246,33 @@ function drawSelfieScene(
 
 
     /*
-       Image miroir
+       Petit contour subtil entre
+       photo et motif.
+    */
+
+    ctx.save();
+
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.25)";
+
+
+    ctx.fillRect(
+
+        x - 4,
+        y - 4,
+
+        drawW + 8,
+        drawH + 8
+
+    );
+
+
+    ctx.restore();
+
+
+    /*
+       SELFIE MIROIR
     */
 
     ctx.save();
@@ -2190,146 +2315,12 @@ function drawSelfieScene(
 
 
 /* =========================================================
-   BACKGROUND FLOU
-   ========================================================= */
-
-function drawBlurredBackground(
-    W,
-    H
-){
-
-    const vw =
-        cameraSource.videoWidth;
-
-
-    const vh =
-        cameraSource.videoHeight;
-
-
-    const videoRatio =
-        vw
-        /
-        vh;
-
-
-    const canvasRatio =
-        W
-        /
-        H;
-
-
-    let drawW;
-    let drawH;
-
-
-    if(
-        videoRatio
-        >
-        canvasRatio
-    ){
-
-        drawH =
-            H
-            *
-            1.12;
-
-
-        drawW =
-            drawH
-            *
-            videoRatio;
-
-    }
-    else{
-
-        drawW =
-            W
-            *
-            1.12;
-
-
-        drawH =
-            drawW
-            /
-            videoRatio;
-
-    }
-
-
-    const x =
-        (
-            W
-            -
-            drawW
-        )
-        /
-        2;
-
-
-    const y =
-        (
-            H
-            -
-            drawH
-        )
-        /
-        2;
-
-
-    ctx.save();
-
-
-    ctx.filter =
-        "blur(35px) brightness(.60) saturate(.85)";
-
-
-    ctx.translate(
-        W,
-        0
-    );
-
-
-    ctx.scale(
-        -1,
-        1
-    );
-
-
-    ctx.drawImage(
-
-        cameraSource,
-
-        W
-        -
-        x
-        -
-        drawW,
-
-        y,
-
-        drawW,
-
-        drawH
-
-    );
-
-
-    ctx.restore();
-
-}
-
-
-/* =========================================================
-   TRANSFORMATION COORDONNEES MEDIAPIPE
+   LANDMARK -> CANVAS
    ========================================================= */
 
 function landmarkToCanvas(
     landmark
 ){
-
-    /*
-       X inversé car selfie miroir.
-    */
 
     return {
 
@@ -2357,16 +2348,12 @@ function landmarkToCanvas(
 
 
 /* =========================================================
-   POSITION DE LA COURONNE
+   POSITION COURONNE
    ========================================================= */
 
 function getCrownTransform(
     points
 ){
-
-    /*
-       côtés du visage
-    */
 
     const leftFace =
         landmarkToCanvas(
@@ -2380,19 +2367,11 @@ function getCrownTransform(
         );
 
 
-    /*
-       sommet du front
-    */
-
     const forehead =
         landmarkToCanvas(
             points[10]
         );
 
-
-    /*
-       yeux pour inclinaison
-    */
 
     const leftEye =
         landmarkToCanvas(
@@ -2420,7 +2399,19 @@ function getCrownTransform(
         );
 
 
-    const angle =
+    /*
+       ANGLE CORRIGE
+
+       À cause du miroir selfie,
+       MediaPipe peut fournir
+       une direction qui équivaut
+       à environ 180 degrés.
+
+       On normalise donc toujours
+       la couronne entre -90° et +90°.
+    */
+
+    let angle =
         Math.atan2(
 
             rightEye.y
@@ -2434,29 +2425,53 @@ function getCrownTransform(
         );
 
 
-    /*
-       PLUS GRANDE QU'AVANT
+    if(
+        angle
+        >
+        Math.PI / 2
+    ){
 
-       1.60 × largeur du visage.
+        angle -=
+            Math.PI;
+
+    }
+
+
+    if(
+        angle
+        <
+        -Math.PI / 2
+    ){
+
+        angle +=
+            Math.PI;
+
+    }
+
+
+    /*
+       Dimension généreuse
+       pour les PNG détaillés.
     */
 
     const width =
         faceWidth
         *
-        1.60;
+        1.65;
 
 
     /*
-       On remonte fortement
-       au-dessus du front.
+       Le point Y désigne maintenant
+       le point où vient se poser
+       le BAS de la couronne.
     */
 
     const y =
         forehead.y
-        -
+        +
         faceWidth
         *
-        .23;
+        .01;
 
 
     return {
@@ -2476,7 +2491,7 @@ function getCrownTransform(
 
 
 /* =========================================================
-   COURONNE PNG
+   DESSIN COURONNE
    ========================================================= */
 
 function drawCrown(
@@ -2540,26 +2555,31 @@ function drawCrown(
     );
 
 
+    /*
+       Couronne désormais
+       toujours dans le bon sens.
+    */
+
     ctx.rotate(
         p.angle
     );
 
 
     ctx.shadowColor =
-        "rgba(0,0,0,.28)";
+        "rgba(0,0,0,.25)";
 
 
     ctx.shadowBlur =
-        14;
+        12;
 
 
     /*
-       La partie basse du PNG
-       vient se poser sur le front.
+       Le BAS du PNG correspond
+       approximativement au front.
 
-       Si besoin, c'est cette valeur
-       -0.72 qui permettra ensuite
-       un réglage très fin.
+       C'est plus logique que de
+       calculer depuis le centre
+       de l'image.
     */
 
     ctx.drawImage(
@@ -2568,7 +2588,7 @@ function drawCrown(
 
         -width / 2,
 
-        -height * .72,
+        -height,
 
         width,
 
@@ -2674,7 +2694,7 @@ function drawPartyDecoration(){
         ctx.createLinearGradient(
 
             0,
-            H * .68,
+            H * .70,
 
             0,
             H
@@ -2690,7 +2710,7 @@ function drawPartyDecoration(){
 
     gradient.addColorStop(
         1,
-        "rgba(5,10,25,.48)"
+        "rgba(5,10,25,.43)"
     );
 
 
@@ -2701,10 +2721,10 @@ function drawPartyDecoration(){
     ctx.fillRect(
 
         0,
-        H * .62,
+        H * .65,
 
         W,
-        H * .38
+        H * .35
 
     );
 
@@ -2847,10 +2867,6 @@ startRecord.addEventListener(
             new MediaStream();
 
 
-        /*
-           VIDEO DU CANVAS
-        */
-
         canvasStream
             .getVideoTracks()
             .forEach(
@@ -2863,10 +2879,6 @@ startRecord.addEventListener(
                 }
             );
 
-
-        /*
-           AUDIO DU MICRO
-        */
 
         cameraStream
             .getAudioTracks()
@@ -3035,11 +3047,9 @@ startRecord.addEventListener(
                     "inline-block";
 
 
-                recordTime
-                    .classList
-                    .remove(
-                        "visible"
-                    );
+                recordTime.classList.remove(
+                    "visible"
+                );
 
             }
         );
@@ -3056,11 +3066,9 @@ startRecord.addEventListener(
             "00:00";
 
 
-        recordTime
-            .classList
-            .add(
-                "visible"
-            );
+        recordTime.classList.add(
+            "visible"
+        );
 
 
         startRecord.disabled =
@@ -3378,13 +3386,10 @@ const pauseObserver =
 
 
 videos.forEach(
-    video => {
-
+    video =>
         pauseObserver.observe(
             video
-        );
-
-    }
+        )
 );
 
 
@@ -3448,11 +3453,8 @@ window.addEventListener(
             cameraStream
                 .getTracks()
                 .forEach(
-                    track => {
-
-                        track.stop();
-
-                    }
+                    track =>
+                        track.stop()
                 );
 
         }
@@ -3488,4 +3490,5 @@ window.addEventListener(
 </script>
 
 </body>
+
 </html>

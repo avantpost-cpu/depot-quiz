@@ -16,6 +16,10 @@
 
 <style>
 
+/* =========================================================
+   BASE
+   ========================================================= */
+
 *{
     margin:0;
     padding:0;
@@ -52,7 +56,7 @@ body{
 
 .page{
     width:100%;
-    max-width:700px;
+    max-width:720px;
 
     margin:0 auto;
 
@@ -90,109 +94,6 @@ body{
 
 
 /* =========================================================
-   CONNEXION
-   ========================================================= */
-
-.login-box{
-    width:100%;
-    max-width:440px;
-
-    margin:50px auto 0;
-
-    padding:25px;
-
-    text-align:center;
-
-    background:
-        rgba(20,20,30,.82);
-
-    border-radius:20px;
-
-    box-shadow:
-        0 12px 30px rgba(0,0,0,.25);
-}
-
-.login-box h2{
-    margin-bottom:18px;
-
-    font-size:22px;
-}
-
-.password-input{
-    width:100%;
-
-    height:48px;
-
-    padding:0 15px;
-
-    border:0;
-
-    outline:none;
-
-    border-radius:14px;
-
-    font-size:16px;
-
-    text-align:center;
-
-    background:#ffffff;
-
-    color:#222222;
-}
-
-.login-btn{
-    margin-top:12px;
-
-    width:100%;
-
-    height:46px;
-
-    border:0;
-
-    border-radius:23px;
-
-    font-size:14px;
-    font-weight:bold;
-
-    cursor:pointer;
-
-    background:#e26183;
-
-    color:#ffffff;
-
-    box-shadow:
-        0 5px 12px rgba(0,0,0,.20);
-}
-
-.login-btn:active{
-    transform:scale(.98);
-}
-
-.login-error{
-    display:none;
-
-    margin-top:13px;
-
-    color:#ffb8c8;
-
-    font-size:13px;
-}
-
-
-/* =========================================================
-   STATS
-   ========================================================= */
-
-.stats{
-    display:none;
-}
-
-.stats.visible{
-    display:block;
-}
-
-
-/* =========================================================
    RESUME
    ========================================================= */
 
@@ -204,11 +105,11 @@ body{
 
     gap:10px;
 
-    margin-bottom:22px;
+    margin-bottom:18px;
 }
 
 .summary-card{
-    padding:18px 8px;
+    padding:20px 8px;
 
     text-align:center;
 
@@ -224,9 +125,9 @@ body{
 .summary-number{
     display:block;
 
-    margin-bottom:4px;
+    margin-bottom:5px;
 
-    font-size:30px;
+    font-size:31px;
     font-weight:bold;
 }
 
@@ -240,41 +141,48 @@ body{
 
 
 /* =========================================================
-   ACTIONS
+   ACTUALISER
    ========================================================= */
 
 .stats-actions{
     display:flex;
 
-    align-items:center;
     justify-content:center;
-
-    gap:8px;
 
     margin-bottom:18px;
 }
 
-.small-btn{
+.refresh-btn{
     border:0;
 
-    padding:9px 15px;
+    padding:10px 18px;
 
-    border-radius:20px;
+    border-radius:22px;
 
     cursor:pointer;
 
-    font-size:12px;
+    font-size:13px;
     font-weight:bold;
 
     background:
-        rgba(255,255,255,.92);
+        rgba(255,255,255,.94);
 
     color:#4b3a50;
+
+    box-shadow:
+        0 4px 10px rgba(0,0,0,.16);
+
+    transition:
+        transform .15s ease;
+}
+
+.refresh-btn:active{
+    transform:scale(.96);
 }
 
 
 /* =========================================================
-   TABLEAU
+   HISTORIQUE
    ========================================================= */
 
 .history{
@@ -290,7 +198,7 @@ body{
 }
 
 .history-title{
-    padding:17px;
+    padding:18px;
 
     font-size:17px;
     font-weight:bold;
@@ -299,6 +207,48 @@ body{
         1px solid
         rgba(255,255,255,.10);
 }
+
+
+/* =========================================================
+   ENTETE TABLEAU
+   ========================================================= */
+
+.visit-header{
+    display:grid;
+
+    grid-template-columns:
+        1.4fr
+        .8fr
+        .7fr;
+
+    gap:8px;
+
+    padding:
+        10px
+        16px;
+
+    font-size:10px;
+    font-weight:bold;
+
+    text-transform:uppercase;
+
+    letter-spacing:.5px;
+
+    opacity:.55;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+.visit-header div:last-child{
+    text-align:right;
+}
+
+
+/* =========================================================
+   VISITE
+   ========================================================= */
 
 .visit{
     display:grid;
@@ -312,7 +262,9 @@ body{
 
     gap:8px;
 
-    padding:14px 16px;
+    padding:
+        14px
+        16px;
 
     border-bottom:
         1px solid
@@ -331,31 +283,32 @@ body{
 .visit-time{
     font-size:13px;
 
-    opacity:.75;
+    opacity:.72;
 }
 
 .visit-gifts{
     text-align:right;
 
-    font-size:14px;
+    font-size:15px;
     font-weight:bold;
 }
 
-.all-open{
+
+/* =========================================================
+   LES 7 CADEAUX ONT ETE OUVERTS
+   ========================================================= */
+
+.visit-gifts.complete{
     color:#f4bdd0;
 }
 
 
 /* =========================================================
-   VIDE
+   AUCUN CADEAU
    ========================================================= */
 
-.empty{
-    padding:30px;
-
-    text-align:center;
-
-    opacity:.7;
+.visit-gifts.zero{
+    opacity:.45;
 }
 
 
@@ -364,13 +317,67 @@ body{
    ========================================================= */
 
 .loading{
+    padding:35px;
+
+    text-align:center;
+
+    font-size:14px;
+
+    opacity:.75;
+}
+
+
+/* =========================================================
+   ERREUR
+   ========================================================= */
+
+.error{
     display:none;
 
-    margin:25px 0;
+    padding:25px;
+
+    text-align:center;
+
+    background:
+        rgba(20,20,30,.86);
+
+    border-radius:18px;
+
+    line-height:1.5;
+}
+
+.error.visible{
+    display:block;
+}
+
+
+/* =========================================================
+   AUCUNE VISITE
+   ========================================================= */
+
+.empty{
+    padding:35px;
 
     text-align:center;
 
     font-size:13px;
+
+    opacity:.65;
+}
+
+
+/* =========================================================
+   DERNIERE ACTUALISATION
+   ========================================================= */
+
+.last-update{
+    margin-top:14px;
+
+    text-align:center;
+
+    font-size:10px;
+
+    opacity:.55;
 }
 
 
@@ -379,6 +386,11 @@ body{
    ========================================================= */
 
 @media(max-width:520px){
+
+    .page{
+        padding-left:11px;
+        padding-right:11px;
+    }
 
     .header h1{
         font-size:25px;
@@ -389,30 +401,56 @@ body{
     }
 
     .summary-card{
-        padding:15px 4px;
+        padding:
+            16px
+            4px;
     }
 
     .summary-number{
-        font-size:24px;
+        font-size:25px;
     }
 
     .summary-label{
-        font-size:10px;
+        font-size:9px;
     }
 
-    .visit{
+    .visit,
+    .visit-header{
+
         grid-template-columns:
             1.25fr
-            .7fr
+            .65fr
             .65fr;
 
-        padding:
-            13px 12px;
+        padding-left:12px;
+        padding-right:12px;
+
     }
 
     .visit-date,
     .visit-time{
         font-size:12px;
+    }
+
+    .visit-gifts{
+        font-size:13px;
+    }
+
+}
+
+
+/* =========================================================
+   PETITS ECRANS
+   ========================================================= */
+
+@media(max-width:360px){
+
+    .summary-number{
+        font-size:22px;
+    }
+
+    .summary-label{
+        font-size:8px;
     }
 
 }
@@ -429,175 +467,168 @@ body{
 
 
     <!-- ===================================================
-         CONNEXION
+         ENTETE
          =================================================== -->
 
-    <section
-        class="login-box"
-        id="loginBox"
-    >
+    <header class="header">
 
-        <h2>🩷 🩷 🩷</h2>
+        <h1>
+            Statistiques anniversaire
+        </h1>
 
-        <input
-            class="password-input"
-            id="passwordInput"
-            type="password"
-            placeholder="Mot de passe"
-            autocomplete="current-password"
-        >
+        <p>
+            Utilisation du site
+        </p>
 
-        <button
-            class="login-btn"
-            id="loginBtn"
-            type="button"
-        >
-            Voir les statistiques
-        </button>
+    </header>
 
-        <div
-            class="login-error"
-            id="loginError"
-        >
-            Mot de passe incorrect
+
+
+    <!-- ===================================================
+         RESUME
+         =================================================== -->
+
+    <section class="summary">
+
+
+        <div class="summary-card">
+
+            <span
+                class="summary-number"
+                id="totalVisits"
+            >
+                —
+            </span>
+
+            <span class="summary-label">
+                VISITES
+            </span>
+
         </div>
+
+
+        <div class="summary-card">
+
+            <span
+                class="summary-number"
+                id="totalGifts"
+            >
+                —
+            </span>
+
+            <span class="summary-label">
+                CADEAUX OUVERTS
+            </span>
+
+        </div>
+
+
+        <div class="summary-card">
+
+            <span
+                class="summary-number"
+                id="averageGifts"
+            >
+                —
+            </span>
+
+            <span class="summary-label">
+                MOYENNE / 7
+            </span>
+
+        </div>
+
 
     </section>
 
 
 
     <!-- ===================================================
-         STATISTIQUES
+         ACTUALISER
+         =================================================== -->
+
+    <div class="stats-actions">
+
+        <button
+            class="refresh-btn"
+            id="refreshBtn"
+            type="button"
+        >
+            ↻ Actualiser
+        </button>
+
+    </div>
+
+
+
+    <!-- ===================================================
+         ERREUR
+         =================================================== -->
+
+    <div
+        class="error"
+        id="errorBox"
+    >
+
+        Impossible de récupérer les statistiques.
+
+    </div>
+
+
+
+    <!-- ===================================================
+         HISTORIQUE
          =================================================== -->
 
     <section
-        class="stats"
-        id="stats"
+        class="history"
+        id="history"
     >
 
+        <div class="history-title">
 
-        <header class="header">
-
-            <h1>
-                Statistiques anniversaire
-            </h1>
-
-            <p>
-                Utilisation du site
-            </p>
-
-        </header>
-
-
-
-        <!-- ===============================================
-             RESUME
-             =============================================== -->
-
-        <div class="summary">
-
-
-            <div class="summary-card">
-
-                <span
-                    class="summary-number"
-                    id="totalVisits"
-                >
-                    —
-                </span>
-
-                <span class="summary-label">
-                    VISITES
-                </span>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <span
-                    class="summary-number"
-                    id="totalGifts"
-                >
-                    —
-                </span>
-
-                <span class="summary-label">
-                    CADEAUX OUVERTS
-                </span>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <span
-                    class="summary-number"
-                    id="averageGifts"
-                >
-                    —
-                </span>
-
-                <span class="summary-label">
-                    MOYENNE / 7
-                </span>
-
-            </div>
-
+            Historique des visites
 
         </div>
 
 
+        <div class="visit-header">
 
-        <div class="stats-actions">
-
-            <button
-                class="small-btn"
-                id="refreshBtn"
-                type="button"
-            >
-                ↻ Actualiser
-            </button>
-
-            <button
-                class="small-btn"
-                id="logoutBtn"
-                type="button"
-            >
-                Fermer
-            </button>
-
-        </div>
-
-
-        <div
-            class="loading"
-            id="loading"
-        >
-            Chargement…
-        </div>
-
-
-
-        <!-- ===============================================
-             HISTORIQUE
-             =============================================== -->
-
-        <div class="history">
-
-            <div class="history-title">
-                Historique des visites
+            <div>
+                Date
             </div>
 
-            <div id="visitsList"></div>
+            <div>
+                Heure
+            </div>
+
+            <div>
+                Cadeaux
+            </div>
 
         </div>
 
+
+        <div id="visitsList">
+
+            <div class="loading">
+                Chargement…
+            </div>
+
+        </div>
 
     </section>
 
 
+
+    <div
+        class="last-update"
+        id="lastUpdate"
+    ></div>
+
+
 </main>
+
 
 
 <script>
@@ -611,87 +642,35 @@ const STATS_URL =
 
 
 /*
-   IMPORTANT :
+   Le token est volontairement intégré
+   directement dans cette page.
 
-   Le mot de passe n'est PAS écrit ici.
-
-   Il est saisi par toi et envoyé
-   directement à la fonction sécurisée.
+   Il correspond au STATS_TOKEN créé
+   dans Supabase.
 */
 
-let statsToken =
-    sessionStorage.getItem(
-        "birthday_stats_token"
-    )
-    ||
-    "";
+const STATS_TOKEN =
+    "MamanStats-2026-Cadeaux-7-PrivE-84xQ";
+
 
 
 /* =========================================================
    ELEMENTS
    ========================================================= */
 
-const loginBox =
-    document.getElementById(
-        "loginBox"
-    );
-
-
-const stats =
-    document.getElementById(
-        "stats"
-    );
-
-
-const passwordInput =
-    document.getElementById(
-        "passwordInput"
-    );
-
-
-const loginBtn =
-    document.getElementById(
-        "loginBtn"
-    );
-
-
-const loginError =
-    document.getElementById(
-        "loginError"
-    );
-
-
-const refreshBtn =
-    document.getElementById(
-        "refreshBtn"
-    );
-
-
-const logoutBtn =
-    document.getElementById(
-        "logoutBtn"
-    );
-
-
-const loading =
-    document.getElementById(
-        "loading"
-    );
-
-
-const totalVisits =
+const totalVisitsElement =
     document.getElementById(
         "totalVisits"
     );
 
 
-const totalGifts =
+const totalGiftsElement =
     document.getElementById(
         "totalGifts"
     );
 
 
-const averageGifts =
+const averageGiftsElement =
     document.getElementById(
         "averageGifts"
     );
@@ -703,100 +682,52 @@ const visitsList =
     );
 
 
-/* =========================================================
-   CONNEXION
-   ========================================================= */
-
-loginBtn.addEventListener(
-    "click",
-    login
-);
+const refreshBtn =
+    document.getElementById(
+        "refreshBtn"
+    );
 
 
-passwordInput.addEventListener(
-    "keydown",
-    event => {
-
-        if(
-            event.key
-            ===
-            "Enter"
-        ){
-
-            login();
-
-        }
-
-    }
-);
+const errorBox =
+    document.getElementById(
+        "errorBox"
+    );
 
 
-async function login(){
-
-    const value =
-        passwordInput.value.trim();
-
-
-    if(
-        !value
-    ){
-        return;
-    }
+const history =
+    document.getElementById(
+        "history"
+    );
 
 
-    statsToken =
-        value;
+const lastUpdate =
+    document.getElementById(
+        "lastUpdate"
+    );
 
-
-    loginError.style.display =
-        "none";
-
-
-    const success =
-        await loadStats();
-
-
-    if(
-        success
-    ){
-
-        sessionStorage.setItem(
-            "birthday_stats_token",
-            statsToken
-        );
-
-
-        loginBox.style.display =
-            "none";
-
-
-        stats.classList.add(
-            "visible"
-        );
-
-
-        passwordInput.value =
-            "";
-
-    }
-    else{
-
-        loginError.style.display =
-            "block";
-
-    }
-
-}
 
 
 /* =========================================================
-   CHARGER LES STATISTIQUES
+   CHARGEMENT DES STATISTIQUES
    ========================================================= */
 
 async function loadStats(){
 
-    loading.style.display =
-        "block";
+    /*
+       Etat chargement
+    */
+
+    refreshBtn.disabled =
+        true;
+
+
+    refreshBtn.textContent =
+        "Actualisation…";
+
+
+    errorBox.classList.remove(
+        "visible"
+    );
 
 
     try{
@@ -813,97 +744,181 @@ async function loadStats(){
                     headers:{
 
                         "x-stats-token":
-                            statsToken
+                            STATS_TOKEN
 
-                    }
+                    },
+
+                    cache:"no-store"
 
                 }
 
             );
 
 
+        /*
+           Erreur serveur
+        */
+
         if(
             !response.ok
         ){
 
-            loading.style.display =
-                "none";
-
-
-            return false;
+            throw new Error(
+                "Erreur HTTP " +
+                response.status
+            );
 
         }
 
 
+        /*
+           Données JSON
+        */
+
         const data =
             await response.json();
 
+
+        /*
+           Affichage
+        */
 
         renderStats(
             data
         );
 
 
-        loading.style.display =
-            "none";
+        /*
+           Heure de dernière actualisation
+        */
+
+        const now =
+            new Date();
 
 
-        return true;
+        lastUpdate.textContent =
+            "Dernière actualisation : "
+            +
+            formatTime(
+                now
+            );
+
+
+        history.style.display =
+            "block";
 
     }
     catch(error){
 
         console.error(
+            "Erreur statistiques :",
             error
         );
 
 
-        loading.style.display =
+        errorBox.classList.add(
+            "visible"
+        );
+
+
+        history.style.display =
             "none";
 
 
-        return false;
+        lastUpdate.textContent =
+            "";
+
+    }
+    finally{
+
+        refreshBtn.disabled =
+            false;
+
+
+        refreshBtn.textContent =
+            "↻ Actualiser";
 
     }
 
 }
 
 
+
 /* =========================================================
-   AFFICHAGE
+   AFFICHER LES STATISTIQUES
    ========================================================= */
 
 function renderStats(
     data
 ){
 
-    totalVisits.textContent =
-        data.totalVisits
-        ??
-        0;
+    /*
+       Valeurs générales
+    */
+
+    const totalVisits =
+        Number(
+            data.totalVisits
+            ??
+            0
+        );
 
 
-    totalGifts.textContent =
-        data.totalGifts
-        ??
-        0;
+    const totalGifts =
+        Number(
+            data.totalGifts
+            ??
+            0
+        );
 
 
-    averageGifts.textContent =
-        data.averageGifts
-        ??
-        0;
+    const averageGifts =
+        Number(
+            data.averageGifts
+            ??
+            0
+        );
 
+
+    /*
+       Affichage résumé
+    */
+
+    totalVisitsElement.textContent =
+        totalVisits;
+
+
+    totalGiftsElement.textContent =
+        totalGifts;
+
+
+    averageGiftsElement.textContent =
+        formatAverage(
+            averageGifts
+        );
+
+
+    /*
+       Liste
+    */
 
     visitsList.innerHTML =
         "";
 
 
     const visits =
+        Array.isArray(
+            data.visits
+        )
+        ?
         data.visits
-        ||
+        :
         [];
 
+
+    /*
+       Pas encore de visite
+    */
 
     if(
         visits.length
@@ -912,9 +927,13 @@ function renderStats(
     ){
 
         visitsList.innerHTML = `
+
             <div class="empty">
+
                 Aucune visite enregistrée.
+
             </div>
+
         `;
 
 
@@ -923,114 +942,15 @@ function renderStats(
     }
 
 
+    /*
+       Chaque visite
+    */
+
     visits.forEach(
         visit => {
 
-            const date =
-                new Date(
-                    visit.created_at
-                );
-
-
-            /*
-               Affichage explicitement
-               en heure française.
-            */
-
-            const dateText =
-                new Intl.DateTimeFormat(
-                    "fr-FR",
-                    {
-
-                        timeZone:
-                            "Europe/Paris",
-
-                        day:
-                            "2-digit",
-
-                        month:
-                            "long",
-
-                        year:
-                            "numeric"
-
-                    }
-                )
-                .format(
-                    date
-                );
-
-
-            const timeText =
-                new Intl.DateTimeFormat(
-                    "fr-FR",
-                    {
-
-                        timeZone:
-                            "Europe/Paris",
-
-                        hour:
-                            "2-digit",
-
-                        minute:
-                            "2-digit",
-
-                        second:
-                            "2-digit"
-
-                    }
-                )
-                .format(
-                    date
-                );
-
-
-            const gifts =
-                visit.opened_gifts
-                ??
-                0;
-
-
-            const row =
-                document.createElement(
-                    "div"
-                );
-
-
-            row.className =
-                "visit";
-
-
-            row.innerHTML = `
-
-                <div class="visit-date">
-                    ${dateText}
-                </div>
-
-                <div class="visit-time">
-                    ${timeText}
-                </div>
-
-                <div
-                    class="
-                        visit-gifts
-                        ${
-                            gifts === 7
-                            ?
-                            "all-open"
-                            :
-                            ""
-                        }
-                    "
-                >
-                    ${gifts} / 7
-                </div>
-
-            `;
-
-
-            visitsList.appendChild(
-                row
+            createVisitRow(
+                visit
             );
 
         }
@@ -1039,99 +959,303 @@ function renderStats(
 }
 
 
-/* =========================================================
-   ACTUALISER
-   ========================================================= */
-
-refreshBtn.addEventListener(
-    "click",
-    () => {
-
-        loadStats();
-
-    }
-);
-
 
 /* =========================================================
-   FERMER / DECONNEXION
+   CREER UNE LIGNE
    ========================================================= */
 
-logoutBtn.addEventListener(
-    "click",
-    () => {
-
-        sessionStorage.removeItem(
-            "birthday_stats_token"
-        );
-
-
-        statsToken =
-            "";
-
-
-        stats.classList.remove(
-            "visible"
-        );
-
-
-        loginBox.style.display =
-            "block";
-
-
-        passwordInput.value =
-            "";
-
-
-        passwordInput.focus();
-
-    }
-);
-
-
-/* =========================================================
-   SESSION DEJA OUVERTE
-   ========================================================= */
-
-if(
-    statsToken
+function createVisitRow(
+    visit
 ){
 
-    loadStats()
-        .then(
-            success => {
-
-                if(
-                    success
-                ){
-
-                    loginBox.style.display =
-                        "none";
+    const date =
+        new Date(
+            visit.created_at
+        );
 
 
-                    stats.classList.add(
-                        "visible"
-                    );
+    /*
+       Date française
+    */
 
-                }
-                else{
+    const dateText =
+        new Intl.DateTimeFormat(
 
-                    sessionStorage.removeItem(
-                        "birthday_stats_token"
-                    );
+            "fr-FR",
 
+            {
 
-                    statsToken =
-                        "";
+                timeZone:
+                    "Europe/Paris",
 
-                }
+                day:
+                    "2-digit",
+
+                month:
+                    "long",
+
+                year:
+                    "numeric"
 
             }
+
+        )
+        .format(
+            date
+        );
+
+
+    /*
+       Heure française
+    */
+
+    const timeText =
+        new Intl.DateTimeFormat(
+
+            "fr-FR",
+
+            {
+
+                timeZone:
+                    "Europe/Paris",
+
+                hour:
+                    "2-digit",
+
+                minute:
+                    "2-digit",
+
+                second:
+                    "2-digit"
+
+            }
+
+        )
+        .format(
+            date
+        );
+
+
+    /*
+       Cadeaux ouverts
+    */
+
+    const gifts =
+        Number(
+            visit.opened_gifts
+            ??
+            0
+        );
+
+
+    /*
+       Ligne
+    */
+
+    const row =
+        document.createElement(
+            "div"
+        );
+
+
+    row.className =
+        "visit";
+
+
+    /*
+       Classe spéciale :
+       7 cadeaux ouverts.
+    */
+
+    let giftClass =
+        "";
+
+
+    if(
+        gifts >= 7
+    ){
+
+        giftClass =
+            "complete";
+
+    }
+    else if(
+        gifts === 0
+    ){
+
+        giftClass =
+            "zero";
+
+    }
+
+
+    row.innerHTML = `
+
+        <div class="visit-date">
+
+            ${escapeHTML(
+                dateText
+            )}
+
+        </div>
+
+
+        <div class="visit-time">
+
+            ${escapeHTML(
+                timeText
+            )}
+
+        </div>
+
+
+        <div
+            class="
+                visit-gifts
+                ${giftClass}
+            "
+        >
+
+            ${gifts} / 7
+
+        </div>
+
+    `;
+
+
+    visitsList.appendChild(
+        row
+    );
+
+}
+
+
+
+/* =========================================================
+   MOYENNE
+   ========================================================= */
+
+function formatAverage(
+    value
+){
+
+    /*
+       Exemple :
+
+       3      -> 3
+       3.5    -> 3,5
+       3.142  -> 3,1
+    */
+
+    return value
+        .toLocaleString(
+
+            "fr-FR",
+
+            {
+
+                maximumFractionDigits:1
+
+            }
+
         );
 
 }
 
+
+
+/* =========================================================
+   HEURE
+   ========================================================= */
+
+function formatTime(
+    date
+){
+
+    return new Intl.DateTimeFormat(
+
+        "fr-FR",
+
+        {
+
+            timeZone:
+                "Europe/Paris",
+
+            hour:
+                "2-digit",
+
+            minute:
+                "2-digit",
+
+            second:
+                "2-digit"
+
+        }
+
+    )
+    .format(
+        date
+    );
+
+}
+
+
+
+/* =========================================================
+   SECURITE TEXTE
+   ========================================================= */
+
+function escapeHTML(
+    value
+){
+
+    return String(
+        value
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+
+}
+
+
+
+/* =========================================================
+   ACTUALISATION MANUELLE
+   ========================================================= */
+
+refreshBtn.addEventListener(
+    "click",
+    loadStats
+);
+
+
+
+/* =========================================================
+   CHARGEMENT AUTOMATIQUE
+   ========================================================= */
+
+loadStats();
+
 </script>
+
 
 </body>
 

@@ -16,10 +16,6 @@
 
 <style>
 
-/* =========================================================
-   BASE
-   ========================================================= */
-
 *{
     margin:0;
     padding:0;
@@ -33,7 +29,6 @@ html{
 body{
     min-height:100vh;
     min-height:100dvh;
-
     font-family:Arial, Helvetica, sans-serif;
 
     background:
@@ -42,19 +37,12 @@ body{
         repeat;
 
     background-size:300px;
-
     overflow-x:hidden;
 }
-
-
-/* =========================================================
-   PAGE
-   ========================================================= */
 
 .page{
     width:100%;
     max-width:620px;
-
     margin:0 auto;
 
     padding:
@@ -63,40 +51,23 @@ body{
         calc(70px + env(safe-area-inset-bottom));
 }
 
-
-/* =========================================================
-   TITRE
-   ========================================================= */
-
 .header{
     width:100%;
-
     text-align:center;
-
     margin-bottom:24px;
 }
 
 .header img{
     display:block;
-
     width:100%;
     max-width:420px;
-
     height:auto;
-
     margin:0 auto;
 }
 
-
-/* =========================================================
-   LISTE
-   ========================================================= */
-
 .video-list{
     display:flex;
-
     flex-direction:column;
-
     gap:36px;
 }
 
@@ -104,16 +75,9 @@ body{
     width:100%;
 }
 
-
-/* =========================================================
-   VIDEO / CADEAU
-   ========================================================= */
-
 .video-wrapper{
     position:relative;
-
     width:82%;
-
     margin:0 auto;
 }
 
@@ -123,46 +87,26 @@ body{
 
 .video-wrapper.horizontal{
     width:88%;
-
     aspect-ratio:16 / 9;
 }
 
-
-/* =========================================================
-   VIDEO
-   ========================================================= */
-
 .main-video{
     position:absolute;
-
     inset:0;
-
     display:block;
-
     width:100%;
     height:100%;
-
     object-fit:contain;
-
     background:#000;
-
     border-radius:14px;
 }
 
-
-/* =========================================================
-   CADEAU
-   ========================================================= */
-
 .gift-cover{
     position:absolute;
-
     inset:0;
-
     z-index:10;
 
     display:flex;
-
     align-items:center;
     justify-content:center;
 
@@ -177,7 +121,6 @@ body{
 
 .gift-package{
     position:relative;
-
     width:100%;
     height:100%;
 
@@ -192,24 +135,15 @@ body{
 
 .gift-image{
     display:block;
-
     width:100%;
     height:100%;
-
     object-fit:cover;
     object-position:center;
-
     border-radius:14px;
 }
 
-
-/* =========================================================
-   OUVRE TON CADEAU
-   ========================================================= */
-
 .gift-hint{
     position:absolute;
-
     left:50%;
     bottom:18px;
 
@@ -235,16 +169,9 @@ body{
         0 3px 10px rgba(0,0,0,.20);
 }
 
-
-/* =========================================================
-   OUVERTURE
-   ========================================================= */
-
 .gift-cover.opening{
     opacity:0;
-
     transform:scale(1.035);
-
     pointer-events:none;
 }
 
@@ -255,21 +182,13 @@ body{
         );
 }
 
-
-/* =========================================================
-   ACTIONS
-   ========================================================= */
-
 .action-zone{
     width:100%;
-
     padding-top:14px;
 
     display:flex;
-
     align-items:center;
     justify-content:center;
-
     flex-wrap:wrap;
 
     gap:9px;
@@ -277,7 +196,6 @@ body{
 
 .action-btn{
     display:inline-flex;
-
     align-items:center;
     justify-content:center;
 
@@ -286,20 +204,16 @@ body{
     padding:9px 17px;
 
     border:0;
-
     border-radius:22px;
 
     font-family:inherit;
-
     font-size:13px;
     font-weight:bold;
 
     text-decoration:none;
-
     cursor:pointer;
 
     color:#fff;
-
     background:#9f80a6;
 
     box-shadow:
@@ -322,18 +236,12 @@ body{
     display:none !important;
 }
 
-
-/* =========================================================
-   MODULE REPONSE
-   ========================================================= */
-
 .reply-panel{
     display:none;
 
     width:94%;
 
     margin:20px auto 0;
-
     padding:14px;
 
     background:
@@ -349,22 +257,15 @@ body{
     display:block;
 }
 
-
-/* =========================================================
-   TROIS COEURS
-   ========================================================= */
-
 .reply-title{
     margin-bottom:8px;
 
     color:#fff;
 
     font-size:23px;
-
     line-height:1;
 
     text-align:center;
-
     letter-spacing:4px;
 }
 
@@ -375,26 +276,17 @@ body{
         rgba(255,255,255,.78);
 
     font-size:12px;
-
     line-height:1.45;
 
     text-align:center;
 }
 
-
-/* =========================================================
-   COURONNES
-   ========================================================= */
-
 .crown-zone{
     display:flex;
-
     justify-content:center;
-
     flex-wrap:wrap;
 
     gap:7px;
-
     margin-bottom:13px;
 }
 
@@ -405,7 +297,6 @@ body{
 
     min-width:62px;
     max-width:88px;
-
     height:54px;
 
     padding:0;
@@ -422,7 +313,6 @@ body{
     color:#fff;
 
     display:flex;
-
     align-items:center;
     justify-content:center;
 
@@ -439,44 +329,30 @@ body{
 
 .crown-btn.active{
     background:#e26183;
-
     border-color:#e26183;
 }
 
 .crown-btn span{
     display:block;
-
     margin:0;
-
     font-size:24px;
-
     line-height:1;
 }
 
 .normal-cross{
     color:#fff;
-
     font-size:27px !important;
-
     font-weight:300;
 }
 
-
-/* =========================================================
-   CAMERA
-   ========================================================= */
-
 .camera-frame{
     position:relative;
-
     width:100%;
-
     aspect-ratio:9 / 16;
 
     overflow:hidden;
 
     background:#13283b;
-
     border-radius:14px;
 }
 
@@ -486,32 +362,21 @@ body{
 
 #partyCanvas{
     display:block;
-
     width:100%;
     height:100%;
-
     background:#13283b;
 }
 
 #recordedPreview{
     display:none;
-
     width:100%;
     height:100%;
-
     object-fit:contain;
-
     background:#000;
 }
 
-
-/* =========================================================
-   COMPTEUR ENREGISTREMENT
-   ========================================================= */
-
 .record-time{
     position:absolute;
-
     top:10px;
     left:50%;
 
@@ -538,21 +403,13 @@ body{
     display:block;
 }
 
-
-/* =========================================================
-   BOUTONS CAMERA
-   ========================================================= */
-
 .camera-actions{
     display:flex;
-
     justify-content:center;
     align-items:center;
-
     flex-wrap:wrap;
 
     gap:8px;
-
     margin-top:12px;
 }
 
@@ -562,11 +419,9 @@ body{
     padding:9px 15px;
 
     border:0;
-
     border-radius:22px;
 
     font-family:inherit;
-
     font-size:13px;
     font-weight:bold;
 
@@ -583,38 +438,28 @@ body{
 
 .camera-btn.primary{
     background:#e26183;
-
     color:#fff;
 }
 
 .camera-btn.secondary{
     background:#fff;
-
     color:#253344;
 }
 
 .camera-btn.send{
     background:#6fa773;
-
     color:#fff;
 }
 
 .camera-btn:disabled{
     opacity:.45;
-
     cursor:default;
 }
-
-
-/* =========================================================
-   STATUS
-   ========================================================= */
 
 .status-message{
     display:none;
 
     margin-top:12px;
-
     padding:11px;
 
     border-radius:12px;
@@ -625,7 +470,6 @@ body{
     color:#fff;
 
     font-size:12px;
-
     line-height:1.45;
 
     text-align:center;
@@ -635,14 +479,8 @@ body{
     display:block;
 }
 
-
-/* =========================================================
-   RETOUR HAUT
-   ========================================================= */
-
 .back-to-top{
     position:fixed;
-
     right:16px;
 
     bottom:
@@ -657,19 +495,16 @@ body{
     height:48px;
 
     display:flex;
-
     align-items:center;
     justify-content:center;
 
     border:0;
-
     border-radius:50%;
 
     background:
         rgba(80,52,84,.90);
 
     color:#fff;
-
     font-size:24px;
 
     cursor:pointer;
@@ -678,7 +513,6 @@ body{
         0 5px 15px rgba(0,0,0,.30);
 
     opacity:0;
-
     visibility:hidden;
 
     transform:translateY(10px);
@@ -691,16 +525,9 @@ body{
 
 .back-to-top.visible{
     opacity:1;
-
     visibility:visible;
-
     transform:translateY(0);
 }
-
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
 
 @media(max-width:380px){
 
@@ -722,11 +549,6 @@ body{
     }
 
 }
-
-
-/* =========================================================
-   ACCESSIBILITE
-   ========================================================= */
 
 @media(prefers-reduced-motion:reduce){
 
@@ -772,11 +594,6 @@ body{
 ></section>
 
 
-
-<!-- =====================================================
-     REPONSE VIDEO — VIDEOS 1 A 4
-     ===================================================== -->
-
 <div
     class="reply-panel"
     id="replyPanel"
@@ -793,7 +610,6 @@ body{
 
 
     <div class="crown-zone">
-
 
         <button
             class="crown-btn"
@@ -935,7 +751,6 @@ body{
 </main>
 
 
-
 <button
     class="back-to-top"
     id="backToTop"
@@ -945,12 +760,7 @@ body{
 </button>
 
 
-
 <script type="module">
-
-/* =========================================================
-   MEDIAPIPE
-   ========================================================= */
 
 import {
     FaceLandmarker,
@@ -981,17 +791,8 @@ const SUPABASE_KEY =
 
 
 /* =========================================================
-   IDENTIFICATION DU VISITEUR
+   TYPE VISITEUR
    ========================================================= */
-
-/*
-   Ton navigateur possède :
-
-   birthday_owner = cyrille
-
-   Tous les autres navigateurs
-   seront automatiquement "visitor".
-*/
 
 const VISITOR_TYPE =
     localStorage.getItem(
@@ -1006,7 +807,7 @@ const VISITOR_TYPE =
 
 
 /* =========================================================
-   IDENTIFIANT UNIQUE DE LA VISITE
+   VISITE UNIQUE
    ========================================================= */
 
 const VISIT_KEY =
@@ -1014,7 +815,7 @@ const VISIT_KEY =
 
 
 /* =========================================================
-   CADEAUX DEJA OUVERTS
+   CADEAUX OUVERTS
    ========================================================= */
 
 const openedGiftIndexes =
@@ -1022,7 +823,7 @@ const openedGiftIndexes =
 
 
 /* =========================================================
-   CREATION DE LA VISITE
+   CREATION VISITE
    ========================================================= */
 
 const visitCreationPromise =
@@ -1069,6 +870,9 @@ async function createVisit(){
                             opened_gifts:
                                 0,
 
+                            opened_list:
+                                [],
+
                             visitor_type:
                                 VISITOR_TYPE
 
@@ -1112,7 +916,7 @@ async function createVisit(){
 
 
 /* =========================================================
-   MISE A JOUR DES CADEAUX OUVERTS
+   MISE A JOUR DES CADEAUX
    ========================================================= */
 
 async function updateOpenedGifts(){
@@ -1128,8 +932,30 @@ async function updateOpenedGifts(){
     }
 
 
+    /*
+       Nombre de cadeaux ouverts
+    */
+
     const total =
         openedGiftIndexes.size;
+
+
+    /*
+       Liste lisible 1 à 7
+    */
+
+    const openedList =
+        Array.from(
+            openedGiftIndexes
+        )
+        .map(
+            index =>
+                index + 1
+        )
+        .sort(
+            (a,b) =>
+                a - b
+        );
 
 
     try{
@@ -1168,7 +994,10 @@ async function updateOpenedGifts(){
                         JSON.stringify({
 
                             opened_gifts:
-                                total
+                                total,
+
+                            opened_list:
+                                openedList
 
                         })
 
@@ -1228,7 +1057,7 @@ function registerGiftOpening(
 
 
 /* =========================================================
-   LES 7 VIDEOS
+   VIDEOS
    ========================================================= */
 
 const cards = [
@@ -1364,7 +1193,7 @@ crownImages.crown4 =
 
 
 /* =========================================================
-   CREATION DES CARTES
+   CREATION CARTES
    ========================================================= */
 
 const videoList =
@@ -1659,7 +1488,7 @@ let selfieFrame = {
 
 
 /* =========================================================
-   ETOILES FEERIQUES
+   ETOILES
    ========================================================= */
 
 const fairyStars =
@@ -1720,7 +1549,7 @@ const fairyStars =
 
 
 /* =========================================================
-   CHARGEMENT INTELLIGENT DES VIDEOS
+   LAZY LOAD
    ========================================================= */
 
 const videoObserver =
@@ -1786,7 +1615,7 @@ videos.forEach(
 
 
 /* =========================================================
-   OUVERTURE D'UN CADEAU
+   OUVERTURE CADEAU
    ========================================================= */
 
 async function openGift(
@@ -1820,11 +1649,6 @@ async function openGift(
         );
 
 
-    /*
-       ENREGISTRE LE CADEAU
-       DANS LES STATS
-    */
-
     registerGiftOpening(
         cardIndex
     );
@@ -1849,11 +1673,6 @@ async function openGift(
         "opening"
     );
 
-
-    /*
-       Réponse uniquement
-       pour 1, 2, 3 et 4.
-    */
 
     if(
         card.dataset.reply
@@ -1902,7 +1721,7 @@ async function openGift(
 
 
 /* =========================================================
-   CLIC / CLAVIER CADEAUX
+   CLIC CADEAUX
    ========================================================= */
 
 gifts.forEach(
@@ -1951,7 +1770,7 @@ gifts.forEach(
 
 
 /* =========================================================
-   UNE SEULE VIDEO A LA FOIS
+   UNE VIDEO A LA FOIS
    ========================================================= */
 
 videos.forEach(
@@ -1987,7 +1806,7 @@ videos.forEach(
 
 
 /* =========================================================
-   REPONDRE EN VIDEO
+   REPONDRE
    ========================================================= */
 
 replyButtons.forEach(
@@ -2316,7 +2135,7 @@ async function initFaceTracking(){
 
 
 /* =========================================================
-   BOUCLE DESSIN
+   DRAW
    ========================================================= */
 
 function drawFrame(){
@@ -2448,7 +2267,7 @@ function drawFrame(){
 
 
 /* =========================================================
-   FRAME.PNG
+   FRAME
    ========================================================= */
 
 function drawFrameBackground(
@@ -2676,7 +2495,7 @@ function drawSelfieScene(
 
 
 /* =========================================================
-   LANDMARK -> CANVAS
+   LANDMARK
    ========================================================= */
 
 function landmarkToCanvas(
@@ -2878,10 +2697,6 @@ function drawCrown(
         p.width;
 
 
-    /*
-       Tiare réduite de 20 %.
-    */
-
     if(
         selectedCrown
         ===
@@ -2943,7 +2758,7 @@ function drawCrown(
 
 
 /* =========================================================
-   ETOILES FEERIQUES
+   ETOILES
    ========================================================= */
 
 function drawFairyStars(){
@@ -3033,10 +2848,6 @@ function drawFairyStars(){
 
 }
 
-
-/* =========================================================
-   UNE ETOILE
-   ========================================================= */
 
 function drawSingleFairyStar(
     x,
@@ -3151,7 +2962,7 @@ function drawSingleFairyStar(
 
 
 /* =========================================================
-   TYPE ENREGISTREMENT
+   MIME
    ========================================================= */
 
 function getSupportedMimeType(){
@@ -3195,7 +3006,7 @@ function getSupportedMimeType(){
 
 
 /* =========================================================
-   ENREGISTRER
+   RECORD
    ========================================================= */
 
 startRecord.addEventListener(
@@ -3497,10 +3308,6 @@ startRecord.addEventListener(
 );
 
 
-/* =========================================================
-   STOP
-   ========================================================= */
-
 function stopRecording(){
 
     if(
@@ -3539,7 +3346,7 @@ stopRecord.addEventListener(
 
 
 /* =========================================================
-   RECOMMENCER
+   RESTART
    ========================================================= */
 
 restartRecord.addEventListener(
@@ -3620,7 +3427,7 @@ restartRecord.addEventListener(
 
 
 /* =========================================================
-   PARTAGE
+   SHARE
    ========================================================= */
 
 shareRecord.addEventListener(
@@ -3706,7 +3513,7 @@ shareRecord.addEventListener(
 
 
 /* =========================================================
-   RESET REPONSE
+   RESET
    ========================================================= */
 
 function resetReplyInterface(){
@@ -3820,7 +3627,7 @@ function resetReplyInterface(){
 
 
 /* =========================================================
-   COUPER CAMERA
+   CAMERA OFF
    ========================================================= */
 
 function stopCameraStream(){
@@ -3970,7 +3777,7 @@ backToTop.addEventListener(
 
 
 /* =========================================================
-   NETTOYAGE
+   CLEANUP
    ========================================================= */
 
 window.addEventListener(

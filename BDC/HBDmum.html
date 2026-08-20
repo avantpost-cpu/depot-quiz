@@ -9,7 +9,7 @@
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 >
 
-<meta name="theme-color" content="#9f80a6">
+<meta name="theme-color" content="#13283b">
 
 <title>Bon anniversaire Maman</title>
 
@@ -36,7 +36,7 @@ body{
     font-family:Arial, Helvetica, sans-serif;
 
     background:
-        #9f80a6
+        #13283b
         url("https://avantpost-cpu.github.io/depot-quiz/BDC/motif.jpg")
         repeat;
 
@@ -69,9 +69,7 @@ body{
 
 .header{
     width:100%;
-
     text-align:center;
-
     margin-bottom:24px;
 }
 
@@ -88,14 +86,13 @@ body{
 
 
 /* =========================================================
-   LISTE DES VIDÉOS
+   LISTE
    ========================================================= */
 
 .video-list{
     display:flex;
     flex-direction:column;
-
-    gap:28px;
+    gap:34px;
 }
 
 
@@ -109,24 +106,23 @@ body{
 
 
 /* =========================================================
-   ZONE VIDÉO / CADEAU
+   ZONE VIDÉO
    ========================================================= */
 
 .video-wrapper{
     position:relative;
-
     width:100%;
 }
 
 
-/* 9:16 */
+/* vertical */
 
 .video-wrapper.vertical{
     aspect-ratio:9 / 16;
 }
 
 
-/* 16:9 */
+/* horizontal */
 
 .video-wrapper.horizontal{
     aspect-ratio:16 / 9;
@@ -139,7 +135,6 @@ body{
 
 .video-wrapper video{
     position:absolute;
-
     inset:0;
 
     display:block;
@@ -149,7 +144,7 @@ body{
 
     object-fit:contain;
 
-    background:#000000;
+    background:#000;
 
     border-radius:18px;
 }
@@ -161,30 +156,50 @@ body{
 
 .gift-cover{
     position:absolute;
-
     inset:0;
 
     z-index:10;
 
     display:flex;
-
     align-items:center;
     justify-content:center;
 
     cursor:pointer;
 
-    opacity:1;
-
-    transform:scale(1);
-
-    transition:
-        opacity .45s ease,
-        transform .45s ease;
+    pointer-events:auto;
 }
 
 
 /* =========================================================
-   IMAGE DU PAQUET
+   CONTENEUR DU CADEAU
+   ========================================================= */
+
+.gift-package{
+    position:relative;
+
+    width:82%;
+    height:82%;
+
+    filter:
+        drop-shadow(
+            0 14px 18px rgba(0,0,0,.42)
+        );
+
+    transition:
+        filter .25s ease;
+}
+
+
+/* horizontal */
+
+.video-wrapper.horizontal .gift-package{
+    width:88%;
+    height:88%;
+}
+
+
+/* =========================================================
+   IMAGE ORIGINALE
    ========================================================= */
 
 .gift-image{
@@ -196,74 +211,246 @@ body{
     object-fit:cover;
     object-position:center;
 
-    border-radius:18px;
-
-    /*
-       OMBRE PORTÉE DU PAQUET
-    */
-
-    filter:
-        drop-shadow(
-            0 12px 14px rgba(0,0,0,.40)
-        );
+    border-radius:14px;
 
     transition:
-        filter .45s ease,
-        opacity .45s ease,
-        transform .45s ease;
+        opacity .1s ease;
 }
 
 
 /* =========================================================
-   PACK 2 HORIZONTAL
+   MORCEAUX DE PAPIER
    ========================================================= */
 
-.video-wrapper.horizontal .gift-image{
-    width:100%;
-    height:100%;
+.tear-piece{
+    position:absolute;
+    inset:0;
 
-    object-fit:cover;
-    object-position:center;
-}
+    background-size:100% 100%;
+    background-position:center;
+    background-repeat:no-repeat;
 
+    border-radius:14px;
 
-/* =========================================================
-   OUVERTURE DU CADEAU
-   ========================================================= */
+    pointer-events:none;
 
-.gift-cover.open{
     opacity:0;
 
-    transform:scale(1.025);
+    will-change:
+        transform,
+        opacity;
+}
 
+
+/* =========================================================
+   DÉCHIRURE GAUCHE
+   ========================================================= */
+
+.tear-left{
+
+    clip-path:polygon(
+        0 0,
+        51% 0,
+        48% 6%,
+        53% 12%,
+        47% 19%,
+        52% 26%,
+        48% 33%,
+        54% 41%,
+        47% 49%,
+        53% 57%,
+        48% 65%,
+        54% 73%,
+        47% 81%,
+        52% 89%,
+        48% 95%,
+        51% 100%,
+        0 100%
+    );
+
+}
+
+
+/* =========================================================
+   DÉCHIRURE DROITE
+   ========================================================= */
+
+.tear-right{
+
+    clip-path:polygon(
+        51% 0,
+        100% 0,
+        100% 100%,
+        51% 100%,
+        48% 95%,
+        52% 89%,
+        47% 81%,
+        54% 73%,
+        48% 65%,
+        53% 57%,
+        47% 49%,
+        54% 41%,
+        48% 33%,
+        52% 26%,
+        47% 19%,
+        53% 12%,
+        48% 6%
+    );
+
+}
+
+
+/* =========================================================
+   OUVERTURE
+   ========================================================= */
+
+.gift-cover.tearing{
     pointer-events:none;
 }
 
 
-/*
-   L'ombre portée disparaît
-   avec le paquet.
-*/
+.gift-cover.tearing .gift-image{
+    opacity:0;
+}
 
-.gift-cover.open .gift-image{
-    filter:
-        drop-shadow(
-            0 0 0 rgba(0,0,0,0)
-        );
+
+.gift-cover.tearing .tear-piece{
+    opacity:1;
 }
 
 
 /* =========================================================
-   "OUVRE TON CADEAU"
+   ANIMATION GAUCHE
+   ========================================================= */
+
+.gift-cover.tearing .tear-left{
+
+    animation:
+        tearLeft .82s
+        cubic-bezier(.18,.72,.20,1)
+        forwards;
+
+}
+
+
+/* =========================================================
+   ANIMATION DROITE
+   ========================================================= */
+
+.gift-cover.tearing .tear-right{
+
+    animation:
+        tearRight .82s
+        cubic-bezier(.18,.72,.20,1)
+        forwards;
+
+}
+
+
+/* =========================================================
+   ANIMATION DU PAQUET
+   ========================================================= */
+
+@keyframes tearLeft{
+
+    0%{
+        transform:
+            translate(0,0)
+            rotate(0deg);
+
+        opacity:1;
+    }
+
+    22%{
+        transform:
+            translate(-4px,0)
+            rotate(-.5deg);
+
+        opacity:1;
+    }
+
+    48%{
+        transform:
+            translate(-18px,5px)
+            rotate(-2deg);
+
+        opacity:1;
+    }
+
+    100%{
+        transform:
+            translate(-92px,38px)
+            rotate(-11deg);
+
+        opacity:0;
+    }
+
+}
+
+
+@keyframes tearRight{
+
+    0%{
+        transform:
+            translate(0,0)
+            rotate(0deg);
+
+        opacity:1;
+    }
+
+    22%{
+        transform:
+            translate(4px,0)
+            rotate(.5deg);
+
+        opacity:1;
+    }
+
+    48%{
+        transform:
+            translate(18px,5px)
+            rotate(2deg);
+
+        opacity:1;
+    }
+
+    100%{
+        transform:
+            translate(92px,38px)
+            rotate(11deg);
+
+        opacity:0;
+    }
+
+}
+
+
+/* =========================================================
+   OMBRE DISPARAÎT
+   ========================================================= */
+
+.gift-cover.tearing .gift-package{
+
+    filter:
+        drop-shadow(
+            0 0 0 rgba(0,0,0,0)
+        );
+
+}
+
+
+/* =========================================================
+   TEXTE
    ========================================================= */
 
 .gift-hint{
+
     position:absolute;
 
     left:50%;
-    bottom:18px;
+    bottom:9%;
 
-    z-index:20;
+    z-index:30;
 
     transform:translateX(-50%);
 
@@ -276,17 +463,30 @@ body{
     background:
         rgba(0,0,0,.58);
 
-    color:#ffffff;
+    color:#fff;
 
     font-size:13px;
     font-weight:bold;
 
-    letter-spacing:.2px;
-
     box-shadow:
-        0 3px 10px rgba(0,0,0,.20);
+        0 3px 10px rgba(0,0,0,.2);
 
     pointer-events:none;
+
+    transition:
+        opacity .18s ease,
+        transform .18s ease;
+}
+
+
+.gift-cover.tearing .gift-hint{
+
+    opacity:0;
+
+    transform:
+        translateX(-50%)
+        scale(.88);
+
 }
 
 
@@ -296,9 +496,7 @@ body{
 
 .download-zone{
     width:100%;
-
     padding-top:14px;
-
     text-align:center;
 }
 
@@ -316,7 +514,7 @@ body{
     font-size:13px;
     font-weight:bold;
 
-    color:#ffffff;
+    color:#fff;
 
     background:#9f80a6;
 
@@ -334,9 +532,11 @@ body{
 
 
 .download-btn:active{
+
     transform:scale(.96);
 
     opacity:.85;
+
 }
 
 
@@ -345,6 +545,7 @@ body{
    ========================================================= */
 
 .back-to-top{
+
     position:fixed;
 
     right:16px;
@@ -370,36 +571,41 @@ body{
     border-radius:50%;
 
     background:
-        rgba(80,52,84,.90);
+        rgba(80,52,84,.9);
 
-    color:#ffffff;
+    color:#fff;
 
     font-size:24px;
 
     cursor:pointer;
 
     box-shadow:
-        0 5px 15px rgba(0,0,0,.30);
+        0 5px 15px rgba(0,0,0,.3);
 
     opacity:0;
 
     visibility:hidden;
 
-    transform:translateY(10px);
+    transform:
+        translateY(10px);
 
     transition:
         opacity .25s ease,
         transform .25s ease,
         visibility .25s;
+
 }
 
 
 .back-to-top.visible{
+
     opacity:1;
 
     visibility:visible;
 
-    transform:translateY(0);
+    transform:
+        translateY(0);
+
 }
 
 
@@ -415,25 +621,32 @@ body{
     }
 
     .video-list{
-        gap:24px;
+        gap:28px;
+    }
+
+    .gift-package{
+        width:80%;
+        height:80%;
+    }
+
+    .video-wrapper.horizontal .gift-package{
+        width:88%;
+        height:86%;
     }
 
     .video-wrapper video,
-    .gift-image{
-        border-radius:14px;
+    .gift-image,
+    .tear-piece{
+        border-radius:12px;
     }
 
     .download-btn{
         font-size:12px;
-
         padding:8px 14px;
     }
 
     .gift-hint{
-        bottom:12px;
-
         font-size:12px;
-
         padding:8px 13px;
     }
 
@@ -450,10 +663,9 @@ body{
         scroll-behavior:auto;
     }
 
-    .gift-cover,
-    .gift-image,
-    .back-to-top{
-        transition:none;
+    .gift-cover.tearing .tear-left,
+    .gift-cover.tearing .tear-right{
+        animation-duration:.01s;
     }
 
 }
@@ -466,10 +678,7 @@ body{
 <body>
 
 
-<main
-    class="page"
-    id="top"
->
+<main class="page" id="top">
 
 
 <header class="header">
@@ -482,14 +691,11 @@ body{
 </header>
 
 
-
 <section class="video-list">
-
 
 
 <!-- =====================================================
      1 — MAMIE
-     pack1.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -503,6 +709,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/mamie.mp4"
         ></video>
 
+
         <div
             class="gift-cover"
             role="button"
@@ -510,11 +717,23 @@ body{
             aria-label="Ouvrir le cadeau"
         >
 
-            <img
-                class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack1.jpg"
-                alt=""
+            <div
+                class="gift-package"
+                data-image="https://avantpost-cpu.github.io/depot-quiz/BDC/pack1.jpg"
             >
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack1.jpg"
+                    alt=""
+                >
+
+                <div class="tear-piece tear-left"></div>
+
+                <div class="tear-piece tear-right"></div>
+
+            </div>
+
 
             <div class="gift-hint">
                 Ouvre ton cadeau
@@ -543,8 +762,7 @@ body{
 
 <!-- =====================================================
      2 — TATA
-     pack2.jpg
-     HORIZONTAL 16:9
+     HORIZONTAL
      ===================================================== -->
 
 <div class="video-card">
@@ -558,6 +776,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/tata.mp4"
         ></video>
 
+
         <div
             class="gift-cover"
             role="button"
@@ -565,11 +784,23 @@ body{
             aria-label="Ouvrir le cadeau"
         >
 
-            <img
-                class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack2.jpg"
-                alt=""
+            <div
+                class="gift-package"
+                data-image="https://avantpost-cpu.github.io/depot-quiz/BDC/pack2.jpg"
             >
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack2.jpg"
+                    alt=""
+                >
+
+                <div class="tear-piece tear-left"></div>
+
+                <div class="tear-piece tear-right"></div>
+
+            </div>
+
 
             <div class="gift-hint">
                 Ouvre ton cadeau
@@ -598,7 +829,6 @@ body{
 
 <!-- =====================================================
      3 — RAOUL
-     pack3.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -612,6 +842,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/raoul.mp4"
         ></video>
 
+
         <div
             class="gift-cover"
             role="button"
@@ -619,11 +850,23 @@ body{
             aria-label="Ouvrir le cadeau"
         >
 
-            <img
-                class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack3.jpg"
-                alt=""
+            <div
+                class="gift-package"
+                data-image="https://avantpost-cpu.github.io/depot-quiz/BDC/pack3.jpg"
             >
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack3.jpg"
+                    alt=""
+                >
+
+                <div class="tear-piece tear-left"></div>
+
+                <div class="tear-piece tear-right"></div>
+
+            </div>
+
 
             <div class="gift-hint">
                 Ouvre ton cadeau
@@ -652,7 +895,6 @@ body{
 
 <!-- =====================================================
      4 — CLAIRE
-     pack4.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -666,6 +908,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/claire.mp4"
         ></video>
 
+
         <div
             class="gift-cover"
             role="button"
@@ -673,11 +916,23 @@ body{
             aria-label="Ouvrir le cadeau"
         >
 
-            <img
-                class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack4.jpg"
-                alt=""
+            <div
+                class="gift-package"
+                data-image="https://avantpost-cpu.github.io/depot-quiz/BDC/pack4.jpg"
             >
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack4.jpg"
+                    alt=""
+                >
+
+                <div class="tear-piece tear-left"></div>
+
+                <div class="tear-piece tear-right"></div>
+
+            </div>
+
 
             <div class="gift-hint">
                 Ouvre ton cadeau
@@ -706,7 +961,6 @@ body{
 
 <!-- =====================================================
      5 — OSAKA
-     pack5.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -720,6 +974,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/osaka.mp4"
         ></video>
 
+
         <div
             class="gift-cover"
             role="button"
@@ -727,11 +982,23 @@ body{
             aria-label="Ouvrir le cadeau"
         >
 
-            <img
-                class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack5.jpg"
-                alt=""
+            <div
+                class="gift-package"
+                data-image="https://avantpost-cpu.github.io/depot-quiz/BDC/pack5.jpg"
             >
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack5.jpg"
+                    alt=""
+                >
+
+                <div class="tear-piece tear-left"></div>
+
+                <div class="tear-piece tear-right"></div>
+
+            </div>
+
 
             <div class="gift-hint">
                 Ouvre ton cadeau
@@ -760,7 +1027,6 @@ body{
 
 <!-- =====================================================
      6 — MARCEL
-     pack6.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -774,6 +1040,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/marcel.mp4"
         ></video>
 
+
         <div
             class="gift-cover"
             role="button"
@@ -781,11 +1048,23 @@ body{
             aria-label="Ouvrir le cadeau"
         >
 
-            <img
-                class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack6.jpg"
-                alt=""
+            <div
+                class="gift-package"
+                data-image="https://avantpost-cpu.github.io/depot-quiz/BDC/pack6.jpg"
             >
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack6.jpg"
+                    alt=""
+                >
+
+                <div class="tear-piece tear-left"></div>
+
+                <div class="tear-piece tear-right"></div>
+
+            </div>
+
 
             <div class="gift-hint">
                 Ouvre ton cadeau
@@ -814,7 +1093,6 @@ body{
 
 <!-- =====================================================
      7 — COUPLE
-     pack7.jpg
      ===================================================== -->
 
 <div class="video-card">
@@ -828,6 +1106,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/couple.mp4"
         ></video>
 
+
         <div
             class="gift-cover"
             role="button"
@@ -835,11 +1114,23 @@ body{
             aria-label="Ouvrir le cadeau"
         >
 
-            <img
-                class="gift-image"
-                src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack7.jpg"
-                alt=""
+            <div
+                class="gift-package"
+                data-image="https://avantpost-cpu.github.io/depot-quiz/BDC/pack7.jpg"
             >
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack7.jpg"
+                    alt=""
+                >
+
+                <div class="tear-piece tear-left"></div>
+
+                <div class="tear-piece tear-right"></div>
+
+            </div>
+
 
             <div class="gift-hint">
                 Ouvre ton cadeau
@@ -870,11 +1161,6 @@ body{
 </main>
 
 
-
-<!-- =====================================================
-     RETOUR EN HAUT
-     ===================================================== -->
-
 <button
     class="back-to-top"
     id="backToTop"
@@ -882,7 +1168,6 @@ body{
 >
     ↑
 </button>
-
 
 
 <script>
@@ -903,7 +1188,32 @@ const backToTop =
 
 
 /* =========================================================
-   CHARGEMENT INTELLIGENT DES VIDÉOS
+   PRÉPARATION DES MORCEAUX
+   ========================================================= */
+
+gifts.forEach((gift) => {
+
+    const giftPackage =
+        gift.querySelector(".gift-package");
+
+    const image =
+        giftPackage.dataset.image;
+
+    const pieces =
+        gift.querySelectorAll(".tear-piece");
+
+    pieces.forEach((piece) => {
+
+        piece.style.backgroundImage =
+            `url("${image}")`;
+
+    });
+
+});
+
+
+/* =========================================================
+   CHARGEMENT INTELLIGENT
    ========================================================= */
 
 const videoObserver =
@@ -957,14 +1267,14 @@ videos.forEach((video) => {
 
 
 /* =========================================================
-   OUVERTURE DU CADEAU
+   OUVERTURE
    ========================================================= */
 
 async function openGift(gift){
 
     if(
         gift.classList.contains(
-            "open"
+            "tearing"
         )
     ){
         return;
@@ -972,17 +1282,13 @@ async function openGift(gift){
 
 
     const wrapper =
-        gift.closest(
-            ".video-wrapper"
-        );
+        gift.closest(".video-wrapper");
 
     const video =
-        wrapper.querySelector(
-            "video"
-        );
+        wrapper.querySelector("video");
 
 
-    /* charge immédiatement la vidéo */
+    /* charge la vidéo */
 
     if(
         !video.src &&
@@ -997,37 +1303,14 @@ async function openGift(gift){
     }
 
 
-    /* -----------------------------------------------------
-       Le paquet commence à disparaître.
-       L'ombre disparaît en même temps.
-       ----------------------------------------------------- */
+    /* démarre l'effet */
 
     gift.classList.add(
-        "open"
+        "tearing"
     );
 
 
-    /* -----------------------------------------------------
-       Suppression complète du paquet
-       après l'animation.
-       ----------------------------------------------------- */
-
-    setTimeout(
-        () => {
-
-            gift.style.display =
-                "none";
-
-        },
-        450
-    );
-
-
-    /* -----------------------------------------------------
-       Démarrage de la vidéo.
-       Le play() est déclenché directement
-       depuis le toucher pour Safari iPhone.
-       ----------------------------------------------------- */
+    /* lancement vidéo */
 
     try{
 
@@ -1036,19 +1319,26 @@ async function openGift(gift){
     }
     catch(error){
 
-        /*
-           Si Safari demande un second toucher,
-           les contrôles de la vidéo
-           restent disponibles.
-        */
-
     }
+
+
+    /* suppression du paquet */
+
+    setTimeout(
+        () => {
+
+            gift.style.display =
+                "none";
+
+        },
+        820
+    );
 
 }
 
 
 /* =========================================================
-   CLIC / TOUCHER SUR LES CADEAUX
+   CLIC
    ========================================================= */
 
 gifts.forEach((gift) => {
@@ -1057,15 +1347,11 @@ gifts.forEach((gift) => {
         "click",
         () => {
 
-            openGift(
-                gift
-            );
+            openGift(gift);
 
         }
     );
 
-
-    /* clavier */
 
     gift.addEventListener(
         "keydown",
@@ -1078,9 +1364,7 @@ gifts.forEach((gift) => {
 
                 event.preventDefault();
 
-                openGift(
-                    gift
-                );
+                openGift(gift);
 
             }
 
@@ -1091,7 +1375,7 @@ gifts.forEach((gift) => {
 
 
 /* =========================================================
-   UNE SEULE VIDÉO À LA FOIS
+   UNE SEULE VIDÉO
    ========================================================= */
 
 videos.forEach((video) => {
@@ -1122,7 +1406,7 @@ videos.forEach((video) => {
 
 
 /* =========================================================
-   PAUSE AUTOMATIQUE HORS ÉCRAN
+   PAUSE HORS ÉCRAN
    ========================================================= */
 
 const pauseObserver =
@@ -1159,9 +1443,7 @@ const pauseObserver =
 
 videos.forEach((video) => {
 
-    pauseObserver.observe(
-        video
-    );
+    pauseObserver.observe(video);
 
 });
 

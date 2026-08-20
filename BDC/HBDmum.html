@@ -14,7 +14,6 @@
 
 <title>Bon anniversaire Maman</title>
 
-
 <style>
 
 /* =========================================================
@@ -93,6 +92,7 @@ body{
 .video-list{
     display:flex;
     flex-direction:column;
+
     gap:36px;
 }
 
@@ -156,7 +156,6 @@ body{
     z-index:10;
 
     display:flex;
-
     align-items:center;
     justify-content:center;
 
@@ -387,14 +386,14 @@ body{
 .crown-btn{
     flex:
         1 1
-        calc(33.333% - 7px);
+        calc(20% - 7px);
 
-    min-width:88px;
-    max-width:135px;
+    min-width:62px;
+    max-width:88px;
 
-    min-height:50px;
+    height:54px;
 
-    padding:6px;
+    padding:0;
 
     border:
         1px solid
@@ -407,10 +406,9 @@ body{
 
     color:#fff;
 
-    font-family:inherit;
-
-    font-size:11px;
-    font-weight:bold;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
     cursor:pointer;
 
@@ -432,9 +430,19 @@ body{
 .crown-btn span{
     display:block;
 
-    margin-bottom:2px;
+    margin:0;
 
-    font-size:20px;
+    font-size:24px;
+
+    line-height:1;
+}
+
+.normal-cross{
+    color:#fff;
+
+    font-size:27px !important;
+
+    font-weight:300;
 }
 
 
@@ -559,19 +567,16 @@ body{
 
 .camera-btn.primary{
     background:#e26183;
-
     color:#fff;
 }
 
 .camera-btn.secondary{
     background:#fff;
-
     color:#253344;
 }
 
 .camera-btn.send{
     background:#6fa773;
-
     color:#fff;
 }
 
@@ -697,12 +702,6 @@ body{
         width:96%;
     }
 
-    .crown-btn{
-        min-width:82px;
-
-        font-size:10px;
-    }
-
 }
 
 </style>
@@ -751,7 +750,7 @@ body{
 
 
     <div class="reply-info">
-        Choisis ta couronne, enregistre ton message puis partage directement ta vidéo.
+        Choisis un filtre, enregistre ton message puis partage directement ta vidéo.
     </div>
 
 
@@ -762,9 +761,9 @@ body{
             class="crown-btn"
             data-crown="none"
             type="button"
+            aria-label="Sans couronne"
         >
-            <span>🙂</span>
-            Normal
+            <span class="normal-cross">×</span>
         </button>
 
 
@@ -772,9 +771,9 @@ body{
             class="crown-btn active"
             data-crown="crown1"
             type="button"
+            aria-label="Couronne 1"
         >
             <span>🌹</span>
-            Roses
         </button>
 
 
@@ -782,9 +781,9 @@ body{
             class="crown-btn"
             data-crown="crown2"
             type="button"
+            aria-label="Couronne 2"
         >
             <span>🦄</span>
-            Licorne
         </button>
 
 
@@ -792,9 +791,9 @@ body{
             class="crown-btn"
             data-crown="crown3"
             type="button"
+            aria-label="Couronne 3"
         >
             <span>💖</span>
-            Tiare
         </button>
 
 
@@ -802,9 +801,9 @@ body{
             class="crown-btn"
             data-crown="crown4"
             type="button"
+            aria-label="Couronne 4"
         >
             <span>👑</span>
-            Néon
         </button>
 
 
@@ -1009,7 +1008,7 @@ frameImage.src =
 
 
 /* =========================================================
-   COURONNES
+   COURONNES PNG
    ========================================================= */
 
 const crownImages = {};
@@ -1872,19 +1871,11 @@ function drawFrame(){
     );
 
 
-    /*
-       1 — FRAME PNG
-    */
-
     drawFrameBackground(
         W,
         H
     );
 
-
-    /*
-       2 — SELFIE
-    */
 
     if(
         cameraSource.readyState
@@ -1899,10 +1890,6 @@ function drawFrame(){
 
     }
 
-
-    /*
-       3 — TRACKING
-    */
 
     if(
         trackingReady
@@ -1964,10 +1951,6 @@ function drawFrame(){
     }
 
 
-    /*
-       4 — ETOILES
-    */
-
     if(
         selectedCrown
         !==
@@ -2028,11 +2011,6 @@ function drawFrameBackground(
     }
 
 
-    /*
-       Frame.png remplit exactement
-       tout le canvas.
-    */
-
     ctx.drawImage(
 
         frameImage,
@@ -2073,11 +2051,6 @@ function drawSelfieScene(
         return;
     }
 
-
-    /*
-       Le selfie laisse visible
-       une partie de frame.png.
-    */
 
     const maxW =
         W
@@ -2168,11 +2141,6 @@ function drawSelfieScene(
     };
 
 
-    /*
-       séparation très légère
-       entre photo et illustration
-    */
-
     ctx.save();
 
 
@@ -2201,10 +2169,6 @@ function drawSelfieScene(
 
     ctx.restore();
 
-
-    /*
-       CAMERA MIROIR
-    */
 
     ctx.save();
 
@@ -2330,10 +2294,6 @@ function getCrownTransform(
         );
 
 
-    /*
-       INCLINAISON
-    */
-
     let angle =
         Math.atan2(
 
@@ -2347,11 +2307,6 @@ function getCrownTransform(
 
         );
 
-
-    /*
-       Empêche la couronne
-       de se retourner.
-    */
 
     if(
         angle
@@ -2377,10 +2332,6 @@ function getCrownTransform(
     }
 
 
-    /*
-       TAILLE
-    */
-
     const width =
         faceWidth
         *
@@ -2388,19 +2339,8 @@ function getCrownTransform(
 
 
     /*
-       POSITION VERTICALE
-
-       Avant : .18 / .32.
-
-       Ici : .42
-
-       La couronne descend donc
-       nettement plus bas et vient
-       réellement chevaucher le haut
-       de la tête.
-
-       Si nécessaire :
-       .48 = encore plus bas.
+       Couronnes descendues
+       comme dans le dernier test.
     */
 
     const y =
@@ -2473,8 +2413,25 @@ function drawCrown(
         image.naturalWidth;
 
 
-    const width =
+    let width =
         p.width;
+
+
+    /*
+       crown3 = tiare
+       réduction de 20 %
+    */
+
+    if(
+        selectedCrown
+        ===
+        "crown3"
+    ){
+
+        width *=
+            .80;
+
+    }
 
 
     const height =
@@ -2504,11 +2461,6 @@ function drawCrown(
     ctx.shadowBlur =
         9;
 
-
-    /*
-       Bas du PNG au niveau
-       du point calculé sur la tête.
-    */
 
     ctx.drawImage(
 
@@ -2543,10 +2495,6 @@ function drawFairyStars(){
     fairyStars.forEach(
         star => {
 
-            /*
-               dérive extrêmement lente
-            */
-
             star.y -=
                 star.drift;
 
@@ -2570,10 +2518,6 @@ function drawFairyStars(){
 
             }
 
-
-            /*
-               scintillement
-            */
 
             const pulse =
                 (
@@ -2677,10 +2621,6 @@ function drawSingleFairyStar(
         3;
 
 
-    /*
-       étoile 4 branches
-    */
-
     ctx.beginPath();
 
 
@@ -2727,10 +2667,6 @@ function drawSingleFairyStar(
 
     ctx.fill();
 
-
-    /*
-       centre lumineux
-    */
 
     ctx.beginPath();
 
@@ -2834,10 +2770,6 @@ startRecord.addEventListener(
             new MediaStream();
 
 
-        /*
-           VIDEO
-        */
-
         canvasStream
             .getVideoTracks()
             .forEach(
@@ -2850,10 +2782,6 @@ startRecord.addEventListener(
                 }
             );
 
-
-        /*
-           AUDIO
-        */
 
         cameraStream
             .getAudioTracks()

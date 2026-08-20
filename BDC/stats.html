@@ -56,7 +56,7 @@ body{
 
 .page{
     width:100%;
-    max-width:760px;
+    max-width:900px;
 
     margin:0 auto;
 
@@ -94,7 +94,7 @@ body{
 
 
 /* =========================================================
-   RESUME PRINCIPAL
+   RESUME
    ========================================================= */
 
 .summary{
@@ -141,7 +141,7 @@ body{
 
 
 /* =========================================================
-   TES PROPRES VISITES
+   TES TESTS
    ========================================================= */
 
 .owner-summary{
@@ -238,17 +238,18 @@ body{
 
 
 /* =========================================================
-   ENTETE TABLEAU
+   ENTETE
    ========================================================= */
 
 .visit-header{
     display:grid;
 
     grid-template-columns:
+        1.15fr
+        .62fr
+        .58fr
         1.25fr
-        .65fr
-        .7fr
-        .75fr;
+        .68fr;
 
     gap:8px;
 
@@ -271,7 +272,7 @@ body{
 }
 
 .visit-header div:nth-child(3),
-.visit-header div:nth-child(4){
+.visit-header div:nth-child(5){
     text-align:right;
 }
 
@@ -284,10 +285,11 @@ body{
     display:grid;
 
     grid-template-columns:
+        1.15fr
+        .62fr
+        .58fr
         1.25fr
-        .65fr
-        .7fr
-        .75fr;
+        .68fr;
 
     align-items:center;
 
@@ -320,7 +322,7 @@ body{
 .visit-gifts{
     text-align:right;
 
-    font-size:15px;
+    font-size:14px;
     font-weight:bold;
 }
 
@@ -334,7 +336,7 @@ body{
 
 
 /* =========================================================
-   TYPES
+   QUI
    ========================================================= */
 
 .visit.owner{
@@ -348,13 +350,56 @@ body{
     opacity:1;
 }
 
-.visit.visitor .visit-type{
+
+/* =========================================================
+   LISTE 1 A 7
+   ========================================================= */
+
+.gift-list{
+    display:grid;
+
+    grid-template-columns:
+        repeat(7,1fr);
+
+    gap:4px;
+
+    align-items:center;
+}
+
+.gift-dot{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:22px;
+    height:22px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    font-size:12px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    color:
+        rgba(255,255,255,.30);
+}
+
+.gift-dot.opened{
+    background:#e26183;
+
     color:#ffffff;
+
+    box-shadow:
+        0 2px 7px rgba(0,0,0,.18);
 }
 
 
 /* =========================================================
-   ETATS CADEAUX
+   ETATS
    ========================================================= */
 
 .visit-gifts.complete{
@@ -363,21 +408,6 @@ body{
 
 .visit-gifts.zero{
     opacity:.45;
-}
-
-
-/* =========================================================
-   CHARGEMENT
-   ========================================================= */
-
-.loading{
-    padding:35px;
-
-    text-align:center;
-
-    font-size:14px;
-
-    opacity:.75;
 }
 
 
@@ -404,6 +434,21 @@ body{
 
 .error.visible{
     display:block;
+}
+
+
+/* =========================================================
+   CHARGEMENT
+   ========================================================= */
+
+.loading{
+    padding:35px;
+
+    text-align:center;
+
+    font-size:14px;
+
+    opacity:.75;
 }
 
 
@@ -441,11 +486,11 @@ body{
    MOBILE
    ========================================================= */
 
-@media(max-width:560px){
+@media(max-width:700px){
 
     .page{
-        padding-left:11px;
-        padding-right:11px;
+        padding-left:10px;
+        padding-right:10px;
     }
 
     .header h1{
@@ -470,31 +515,32 @@ body{
         font-size:9px;
     }
 
+    .history{
+        overflow-x:auto;
+    }
+
     .visit,
     .visit-header{
 
-        grid-template-columns:
-            1.15fr
-            .55fr
-            .55fr
-            .65fr;
-
-        padding-left:12px;
-        padding-right:12px;
+        min-width:720px;
 
     }
 
-    .visit-date,
-    .visit-time{
-        font-size:11px;
+}
+
+
+/* =========================================================
+   PETIT ECRAN
+   ========================================================= */
+
+@media(max-width:380px){
+
+    .summary-number{
+        font-size:22px;
     }
 
-    .visit-gifts{
-        font-size:12px;
-    }
-
-    .visit-type{
-        font-size:9px;
+    .summary-label{
+        font-size:8px;
     }
 
 }
@@ -525,7 +571,7 @@ body{
 
 
 <!-- =====================================================
-     RESUME VISITEURS UNIQUEMENT
+     RESUME VISITEURS
      ===================================================== -->
 
 <section class="summary">
@@ -640,7 +686,11 @@ body{
         </div>
 
         <div>
-            Cadeaux
+            Total
+        </div>
+
+        <div>
+            Cadeaux 1 → 7
         </div>
 
         <div>
@@ -861,17 +911,12 @@ async function loadStats(){
 
 
 /* =========================================================
-   AFFICHAGE GENERAL
+   AFFICHAGE
    ========================================================= */
 
 function renderStats(
     data
 ){
-
-    /*
-       Statistiques visiteurs uniquement
-       fournies par birthday-stats.
-    */
 
     realVisitsElement.textContent =
         Number(
@@ -1030,6 +1075,29 @@ function createVisitRow(
         );
 
 
+    /*
+       Liste exacte des cadeaux ouverts.
+    */
+
+    const openedList =
+        Array.isArray(
+            visit.opened_list
+        )
+        ?
+        visit.opened_list
+            .map(
+                Number
+            )
+        :
+        [];
+
+
+    const openedSet =
+        new Set(
+            openedList
+        );
+
+
     const visitorType =
         visit.visitor_type
         ===
@@ -1082,6 +1150,55 @@ function createVisitRow(
     }
 
 
+    /*
+       Création des 7 indicateurs.
+    */
+
+    let giftDotsHTML =
+        "";
+
+
+    for(
+        let number = 1;
+        number <= 7;
+        number++
+    ){
+
+        const isOpened =
+            openedSet.has(
+                number
+            );
+
+
+        giftDotsHTML += `
+
+            <div
+                class="
+                    gift-dot
+                    ${
+                        isOpened
+                        ?
+                        "opened"
+                        :
+                        ""
+                    }
+                "
+                title="Cadeau ${number}"
+            >
+                ${
+                    isOpened
+                    ?
+                    "●"
+                    :
+                    "○"
+                }
+            </div>
+
+        `;
+
+    }
+
+
     const typeText =
         visitorType
         ===
@@ -1114,6 +1231,11 @@ function createVisitRow(
         </div>
 
 
+        <div class="gift-list">
+            ${giftDotsHTML}
+        </div>
+
+
         <div class="visit-type">
             ${typeText}
         </div>
@@ -1129,7 +1251,7 @@ function createVisitRow(
 
 
 /* =========================================================
-   FORMAT MOYENNE
+   MOYENNE
    ========================================================= */
 
 function formatAverage(
@@ -1153,7 +1275,7 @@ function formatAverage(
 
 
 /* =========================================================
-   FORMAT HEURE
+   HEURE
    ========================================================= */
 
 function formatTime(

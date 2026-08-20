@@ -70,7 +70,9 @@ body{
 
 .header{
     width:100%;
+
     text-align:center;
+
     margin-bottom:24px;
 }
 
@@ -79,6 +81,7 @@ body{
 
     width:100%;
     max-width:420px;
+
     height:auto;
 
     margin:0 auto;
@@ -91,7 +94,9 @@ body{
 
 .video-list{
     display:flex;
+
     flex-direction:column;
+
     gap:36px;
 }
 
@@ -118,6 +123,7 @@ body{
 
 .video-wrapper.horizontal{
     width:88%;
+
     aspect-ratio:16 / 9;
 }
 
@@ -128,6 +134,7 @@ body{
 
 .main-video{
     position:absolute;
+
     inset:0;
 
     display:block;
@@ -149,6 +156,7 @@ body{
 
 .gift-cover{
     position:absolute;
+
     inset:0;
 
     z-index:10;
@@ -278,6 +286,7 @@ body{
     padding:9px 17px;
 
     border:0;
+
     border-radius:22px;
 
     font-family:inherit;
@@ -430,6 +439,7 @@ body{
 
 .crown-btn.active{
     background:#e26183;
+
     border-color:#e26183;
 }
 
@@ -573,16 +583,19 @@ body{
 
 .camera-btn.primary{
     background:#e26183;
+
     color:#fff;
 }
 
 .camera-btn.secondary{
     background:#fff;
+
     color:#253344;
 }
 
 .camera-btn.send{
     background:#6fa773;
+
     color:#fff;
 }
 
@@ -967,33 +980,27 @@ const SUPABASE_KEY =
 
 
 /*
-   ID de la visite actuelle.
-
-   Il sera récupéré après
-   la création de la ligne.
+   Identifiant unique de cette visite.
 */
 
-let visitId =
-    null;
+const VISIT_KEY =
+    crypto.randomUUID();
 
 
 /*
-   Nombre de cadeaux uniques ouverts.
-*/
-
-let openedGiftsCount =
-    0;
-
-
-/*
-   Liste des cadeaux déjà comptés.
-
-   Ainsi un même cadeau ne peut
-   jamais compter deux fois.
+   Cadeaux déjà comptés.
 */
 
 const openedGiftIndexes =
     new Set();
+
+
+/*
+   Création immédiate de la visite.
+*/
+
+const visitCreationPromise =
+    createVisit();
 
 
 /* =========================================================
@@ -1026,21 +1033,19 @@ async function createVisit(){
                         "Content-Type":
                             "application/json",
 
-                        /*
-                           On demande à Supabase
-                           de nous renvoyer la ligne créée
-                           afin de récupérer son id.
-                        */
-
                         "Prefer":
-                            "return=representation"
+                            "return=minimal"
 
                     },
 
                     body:
                         JSON.stringify({
 
-                            opened_gifts:0
+                            visit_key:
+                                VISIT_KEY,
+
+                            opened_gifts:
+                                0
 
                         })
 
@@ -1053,49 +1058,32 @@ async function createVisit(){
             !response.ok
         ){
 
-            return;
+            console.log(
+                "Suivi visite : création impossible",
+                response.status
+            );
+
+
+            return false;
 
         }
 
 
-        const data =
-            await response.json();
-
-
-        if(
-            data
-            &&
-            data[0]
-            &&
-            data[0].id
-            !==
-            undefined
-        ){
-
-            visitId =
-                data[0].id;
-
-        }
+        return true;
 
     }
     catch(error){
 
-        /*
-           Le suivi ne doit jamais
-           bloquer le site.
-        */
+        console.log(
+            "Suivi visite indisponible."
+        );
+
+
+        return false;
 
     }
 
 }
-
-
-/*
-   La visite est créée
-   dès l'ouverture du site.
-*/
-
-createVisit();
 
 
 /* =========================================================
@@ -1104,65 +1092,83 @@ createVisit();
 
 async function updateOpenedGifts(){
 
+    const visitCreated =
+        await visitCreationPromise;
+
+
     if(
-        visitId
-        ===
-        null
+        !visitCreated
     ){
         return;
     }
 
 
+    const total =
+        openedGiftIndexes.size;
+
+
     try{
 
-        await fetch(
+        const response =
+            await fetch(
 
-            SUPABASE_URL +
-            "/rest/v1/birthday_visits?id=eq." +
-            encodeURIComponent(
-                visitId
-            ),
+                SUPABASE_URL +
+                "/rest/v1/birthday_visits?visit_key=eq." +
+                encodeURIComponent(
+                    VISIT_KEY
+                ),
 
-            {
+                {
 
-                method:"PATCH",
+                    method:"PATCH",
 
-                headers:{
+                    headers:{
 
-                    "apikey":
-                        SUPABASE_KEY,
+                        "apikey":
+                            SUPABASE_KEY,
 
-                    "Authorization":
-                        "Bearer " +
-                        SUPABASE_KEY,
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY,
 
-                    "Content-Type":
-                        "application/json",
+                        "Content-Type":
+                            "application/json",
 
-                    "Prefer":
-                        "return=minimal"
+                        "Prefer":
+                            "return=minimal"
 
-                },
+                    },
 
-                body:
-                    JSON.stringify({
+                    body:
+                        JSON.stringify({
 
-                        opened_gifts:
-                            openedGiftsCount
+                            opened_gifts:
+                                total
 
-                    })
+                        })
 
-            }
+                }
 
-        );
+            );
+
+
+        if(
+            !response.ok
+        ){
+
+            console.log(
+                "Suivi cadeaux : mise à jour impossible",
+                response.status
+            );
+
+        }
 
     }
     catch(error){
 
-        /*
-           Même en cas de problème
-           Supabase, le cadeau fonctionne.
-        */
+        console.log(
+            "Suivi cadeaux indisponible."
+        );
 
     }
 
@@ -1177,10 +1183,6 @@ function registerGiftOpening(
     index
 ){
 
-    /*
-       Déjà compté ?
-    */
-
     if(
         openedGiftIndexes.has(
             index
@@ -1190,26 +1192,10 @@ function registerGiftOpening(
     }
 
 
-    /*
-       On mémorise ce cadeau.
-    */
-
     openedGiftIndexes.add(
         index
     );
 
-
-    /*
-       Nouveau total.
-    */
-
-    openedGiftsCount =
-        openedGiftIndexes.size;
-
-
-    /*
-       Mise à jour Supabase.
-    */
 
     updateOpenedGifts();
 
@@ -1353,7 +1339,7 @@ crownImages.crown4 =
 
 
 /* =========================================================
-   CREATION CARTES
+   CREATION DES CARTES
    ========================================================= */
 
 const videoList =
@@ -1840,7 +1826,7 @@ async function openGift(
 
     /*
        Réponse uniquement
-       pour vidéos 1 à 4.
+       pour les vidéos 1 à 4.
     */
 
     if(

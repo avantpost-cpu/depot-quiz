@@ -506,7 +506,7 @@ body{
 
 
 /* =========================================================
-   COMPTEUR
+   COMPTEUR ENREGISTREMENT
    ========================================================= */
 
 .record-time{
@@ -774,7 +774,7 @@ body{
 
 
 <!-- =====================================================
-     REPONSE VIDEO — UNIQUEMENT VIDEOS 1 A 4
+     REPONSE VIDEO — VIDEOS 1 A 4
      ===================================================== -->
 
 <div
@@ -793,6 +793,7 @@ body{
 
 
     <div class="crown-zone">
+
 
         <button
             class="crown-btn"
@@ -979,33 +980,54 @@ const SUPABASE_KEY =
     "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO";
 
 
+/* =========================================================
+   IDENTIFICATION DU VISITEUR
+   ========================================================= */
+
 /*
-   Identifiant unique de cette visite.
+   Ton navigateur possède :
+
+   birthday_owner = cyrille
+
+   Tous les autres navigateurs
+   seront automatiquement "visitor".
 */
+
+const VISITOR_TYPE =
+    localStorage.getItem(
+        "birthday_owner"
+    )
+    ===
+    "cyrille"
+    ?
+    "cyrille"
+    :
+    "visitor";
+
+
+/* =========================================================
+   IDENTIFIANT UNIQUE DE LA VISITE
+   ========================================================= */
 
 const VISIT_KEY =
     crypto.randomUUID();
 
 
-/*
-   Cadeaux déjà comptés.
-*/
+/* =========================================================
+   CADEAUX DEJA OUVERTS
+   ========================================================= */
 
 const openedGiftIndexes =
     new Set();
 
 
-/*
-   Création immédiate de la visite.
-*/
+/* =========================================================
+   CREATION DE LA VISITE
+   ========================================================= */
 
 const visitCreationPromise =
     createVisit();
 
-
-/* =========================================================
-   CREER LA VISITE
-   ========================================================= */
 
 async function createVisit(){
 
@@ -1045,7 +1067,10 @@ async function createVisit(){
                                 VISIT_KEY,
 
                             opened_gifts:
-                                0
+                                0,
+
+                            visitor_type:
+                                VISITOR_TYPE
 
                         })
 
@@ -1087,7 +1112,7 @@ async function createVisit(){
 
 
 /* =========================================================
-   METTRE A JOUR LE NOMBRE DE CADEAUX
+   MISE A JOUR DES CADEAUX OUVERTS
    ========================================================= */
 
 async function updateOpenedGifts(){
@@ -1559,7 +1584,7 @@ const backToTop =
 
 
 /* =========================================================
-   VARIABLES
+   VARIABLES CAMERA
    ========================================================= */
 
 let currentCard =
@@ -1695,7 +1720,7 @@ const fairyStars =
 
 
 /* =========================================================
-   CHARGEMENT INTELLIGENT
+   CHARGEMENT INTELLIGENT DES VIDEOS
    ========================================================= */
 
 const videoObserver =
@@ -1796,7 +1821,8 @@ async function openGift(
 
 
     /*
-       COMPTEUR SUPABASE
+       ENREGISTRE LE CADEAU
+       DANS LES STATS
     */
 
     registerGiftOpening(
@@ -1826,7 +1852,7 @@ async function openGift(
 
     /*
        Réponse uniquement
-       pour les vidéos 1 à 4.
+       pour 1, 2, 3 et 4.
     */
 
     if(

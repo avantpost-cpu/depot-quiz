@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<meta name="theme-color" content="#9f80a6">
+
+<title>Statistiques anniversaire</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    min-height:100%;
+}
+
+body{
+    min-height:100vh;
+    min-height:100dvh;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        #9f80a6
+        url("motif.jpg")
+        repeat;
+
+    background-size:300px;
+
+    color:#ffffff;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.page{
+    width:100%;
+    max-width:700px;
+
+    margin:0 auto;
+
+    padding:
+        calc(35px + env(safe-area-inset-top))
+        16px
+        calc(50px + env(safe-area-inset-bottom));
+}
+
+
+/* =========================================================
+   ENTETE
+   ========================================================= */
+
+.header{
+    text-align:center;
+
+    margin-bottom:28px;
+}
+
+.header h1{
+    font-size:30px;
+
+    margin-bottom:7px;
+
+    text-shadow:
+        0 2px 8px rgba(0,0,0,.25);
+}
+
+.header p{
+    font-size:14px;
+
+    opacity:.82;
+}
+
+
+/* =========================================================
+   CONNEXION
+   ========================================================= */
+
+.login-box{
+    width:100%;
+    max-width:440px;
+
+    margin:50px auto 0;
+
+    padding:25px;
+
+    text-align:center;
+
+    background:
+        rgba(20,20,30,.82);
+
+    border-radius:20px;
+
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.25);
+}
+
+.login-box h2{
+    margin-bottom:18px;
+
+    font-size:22px;
+}
+
+.password-input{
+    width:100%;
+
+    height:48px;
+
+    padding:0 15px;
+
+    border:0;
+
+    outline:none;
+
+    border-radius:14px;
+
+    font-size:16px;
+
+    text-align:center;
+
+    background:#ffffff;
+
+    color:#222222;
+}
+
+.login-btn{
+    margin-top:12px;
+
+    width:100%;
+
+    height:46px;
+
+    border:0;
+
+    border-radius:23px;
+
+    font-size:14px;
+    font-weight:bold;
+
+    cursor:pointer;
+
+    background:#e26183;
+
+    color:#ffffff;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,.20);
+}
+
+.login-btn:active{
+    transform:scale(.98);
+}
+
+.login-error{
+    display:none;
+
+    margin-top:13px;
+
+    color:#ffb8c8;
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.stats{
+    display:none;
+}
+
+.stats.visible{
+    display:block;
+}
+
+
+/* =========================================================
+   RESUME
+   ========================================================= */
+
+.summary{
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:10px;
+
+    margin-bottom:22px;
+}
+
+.summary-card{
+    padding:18px 8px;
+
+    text-align:center;
+
+    background:
+        rgba(20,20,30,.82);
+
+    border-radius:17px;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.18);
+}
+
+.summary-number{
+    display:block;
+
+    margin-bottom:4px;
+
+    font-size:30px;
+    font-weight:bold;
+}
+
+.summary-label{
+    display:block;
+
+    font-size:11px;
+
+    opacity:.75;
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.stats-actions{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:8px;
+
+    margin-bottom:18px;
+}
+
+.small-btn{
+    border:0;
+
+    padding:9px 15px;
+
+    border-radius:20px;
+
+    cursor:pointer;
+
+    font-size:12px;
+    font-weight:bold;
+
+    background:
+        rgba(255,255,255,.92);
+
+    color:#4b3a50;
+}
+
+
+/* =========================================================
+   TABLEAU
+   ========================================================= */
+
+.history{
+    overflow:hidden;
+
+    background:
+        rgba(20,20,30,.86);
+
+    border-radius:18px;
+
+    box-shadow:
+        0 10px 28px rgba(0,0,0,.22);
+}
+
+.history-title{
+    padding:17px;
+
+    font-size:17px;
+    font-weight:bold;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.10);
+}
+
+.visit{
+    display:grid;
+
+    grid-template-columns:
+        1.4fr
+        .8fr
+        .7fr;
+
+    align-items:center;
+
+    gap:8px;
+
+    padding:14px 16px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.08);
+}
+
+.visit:last-child{
+    border-bottom:0;
+}
+
+.visit-date{
+    font-size:13px;
+    font-weight:bold;
+}
+
+.visit-time{
+    font-size:13px;
+
+    opacity:.75;
+}
+
+.visit-gifts{
+    text-align:right;
+
+    font-size:14px;
+    font-weight:bold;
+}
+
+.all-open{
+    color:#f4bdd0;
+}
+
+
+/* =========================================================
+   VIDE
+   ========================================================= */
+
+.empty{
+    padding:30px;
+
+    text-align:center;
+
+    opacity:.7;
+}
+
+
+/* =========================================================
+   CHARGEMENT
+   ========================================================= */
+
+.loading{
+    display:none;
+
+    margin:25px 0;
+
+    text-align:center;
+
+    font-size:13px;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:520px){
+
+    .header h1{
+        font-size:25px;
+    }
+
+    .summary{
+        gap:7px;
+    }
+
+    .summary-card{
+        padding:15px 4px;
+    }
+
+    .summary-number{
+        font-size:24px;
+    }
+
+    .summary-label{
+        font-size:10px;
+    }
+
+    .visit{
+        grid-template-columns:
+            1.25fr
+            .7fr
+            .65fr;
+
+        padding:
+            13px 12px;
+    }
+
+    .visit-date,
+    .visit-time{
+        font-size:12px;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<main class="page">
+
+
+    <!-- ===================================================
+         CONNEXION
+         =================================================== -->
+
+    <section
+        class="login-box"
+        id="loginBox"
+    >
+
+        <h2>🩷 🩷 🩷</h2>
+
+        <input
+            class="password-input"
+            id="passwordInput"
+            type="password"
+            placeholder="Mot de passe"
+            autocomplete="current-password"
+        >
+
+        <button
+            class="login-btn"
+            id="loginBtn"
+            type="button"
+        >
+            Voir les statistiques
+        </button>
+
+        <div
+            class="login-error"
+            id="loginError"
+        >
+            Mot de passe incorrect
+        </div>
+
+    </section>
+
+
+
+    <!-- ===================================================
+         STATISTIQUES
+         =================================================== -->
+
+    <section
+        class="stats"
+        id="stats"
+    >
+
+
+        <header class="header">
+
+            <h1>
+                Statistiques anniversaire
+            </h1>
+
+            <p>
+                Utilisation du site
+            </p>
+
+        </header>
+
+
+
+        <!-- ===============================================
+             RESUME
+             =============================================== -->
+
+        <div class="summary">
+
+
+            <div class="summary-card">
+
+                <span
+                    class="summary-number"
+                    id="totalVisits"
+                >
+                    —
+                </span>
+
+                <span class="summary-label">
+                    VISITES
+                </span>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span
+                    class="summary-number"
+                    id="totalGifts"
+                >
+                    —
+                </span>
+
+                <span class="summary-label">
+                    CADEAUX OUVERTS
+                </span>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span
+                    class="summary-number"
+                    id="averageGifts"
+                >
+                    —
+                </span>
+
+                <span class="summary-label">
+                    MOYENNE / 7
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="stats-actions">
+
+            <button
+                class="small-btn"
+                id="refreshBtn"
+                type="button"
+            >
+                ↻ Actualiser
+            </button>
+
+            <button
+                class="small-btn"
+                id="logoutBtn"
+                type="button"
+            >
+                Fermer
+            </button>
+
+        </div>
+
+
+        <div
+            class="loading"
+            id="loading"
+        >
+            Chargement…
+        </div>
+
+
+
+        <!-- ===============================================
+             HISTORIQUE
+             =============================================== -->
+
+        <div class="history">
+
+            <div class="history-title">
+                Historique des visites
+            </div>
+
+            <div id="visitsList"></div>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<script>
+
+/* =========================================================
+   CONFIGURATION
+   ========================================================= */
+
+const STATS_URL =
+    "https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/birthday-stats";
+
+
+/*
+   IMPORTANT :
+
+   Le mot de passe n'est PAS écrit ici.
+
+   Il est saisi par toi et envoyé
+   directement à la fonction sécurisée.
+*/
+
+let statsToken =
+    sessionStorage.getItem(
+        "birthday_stats_token"
+    )
+    ||
+    "";
+
+
+/* =========================================================
+   ELEMENTS
+   ========================================================= */
+
+const loginBox =
+    document.getElementById(
+        "loginBox"
+    );
+
+
+const stats =
+    document.getElementById(
+        "stats"
+    );
+
+
+const passwordInput =
+    document.getElementById(
+        "passwordInput"
+    );
+
+
+const loginBtn =
+    document.getElementById(
+        "loginBtn"
+    );
+
+
+const loginError =
+    document.getElementById(
+        "loginError"
+    );
+
+
+const refreshBtn =
+    document.getElementById(
+        "refreshBtn"
+    );
+
+
+const logoutBtn =
+    document.getElementById(
+        "logoutBtn"
+    );
+
+
+const loading =
+    document.getElementById(
+        "loading"
+    );
+
+
+const totalVisits =
+    document.getElementById(
+        "totalVisits"
+    );
+
+
+const totalGifts =
+    document.getElementById(
+        "totalGifts"
+    );
+
+
+const averageGifts =
+    document.getElementById(
+        "averageGifts"
+    );
+
+
+const visitsList =
+    document.getElementById(
+        "visitsList"
+    );
+
+
+/* =========================================================
+   CONNEXION
+   ========================================================= */
+
+loginBtn.addEventListener(
+    "click",
+    login
+);
+
+
+passwordInput.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key
+            ===
+            "Enter"
+        ){
+
+            login();
+
+        }
+
+    }
+);
+
+
+async function login(){
+
+    const value =
+        passwordInput.value.trim();
+
+
+    if(
+        !value
+    ){
+        return;
+    }
+
+
+    statsToken =
+        value;
+
+
+    loginError.style.display =
+        "none";
+
+
+    const success =
+        await loadStats();
+
+
+    if(
+        success
+    ){
+
+        sessionStorage.setItem(
+            "birthday_stats_token",
+            statsToken
+        );
+
+
+        loginBox.style.display =
+            "none";
+
+
+        stats.classList.add(
+            "visible"
+        );
+
+
+        passwordInput.value =
+            "";
+
+    }
+    else{
+
+        loginError.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* =========================================================
+   CHARGER LES STATISTIQUES
+   ========================================================= */
+
+async function loadStats(){
+
+    loading.style.display =
+        "block";
+
+
+    try{
+
+        const response =
+            await fetch(
+
+                STATS_URL,
+
+                {
+
+                    method:"GET",
+
+                    headers:{
+
+                        "x-stats-token":
+                            statsToken
+
+                    }
+
+                }
+
+            );
+
+
+        if(
+            !response.ok
+        ){
+
+            loading.style.display =
+                "none";
+
+
+            return false;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        renderStats(
+            data
+        );
+
+
+        loading.style.display =
+            "none";
+
+
+        return true;
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+
+        loading.style.display =
+            "none";
+
+
+        return false;
+
+    }
+
+}
+
+
+/* =========================================================
+   AFFICHAGE
+   ========================================================= */
+
+function renderStats(
+    data
+){
+
+    totalVisits.textContent =
+        data.totalVisits
+        ??
+        0;
+
+
+    totalGifts.textContent =
+        data.totalGifts
+        ??
+        0;
+
+
+    averageGifts.textContent =
+        data.averageGifts
+        ??
+        0;
+
+
+    visitsList.innerHTML =
+        "";
+
+
+    const visits =
+        data.visits
+        ||
+        [];
+
+
+    if(
+        visits.length
+        ===
+        0
+    ){
+
+        visitsList.innerHTML = `
+            <div class="empty">
+                Aucune visite enregistrée.
+            </div>
+        `;
+
+
+        return;
+
+    }
+
+
+    visits.forEach(
+        visit => {
+
+            const date =
+                new Date(
+                    visit.created_at
+                );
+
+
+            /*
+               Affichage explicitement
+               en heure française.
+            */
+
+            const dateText =
+                new Intl.DateTimeFormat(
+                    "fr-FR",
+                    {
+
+                        timeZone:
+                            "Europe/Paris",
+
+                        day:
+                            "2-digit",
+
+                        month:
+                            "long",
+
+                        year:
+                            "numeric"
+
+                    }
+                )
+                .format(
+                    date
+                );
+
+
+            const timeText =
+                new Intl.DateTimeFormat(
+                    "fr-FR",
+                    {
+
+                        timeZone:
+                            "Europe/Paris",
+
+                        hour:
+                            "2-digit",
+
+                        minute:
+                            "2-digit",
+
+                        second:
+                            "2-digit"
+
+                    }
+                )
+                .format(
+                    date
+                );
+
+
+            const gifts =
+                visit.opened_gifts
+                ??
+                0;
+
+
+            const row =
+                document.createElement(
+                    "div"
+                );
+
+
+            row.className =
+                "visit";
+
+
+            row.innerHTML = `
+
+                <div class="visit-date">
+                    ${dateText}
+                </div>
+
+                <div class="visit-time">
+                    ${timeText}
+                </div>
+
+                <div
+                    class="
+                        visit-gifts
+                        ${
+                            gifts === 7
+                            ?
+                            "all-open"
+                            :
+                            ""
+                        }
+                    "
+                >
+                    ${gifts} / 7
+                </div>
+
+            `;
+
+
+            visitsList.appendChild(
+                row
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ACTUALISER
+   ========================================================= */
+
+refreshBtn.addEventListener(
+    "click",
+    () => {
+
+        loadStats();
+
+    }
+);
+
+
+/* =========================================================
+   FERMER / DECONNEXION
+   ========================================================= */
+
+logoutBtn.addEventListener(
+    "click",
+    () => {
+
+        sessionStorage.removeItem(
+            "birthday_stats_token"
+        );
+
+
+        statsToken =
+            "";
+
+
+        stats.classList.remove(
+            "visible"
+        );
+
+
+        loginBox.style.display =
+            "block";
+
+
+        passwordInput.value =
+            "";
+
+
+        passwordInput.focus();
+
+    }
+);
+
+
+/* =========================================================
+   SESSION DEJA OUVERTE
+   ========================================================= */
+
+if(
+    statsToken
+){
+
+    loadStats()
+        .then(
+            success => {
+
+                if(
+                    success
+                ){
+
+                    loginBox.style.display =
+                        "none";
+
+
+                    stats.classList.add(
+                        "visible"
+                    );
+
+                }
+                else{
+
+                    sessionStorage.removeItem(
+                        "birthday_stats_token"
+                    );
+
+
+                    statsToken =
+                        "";
+
+                }
+
+            }
+        );
+
+}
+
+</script>
+
+</body>
+
+</html>

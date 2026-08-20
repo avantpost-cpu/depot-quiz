@@ -16,10 +16,6 @@
 
 <style>
 
-/* =========================================================
-   BASE
-   ========================================================= */
-
 *{
     margin:0;
     padding:0;
@@ -56,12 +52,12 @@ body{
 
 .page{
     width:100%;
-    max-width:900px;
+    max-width:980px;
 
     margin:0 auto;
 
     padding:
-        calc(35px + env(safe-area-inset-top))
+        calc(28px + env(safe-area-inset-top))
         16px
         calc(50px + env(safe-area-inset-bottom));
 }
@@ -210,6 +206,32 @@ body{
 
 
 /* =========================================================
+   ERREUR
+   ========================================================= */
+
+.error{
+    display:none;
+
+    padding:22px;
+
+    margin-bottom:18px;
+
+    text-align:center;
+
+    background:
+        rgba(20,20,30,.86);
+
+    border-radius:18px;
+
+    line-height:1.5;
+}
+
+.error.visible{
+    display:block;
+}
+
+
+/* =========================================================
    HISTORIQUE
    ========================================================= */
 
@@ -238,21 +260,26 @@ body{
 
 
 /* =========================================================
-   ENTETE
+   TABLEAU
    ========================================================= */
 
-.visit-header{
+.visit-header,
+.visit{
     display:grid;
 
     grid-template-columns:
-        1.15fr
-        .62fr
-        .58fr
-        1.25fr
-        .68fr;
+        1.1fr
+        .65fr
+        .55fr
+        1.5fr
+        .7fr;
+
+    align-items:center;
 
     gap:8px;
+}
 
+.visit-header{
     padding:
         10px
         16px;
@@ -271,30 +298,7 @@ body{
         rgba(255,255,255,.08);
 }
 
-.visit-header div:nth-child(3),
-.visit-header div:nth-child(5){
-    text-align:right;
-}
-
-
-/* =========================================================
-   VISITE
-   ========================================================= */
-
 .visit{
-    display:grid;
-
-    grid-template-columns:
-        1.15fr
-        .62fr
-        .58fr
-        1.25fr
-        .68fr;
-
-    align-items:center;
-
-    gap:8px;
-
     padding:
         14px
         16px;
@@ -319,7 +323,7 @@ body{
     opacity:.72;
 }
 
-.visit-gifts{
+.visit-total{
     text-align:right;
 
     font-size:14px;
@@ -331,12 +335,12 @@ body{
 
     font-size:11px;
 
-    opacity:.75;
+    opacity:.78;
 }
 
 
 /* =========================================================
-   QUI
+   CYRILLE
    ========================================================= */
 
 .visit.owner{
@@ -352,88 +356,69 @@ body{
 
 
 /* =========================================================
-   LISTE 1 A 7
+   CADEAUX 1 A 7
    ========================================================= */
 
-.gift-list{
+.gifts-grid{
     display:grid;
 
     grid-template-columns:
         repeat(7,1fr);
 
-    gap:4px;
+    gap:5px;
 
     align-items:center;
 }
 
-.gift-dot{
+.gift-state{
+    width:24px;
+    height:24px;
+
+    margin:auto;
+
     display:flex;
 
     align-items:center;
     justify-content:center;
 
-    width:22px;
-    height:22px;
-
-    margin:auto;
-
     border-radius:50%;
 
-    font-size:12px;
+    font-size:11px;
+    font-weight:bold;
 
     background:
         rgba(255,255,255,.08);
 
     color:
-        rgba(255,255,255,.30);
+        rgba(255,255,255,.25);
+
+    border:
+        1px solid
+        rgba(255,255,255,.08);
 }
 
-.gift-dot.opened{
+.gift-state.opened{
     background:#e26183;
 
-    color:#ffffff;
+    color:#fff;
+
+    border-color:#e26183;
 
     box-shadow:
-        0 2px 7px rgba(0,0,0,.18);
+        0 2px 7px rgba(0,0,0,.20);
 }
 
 
 /* =========================================================
-   ETATS
+   TOTAL
    ========================================================= */
 
-.visit-gifts.complete{
+.visit-total.complete{
     color:#f4bdd0;
 }
 
-.visit-gifts.zero{
-    opacity:.45;
-}
-
-
-/* =========================================================
-   ERREUR
-   ========================================================= */
-
-.error{
-    display:none;
-
-    padding:25px;
-
-    text-align:center;
-
-    background:
-        rgba(20,20,30,.86);
-
-    border-radius:18px;
-
-    line-height:1.5;
-
-    margin-bottom:18px;
-}
-
-.error.visible{
-    display:block;
+.visit-total.zero{
+    opacity:.42;
 }
 
 
@@ -450,11 +435,6 @@ body{
 
     opacity:.75;
 }
-
-
-/* =========================================================
-   VIDE
-   ========================================================= */
 
 .empty{
     padding:35px;
@@ -486,7 +466,7 @@ body{
    MOBILE
    ========================================================= */
 
-@media(max-width:700px){
+@media(max-width:760px){
 
     .page{
         padding-left:10px;
@@ -519,28 +499,9 @@ body{
         overflow-x:auto;
     }
 
-    .visit,
-    .visit-header{
-
-        min-width:720px;
-
-    }
-
-}
-
-
-/* =========================================================
-   PETIT ECRAN
-   ========================================================= */
-
-@media(max-width:380px){
-
-    .summary-number{
-        font-size:22px;
-    }
-
-    .summary-label{
-        font-size:8px;
+    .visit-header,
+    .visit{
+        min-width:780px;
     }
 
 }
@@ -569,10 +530,6 @@ body{
 </header>
 
 
-
-<!-- =====================================================
-     RESUME VISITEURS
-     ===================================================== -->
 
 <section class="summary">
 
@@ -661,10 +618,6 @@ body{
 
 
 
-<!-- =====================================================
-     HISTORIQUE
-     ===================================================== -->
-
 <section
     class="history"
     id="history"
@@ -685,7 +638,7 @@ body{
             Heure
         </div>
 
-        <div>
+        <div style="text-align:right;">
             Total
         </div>
 
@@ -693,7 +646,7 @@ body{
             Cadeaux 1 → 7
         </div>
 
-        <div>
+        <div style="text-align:right;">
             Qui
         </div>
 
@@ -859,15 +812,11 @@ async function loadStats(){
         );
 
 
-        const now =
-            new Date();
-
-
         lastUpdate.textContent =
             "Dernière actualisation : "
             +
             formatTime(
-                now
+                new Date()
             );
 
 
@@ -911,50 +860,12 @@ async function loadStats(){
 
 
 /* =========================================================
-   AFFICHAGE
+   AFFICHAGE GENERAL
    ========================================================= */
 
 function renderStats(
     data
 ){
-
-    realVisitsElement.textContent =
-        Number(
-            data.realVisits
-            ??
-            0
-        );
-
-
-    realGiftsElement.textContent =
-        Number(
-            data.realGifts
-            ??
-            0
-        );
-
-
-    realAverageElement.textContent =
-        formatAverage(
-            Number(
-                data.realAverage
-                ??
-                0
-            )
-        );
-
-
-    ownerVisitsElement.textContent =
-        Number(
-            data.ownerVisits
-            ??
-            0
-        );
-
-
-    visitsList.innerHTML =
-        "";
-
 
     const visits =
         Array.isArray(
@@ -966,10 +877,79 @@ function renderStats(
         [];
 
 
+    /*
+       On recalcule ici les statistiques
+       à partir des visites reçues.
+
+       Comme ça stats.html reste fiable
+       même si la fonction Edge renvoie
+       seulement la liste brute.
+    */
+
+    const visitorVisits =
+        visits.filter(
+            visit =>
+                visit.visitor_type !== "cyrille"
+        );
+
+
+    const ownerVisits =
+        visits.filter(
+            visit =>
+                visit.visitor_type === "cyrille"
+        );
+
+
+    const realVisits =
+        visitorVisits.length;
+
+
+    const realGifts =
+        visitorVisits.reduce(
+            (total,visit) =>
+                total
+                +
+                Number(
+                    visit.opened_gifts
+                    ??
+                    0
+                ),
+            0
+        );
+
+
+    const realAverage =
+        realVisits > 0
+        ?
+        realGifts / realVisits
+        :
+        0;
+
+
+    realVisitsElement.textContent =
+        realVisits;
+
+
+    realGiftsElement.textContent =
+        realGifts;
+
+
+    realAverageElement.textContent =
+        formatAverage(
+            realAverage
+        );
+
+
+    ownerVisitsElement.textContent =
+        ownerVisits.length;
+
+
+    visitsList.innerHTML =
+        "";
+
+
     if(
-        visits.length
-        ===
-        0
+        visits.length === 0
     ){
 
         visitsList.innerHTML = `
@@ -1000,7 +980,7 @@ function renderStats(
 
 
 /* =========================================================
-   UNE LIGNE
+   LIGNE
    ========================================================= */
 
 function createVisitRow(
@@ -1067,7 +1047,7 @@ function createVisitRow(
         );
 
 
-    const gifts =
+    const total =
         Number(
             visit.opened_gifts
             ??
@@ -1075,37 +1055,10 @@ function createVisitRow(
         );
 
 
-    /*
-       Liste exacte des cadeaux ouverts.
-    */
-
-    const openedList =
-        Array.isArray(
-            visit.opened_list
-        )
-        ?
-        visit.opened_list
-            .map(
-                Number
-            )
-        :
-        [];
-
-
-    const openedSet =
-        new Set(
-            openedList
-        );
-
-
-    const visitorType =
+    const isOwner =
         visit.visitor_type
         ===
-        "cyrille"
-        ?
-        "cyrille"
-        :
-        "visitor";
+        "cyrille";
 
 
     const row =
@@ -1118,9 +1071,7 @@ function createVisitRow(
         "visit "
         +
         (
-            visitorType
-            ===
-            "cyrille"
+            isOwner
             ?
             "owner"
             :
@@ -1128,70 +1079,48 @@ function createVisitRow(
         );
 
 
-    let giftClass =
-        "";
-
-
-    if(
-        gifts >= 7
-    ){
-
-        giftClass =
-            "complete";
-
-    }
-    else if(
-        gifts === 0
-    ){
-
-        giftClass =
-            "zero";
-
-    }
-
-
-    /*
-       Création des 7 indicateurs.
-    */
-
-    let giftDotsHTML =
+    let giftHTML =
         "";
 
 
     for(
-        let number = 1;
-        number <= 7;
-        number++
+        let i = 1;
+        i <= 7;
+        i++
     ){
 
-        const isOpened =
-            openedSet.has(
-                number
-            );
+        const opened =
+            visit[
+                "gift_" + i
+            ]
+            ===
+            true;
 
 
-        giftDotsHTML += `
+        giftHTML += `
 
             <div
                 class="
-                    gift-dot
+                    gift-state
                     ${
-                        isOpened
+                        opened
                         ?
                         "opened"
                         :
                         ""
                     }
                 "
-                title="Cadeau ${number}"
+                title="Cadeau ${i}"
             >
+
                 ${
-                    isOpened
+                    opened
                     ?
                     "●"
                     :
                     "○"
                 }
+
             </div>
 
         `;
@@ -1199,45 +1128,77 @@ function createVisitRow(
     }
 
 
-    const typeText =
-        visitorType
-        ===
-        "cyrille"
-        ?
-        "Cyrille"
-        :
-        "Visiteur";
+    let totalClass =
+        "";
+
+
+    if(
+        total >= 7
+    ){
+
+        totalClass =
+            "complete";
+
+    }
+    else if(
+        total === 0
+    ){
+
+        totalClass =
+            "zero";
+
+    }
 
 
     row.innerHTML = `
 
         <div class="visit-date">
-            ${escapeHTML(dateText)}
+
+            ${escapeHTML(
+                dateText
+            )}
+
         </div>
 
 
         <div class="visit-time">
-            ${escapeHTML(timeText)}
+
+            ${escapeHTML(
+                timeText
+            )}
+
         </div>
 
 
         <div
             class="
-                visit-gifts
-                ${giftClass}
+                visit-total
+                ${totalClass}
             "
         >
-            ${gifts} / 7
+
+            ${total} / 7
+
         </div>
 
 
-        <div class="gift-list">
-            ${giftDotsHTML}
+        <div class="gifts-grid">
+
+            ${giftHTML}
+
         </div>
 
 
         <div class="visit-type">
-            ${typeText}
+
+            ${
+                isOwner
+                ?
+                "Cyrille"
+                :
+                "Visiteur"
+            }
+
         </div>
 
     `;
@@ -1251,25 +1212,25 @@ function createVisitRow(
 
 
 /* =========================================================
-   MOYENNE
+   FORMAT MOYENNE
    ========================================================= */
 
 function formatAverage(
     value
 ){
 
-    return value
-        .toLocaleString(
+    return Number(
+        value
+    )
+    .toLocaleString(
 
-            "fr-FR",
+        "fr-FR",
 
-            {
+        {
+            maximumFractionDigits:1
+        }
 
-                maximumFractionDigits:1
-
-            }
-
-        );
+    );
 
 }
 
@@ -1311,7 +1272,7 @@ function formatTime(
 
 
 /* =========================================================
-   TEXTE
+   SECURITE TEXTE
    ========================================================= */
 
 function escapeHTML(
@@ -1356,7 +1317,7 @@ refreshBtn.addEventListener(
 
 
 /* =========================================================
-   CHARGEMENT AUTO
+   AUTO
    ========================================================= */
 
 loadStats();

@@ -3,7 +3,6 @@
 <head>
 
 <meta charset="UTF-8">
-
 <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, viewport-fit=cover"
@@ -11,13 +10,9 @@
 
 <meta name="theme-color" content="#13283b">
 
-<title>Bon anniversaire Maman</title>
+<title>Test réponse vidéo</title>
 
 <style>
-
-/* =========================================================
-   BASE
-   ========================================================= */
 
 *{
     margin:0;
@@ -45,11 +40,6 @@ body{
     overflow-x:hidden;
 }
 
-
-/* =========================================================
-   PAGE
-   ========================================================= */
-
 .page{
     width:100%;
     max-width:620px;
@@ -59,13 +49,8 @@ body{
     padding:
         calc(20px + env(safe-area-inset-top))
         14px
-        calc(70px + env(safe-area-inset-bottom));
+        calc(60px + env(safe-area-inset-bottom));
 }
-
-
-/* =========================================================
-   TITRE
-   ========================================================= */
 
 .header{
     width:100%;
@@ -86,23 +71,12 @@ body{
 
 
 /* =========================================================
-   LISTE
+   VIDÉO / CADEAU
    ========================================================= */
-
-.video-list{
-    display:flex;
-    flex-direction:column;
-    gap:36px;
-}
 
 .video-card{
     width:100%;
 }
-
-
-/* =========================================================
-   WRAPPER
-   ========================================================= */
 
 .video-wrapper{
     position:relative;
@@ -110,22 +84,9 @@ body{
     width:82%;
 
     margin:0 auto;
-}
 
-.video-wrapper.vertical{
     aspect-ratio:9 / 16;
 }
-
-.video-wrapper.horizontal{
-    width:88%;
-
-    aspect-ratio:16 / 9;
-}
-
-
-/* =========================================================
-   VIDÉOS
-   ========================================================= */
 
 .main-video{
     position:absolute;
@@ -155,7 +116,6 @@ body{
     z-index:10;
 
     display:flex;
-
     align-items:center;
     justify-content:center;
 
@@ -169,8 +129,6 @@ body{
 }
 
 .gift-package{
-    position:relative;
-
     width:100%;
     height:100%;
 
@@ -180,8 +138,7 @@ body{
         );
 
     transition:
-        filter .45s ease,
-        transform .45s ease;
+        filter .45s ease;
 }
 
 .gift-image{
@@ -191,15 +148,9 @@ body{
     height:100%;
 
     object-fit:cover;
-    object-position:center;
 
     border-radius:14px;
 }
-
-
-/* =========================================================
-   INDICATION
-   ========================================================= */
 
 .gift-hint{
     position:absolute;
@@ -207,15 +158,13 @@ body{
     left:50%;
     bottom:18px;
 
-    z-index:30;
-
     transform:translateX(-50%);
 
     padding:9px 16px;
 
-    border-radius:30px;
-
     white-space:nowrap;
+
+    border-radius:30px;
 
     background:
         rgba(0,0,0,.58);
@@ -225,27 +174,13 @@ body{
     font-size:13px;
     font-weight:bold;
 
-    box-shadow:
-        0 3px 10px rgba(0,0,0,.20);
-
     pointer-events:none;
-
-    transition:
-        opacity .25s ease,
-        transform .25s ease;
 }
-
-
-/* =========================================================
-   OUVERTURE
-   ========================================================= */
 
 .gift-cover.opening{
     opacity:0;
 
-    transform:
-        scale(1.035)
-        rotate(-1deg);
+    transform:scale(1.035);
 
     pointer-events:none;
 }
@@ -257,13 +192,9 @@ body{
         );
 }
 
-.gift-cover.opening .gift-hint{
-    opacity:0;
-}
-
 
 /* =========================================================
-   ZONE ACTIONS
+   ACTIONS
    ========================================================= */
 
 .action-zone{
@@ -276,9 +207,9 @@ body{
     justify-content:center;
     align-items:center;
 
-    flex-wrap:wrap;
-
     gap:9px;
+
+    flex-wrap:wrap;
 }
 
 .action-btn{
@@ -287,20 +218,16 @@ body{
     align-items:center;
     justify-content:center;
 
-    min-height:40px;
-
-    padding:9px 17px;
+    padding:10px 18px;
 
     border:0;
 
-    border-radius:22px;
+    border-radius:24px;
 
     font-family:inherit;
 
     font-size:13px;
     font-weight:bold;
-
-    text-decoration:none;
 
     cursor:pointer;
 
@@ -310,14 +237,6 @@ body{
 
     box-shadow:
         0 4px 10px rgba(0,0,0,.20);
-
-    transition:
-        transform .15s ease,
-        opacity .15s ease;
-}
-
-.action-btn:active{
-    transform:scale(.96);
 }
 
 .reply-btn{
@@ -411,15 +330,9 @@ body{
     background:#000;
 }
 
-
-/* aperçu caméra miroir */
-
 #cameraPreview{
     transform:scaleX(-1);
 }
-
-
-/* vidéo enregistrée normale */
 
 #recordedPreview{
     transform:none;
@@ -461,7 +374,7 @@ body{
 
 
 /* =========================================================
-   CONTRÔLES CAMÉRA
+   BOUTONS CAMÉRA
    ========================================================= */
 
 .camera-actions{
@@ -492,14 +405,6 @@ body{
     font-weight:bold;
 
     cursor:pointer;
-
-    transition:
-        transform .15s ease,
-        opacity .15s ease;
-}
-
-.camera-btn:active{
-    transform:scale(.96);
 }
 
 .camera-btn.primary{
@@ -517,28 +422,22 @@ body{
     color:#fff;
 }
 
-.camera-btn.message{
-    background:#3c83d5;
-    color:#fff;
-}
-
 .camera-btn:disabled{
     opacity:.45;
-
     cursor:default;
 }
 
 
 /* =========================================================
-   ÉTAT UPLOAD
+   MESSAGE
    ========================================================= */
 
-.upload-status{
+.status-message{
     display:none;
 
     margin-top:12px;
 
-    padding:11px 12px;
+    padding:11px;
 
     border-radius:12px;
 
@@ -549,113 +448,13 @@ body{
 
     font-size:13px;
 
-    line-height:1.45;
+    line-height:1.4;
 
     text-align:center;
 }
 
-.upload-status.visible{
+.status-message.visible{
     display:block;
-}
-
-.upload-status.success{
-    background:
-        rgba(111,167,115,.24);
-}
-
-.upload-status.error{
-    background:
-        rgba(190,70,70,.28);
-}
-
-
-/* =========================================================
-   LIEN DE LA VIDÉO
-   ========================================================= */
-
-.video-link-zone{
-    display:none;
-
-    margin-top:10px;
-
-    text-align:center;
-}
-
-.video-link-zone.visible{
-    display:block;
-}
-
-.video-link{
-    color:#fff;
-
-    font-size:11px;
-
-    word-break:break-all;
-
-    opacity:.75;
-}
-
-
-/* =========================================================
-   RETOUR EN HAUT
-   ========================================================= */
-
-.back-to-top{
-    position:fixed;
-
-    right:16px;
-
-    bottom:
-        calc(
-            18px +
-            env(safe-area-inset-bottom)
-        );
-
-    z-index:100;
-
-    width:48px;
-    height:48px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    border:0;
-
-    border-radius:50%;
-
-    background:
-        rgba(80,52,84,.90);
-
-    color:#fff;
-
-    font-size:24px;
-
-    cursor:pointer;
-
-    box-shadow:
-        0 5px 15px rgba(0,0,0,.30);
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transform:
-        translateY(10px);
-
-    transition:
-        opacity .25s ease,
-        transform .25s ease,
-        visibility .25s;
-}
-
-.back-to-top.visible{
-    opacity:1;
-
-    visibility:visible;
-
-    transform:translateY(0);
 }
 
 
@@ -674,34 +473,8 @@ body{
         width:80%;
     }
 
-    .video-wrapper.horizontal{
-        width:88%;
-    }
-
     .reply-panel{
         width:90%;
-    }
-
-    .action-btn,
-    .camera-btn{
-        font-size:12px;
-    }
-
-}
-
-
-/* =========================================================
-   ACCESSIBILITÉ
-   ========================================================= */
-
-@media(prefers-reduced-motion:reduce){
-
-    html{
-        scroll-behavior:auto;
-    }
-
-    .gift-cover{
-        transition:none;
     }
 
 }
@@ -714,10 +487,7 @@ body{
 <body>
 
 
-<main
-    class="page"
-    id="top"
->
+<main class="page">
 
 
 <header class="header">
@@ -730,398 +500,12 @@ body{
 </header>
 
 
-<section class="video-list">
-
-
-
-<!-- =====================================================
-     1 — MAMIE
-     ===================================================== -->
-
-<div class="video-card">
-
-    <div class="video-wrapper vertical">
-
-        <video
-            class="main-video"
-            controls
-            playsinline
-            preload="none"
-            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/mamie.mp4"
-        ></video>
-
-
-        <div class="gift-cover">
-
-            <div class="gift-package">
-
-                <img
-                    class="gift-image"
-                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack1.jpg"
-                    alt=""
-                >
-
-            </div>
-
-            <div class="gift-hint">
-                Ouvre ton cadeau
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="action-zone">
-
-        <a
-            class="action-btn"
-            href="https://avantpost-cpu.github.io/depot-quiz/BDC/mamie.mp4"
-            download="mamie.mp4"
-        >
-            ↓ Télécharger
-        </a>
-
-    </div>
-
-</div>
-
-
-
-<!-- =====================================================
-     2 — TATA
-     ===================================================== -->
-
-<div class="video-card">
-
-    <div class="video-wrapper horizontal">
-
-        <video
-            class="main-video"
-            controls
-            playsinline
-            preload="none"
-            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/tata.mp4"
-        ></video>
-
-
-        <div class="gift-cover">
-
-            <div class="gift-package">
-
-                <img
-                    class="gift-image"
-                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack2.jpg"
-                    alt=""
-                >
-
-            </div>
-
-            <div class="gift-hint">
-                Ouvre ton cadeau
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="action-zone">
-
-        <a
-            class="action-btn"
-            href="https://avantpost-cpu.github.io/depot-quiz/BDC/tata.mp4"
-            download="tata.mp4"
-        >
-            ↓ Télécharger
-        </a>
-
-    </div>
-
-</div>
-
-
-
-<!-- =====================================================
-     3 — RAOUL
-     ===================================================== -->
-
-<div class="video-card">
-
-    <div class="video-wrapper vertical">
-
-        <video
-            class="main-video"
-            controls
-            playsinline
-            preload="none"
-            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/raoul.mp4"
-        ></video>
-
-
-        <div class="gift-cover">
-
-            <div class="gift-package">
-
-                <img
-                    class="gift-image"
-                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack3.jpg"
-                    alt=""
-                >
-
-            </div>
-
-            <div class="gift-hint">
-                Ouvre ton cadeau
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="action-zone">
-
-        <a
-            class="action-btn"
-            href="https://avantpost-cpu.github.io/depot-quiz/BDC/raoul.mp4"
-            download="raoul.mp4"
-        >
-            ↓ Télécharger
-        </a>
-
-    </div>
-
-</div>
-
-
-
-<!-- =====================================================
-     4 — CLAIRE
-     ===================================================== -->
-
-<div class="video-card">
-
-    <div class="video-wrapper vertical">
-
-        <video
-            class="main-video"
-            controls
-            playsinline
-            preload="none"
-            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/claire.mp4"
-        ></video>
-
-
-        <div class="gift-cover">
-
-            <div class="gift-package">
-
-                <img
-                    class="gift-image"
-                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack4.jpg"
-                    alt=""
-                >
-
-            </div>
-
-            <div class="gift-hint">
-                Ouvre ton cadeau
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="action-zone">
-
-        <a
-            class="action-btn"
-            href="https://avantpost-cpu.github.io/depot-quiz/BDC/claire.mp4"
-            download="claire.mp4"
-        >
-            ↓ Télécharger
-        </a>
-
-    </div>
-
-</div>
-
-
-
-<!-- =====================================================
-     5 — OSAKA
-     ===================================================== -->
-
-<div class="video-card">
-
-    <div class="video-wrapper vertical">
-
-        <video
-            class="main-video"
-            controls
-            playsinline
-            preload="none"
-            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/osaka.mp4"
-        ></video>
-
-
-        <div class="gift-cover">
-
-            <div class="gift-package">
-
-                <img
-                    class="gift-image"
-                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack5.jpg"
-                    alt=""
-                >
-
-            </div>
-
-            <div class="gift-hint">
-                Ouvre ton cadeau
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="action-zone">
-
-        <a
-            class="action-btn"
-            href="https://avantpost-cpu.github.io/depot-quiz/BDC/osaka.mp4"
-            download="osaka.mp4"
-        >
-            ↓ Télécharger
-        </a>
-
-    </div>
-
-</div>
-
-
-
-<!-- =====================================================
-     6 — MARCEL
-     ===================================================== -->
-
-<div class="video-card">
-
-    <div class="video-wrapper vertical">
-
-        <video
-            class="main-video"
-            controls
-            playsinline
-            preload="none"
-            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/marcel.mp4"
-        ></video>
-
-
-        <div class="gift-cover">
-
-            <div class="gift-package">
-
-                <img
-                    class="gift-image"
-                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack6.jpg"
-                    alt=""
-                >
-
-            </div>
-
-            <div class="gift-hint">
-                Ouvre ton cadeau
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="action-zone">
-
-        <a
-            class="action-btn"
-            href="https://avantpost-cpu.github.io/depot-quiz/BDC/marcel.mp4"
-            download="marcel.mp4"
-        >
-            ↓ Télécharger
-        </a>
-
-    </div>
-
-</div>
-
-
-
-<!-- =====================================================
-     7 — COUPLE
-     ===================================================== -->
-
-<div class="video-card">
-
-    <div class="video-wrapper vertical">
-
-        <video
-            class="main-video"
-            controls
-            playsinline
-            preload="none"
-            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/couple.mp4"
-        ></video>
-
-
-        <div class="gift-cover">
-
-            <div class="gift-package">
-
-                <img
-                    class="gift-image"
-                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack7.jpg"
-                    alt=""
-                >
-
-            </div>
-
-            <div class="gift-hint">
-                Ouvre ton cadeau
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="action-zone">
-
-        <a
-            class="action-btn"
-            href="https://avantpost-cpu.github.io/depot-quiz/BDC/couple.mp4"
-            download="couple.mp4"
-        >
-            ↓ Télécharger
-        </a>
-
-    </div>
-
-</div>
-
-
-
-<!-- =====================================================
-     8 — TEST RÉPONSE
-     ===================================================== -->
-
 <div
     class="video-card"
     id="testCard"
 >
 
-    <div class="video-wrapper vertical">
+    <div class="video-wrapper">
 
         <video
             class="main-video"
@@ -1134,7 +518,7 @@ body{
 
         <div
             class="gift-cover"
-            data-reply="true"
+            id="giftCover"
         >
 
             <div class="gift-package">
@@ -1158,15 +542,6 @@ body{
 
     <div class="action-zone">
 
-        <a
-            class="action-btn"
-            href="https://avantpost-cpu.github.io/depot-quiz/BDC/test.mp4"
-            download="test.mp4"
-        >
-            ↓ Télécharger
-        </a>
-
-
         <button
             class="action-btn reply-btn hidden"
             id="replyButton"
@@ -1177,11 +552,6 @@ body{
 
     </div>
 
-
-
-    <!-- =================================================
-         MODULE RÉPONSE
-         ================================================= -->
 
     <div
         class="reply-panel"
@@ -1194,8 +564,7 @@ body{
 
 
         <div class="reply-info">
-            Enregistre ton message puis vérifie-le avant de l’envoyer.
-            Durée maximale : 60 secondes.
+            Enregistre ton message, vérifie-le puis envoie-le directement par Messages.
         </div>
 
 
@@ -1260,300 +629,44 @@ body{
 
             <button
                 class="camera-btn send"
-                id="sendRecord"
+                id="shareRecord"
                 type="button"
                 style="display:none;"
             >
-                Envoyer la vidéo
-            </button>
-
-
-            <button
-                class="camera-btn message"
-                id="messageRecord"
-                type="button"
-                style="display:none;"
-            >
-                Envoyer par Messages
+                Envoyer ma réponse
             </button>
 
         </div>
 
 
         <div
-            class="upload-status"
-            id="uploadStatus"
+            class="status-message"
+            id="statusMessage"
         ></div>
-
-
-        <div
-            class="video-link-zone"
-            id="videoLinkZone"
-        >
-
-            <div class="reply-info">
-                Lien temporaire de la réponse :
-            </div>
-
-            <div
-                class="video-link"
-                id="videoLink"
-            ></div>
-
-        </div>
 
     </div>
 
 </div>
 
 
-</section>
-
 </main>
-
-
-
-<button
-    class="back-to-top"
-    id="backToTop"
-    aria-label="Retour en haut"
->
-    ↑
-</button>
-
 
 
 <script>
 
 /* =========================================================
-   CONFIGURATION TEST
-   ========================================================= */
-
-const UPLOAD_ENDPOINT =
-    "https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/dynamic-function";
-
-
-const TEST_PHONE =
-    "+33628323223";
-
-
-/* =========================================================
    ÉLÉMENTS
    ========================================================= */
 
-const mainVideos =
-    document.querySelectorAll(
+const giftCover =
+    document.getElementById(
+        "giftCover"
+    );
+
+const mainVideo =
+    document.querySelector(
         ".main-video"
     );
-
-const giftCovers =
-    document.querySelectorAll(
-        ".gift-cover"
-    );
-
-const backToTop =
-    document.getElementById(
-        "backToTop"
-    );
-
-
-/* =========================================================
-   CHARGEMENT INTELLIGENT
-   ========================================================= */
-
-const videoObserver =
-    new IntersectionObserver(
-
-        entries => {
-
-            entries.forEach(
-                entry => {
-
-                    if(
-                        !entry.isIntersecting
-                    ){
-                        return;
-                    }
-
-
-                    const video =
-                        entry.target;
-
-
-                    if(
-                        !video.src &&
-                        video.dataset.src
-                    ){
-
-                        video.src =
-                            video.dataset.src;
-
-                        video.load();
-
-                    }
-
-
-                    videoObserver
-                        .unobserve(video);
-
-                }
-            );
-
-        },
-
-        {
-            rootMargin:"350px 0px"
-        }
-
-    );
-
-
-mainVideos.forEach(
-    video => {
-
-        videoObserver.observe(video);
-
-    }
-);
-
-
-/* =========================================================
-   OUVERTURE DES CADEAUX
-   ========================================================= */
-
-giftCovers.forEach(
-    gift => {
-
-        gift.addEventListener(
-            "click",
-            async () => {
-
-                if(
-                    gift.classList.contains(
-                        "opening"
-                    )
-                ){
-                    return;
-                }
-
-
-                const wrapper =
-                    gift.closest(
-                        ".video-wrapper"
-                    );
-
-
-                const video =
-                    wrapper.querySelector(
-                        ".main-video"
-                    );
-
-
-                if(
-                    !video.src &&
-                    video.dataset.src
-                ){
-
-                    video.src =
-                        video.dataset.src;
-
-                    video.load();
-
-                }
-
-
-                gift.classList.add(
-                    "opening"
-                );
-
-
-                /*
-                   8e case :
-                   affichage de Répondre
-                */
-
-                if(
-                    gift.dataset.reply
-                    ===
-                    "true"
-                ){
-
-                    document
-                        .getElementById(
-                            "replyButton"
-                        )
-                        .classList
-                        .remove(
-                            "hidden"
-                        );
-
-                }
-
-
-                try{
-
-                    await video.play();
-
-                }
-                catch(error){}
-
-
-                setTimeout(
-                    () => {
-
-                        gift.style.display =
-                            "none";
-
-                    },
-                    450
-                );
-
-            }
-        );
-
-    }
-);
-
-
-/* =========================================================
-   UNE SEULE VIDÉO À LA FOIS
-   ========================================================= */
-
-mainVideos.forEach(
-    video => {
-
-        video.addEventListener(
-            "play",
-            () => {
-
-                mainVideos.forEach(
-                    otherVideo => {
-
-                        if(
-                            otherVideo
-                                !==
-                                video
-                            &&
-                            !otherVideo.paused
-                        ){
-
-                            otherVideo.pause();
-
-                        }
-
-                    }
-                );
-
-            }
-        );
-
-    }
-);
-
-
-/* =========================================================
-   RÉPONSE VIDÉO
-   ========================================================= */
 
 const replyButton =
     document.getElementById(
@@ -1590,14 +703,9 @@ const restartRecord =
         "restartRecord"
     );
 
-const sendRecord =
+const shareRecord =
     document.getElementById(
-        "sendRecord"
-    );
-
-const messageRecord =
-    document.getElementById(
-        "messageRecord"
+        "shareRecord"
     );
 
 const recordTime =
@@ -1605,19 +713,9 @@ const recordTime =
         "recordTime"
     );
 
-const uploadStatus =
+const statusMessage =
     document.getElementById(
-        "uploadStatus"
-    );
-
-const videoLinkZone =
-    document.getElementById(
-        "videoLinkZone"
-    );
-
-const videoLink =
-    document.getElementById(
-        "videoLink"
+        "statusMessage"
     );
 
 
@@ -1629,13 +727,70 @@ let recordedChunks = [];
 
 let recordedBlob = null;
 
-let recordedObjectURL = null;
+let recordedFile = null;
 
-let uploadedVideoURL = null;
+let recordedObjectURL = null;
 
 let recordTimer = null;
 
 let secondsRecorded = 0;
+
+
+/* =========================================================
+   CHARGEMENT VIDÉO TEST
+   ========================================================= */
+
+if(
+    !mainVideo.src &&
+    mainVideo.dataset.src
+){
+
+    mainVideo.src =
+        mainVideo.dataset.src;
+
+    mainVideo.load();
+
+}
+
+
+/* =========================================================
+   OUVERTURE CADEAU
+   ========================================================= */
+
+giftCover.addEventListener(
+    "click",
+    async () => {
+
+        giftCover.classList.add(
+            "opening"
+        );
+
+
+        replyButton.classList.remove(
+            "hidden"
+        );
+
+
+        try{
+
+            await mainVideo.play();
+
+        }
+        catch(error){}
+
+
+        setTimeout(
+            () => {
+
+                giftCover.style.display =
+                    "none";
+
+            },
+            450
+        );
+
+    }
+);
 
 
 /* =========================================================
@@ -1646,37 +801,27 @@ replyButton.addEventListener(
     "click",
     async () => {
 
+        mainVideo.pause();
+
+
         replyPanel.classList.add(
             "visible"
         );
 
 
-        uploadStatus.className =
-            "upload-status";
-
-        uploadStatus.textContent =
-            "";
-
-
-        const testVideo =
-            document.querySelector(
-                "#testCard .main-video"
-            );
-
-
-        testVideo.pause();
+        statusMessage.classList.remove(
+            "visible"
+        );
 
 
         try{
 
             cameraStream =
-                await navigator
-                    .mediaDevices
+                await navigator.mediaDevices
                     .getUserMedia({
 
                         video:{
-                            facingMode:
-                                "user",
+                            facingMode:"user",
 
                             width:{
                                 ideal:720
@@ -1715,8 +860,11 @@ replyButton.addEventListener(
         }
         catch(error){
 
-            alert(
-                "Impossible d'accéder à la caméra ou au micro. Vérifie les autorisations de Safari."
+            statusMessage.textContent =
+                "Impossible d'accéder à la caméra ou au micro.";
+
+            statusMessage.classList.add(
+                "visible"
             );
 
         }
@@ -1726,7 +874,7 @@ replyButton.addEventListener(
 
 
 /* =========================================================
-   FORMAT COMPATIBLE
+   FORMAT D'ENREGISTREMENT
    ========================================================= */
 
 function getSupportedMimeType(){
@@ -1744,9 +892,7 @@ function getSupportedMimeType(){
     ];
 
 
-    for(
-        const type of types
-    ){
+    for(const type of types){
 
         if(
             MediaRecorder
@@ -1782,23 +928,12 @@ startRecord.addEventListener(
 
         recordedBlob = null;
 
-        uploadedVideoURL = null;
+        recordedFile = null;
 
 
-        uploadStatus.className =
-            "upload-status";
-
-        uploadStatus.textContent =
-            "";
-
-
-        videoLinkZone.classList.remove(
+        statusMessage.classList.remove(
             "visible"
         );
-
-
-        messageRecord.style.display =
-            "none";
 
 
         const mimeType =
@@ -1813,8 +948,7 @@ startRecord.addEventListener(
                     new MediaRecorder(
                         cameraStream,
                         {
-                            mimeType:
-                                mimeType,
+                            mimeType:mimeType,
 
                             videoBitsPerSecond:
                                 1800000
@@ -1834,8 +968,11 @@ startRecord.addEventListener(
         }
         catch(error){
 
-            alert(
-                "L'enregistrement vidéo n'est pas disponible sur ce navigateur."
+            statusMessage.textContent =
+                "L'enregistrement vidéo n'est pas disponible sur ce navigateur.";
+
+            statusMessage.classList.add(
+                "visible"
             );
 
             return;
@@ -1843,120 +980,111 @@ startRecord.addEventListener(
         }
 
 
-        mediaRecorder
-            .addEventListener(
-                "dataavailable",
-                event => {
+        mediaRecorder.addEventListener(
+            "dataavailable",
+            event => {
 
-                    if(
-                        event.data &&
-                        event.data.size > 0
-                    ){
+                if(
+                    event.data &&
+                    event.data.size > 0
+                ){
 
-                        recordedChunks
-                            .push(
-                                event.data
-                            );
-
-                    }
+                    recordedChunks.push(
+                        event.data
+                    );
 
                 }
-            );
+
+            }
+        );
 
 
-        mediaRecorder
-            .addEventListener(
-                "stop",
-                () => {
+        mediaRecorder.addEventListener(
+            "stop",
+            () => {
 
-                    const type =
-                        mediaRecorder.mimeType
-                        ||
-                        "video/mp4";
-
-
-                    recordedBlob =
-                        new Blob(
-                            recordedChunks,
-                            {
-                                type:type
-                            }
-                        );
+                const type =
+                    mediaRecorder.mimeType
+                    ||
+                    "video/mp4";
 
 
-                    if(
+                recordedBlob =
+                    new Blob(
+                        recordedChunks,
+                        {
+                            type:type
+                        }
+                    );
+
+
+                const extension =
+                    type.includes("webm")
+                    ?
+                    "webm"
+                    :
+                    "mp4";
+
+
+                recordedFile =
+                    new File(
+                        [recordedBlob],
+                        `ma-reponse.${extension}`,
+                        {
+                            type:type
+                        }
+                    );
+
+
+                if(recordedObjectURL){
+
+                    URL.revokeObjectURL(
                         recordedObjectURL
-                    ){
-
-                        URL.revokeObjectURL(
-                            recordedObjectURL
-                        );
-
-                    }
-
-
-                    recordedObjectURL =
-                        URL.createObjectURL(
-                            recordedBlob
-                        );
-
-
-                    cameraPreview
-                        .style
-                        .display =
-                        "none";
-
-
-                    recordedPreview
-                        .style
-                        .display =
-                        "block";
-
-
-                    recordedPreview.src =
-                        recordedObjectURL;
-
-
-                    restartRecord
-                        .style
-                        .display =
-                        "inline-block";
-
-
-                    sendRecord
-                        .style
-                        .display =
-                        "inline-block";
-
-
-                    sendRecord.disabled =
-                        false;
-
-
-                    sendRecord.textContent =
-                        "Envoyer la vidéo";
-
-
-                    startRecord
-                        .style
-                        .display =
-                        "none";
-
-
-                    stopRecord
-                        .style
-                        .display =
-                        "none";
-
-
-                    recordTime
-                        .classList
-                        .remove(
-                            "visible"
-                        );
+                    );
 
                 }
-            );
+
+
+                recordedObjectURL =
+                    URL.createObjectURL(
+                        recordedBlob
+                    );
+
+
+                cameraPreview.style.display =
+                    "none";
+
+
+                recordedPreview.style.display =
+                    "block";
+
+
+                recordedPreview.src =
+                    recordedObjectURL;
+
+
+                startRecord.style.display =
+                    "none";
+
+
+                stopRecord.style.display =
+                    "none";
+
+
+                restartRecord.style.display =
+                    "inline-block";
+
+
+                shareRecord.style.display =
+                    "inline-block";
+
+
+                recordTime.classList.remove(
+                    "visible"
+                );
+
+            }
+        );
 
 
         mediaRecorder.start();
@@ -1969,11 +1097,9 @@ startRecord.addEventListener(
             "00:00";
 
 
-        recordTime
-            .classList
-            .add(
-                "visible"
-            );
+        recordTime.classList.add(
+            "visible"
+        );
 
 
         startRecord.disabled =
@@ -1982,10 +1108,6 @@ startRecord.addEventListener(
 
         stopRecord.disabled =
             false;
-
-
-        stopRecord.style.display =
-            "inline-block";
 
 
         recordTimer =
@@ -1997,38 +1119,26 @@ startRecord.addEventListener(
 
                     const minutes =
                         Math.floor(
-                            secondsRecorded
-                            /
-                            60
+                            secondsRecorded / 60
                         );
 
 
                     const seconds =
-                        secondsRecorded
-                        %
-                        60;
+                        secondsRecorded % 60;
 
 
                     recordTime.textContent =
                         String(minutes)
-                            .padStart(
-                                2,
-                                "0"
-                            )
+                            .padStart(2,"0")
                         +
                         ":"
                         +
                         String(seconds)
-                            .padStart(
-                                2,
-                                "0"
-                            );
+                            .padStart(2,"0");
 
 
                     if(
-                        secondsRecorded
-                        >=
-                        60
+                        secondsRecorded >= 60
                     ){
 
                         stopRecording();
@@ -2052,9 +1162,8 @@ function stopRecording(){
     if(
         !mediaRecorder
         ||
-        mediaRecorder.state
-        ===
-        "inactive"
+        mediaRecorder.state ===
+            "inactive"
     ){
         return;
     }
@@ -2094,56 +1203,39 @@ restartRecord.addEventListener(
 
         recordedBlob = null;
 
-        recordedChunks = [];
+        recordedFile = null;
 
-        uploadedVideoURL = null;
+        recordedChunks = [];
 
 
         recordedPreview.pause();
 
 
-        recordedPreview
-            .removeAttribute(
-                "src"
-            );
+        recordedPreview.removeAttribute(
+            "src"
+        );
 
 
         recordedPreview.load();
 
 
-        recordedPreview
-            .style
-            .display =
+        recordedPreview.style.display =
             "none";
 
 
-        cameraPreview
-            .style
-            .display =
+        cameraPreview.style.display =
             "block";
 
 
-        restartRecord
-            .style
-            .display =
+        restartRecord.style.display =
             "none";
 
 
-        sendRecord
-            .style
-            .display =
+        shareRecord.style.display =
             "none";
 
 
-        messageRecord
-            .style
-            .display =
-            "none";
-
-
-        startRecord
-            .style
-            .display =
+        startRecord.style.display =
             "inline-block";
 
 
@@ -2151,9 +1243,7 @@ restartRecord.addEventListener(
             false;
 
 
-        stopRecord
-            .style
-            .display =
+        stopRecord.style.display =
             "inline-block";
 
 
@@ -2161,191 +1251,96 @@ restartRecord.addEventListener(
             true;
 
 
-        uploadStatus.className =
-            "upload-status";
-
-
-        uploadStatus.textContent =
-            "";
-
-
-        videoLinkZone
-            .classList
-            .remove(
-                "visible"
-            );
+        statusMessage.classList.remove(
+            "visible"
+        );
 
     }
 );
 
 
 /* =========================================================
-   UPLOAD SUPABASE
+   PARTAGE NATIF IPHONE
    ========================================================= */
 
-sendRecord.addEventListener(
+shareRecord.addEventListener(
     "click",
     async () => {
 
-        if(!recordedBlob){
+        if(!recordedFile){
             return;
         }
 
 
-        sendRecord.disabled =
-            true;
-
-
-        sendRecord.textContent =
-            "Envoi…";
-
-
-        uploadStatus.className =
-            "upload-status visible";
-
-
-        uploadStatus.textContent =
-            "Envoi de ta vidéo…";
-
-
-        const formData =
-            new FormData();
-
-
         /*
-           Le nom "video" doit correspondre
-           à celui attendu par l'Edge Function.
+           Vérifie que le navigateur
+           accepte le partage de fichiers.
         */
 
-        const extension =
-            recordedBlob.type
-                .includes("webm")
-                ?
-                "webm"
-                :
-                "mp4";
+        if(
+            !navigator.share
+        ){
 
+            statusMessage.textContent =
+                "Le partage direct n'est pas disponible sur ce navigateur.";
 
-        const file =
-            new File(
-                [recordedBlob],
-                `reponse-test.${extension}`,
-                {
-                    type:
-                        recordedBlob.type
-                        ||
-                        "video/mp4"
-                }
+            statusMessage.classList.add(
+                "visible"
             );
 
+            return;
 
-        formData.append(
-            "video",
-            file
-        );
+        }
+
+
+        if(
+            navigator.canShare
+            &&
+            !navigator.canShare({
+                files:[recordedFile]
+            })
+        ){
+
+            statusMessage.textContent =
+                "Ce navigateur ne permet pas de partager directement cette vidéo.";
+
+            statusMessage.classList.add(
+                "visible"
+            );
+
+            return;
+
+        }
 
 
         try{
 
-            const response =
-                await fetch(
-                    UPLOAD_ENDPOINT,
-                    {
-                        method:"POST",
+            await navigator.share({
 
-                        body:formData
-                    }
-                );
+                files:[
+                    recordedFile
+                ],
 
+                title:
+                    "Ma réponse vidéo",
 
-            /*
-               On lit d'abord le texte :
-               ainsi on peut afficher
-               une erreur même si Supabase
-               ne renvoie pas du JSON.
-            */
+                text:
+                    "Merci pour ton message ❤️"
 
-            const rawText =
-                await response.text();
+            });
 
 
-            let result;
+            statusMessage.textContent =
+                "La réponse a été partagée.";
 
-
-            try{
-
-                result =
-                    JSON.parse(
-                        rawText
-                    );
-
-            }
-            catch{
-
-                throw new Error(
-                    rawText
-                    ||
-                    "Réponse invalide du serveur"
-                );
-
-            }
-
-
-            if(
-                !response.ok
-                ||
-                !result.success
-            ){
-
-                throw new Error(
-                    result.error
-                    ||
-                    "Échec de l'envoi"
-                );
-
-            }
-
-
-            uploadedVideoURL =
-                result.url;
-
-
-            uploadStatus.className =
-                "upload-status visible success";
-
-
-            uploadStatus.textContent =
-                "Ta vidéo a bien été envoyée ✓";
-
-
-            sendRecord.textContent =
-                "Vidéo envoyée ✓";
-
-
-            videoLink.textContent =
-                uploadedVideoURL;
-
-
-            videoLinkZone
-                .classList
-                .add(
-                    "visible"
-                );
+            statusMessage.classList.add(
+                "visible"
+            );
 
 
             /*
-               Le bouton Messages
-               apparaît seulement
-               APRÈS un upload réussi.
-            */
-
-            messageRecord.style.display =
-                "inline-block";
-
-
-            /*
-               Plus besoin de la caméra.
-               On coupe micro + caméra.
+               On peut couper la caméra
+               après partage.
             */
 
             if(cameraStream){
@@ -2366,185 +1361,35 @@ sendRecord.addEventListener(
         }
         catch(error){
 
-            console.error(
-                error
-            );
+            /*
+               Si la personne ferme simplement
+               le menu de partage,
+               on ne considère pas cela
+               comme une erreur grave.
+            */
 
+            if(
+                error.name !==
+                "AbortError"
+            ){
 
-            uploadStatus.className =
-                "upload-status visible error";
+                statusMessage.textContent =
+                    "Impossible de partager la vidéo.";
 
-
-            uploadStatus.textContent =
-                "Erreur lors de l'envoi : "
-                +
-                (
-                    error instanceof Error
-                    ?
-                    error.message
-                    :
-                    "erreur inconnue"
-                );
-
-
-            sendRecord.disabled =
-                false;
-
-
-            sendRecord.textContent =
-                "Réessayer l'envoi";
-
-        }
-
-    }
-);
-
-
-/* =========================================================
-   OUVRIR MESSAGES
-   ========================================================= */
-
-messageRecord.addEventListener(
-    "click",
-    () => {
-
-        if(!uploadedVideoURL){
-            return;
-        }
-
-
-        const message =
-            "Voici ma réponse vidéo ❤️ "
-            +
-            uploadedVideoURL;
-
-
-        /*
-           Test iPhone / Messages.
-           Le numéro est déjà renseigné.
-        */
-
-        const smsURL =
-            "sms:"
-            +
-            TEST_PHONE
-            +
-            "&body="
-            +
-            encodeURIComponent(
-                message
-            );
-
-
-        window.location.href =
-            smsURL;
-
-    }
-);
-
-
-/* =========================================================
-   PAUSE VIDÉOS HORS ÉCRAN
-   ========================================================= */
-
-const pauseObserver =
-    new IntersectionObserver(
-
-        entries => {
-
-            entries.forEach(
-                entry => {
-
-                    const video =
-                        entry.target;
-
-
-                    if(
-                        !entry.isIntersecting
-                        &&
-                        !video.paused
-                    ){
-
-                        video.pause();
-
-                    }
-
-                }
-            );
-
-        },
-
-        {
-            threshold:.12
-        }
-
-    );
-
-
-mainVideos.forEach(
-    video => {
-
-        pauseObserver.observe(video);
-
-    }
-);
-
-
-/* =========================================================
-   RETOUR EN HAUT
-   ========================================================= */
-
-window.addEventListener(
-    "scroll",
-    () => {
-
-        if(
-            window.scrollY > 700
-        ){
-
-            backToTop
-                .classList
-                .add(
+                statusMessage.classList.add(
                     "visible"
                 );
 
-        }
-        else{
-
-            backToTop
-                .classList
-                .remove(
-                    "visible"
-                );
+            }
 
         }
-
-    },
-
-    {
-        passive:true
-    }
-);
-
-
-backToTop.addEventListener(
-    "click",
-    () => {
-
-        window.scrollTo({
-
-            top:0,
-
-            behavior:"smooth"
-
-        });
 
     }
 );
 
 
 /* =========================================================
-   NETTOYAGE CAMÉRA
+   NETTOYAGE
    ========================================================= */
 
 window.addEventListener(

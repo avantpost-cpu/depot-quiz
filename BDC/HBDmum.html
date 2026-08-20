@@ -92,7 +92,8 @@ body{
 .video-list{
     display:flex;
     flex-direction:column;
-    gap:34px;
+
+    gap:36px;
 }
 
 
@@ -106,25 +107,31 @@ body{
 
 
 /* =========================================================
-   ZONE VIDÉO
+   WRAPPER
+   Cadeau + vidéo ont exactement la même taille
    ========================================================= */
 
 .video-wrapper{
     position:relative;
-    width:100%;
+
+    width:82%;
+
+    margin:0 auto;
 }
 
 
-/* vertical */
+/* vidéos verticales */
 
 .video-wrapper.vertical{
     aspect-ratio:9 / 16;
 }
 
 
-/* horizontal */
+/* vidéo Tata horizontale */
 
 .video-wrapper.horizontal{
+    width:88%;
+
     aspect-ratio:16 / 9;
 }
 
@@ -135,6 +142,7 @@ body{
 
 .video-wrapper video{
     position:absolute;
+
     inset:0;
 
     display:block;
@@ -144,9 +152,9 @@ body{
 
     object-fit:contain;
 
-    background:#000;
+    background:#000000;
 
-    border-radius:18px;
+    border-radius:14px;
 }
 
 
@@ -156,29 +164,31 @@ body{
 
 .gift-cover{
     position:absolute;
+
     inset:0;
 
     z-index:10;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
     cursor:pointer;
 
-    pointer-events:auto;
+    perspective:1000px;
 }
 
 
 /* =========================================================
-   CONTENEUR DU CADEAU
+   PAQUET
    ========================================================= */
 
 .gift-package{
     position:relative;
 
-    width:82%;
-    height:82%;
+    width:100%;
+    height:100%;
 
     filter:
         drop-shadow(
@@ -186,15 +196,7 @@ body{
         );
 
     transition:
-        filter .25s ease;
-}
-
-
-/* horizontal */
-
-.video-wrapper.horizontal .gift-package{
-    width:88%;
-    height:88%;
+        filter .65s ease;
 }
 
 
@@ -214,27 +216,27 @@ body{
     border-radius:14px;
 
     transition:
-        opacity .1s ease;
+        opacity .08s ease;
 }
 
 
 /* =========================================================
-   MORCEAUX DE PAPIER
+   DEUX PANS DE PAPIER
    ========================================================= */
 
-.tear-piece{
+.paper-half{
     position:absolute;
-    inset:0;
 
-    background-size:100% 100%;
-    background-position:center;
+    top:0;
+    bottom:0;
+
+    width:51%;
+
     background-repeat:no-repeat;
 
-    border-radius:14px;
-
-    pointer-events:none;
-
     opacity:0;
+
+    backface-visibility:hidden;
 
     will-change:
         transform,
@@ -243,212 +245,131 @@ body{
 
 
 /* =========================================================
-   DÉCHIRURE GAUCHE
+   GAUCHE
    ========================================================= */
 
-.tear-left{
+.paper-left{
+
+    left:0;
+
+    background-size:200% 100%;
+    background-position:left center;
+
+    transform-origin:left center;
 
     clip-path:polygon(
         0 0,
-        51% 0,
-        48% 6%,
-        53% 12%,
-        47% 19%,
-        52% 26%,
-        48% 33%,
-        54% 41%,
-        47% 49%,
-        53% 57%,
-        48% 65%,
-        54% 73%,
-        47% 81%,
-        52% 89%,
-        48% 95%,
-        51% 100%,
+        100% 0,
+        96% 5%,
+        100% 10%,
+        95% 16%,
+        99% 22%,
+        94% 29%,
+        100% 36%,
+        95% 43%,
+        99% 50%,
+        94% 57%,
+        100% 64%,
+        95% 71%,
+        99% 78%,
+        94% 85%,
+        100% 92%,
+        96% 100%,
         0 100%
     );
 
+    border-radius:
+        14px 0 0 14px;
 }
 
 
 /* =========================================================
-   DÉCHIRURE DROITE
+   DROITE
    ========================================================= */
 
-.tear-right{
+.paper-right{
+
+    right:0;
+
+    background-size:200% 100%;
+    background-position:right center;
+
+    transform-origin:right center;
 
     clip-path:polygon(
-        51% 0,
+        4% 0,
         100% 0,
         100% 100%,
-        51% 100%,
-        48% 95%,
-        52% 89%,
-        47% 81%,
-        54% 73%,
-        48% 65%,
-        53% 57%,
-        47% 49%,
-        54% 41%,
-        48% 33%,
-        52% 26%,
-        47% 19%,
-        53% 12%,
-        48% 6%
+        4% 100%,
+        0 92%,
+        6% 85%,
+        1% 78%,
+        5% 71%,
+        0 64%,
+        6% 57%,
+        1% 50%,
+        5% 43%,
+        0 36%,
+        6% 29%,
+        1% 22%,
+        5% 16%,
+        0 10%
     );
 
+    border-radius:
+        0 14px 14px 0;
 }
 
 
 /* =========================================================
-   OUVERTURE
+   BORD CLAIR DE LA DÉCHIRURE
    ========================================================= */
 
-.gift-cover.tearing{
-    pointer-events:none;
-}
+.paper-left::after,
+.paper-right::before{
 
+    content:"";
 
-.gift-cover.tearing .gift-image{
-    opacity:0;
-}
+    position:absolute;
 
+    top:0;
 
-.gift-cover.tearing .tear-piece{
-    opacity:1;
-}
+    width:5px;
+    height:100%;
 
+    opacity:.65;
 
-/* =========================================================
-   ANIMATION GAUCHE
-   ========================================================= */
-
-.gift-cover.tearing .tear-left{
-
-    animation:
-        tearLeft .82s
-        cubic-bezier(.18,.72,.20,1)
-        forwards;
-
-}
-
-
-/* =========================================================
-   ANIMATION DROITE
-   ========================================================= */
-
-.gift-cover.tearing .tear-right{
-
-    animation:
-        tearRight .82s
-        cubic-bezier(.18,.72,.20,1)
-        forwards;
-
-}
-
-
-/* =========================================================
-   ANIMATION DU PAQUET
-   ========================================================= */
-
-@keyframes tearLeft{
-
-    0%{
-        transform:
-            translate(0,0)
-            rotate(0deg);
-
-        opacity:1;
-    }
-
-    22%{
-        transform:
-            translate(-4px,0)
-            rotate(-.5deg);
-
-        opacity:1;
-    }
-
-    48%{
-        transform:
-            translate(-18px,5px)
-            rotate(-2deg);
-
-        opacity:1;
-    }
-
-    100%{
-        transform:
-            translate(-92px,38px)
-            rotate(-11deg);
-
-        opacity:0;
-    }
-
-}
-
-
-@keyframes tearRight{
-
-    0%{
-        transform:
-            translate(0,0)
-            rotate(0deg);
-
-        opacity:1;
-    }
-
-    22%{
-        transform:
-            translate(4px,0)
-            rotate(.5deg);
-
-        opacity:1;
-    }
-
-    48%{
-        transform:
-            translate(18px,5px)
-            rotate(2deg);
-
-        opacity:1;
-    }
-
-    100%{
-        transform:
-            translate(92px,38px)
-            rotate(11deg);
-
-        opacity:0;
-    }
-
-}
-
-
-/* =========================================================
-   OMBRE DISPARAÎT
-   ========================================================= */
-
-.gift-cover.tearing .gift-package{
-
-    filter:
-        drop-shadow(
-            0 0 0 rgba(0,0,0,0)
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(255,255,255,.80) 0px,
+            rgba(255,255,255,.80) 3px,
+            rgba(255,255,255,.12) 3px,
+            rgba(255,255,255,.12) 7px
         );
 
 }
 
 
+.paper-left::after{
+    right:0;
+}
+
+
+.paper-right::before{
+    left:0;
+}
+
+
 /* =========================================================
-   TEXTE
+   INDICATION
    ========================================================= */
 
 .gift-hint{
-
     position:absolute;
 
     left:50%;
-    bottom:9%;
+    bottom:18px;
 
     z-index:30;
 
@@ -463,13 +384,13 @@ body{
     background:
         rgba(0,0,0,.58);
 
-    color:#fff;
+    color:#ffffff;
 
     font-size:13px;
     font-weight:bold;
 
     box-shadow:
-        0 3px 10px rgba(0,0,0,.2);
+        0 3px 10px rgba(0,0,0,.20);
 
     pointer-events:none;
 
@@ -479,13 +400,154 @@ body{
 }
 
 
-.gift-cover.tearing .gift-hint{
+/* =========================================================
+   DÉBUT DE L'OUVERTURE
+   ========================================================= */
 
+.gift-cover.opening{
+    pointer-events:none;
+}
+
+
+.gift-cover.opening .gift-image{
+    opacity:0;
+}
+
+
+.gift-cover.opening .paper-half{
+    opacity:1;
+}
+
+
+.gift-cover.opening .gift-hint{
     opacity:0;
 
     transform:
         translateX(-50%)
         scale(.88);
+}
+
+
+/* =========================================================
+   OMBRE DISPARAÎT
+   ========================================================= */
+
+.gift-cover.opening .gift-package{
+
+    filter:
+        drop-shadow(
+            0 0 0 rgba(0,0,0,0)
+        );
+
+}
+
+
+/* =========================================================
+   ANIMATION GAUCHE
+   ========================================================= */
+
+.gift-cover.opening .paper-left{
+
+    animation:
+        peelLeft .9s
+        cubic-bezier(.22,.72,.18,1)
+        forwards;
+
+}
+
+
+/* =========================================================
+   ANIMATION DROITE
+   ========================================================= */
+
+.gift-cover.opening .paper-right{
+
+    animation:
+        peelRight .9s
+        cubic-bezier(.22,.72,.18,1)
+        forwards;
+
+}
+
+
+/* =========================================================
+   KEYFRAMES
+   ========================================================= */
+
+@keyframes peelLeft{
+
+    0%{
+        transform:
+            translateX(0)
+            rotateY(0deg);
+
+        opacity:1;
+    }
+
+    18%{
+        transform:
+            translateX(-2%)
+            rotateY(-8deg);
+
+        opacity:1;
+    }
+
+    58%{
+        transform:
+            translateX(-28%)
+            rotateY(-34deg)
+            rotateZ(-2deg);
+
+        opacity:1;
+    }
+
+    100%{
+        transform:
+            translateX(-110%)
+            rotateY(-66deg)
+            rotateZ(-6deg);
+
+        opacity:0;
+    }
+
+}
+
+
+@keyframes peelRight{
+
+    0%{
+        transform:
+            translateX(0)
+            rotateY(0deg);
+
+        opacity:1;
+    }
+
+    18%{
+        transform:
+            translateX(2%)
+            rotateY(8deg);
+
+        opacity:1;
+    }
+
+    58%{
+        transform:
+            translateX(28%)
+            rotateY(34deg)
+            rotateZ(2deg);
+
+        opacity:1;
+    }
+
+    100%{
+        transform:
+            translateX(110%)
+            rotateY(66deg)
+            rotateZ(6deg);
+
+        opacity:0;
+    }
 
 }
 
@@ -496,7 +558,9 @@ body{
 
 .download-zone{
     width:100%;
+
     padding-top:14px;
+
     text-align:center;
 }
 
@@ -514,7 +578,7 @@ body{
     font-size:13px;
     font-weight:bold;
 
-    color:#fff;
+    color:#ffffff;
 
     background:#9f80a6;
 
@@ -545,7 +609,6 @@ body{
    ========================================================= */
 
 .back-to-top{
-
     position:fixed;
 
     right:16px;
@@ -571,29 +634,27 @@ body{
     border-radius:50%;
 
     background:
-        rgba(80,52,84,.9);
+        rgba(80,52,84,.90);
 
-    color:#fff;
+    color:#ffffff;
 
     font-size:24px;
 
     cursor:pointer;
 
     box-shadow:
-        0 5px 15px rgba(0,0,0,.3);
+        0 5px 15px rgba(0,0,0,.30);
 
     opacity:0;
 
     visibility:hidden;
 
-    transform:
-        translateY(10px);
+    transform:translateY(10px);
 
     transition:
         opacity .25s ease,
         transform .25s ease,
         visibility .25s;
-
 }
 
 
@@ -603,8 +664,7 @@ body{
 
     visibility:visible;
 
-    transform:
-        translateY(0);
+    transform:translateY(0);
 
 }
 
@@ -621,32 +681,33 @@ body{
     }
 
     .video-list{
-        gap:28px;
+        gap:30px;
     }
 
-    .gift-package{
+    .video-wrapper{
         width:80%;
-        height:80%;
     }
 
-    .video-wrapper.horizontal .gift-package{
+    .video-wrapper.horizontal{
         width:88%;
-        height:86%;
     }
 
     .video-wrapper video,
-    .gift-image,
-    .tear-piece{
+    .gift-image{
         border-radius:12px;
     }
 
     .download-btn{
         font-size:12px;
+
         padding:8px 14px;
     }
 
     .gift-hint{
+        bottom:12px;
+
         font-size:12px;
+
         padding:8px 13px;
     }
 
@@ -663,8 +724,8 @@ body{
         scroll-behavior:auto;
     }
 
-    .gift-cover.tearing .tear-left,
-    .gift-cover.tearing .tear-right{
+    .gift-cover.opening .paper-left,
+    .gift-cover.opening .paper-right{
         animation-duration:.01s;
     }
 
@@ -678,7 +739,10 @@ body{
 <body>
 
 
-<main class="page" id="top">
+<main
+    class="page"
+    id="top"
+>
 
 
 <header class="header">
@@ -692,6 +756,7 @@ body{
 
 
 <section class="video-list">
+
 
 
 <!-- =====================================================
@@ -728,9 +793,9 @@ body{
                     alt=""
                 >
 
-                <div class="tear-piece tear-left"></div>
+                <div class="paper-half paper-left"></div>
 
-                <div class="tear-piece tear-right"></div>
+                <div class="paper-half paper-right"></div>
 
             </div>
 
@@ -795,9 +860,9 @@ body{
                     alt=""
                 >
 
-                <div class="tear-piece tear-left"></div>
+                <div class="paper-half paper-left"></div>
 
-                <div class="tear-piece tear-right"></div>
+                <div class="paper-half paper-right"></div>
 
             </div>
 
@@ -861,9 +926,9 @@ body{
                     alt=""
                 >
 
-                <div class="tear-piece tear-left"></div>
+                <div class="paper-half paper-left"></div>
 
-                <div class="tear-piece tear-right"></div>
+                <div class="paper-half paper-right"></div>
 
             </div>
 
@@ -927,9 +992,9 @@ body{
                     alt=""
                 >
 
-                <div class="tear-piece tear-left"></div>
+                <div class="paper-half paper-left"></div>
 
-                <div class="tear-piece tear-right"></div>
+                <div class="paper-half paper-right"></div>
 
             </div>
 
@@ -993,9 +1058,9 @@ body{
                     alt=""
                 >
 
-                <div class="tear-piece tear-left"></div>
+                <div class="paper-half paper-left"></div>
 
-                <div class="tear-piece tear-right"></div>
+                <div class="paper-half paper-right"></div>
 
             </div>
 
@@ -1059,9 +1124,9 @@ body{
                     alt=""
                 >
 
-                <div class="tear-piece tear-left"></div>
+                <div class="paper-half paper-left"></div>
 
-                <div class="tear-piece tear-right"></div>
+                <div class="paper-half paper-right"></div>
 
             </div>
 
@@ -1125,9 +1190,9 @@ body{
                     alt=""
                 >
 
-                <div class="tear-piece tear-left"></div>
+                <div class="paper-half paper-left"></div>
 
-                <div class="tear-piece tear-right"></div>
+                <div class="paper-half paper-right"></div>
 
             </div>
 
@@ -1161,6 +1226,7 @@ body{
 </main>
 
 
+
 <button
     class="back-to-top"
     id="backToTop"
@@ -1170,8 +1236,8 @@ body{
 </button>
 
 
-<script>
 
+<script>
 
 /* =========================================================
    ÉLÉMENTS
@@ -1188,7 +1254,7 @@ const backToTop =
 
 
 /* =========================================================
-   PRÉPARATION DES MORCEAUX
+   PRÉPARATION DES DEUX PANS
    ========================================================= */
 
 gifts.forEach((gift) => {
@@ -1199,15 +1265,18 @@ gifts.forEach((gift) => {
     const image =
         giftPackage.dataset.image;
 
-    const pieces =
-        gift.querySelectorAll(".tear-piece");
+    const left =
+        gift.querySelector(".paper-left");
 
-    pieces.forEach((piece) => {
+    const right =
+        gift.querySelector(".paper-right");
 
-        piece.style.backgroundImage =
-            `url("${image}")`;
 
-    });
+    left.style.backgroundImage =
+        `url("${image}")`;
+
+    right.style.backgroundImage =
+        `url("${image}")`;
 
 });
 
@@ -1230,6 +1299,7 @@ const videoObserver =
                 const video =
                     entry.target;
 
+
                 if(
                     !video.src &&
                     video.dataset.src
@@ -1241,6 +1311,7 @@ const videoObserver =
                     video.load();
 
                 }
+
 
                 videoObserver.unobserve(
                     video
@@ -1259,9 +1330,7 @@ const videoObserver =
 
 videos.forEach((video) => {
 
-    videoObserver.observe(
-        video
-    );
+    videoObserver.observe(video);
 
 });
 
@@ -1274,7 +1343,7 @@ async function openGift(gift){
 
     if(
         gift.classList.contains(
-            "tearing"
+            "opening"
         )
     ){
         return;
@@ -1288,7 +1357,7 @@ async function openGift(gift){
         wrapper.querySelector("video");
 
 
-    /* charge la vidéo */
+    /* charge immédiatement */
 
     if(
         !video.src &&
@@ -1303,14 +1372,14 @@ async function openGift(gift){
     }
 
 
-    /* démarre l'effet */
+    /* ouverture */
 
     gift.classList.add(
-        "tearing"
+        "opening"
     );
 
 
-    /* lancement vidéo */
+    /* démarre la vidéo */
 
     try{
 
@@ -1322,7 +1391,7 @@ async function openGift(gift){
     }
 
 
-    /* suppression du paquet */
+    /* retire complètement le papier */
 
     setTimeout(
         () => {
@@ -1331,14 +1400,14 @@ async function openGift(gift){
                 "none";
 
         },
-        820
+        900
     );
 
 }
 
 
 /* =========================================================
-   CLIC
+   CLIC / CLAVIER
    ========================================================= */
 
 gifts.forEach((gift) => {
@@ -1375,7 +1444,7 @@ gifts.forEach((gift) => {
 
 
 /* =========================================================
-   UNE SEULE VIDÉO
+   UNE SEULE VIDÉO À LA FOIS
    ========================================================= */
 
 videos.forEach((video) => {
@@ -1456,9 +1525,7 @@ window.addEventListener(
     "scroll",
     () => {
 
-        if(
-            window.scrollY > 700
-        ){
+        if(window.scrollY > 700){
 
             backToTop.classList.add(
                 "visible"
@@ -1496,7 +1563,6 @@ backToTop.addEventListener(
 
     }
 );
-
 
 </script>
 

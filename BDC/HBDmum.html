@@ -10,7 +10,7 @@
 
 <meta name="theme-color" content="#13283b">
 
-<title>Test réponse vidéo</title>
+<title>Bon anniversaire Maman</title>
 
 <style>
 
@@ -49,7 +49,7 @@ body{
     padding:
         calc(20px + env(safe-area-inset-top))
         14px
-        calc(60px + env(safe-area-inset-bottom));
+        calc(70px + env(safe-area-inset-bottom));
 }
 
 .header{
@@ -69,10 +69,11 @@ body{
     margin:0 auto;
 }
 
-
-/* =========================================================
-   VIDÉO / CADEAU
-   ========================================================= */
+.video-list{
+    display:flex;
+    flex-direction:column;
+    gap:36px;
+}
 
 .video-card{
     width:100%;
@@ -84,8 +85,16 @@ body{
     width:82%;
 
     margin:0 auto;
+}
 
+.video-wrapper.vertical{
     aspect-ratio:9 / 16;
+}
+
+.video-wrapper.horizontal{
+    width:88%;
+
+    aspect-ratio:16 / 9;
 }
 
 .main-video{
@@ -106,7 +115,7 @@ body{
 
 
 /* =========================================================
-   CADEAU
+   CADEAUX
    ========================================================= */
 
 .gift-cover{
@@ -148,6 +157,7 @@ body{
     height:100%;
 
     object-fit:cover;
+    object-position:center;
 
     border-radius:14px;
 }
@@ -237,6 +247,8 @@ body{
 
     box-shadow:
         0 4px 10px rgba(0,0,0,.20);
+
+    text-decoration:none;
 }
 
 .reply-btn{
@@ -300,11 +312,6 @@ body{
     text-align:center;
 }
 
-
-/* =========================================================
-   CAMÉRA
-   ========================================================= */
-
 .camera-frame{
     position:relative;
 
@@ -338,18 +345,11 @@ body{
     transform:none;
 }
 
-
-/* =========================================================
-   COMPTEUR
-   ========================================================= */
-
 .record-time{
     position:absolute;
 
     top:10px;
     left:50%;
-
-    z-index:5;
 
     transform:translateX(-50%);
 
@@ -371,11 +371,6 @@ body{
 .record-time.visible{
     display:block;
 }
-
-
-/* =========================================================
-   BOUTONS CAMÉRA
-   ========================================================= */
 
 .camera-actions{
     display:flex;
@@ -427,11 +422,6 @@ body{
     cursor:default;
 }
 
-
-/* =========================================================
-   MESSAGE
-   ========================================================= */
-
 .status-message{
     display:none;
 
@@ -457,11 +447,6 @@ body{
     display:block;
 }
 
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
 @media(max-width:380px){
 
     .page{
@@ -471,6 +456,10 @@ body{
 
     .video-wrapper{
         width:80%;
+    }
+
+    .video-wrapper.horizontal{
+        width:88%;
     }
 
     .reply-panel{
@@ -483,12 +472,9 @@ body{
 
 </head>
 
-
 <body>
 
-
 <main class="page">
-
 
 <header class="header">
 
@@ -500,12 +486,406 @@ body{
 </header>
 
 
-<div
-    class="video-card"
-    id="testCard"
->
+<section class="video-list">
 
-    <div class="video-wrapper">
+
+<!-- 1 MAMIE -->
+
+<div class="video-card">
+
+    <div class="video-wrapper vertical">
+
+        <video
+            class="main-video"
+            controls
+            playsinline
+            preload="none"
+            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/mamie.mp4"
+        ></video>
+
+        <div class="gift-cover">
+
+            <div class="gift-package">
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack1.jpg"
+                    alt=""
+                >
+
+            </div>
+
+            <div class="gift-hint">
+                Ouvre ton cadeau
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="action-zone">
+
+        <a
+            class="action-btn"
+            href="https://avantpost-cpu.github.io/depot-quiz/BDC/mamie.mp4"
+            download="mamie.mp4"
+        >
+            ↓ Télécharger
+        </a>
+
+        <button
+            class="action-btn reply-btn hidden"
+            type="button"
+        >
+            Répondre en vidéo
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 2 TATA -->
+
+<div class="video-card">
+
+    <div class="video-wrapper horizontal">
+
+        <video
+            class="main-video"
+            controls
+            playsinline
+            preload="none"
+            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/tata.mp4"
+        ></video>
+
+        <div class="gift-cover">
+
+            <div class="gift-package">
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack2.jpg"
+                    alt=""
+                >
+
+            </div>
+
+            <div class="gift-hint">
+                Ouvre ton cadeau
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="action-zone">
+
+        <a
+            class="action-btn"
+            href="https://avantpost-cpu.github.io/depot-quiz/BDC/tata.mp4"
+            download="tata.mp4"
+        >
+            ↓ Télécharger
+        </a>
+
+        <button
+            class="action-btn reply-btn hidden"
+            type="button"
+        >
+            Répondre en vidéo
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 3 RAOUL -->
+
+<div class="video-card">
+
+    <div class="video-wrapper vertical">
+
+        <video
+            class="main-video"
+            controls
+            playsinline
+            preload="none"
+            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/raoul.mp4"
+        ></video>
+
+        <div class="gift-cover">
+
+            <div class="gift-package">
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack3.jpg"
+                    alt=""
+                >
+
+            </div>
+
+            <div class="gift-hint">
+                Ouvre ton cadeau
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="action-zone">
+
+        <a
+            class="action-btn"
+            href="https://avantpost-cpu.github.io/depot-quiz/BDC/raoul.mp4"
+            download="raoul.mp4"
+        >
+            ↓ Télécharger
+        </a>
+
+        <button
+            class="action-btn reply-btn hidden"
+            type="button"
+        >
+            Répondre en vidéo
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 4 CLAIRE -->
+
+<div class="video-card">
+
+    <div class="video-wrapper vertical">
+
+        <video
+            class="main-video"
+            controls
+            playsinline
+            preload="none"
+            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/claire.mp4"
+        ></video>
+
+        <div class="gift-cover">
+
+            <div class="gift-package">
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack4.jpg"
+                    alt=""
+                >
+
+            </div>
+
+            <div class="gift-hint">
+                Ouvre ton cadeau
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="action-zone">
+
+        <a
+            class="action-btn"
+            href="https://avantpost-cpu.github.io/depot-quiz/BDC/claire.mp4"
+            download="claire.mp4"
+        >
+            ↓ Télécharger
+        </a>
+
+        <button
+            class="action-btn reply-btn hidden"
+            type="button"
+        >
+            Répondre en vidéo
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 5 OSAKA -->
+
+<div class="video-card">
+
+    <div class="video-wrapper vertical">
+
+        <video
+            class="main-video"
+            controls
+            playsinline
+            preload="none"
+            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/osaka.mp4"
+        ></video>
+
+        <div class="gift-cover">
+
+            <div class="gift-package">
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack5.jpg"
+                    alt=""
+                >
+
+            </div>
+
+            <div class="gift-hint">
+                Ouvre ton cadeau
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="action-zone">
+
+        <a
+            class="action-btn"
+            href="https://avantpost-cpu.github.io/depot-quiz/BDC/osaka.mp4"
+            download="osaka.mp4"
+        >
+            ↓ Télécharger
+        </a>
+
+        <button
+            class="action-btn reply-btn hidden"
+            type="button"
+        >
+            Répondre en vidéo
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 6 MARCEL -->
+
+<div class="video-card">
+
+    <div class="video-wrapper vertical">
+
+        <video
+            class="main-video"
+            controls
+            playsinline
+            preload="none"
+            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/marcel.mp4"
+        ></video>
+
+        <div class="gift-cover">
+
+            <div class="gift-package">
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack6.jpg"
+                    alt=""
+                >
+
+            </div>
+
+            <div class="gift-hint">
+                Ouvre ton cadeau
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="action-zone">
+
+        <a
+            class="action-btn"
+            href="https://avantpost-cpu.github.io/depot-quiz/BDC/marcel.mp4"
+            download="marcel.mp4"
+        >
+            ↓ Télécharger
+        </a>
+
+        <button
+            class="action-btn reply-btn hidden"
+            type="button"
+        >
+            Répondre en vidéo
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 7 COUPLE -->
+
+<div class="video-card">
+
+    <div class="video-wrapper vertical">
+
+        <video
+            class="main-video"
+            controls
+            playsinline
+            preload="none"
+            data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/couple.mp4"
+        ></video>
+
+        <div class="gift-cover">
+
+            <div class="gift-package">
+
+                <img
+                    class="gift-image"
+                    src="https://avantpost-cpu.github.io/depot-quiz/BDC/pack7.jpg"
+                    alt=""
+                >
+
+            </div>
+
+            <div class="gift-hint">
+                Ouvre ton cadeau
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="action-zone">
+
+        <a
+            class="action-btn"
+            href="https://avantpost-cpu.github.io/depot-quiz/BDC/couple.mp4"
+            download="couple.mp4"
+        >
+            ↓ Télécharger
+        </a>
+
+        <button
+            class="action-btn reply-btn hidden"
+            type="button"
+        >
+            Répondre en vidéo
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- 8 TEST -->
+
+<div class="video-card">
+
+    <div class="video-wrapper vertical">
 
         <video
             class="main-video"
@@ -515,11 +895,7 @@ body{
             data-src="https://avantpost-cpu.github.io/depot-quiz/BDC/test.mp4"
         ></video>
 
-
-        <div
-            class="gift-cover"
-            id="giftCover"
-        >
+        <div class="gift-cover">
 
             <div class="gift-package">
 
@@ -539,12 +915,18 @@ body{
 
     </div>
 
-
     <div class="action-zone">
+
+        <a
+            class="action-btn"
+            href="https://avantpost-cpu.github.io/depot-quiz/BDC/test.mp4"
+            download="test.mp4"
+        >
+            ↓ Télécharger
+        </a>
 
         <button
             class="action-btn reply-btn hidden"
-            id="replyButton"
             type="button"
         >
             Répondre en vidéo
@@ -552,329 +934,423 @@ body{
 
     </div>
 
-
-    <div
-        class="reply-panel"
-        id="replyPanel"
-    >
-
-        <div class="reply-title">
-            Ta réponse vidéo
-        </div>
+</div>
 
 
-        <div class="reply-info">
-            Enregistre ton message, vérifie-le puis envoie-le directement par Messages.
-        </div>
+</section>
 
 
-        <div class="camera-frame">
+<!-- MODULE RÉPONSE COMMUN -->
 
-            <video
-                id="cameraPreview"
-                autoplay
-                muted
-                playsinline
-            ></video>
+<div
+    class="reply-panel"
+    id="replyPanel"
+>
 
+    <div class="reply-title">
+        Ta réponse vidéo
+    </div>
 
-            <video
-                id="recordedPreview"
-                controls
-                playsinline
-                style="display:none;"
-            ></video>
+    <div class="reply-info">
+        Enregistre ton message, vérifie-le puis envoie-le directement par Messages.
+    </div>
 
+    <div class="camera-frame">
 
-            <div
-                class="record-time"
-                id="recordTime"
-            >
-                00:00
-            </div>
+        <video
+            id="cameraPreview"
+            autoplay
+            muted
+            playsinline
+        ></video>
 
-        </div>
-
-
-        <div class="camera-actions">
-
-            <button
-                class="camera-btn primary"
-                id="startRecord"
-                type="button"
-            >
-                ● Enregistrer
-            </button>
-
-
-            <button
-                class="camera-btn secondary"
-                id="stopRecord"
-                type="button"
-                disabled
-            >
-                Terminer
-            </button>
-
-
-            <button
-                class="camera-btn secondary"
-                id="restartRecord"
-                type="button"
-                style="display:none;"
-            >
-                Recommencer
-            </button>
-
-
-            <button
-                class="camera-btn send"
-                id="shareRecord"
-                type="button"
-                style="display:none;"
-            >
-                Envoyer ma réponse
-            </button>
-
-        </div>
-
+        <video
+            id="recordedPreview"
+            controls
+            playsinline
+            style="display:none;"
+        ></video>
 
         <div
-            class="status-message"
-            id="statusMessage"
-        ></div>
+            class="record-time"
+            id="recordTime"
+        >
+            00:00
+        </div>
 
     </div>
 
-</div>
+    <div class="camera-actions">
 
+        <button
+            class="camera-btn primary"
+            id="startRecord"
+            type="button"
+        >
+            ● Enregistrer
+        </button>
+
+        <button
+            class="camera-btn secondary"
+            id="stopRecord"
+            type="button"
+            disabled
+        >
+            Terminer
+        </button>
+
+        <button
+            class="camera-btn secondary"
+            id="restartRecord"
+            type="button"
+            style="display:none;"
+        >
+            Recommencer
+        </button>
+
+        <button
+            class="camera-btn send"
+            id="shareRecord"
+            type="button"
+            style="display:none;"
+        >
+            Envoyer ma réponse
+        </button>
+
+    </div>
+
+    <div
+        class="status-message"
+        id="statusMessage"
+    ></div>
+
+</div>
 
 </main>
 
 
 <script>
 
-/* =========================================================
-   ÉLÉMENTS
-   ========================================================= */
+const mainVideos =
+    document.querySelectorAll(".main-video");
 
-const giftCover =
-    document.getElementById(
-        "giftCover"
-    );
+const giftCovers =
+    document.querySelectorAll(".gift-cover");
 
-const mainVideo =
-    document.querySelector(
-        ".main-video"
-    );
+const replyButtons =
+    document.querySelectorAll(".reply-btn");
 
-const replyButton =
-    document.getElementById(
-        "replyButton"
-    );
 
 const replyPanel =
-    document.getElementById(
-        "replyPanel"
-    );
+    document.getElementById("replyPanel");
 
 const cameraPreview =
-    document.getElementById(
-        "cameraPreview"
-    );
+    document.getElementById("cameraPreview");
 
 const recordedPreview =
-    document.getElementById(
-        "recordedPreview"
-    );
+    document.getElementById("recordedPreview");
 
 const startRecord =
-    document.getElementById(
-        "startRecord"
-    );
+    document.getElementById("startRecord");
 
 const stopRecord =
-    document.getElementById(
-        "stopRecord"
-    );
+    document.getElementById("stopRecord");
 
 const restartRecord =
-    document.getElementById(
-        "restartRecord"
-    );
+    document.getElementById("restartRecord");
 
 const shareRecord =
-    document.getElementById(
-        "shareRecord"
-    );
+    document.getElementById("shareRecord");
 
 const recordTime =
-    document.getElementById(
-        "recordTime"
-    );
+    document.getElementById("recordTime");
 
 const statusMessage =
-    document.getElementById(
-        "statusMessage"
-    );
+    document.getElementById("statusMessage");
 
 
 let cameraStream = null;
-
 let mediaRecorder = null;
 
 let recordedChunks = [];
-
 let recordedBlob = null;
-
 let recordedFile = null;
-
 let recordedObjectURL = null;
 
 let recordTimer = null;
-
 let secondsRecorded = 0;
 
-
-/* =========================================================
-   CHARGEMENT VIDÉO TEST
-   ========================================================= */
-
-if(
-    !mainVideo.src &&
-    mainVideo.dataset.src
-){
-
-    mainVideo.src =
-        mainVideo.dataset.src;
-
-    mainVideo.load();
-
-}
+let currentCard = null;
 
 
 /* =========================================================
-   OUVERTURE CADEAU
+   CHARGEMENT VIDÉOS
    ========================================================= */
 
-giftCover.addEventListener(
-    "click",
-    async () => {
+const videoObserver =
+    new IntersectionObserver(
+        entries => {
 
-        giftCover.classList.add(
-            "opening"
-        );
+            entries.forEach(entry => {
 
+                if(!entry.isIntersecting){
+                    return;
+                }
 
-        replyButton.classList.remove(
-            "hidden"
-        );
+                const video =
+                    entry.target;
 
+                if(
+                    !video.src &&
+                    video.dataset.src
+                ){
 
-        try{
+                    video.src =
+                        video.dataset.src;
 
-            await mainVideo.play();
+                    video.load();
 
-        }
-        catch(error){}
+                }
 
-
-        setTimeout(
-            () => {
-
-                giftCover.style.display =
-                    "none";
-
-            },
-            450
-        );
-
-    }
-);
-
-
-/* =========================================================
-   OUVRIR CAMÉRA
-   ========================================================= */
-
-replyButton.addEventListener(
-    "click",
-    async () => {
-
-        mainVideo.pause();
-
-
-        replyPanel.classList.add(
-            "visible"
-        );
-
-
-        statusMessage.classList.remove(
-            "visible"
-        );
-
-
-        try{
-
-            cameraStream =
-                await navigator.mediaDevices
-                    .getUserMedia({
-
-                        video:{
-                            facingMode:"user",
-
-                            width:{
-                                ideal:720
-                            },
-
-                            height:{
-                                ideal:1280
-                            }
-                        },
-
-                        audio:true
-
-                    });
-
-
-            cameraPreview.srcObject =
-                cameraStream;
-
-
-            cameraPreview.style.display =
-                "block";
-
-
-            recordedPreview.style.display =
-                "none";
-
-
-            replyPanel.scrollIntoView({
-
-                behavior:"smooth",
-
-                block:"center"
+                videoObserver.unobserve(video);
 
             });
 
+        },
+        {
+            rootMargin:"350px 0px"
         }
-        catch(error){
+    );
 
-            statusMessage.textContent =
-                "Impossible d'accéder à la caméra ou au micro.";
 
-            statusMessage.classList.add(
-                "visible"
-            );
+mainVideos.forEach(video => {
 
-        }
+    videoObserver.observe(video);
 
-    }
-);
+});
 
 
 /* =========================================================
-   FORMAT D'ENREGISTREMENT
+   OUVERTURE CADEAUX
+   ========================================================= */
+
+giftCovers.forEach(gift => {
+
+    gift.addEventListener(
+        "click",
+        async () => {
+
+            if(
+                gift.classList.contains(
+                    "opening"
+                )
+            ){
+                return;
+            }
+
+            const card =
+                gift.closest(
+                    ".video-card"
+                );
+
+            const video =
+                card.querySelector(
+                    ".main-video"
+                );
+
+            const replyButton =
+                card.querySelector(
+                    ".reply-btn"
+                );
+
+
+            if(
+                !video.src &&
+                video.dataset.src
+            ){
+
+                video.src =
+                    video.dataset.src;
+
+                video.load();
+
+            }
+
+
+            gift.classList.add(
+                "opening"
+            );
+
+
+            replyButton.classList.remove(
+                "hidden"
+            );
+
+
+            try{
+
+                await video.play();
+
+            }
+            catch(error){}
+
+
+            setTimeout(
+                () => {
+
+                    gift.style.display =
+                        "none";
+
+                },
+                450
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   UNE SEULE VIDÉO
+   ========================================================= */
+
+mainVideos.forEach(video => {
+
+    video.addEventListener(
+        "play",
+        () => {
+
+            mainVideos.forEach(
+                otherVideo => {
+
+                    if(
+                        otherVideo !== video &&
+                        !otherVideo.paused
+                    ){
+
+                        otherVideo.pause();
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   BOUTONS RÉPONDRE
+   ========================================================= */
+
+replyButtons.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        async () => {
+
+            currentCard =
+                button.closest(
+                    ".video-card"
+                );
+
+            const video =
+                currentCard.querySelector(
+                    ".main-video"
+                );
+
+
+            video.pause();
+
+
+            replyPanel.classList.add(
+                "visible"
+            );
+
+
+            statusMessage.classList.remove(
+                "visible"
+            );
+
+
+            try{
+
+                cameraStream =
+                    await navigator
+                        .mediaDevices
+                        .getUserMedia({
+
+                            video:{
+                                facingMode:"user",
+
+                                width:{
+                                    ideal:720
+                                },
+
+                                height:{
+                                    ideal:1280
+                                }
+                            },
+
+                            audio:true
+
+                        });
+
+
+                cameraPreview.srcObject =
+                    cameraStream;
+
+
+                cameraPreview.style.display =
+                    "block";
+
+
+                recordedPreview.style.display =
+                    "none";
+
+
+                /*
+                   Place le module juste
+                   sous la vidéo concernée
+                */
+
+                currentCard.insertAdjacentElement(
+                    "afterend",
+                    replyPanel
+                );
+
+
+                replyPanel.scrollIntoView({
+
+                    behavior:"smooth",
+
+                    block:"center"
+
+                });
+
+            }
+            catch(error){
+
+                statusMessage.textContent =
+                    "Impossible d'accéder à la caméra ou au micro.";
+
+                statusMessage.classList.add(
+                    "visible"
+                );
+
+            }
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   TYPE VIDÉO
    ========================================================= */
 
 function getSupportedMimeType(){
@@ -905,14 +1381,13 @@ function getSupportedMimeType(){
 
     }
 
-
     return "";
 
 }
 
 
 /* =========================================================
-   DÉMARRER
+   ENREGISTRER
    ========================================================= */
 
 startRecord.addEventListener(
@@ -925,9 +1400,7 @@ startRecord.addEventListener(
 
 
         recordedChunks = [];
-
         recordedBlob = null;
-
         recordedFile = null;
 
 
@@ -949,7 +1422,6 @@ startRecord.addEventListener(
                         cameraStream,
                         {
                             mimeType:mimeType,
-
                             videoBitsPerSecond:
                                 1800000
                         }
@@ -1154,14 +1626,13 @@ startRecord.addEventListener(
 
 
 /* =========================================================
-   ARRÊTER
+   STOP
    ========================================================= */
 
 function stopRecording(){
 
     if(
-        !mediaRecorder
-        ||
+        !mediaRecorder ||
         mediaRecorder.state ===
             "inactive"
     ){
@@ -1202,9 +1673,7 @@ restartRecord.addEventListener(
     () => {
 
         recordedBlob = null;
-
         recordedFile = null;
-
         recordedChunks = [];
 
 
@@ -1272,14 +1741,7 @@ shareRecord.addEventListener(
         }
 
 
-        /*
-           Vérifie que le navigateur
-           accepte le partage de fichiers.
-        */
-
-        if(
-            !navigator.share
-        ){
+        if(!navigator.share){
 
             statusMessage.textContent =
                 "Le partage direct n'est pas disponible sur ce navigateur.";
@@ -1294,8 +1756,7 @@ shareRecord.addEventListener(
 
 
         if(
-            navigator.canShare
-            &&
+            navigator.canShare &&
             !navigator.canShare({
                 files:[recordedFile]
             })
@@ -1338,11 +1799,6 @@ shareRecord.addEventListener(
             );
 
 
-            /*
-               On peut couper la caméra
-               après partage.
-            */
-
             if(cameraStream){
 
                 cameraStream
@@ -1360,13 +1816,6 @@ shareRecord.addEventListener(
 
         }
         catch(error){
-
-            /*
-               Si la personne ferme simplement
-               le menu de partage,
-               on ne considère pas cela
-               comme une erreur grave.
-            */
 
             if(
                 error.name !==

@@ -155,8 +155,7 @@ body{
 
     border-radius:30px;
 
-    background:
-        rgba(0,0,0,.58);
+    background:rgba(0,0,0,.58);
 
     color:#fff;
 
@@ -165,8 +164,7 @@ body{
 
     pointer-events:none;
 
-    box-shadow:
-        0 3px 10px rgba(0,0,0,.20);
+    box-shadow:0 3px 10px rgba(0,0,0,.20);
 }
 
 .gift-cover.opening{
@@ -176,10 +174,7 @@ body{
 }
 
 .gift-cover.opening .gift-package{
-    filter:
-        drop-shadow(
-            0 0 0 rgba(0,0,0,0)
-        );
+    filter:drop-shadow(0 0 0 rgba(0,0,0,0));
 }
 
 .action-zone{
@@ -216,16 +211,7 @@ body{
     color:#fff;
     background:#9f80a6;
 
-    box-shadow:
-        0 4px 10px rgba(0,0,0,.20);
-
-    transition:
-        transform .15s ease,
-        opacity .15s ease;
-}
-
-.action-btn:active{
-    transform:scale(.96);
+    box-shadow:0 4px 10px rgba(0,0,0,.20);
 }
 
 .reply-btn{
@@ -244,13 +230,11 @@ body{
     margin:20px auto 0;
     padding:14px;
 
-    background:
-        rgba(9,20,31,.96);
+    background:rgba(9,20,31,.96);
 
     border-radius:18px;
 
-    box-shadow:
-        0 8px 22px rgba(0,0,0,.32);
+    box-shadow:0 8px 22px rgba(0,0,0,.32);
 }
 
 .reply-panel.visible{
@@ -272,8 +256,7 @@ body{
 .reply-info{
     margin-bottom:13px;
 
-    color:
-        rgba(255,255,255,.78);
+    color:rgba(255,255,255,.78);
 
     font-size:12px;
     line-height:1.45;
@@ -291,9 +274,7 @@ body{
 }
 
 .crown-btn{
-    flex:
-        1 1
-        calc(20% - 7px);
+    flex:1 1 calc(20% - 7px);
 
     min-width:62px;
     max-width:88px;
@@ -301,14 +282,11 @@ body{
 
     padding:0;
 
-    border:
-        1px solid
-        rgba(255,255,255,.22);
+    border:1px solid rgba(255,255,255,.22);
 
     border-radius:13px;
 
-    background:
-        rgba(255,255,255,.07);
+    background:rgba(255,255,255,.07);
 
     color:#fff;
 
@@ -317,14 +295,6 @@ body{
     justify-content:center;
 
     cursor:pointer;
-
-    transition:
-        background .2s ease,
-        transform .15s ease;
-}
-
-.crown-btn:active{
-    transform:scale(.96);
 }
 
 .crown-btn.active{
@@ -390,8 +360,7 @@ body{
 
     border-radius:20px;
 
-    background:
-        rgba(0,0,0,.72);
+    background:rgba(0,0,0,.72);
 
     color:#fff;
 
@@ -426,14 +395,6 @@ body{
     font-weight:bold;
 
     cursor:pointer;
-
-    transition:
-        transform .15s ease,
-        opacity .15s ease;
-}
-
-.camera-btn:active{
-    transform:scale(.96);
 }
 
 .camera-btn.primary{
@@ -464,8 +425,7 @@ body{
 
     border-radius:12px;
 
-    background:
-        rgba(255,255,255,.10);
+    background:rgba(255,255,255,.10);
 
     color:#fff;
 
@@ -483,11 +443,7 @@ body{
     position:fixed;
     right:16px;
 
-    bottom:
-        calc(
-            18px +
-            env(safe-area-inset-bottom)
-        );
+    bottom:calc(18px + env(safe-area-inset-bottom));
 
     z-index:100;
 
@@ -501,16 +457,14 @@ body{
     border:0;
     border-radius:50%;
 
-    background:
-        rgba(80,52,84,.90);
+    background:rgba(80,52,84,.90);
 
     color:#fff;
     font-size:24px;
 
     cursor:pointer;
 
-    box-shadow:
-        0 5px 15px rgba(0,0,0,.30);
+    box-shadow:0 5px 15px rgba(0,0,0,.30);
 
     opacity:0;
     visibility:hidden;
@@ -550,33 +504,16 @@ body{
 
 }
 
-@media(prefers-reduced-motion:reduce){
-
-    html{
-        scroll-behavior:auto;
-    }
-
-    .gift-cover,
-    .gift-package,
-    .back-to-top{
-        transition:none;
-    }
-
-}
-
 </style>
 
 </head>
 
-
 <body>
-
 
 <main
     class="page"
     id="top"
 >
-
 
 <header class="header">
 
@@ -587,12 +524,10 @@ body{
 
 </header>
 
-
 <section
     class="video-list"
     id="videoList"
 ></section>
-
 
 <div
     class="reply-panel"
@@ -603,11 +538,9 @@ body{
         🩷 🩷 🩷
     </div>
 
-
     <div class="reply-info">
         Choisis un filtre, enregistre ton message puis partage directement ta vidéo.
     </div>
-
 
     <div class="crown-zone">
 
@@ -615,53 +548,43 @@ body{
             class="crown-btn"
             data-crown="none"
             type="button"
-            aria-label="Sans couronne"
         >
             <span class="normal-cross">×</span>
         </button>
-
 
         <button
             class="crown-btn active"
             data-crown="crown1"
             type="button"
-            aria-label="Couronne 1"
         >
             <span>🌹</span>
         </button>
-
 
         <button
             class="crown-btn"
             data-crown="crown2"
             type="button"
-            aria-label="Couronne 2"
         >
             <span>🦄</span>
         </button>
-
 
         <button
             class="crown-btn"
             data-crown="crown3"
             type="button"
-            aria-label="Couronne 3"
         >
             <span>💖</span>
         </button>
-
 
         <button
             class="crown-btn"
             data-crown="crown4"
             type="button"
-            aria-label="Couronne 4"
         >
             <span>👑</span>
         </button>
 
     </div>
-
 
     <video
         id="cameraSource"
@@ -669,7 +592,6 @@ body{
         muted
         playsinline
     ></video>
-
 
     <div class="camera-frame">
 
@@ -679,13 +601,11 @@ body{
             height="1280"
         ></canvas>
 
-
         <video
             id="recordedPreview"
             controls
             playsinline
         ></video>
-
 
         <div
             class="record-time"
@@ -695,7 +615,6 @@ body{
         </div>
 
     </div>
-
 
     <div class="camera-actions">
 
@@ -707,7 +626,6 @@ body{
             ● Enregistrer
         </button>
 
-
         <button
             class="camera-btn secondary"
             id="stopRecord"
@@ -717,7 +635,6 @@ body{
             Terminer
         </button>
 
-
         <button
             class="camera-btn secondary"
             id="restartRecord"
@@ -726,7 +643,6 @@ body{
         >
             Recommencer
         </button>
-
 
         <button
             class="camera-btn send"
@@ -739,7 +655,6 @@ body{
 
     </div>
 
-
     <div
         class="status-message"
         id="statusMessage"
@@ -747,9 +662,7 @@ body{
 
 </div>
 
-
 </main>
-
 
 <button
     class="back-to-top"
@@ -758,7 +671,6 @@ body{
 >
     ↑
 </button>
-
 
 <script type="module">
 
@@ -791,23 +703,17 @@ const SUPABASE_KEY =
 
 
 /* =========================================================
-   TYPE VISITEUR
+   IDENTIFICATION
    ========================================================= */
 
 const VISITOR_TYPE =
-    localStorage.getItem(
-        "birthday_owner"
-    )
-    ===
-    "cyrille"
-    ?
-    "cyrille"
-    :
-    "visitor";
+    localStorage.getItem("birthday_owner") === "cyrille"
+        ? "cyrille"
+        : "visitor";
 
 
 /* =========================================================
-   VISITE UNIQUE
+   CLE DE CETTE VISITE
    ========================================================= */
 
 const VISIT_KEY =
@@ -815,7 +721,7 @@ const VISIT_KEY =
 
 
 /* =========================================================
-   CADEAUX OUVERTS
+   CADEAUX OUVERTS PENDANT CETTE VISITE
    ========================================================= */
 
 const openedGiftIndexes =
@@ -823,7 +729,11 @@ const openedGiftIndexes =
 
 
 /* =========================================================
-   CREATION VISITE
+   CREATION DE LA VISITE
+
+   IMPORTANT :
+   opened_list N'EST PAS envoyé ici.
+   Il sera renseigné au premier cadeau ouvert.
    ========================================================= */
 
 const visitCreationPromise =
@@ -870,9 +780,6 @@ async function createVisit(){
                             opened_gifts:
                                 0,
 
-                            opened_list:
-                                [],
-
                             visitor_type:
                                 VISITOR_TYPE
 
@@ -887,9 +794,14 @@ async function createVisit(){
             !response.ok
         ){
 
-            console.log(
-                "Suivi visite : création impossible",
-                response.status
+            const message =
+                await response.text();
+
+
+            console.error(
+                "Création visite impossible :",
+                response.status,
+                message
             );
 
 
@@ -898,13 +810,21 @@ async function createVisit(){
         }
 
 
+        console.log(
+            "Visite créée :",
+            VISIT_KEY,
+            VISITOR_TYPE
+        );
+
+
         return true;
 
     }
     catch(error){
 
-        console.log(
-            "Suivi visite indisponible."
+        console.error(
+            "Suivi visite indisponible :",
+            error
         );
 
 
@@ -932,16 +852,16 @@ async function updateOpenedGifts(){
     }
 
 
-    /*
-       Nombre de cadeaux ouverts
-    */
-
     const total =
         openedGiftIndexes.size;
 
 
     /*
-       Liste lisible 1 à 7
+       Les index internes sont :
+       0 1 2 3 4 5 6
+
+       Dans Supabase on enregistre :
+       1 2 3 4 5 6 7
     */
 
     const openedList =
@@ -956,6 +876,13 @@ async function updateOpenedGifts(){
             (a,b) =>
                 a - b
         );
+
+
+    console.log(
+        "Cadeaux ouverts :",
+        total,
+        openedList
+    );
 
 
     try{
@@ -1010,18 +937,33 @@ async function updateOpenedGifts(){
             !response.ok
         ){
 
-            console.log(
-                "Suivi cadeaux : mise à jour impossible",
-                response.status
+            const message =
+                await response.text();
+
+
+            console.error(
+                "Mise à jour cadeaux impossible :",
+                response.status,
+                message
             );
 
+
+            return;
+
         }
+
+
+        console.log(
+            "Supabase mis à jour :",
+            openedList
+        );
 
     }
     catch(error){
 
-        console.log(
-            "Suivi cadeaux indisponible."
+        console.error(
+            "Suivi cadeaux indisponible :",
+            error
         );
 
     }
@@ -1030,12 +972,17 @@ async function updateOpenedGifts(){
 
 
 /* =========================================================
-   COMPTER UN CADEAU
+   ENREGISTRER UNE OUVERTURE
    ========================================================= */
 
 function registerGiftOpening(
     index
 ){
+
+    /*
+       Si déjà ouvert pendant cette visite,
+       on ne recompte pas.
+    */
 
     if(
         openedGiftIndexes.has(
@@ -1122,7 +1069,7 @@ const cards = [
 
 
 /* =========================================================
-   FRAME
+   IMAGE FRAME
    ========================================================= */
 
 const frameImage =
@@ -1169,31 +1116,20 @@ function createCrownImage(
 
 
 crownImages.crown1 =
-    createCrownImage(
-        "crown1"
-    );
-
+    createCrownImage("crown1");
 
 crownImages.crown2 =
-    createCrownImage(
-        "crown2"
-    );
-
+    createCrownImage("crown2");
 
 crownImages.crown3 =
-    createCrownImage(
-        "crown3"
-    );
-
+    createCrownImage("crown3");
 
 crownImages.crown4 =
-    createCrownImage(
-        "crown4"
-    );
+    createCrownImage("crown4");
 
 
 /* =========================================================
-   CREATION CARTES
+   CREATION DES CARTES
    ========================================================= */
 
 const videoList =
@@ -1245,7 +1181,6 @@ cards.forEach(
                     data-src="${BASE}${item.video}"
                 ></video>
 
-
                 <div
                     class="gift-cover"
                     role="button"
@@ -1263,7 +1198,6 @@ cards.forEach(
 
                     </div>
 
-
                     <div class="gift-hint">
                         Ouvre ton cadeau
                     </div>
@@ -1271,7 +1205,6 @@ cards.forEach(
                 </div>
 
             </div>
-
 
             <div class="action-zone">
 
@@ -1282,7 +1215,6 @@ cards.forEach(
                 >
                     ↓ Télécharger
                 </a>
-
 
                 ${
                     item.reply
@@ -1419,68 +1351,52 @@ const backToTop =
 let currentCard =
     null;
 
-
 let cameraStream =
     null;
-
 
 let faceLandmarker =
     null;
 
-
 let trackingReady =
     false;
-
 
 let trackingLoading =
     false;
 
-
 let latestLandmarks =
     null;
-
 
 let selectedCrown =
     "crown1";
 
-
 let recorder =
     null;
-
 
 let recordedChunks =
     [];
 
-
 let recordedFile =
     null;
-
 
 let objectURL =
     null;
 
-
 let timer =
     null;
-
 
 let secondsRecorded =
     0;
 
-
 let animationFrame =
     null;
 
-
 let lastDetection =
     0;
-
 
 let selfieFrame = {
 
     x:0,
     y:0,
-
     width:720,
     height:1280
 
@@ -1649,6 +1565,10 @@ async function openGift(
         );
 
 
+    /*
+       ICI le cadeau est enregistré.
+    */
+
     registerGiftOpening(
         cardIndex
     );
@@ -1744,13 +1664,9 @@ gifts.forEach(
             event => {
 
                 if(
-                    event.key
-                    ===
-                    "Enter"
+                    event.key === "Enter"
                     ||
-                    event.key
-                    ===
-                    " "
+                    event.key === " "
                 ){
 
                     event.preventDefault();
@@ -1784,9 +1700,7 @@ videos.forEach(
                     other => {
 
                         if(
-                            other
-                            !==
-                            video
+                            other !== video
                             &&
                             !other.paused
                         ){
@@ -1910,9 +1824,7 @@ replyButtons.forEach(
 
 
                     if(
-                        selectedCrown
-                        !==
-                        "none"
+                        selectedCrown !== "none"
                     ){
 
                         initFaceTracking();
@@ -1923,7 +1835,6 @@ replyButtons.forEach(
                     replyPanel.scrollIntoView({
 
                         behavior:"smooth",
-
                         block:"center"
 
                     });
@@ -1950,7 +1861,7 @@ replyButtons.forEach(
 
 
 /* =========================================================
-   CHOIX COURONNE
+   COURONNES
    ========================================================= */
 
 crownButtons.forEach(
@@ -1981,9 +1892,7 @@ crownButtons.forEach(
 
 
                 if(
-                    selectedCrown
-                    !==
-                    "none"
+                    selectedCrown !== "none"
                 ){
 
                     initFaceTracking();
@@ -2163,9 +2072,7 @@ function drawFrame(){
 
 
     if(
-        cameraSource.readyState
-        >=
-        2
+        cameraSource.readyState >= 2
     ){
 
         drawSelfieScene(
@@ -2179,13 +2086,9 @@ function drawFrame(){
     if(
         trackingReady
         &&
-        selectedCrown
-        !==
-        "none"
+        selectedCrown !== "none"
         &&
-        cameraSource.readyState
-        >=
-        2
+        cameraSource.readyState >= 2
     ){
 
         const now =
@@ -2193,11 +2096,7 @@ function drawFrame(){
 
 
         if(
-            now
-            -
-            lastDetection
-            >
-            65
+            now - lastDetection > 65
         ){
 
             lastDetection =
@@ -2211,7 +2110,6 @@ function drawFrame(){
                         .detectForVideo(
 
                             cameraSource,
-
                             now
 
                         );
@@ -2237,9 +2135,7 @@ function drawFrame(){
 
 
     if(
-        selectedCrown
-        !==
-        "none"
+        selectedCrown !== "none"
     ){
 
         drawFairyStars();
@@ -2297,15 +2193,11 @@ function drawFrameBackground(
 
 
     ctx.drawImage(
-
         frameImage,
-
         0,
         0,
-
         W,
         H
-
     );
 
 }
@@ -2338,27 +2230,19 @@ function drawSelfieScene(
 
 
     const maxW =
-        W
-        *
-        .88;
+        W * .88;
 
 
     const maxH =
-        H
-        *
-        .92;
+        H * .92;
 
 
     const videoRatio =
-        vw
-        /
-        vh;
+        vw / vh;
 
 
     const targetRatio =
-        maxW
-        /
-        maxH;
+        maxW / maxH;
 
 
     let drawW;
@@ -2366,9 +2250,7 @@ function drawSelfieScene(
 
 
     if(
-        videoRatio
-        >
-        targetRatio
+        videoRatio > targetRatio
     ){
 
         drawW =
@@ -2376,9 +2258,7 @@ function drawSelfieScene(
 
 
         drawH =
-            drawW
-            /
-            videoRatio;
+            drawW / videoRatio;
 
     }
     else{
@@ -2388,38 +2268,23 @@ function drawSelfieScene(
 
 
         drawW =
-            drawH
-            *
-            videoRatio;
+            drawH * videoRatio;
 
     }
 
 
     const x =
-        (
-            W
-            -
-            drawW
-        )
-        /
-        2;
+        (W - drawW) / 2;
 
 
     const y =
-        (
-            H
-            -
-            drawH
-        )
-        /
-        2;
+        (H - drawH) / 2;
 
 
     selfieFrame = {
 
         x:x,
         y:y,
-
         width:drawW,
         height:drawH
 
@@ -2442,13 +2307,10 @@ function drawSelfieScene(
 
 
     ctx.fillRect(
-
         x - 2,
         y - 2,
-
         drawW + 4,
         drawH + 4
-
     );
 
 
@@ -2471,21 +2333,11 @@ function drawSelfieScene(
 
 
     ctx.drawImage(
-
         cameraSource,
-
-        W
-        -
-        x
-        -
-        drawW,
-
+        W - x - drawW,
         y,
-
         drawW,
-
         drawH
-
     );
 
 
@@ -2507,11 +2359,7 @@ function landmarkToCanvas(
         x:
             selfieFrame.x
             +
-            (
-                1
-                -
-                landmark.x
-            )
+            (1 - landmark.x)
             *
             selfieFrame.width,
 
@@ -2568,13 +2416,8 @@ function getCrownTransform(
     const faceWidth =
         Math.hypot(
 
-            rightFace.x
-            -
-            leftFace.x,
-
-            rightFace.y
-            -
-            leftFace.y
+            rightFace.x - leftFace.x,
+            rightFace.y - leftFace.y
 
         );
 
@@ -2582,21 +2425,14 @@ function getCrownTransform(
     let angle =
         Math.atan2(
 
-            rightEye.y
-            -
-            leftEye.y,
-
-            rightEye.x
-            -
-            leftEye.x
+            rightEye.y - leftEye.y,
+            rightEye.x - leftEye.x
 
         );
 
 
     if(
-        angle
-        >
-        Math.PI / 2
+        angle > Math.PI / 2
     ){
 
         angle -=
@@ -2606,9 +2442,7 @@ function getCrownTransform(
 
 
     if(
-        angle
-        <
-        -Math.PI / 2
+        angle < -Math.PI / 2
     ){
 
         angle +=
@@ -2617,30 +2451,21 @@ function getCrownTransform(
     }
 
 
-    const width =
-        faceWidth
-        *
-        1.65;
-
-
-    const y =
-        forehead.y
-        +
-        faceWidth
-        *
-        .42;
-
-
     return {
 
         x:
             forehead.x,
 
-        y:y,
+        y:
+            forehead.y
+            +
+            faceWidth * .42,
 
-        width:width,
+        width:
+            faceWidth * 1.65,
 
-        angle:angle
+        angle:
+            angle
 
     };
 
@@ -2656,9 +2481,7 @@ function drawCrown(
 ){
 
     if(
-        selectedCrown
-        ===
-        "none"
+        selectedCrown === "none"
     ){
         return;
     }
@@ -2698,9 +2521,7 @@ function drawCrown(
 
 
     if(
-        selectedCrown
-        ===
-        "crown3"
+        selectedCrown === "crown3"
     ){
 
         width *=
@@ -2710,9 +2531,7 @@ function drawCrown(
 
 
     const height =
-        width
-        *
-        ratio;
+        width * ratio;
 
 
     ctx.save();
@@ -2738,17 +2557,11 @@ function drawCrown(
 
 
     ctx.drawImage(
-
         image,
-
         -width / 2,
-
         -height,
-
         width,
-
         height
-
     );
 
 
@@ -2775,15 +2588,11 @@ function drawFairyStars(){
 
 
             if(
-                star.y
-                <
-                -15
+                star.y < -15
             ){
 
                 star.y =
-                    canvas.height
-                    +
-                    15;
+                    canvas.height + 15;
 
 
                 star.x =
@@ -2813,9 +2622,7 @@ function drawFairyStars(){
             const alpha =
                 .12
                 +
-                pulse
-                *
-                .72;
+                pulse * .72;
 
 
             const size =
@@ -2824,23 +2631,16 @@ function drawFairyStars(){
                 (
                     .65
                     +
-                    pulse
-                    *
-                    .75
+                    pulse * .75
                 );
 
 
             drawSingleFairyStar(
-
                 star.x,
                 star.y,
-
                 size,
-
                 alpha,
-
                 star.warm
-
             );
 
         }
@@ -2887,9 +2687,7 @@ function drawSingleFairyStar(
 
 
     ctx.shadowBlur =
-        r
-        *
-        3;
+        r * 3;
 
 
     ctx.beginPath();
@@ -2945,9 +2743,7 @@ function drawSingleFairyStar(
     ctx.arc(
         0,
         0,
-
         r * .28,
-
         0,
         Math.PI * 2
     );
@@ -2970,11 +2766,8 @@ function getSupportedMimeType(){
     const types = [
 
         "video/mp4",
-
         "video/webm;codecs=vp9,opus",
-
         "video/webm;codecs=vp8,opus",
-
         "video/webm"
 
     ];
@@ -3006,7 +2799,7 @@ function getSupportedMimeType(){
 
 
 /* =========================================================
-   RECORD
+   ENREGISTREMENT
    ========================================================= */
 
 startRecord.addEventListener(
@@ -3103,6 +2896,7 @@ startRecord.addEventListener(
                 "Impossible d'enregistrer cette vidéo."
             );
 
+
             return;
 
         }
@@ -3115,9 +2909,7 @@ startRecord.addEventListener(
                 if(
                     event.data
                     &&
-                    event.data.size
-                    >
-                    0
+                    event.data.size > 0
                 ){
 
                     recordedChunks.push(
@@ -3153,9 +2945,7 @@ startRecord.addEventListener(
 
 
                 const extension =
-                    type.includes(
-                        "webm"
-                    )
+                    type.includes("webm")
                     ?
                     "webm"
                     :
@@ -3262,38 +3052,26 @@ startRecord.addEventListener(
 
                     const minutes =
                         Math.floor(
-                            secondsRecorded
-                            /
-                            60
+                            secondsRecorded / 60
                         );
 
 
                     const seconds =
-                        secondsRecorded
-                        %
-                        60;
+                        secondsRecorded % 60;
 
 
                     recordTime.textContent =
                         String(minutes)
-                            .padStart(
-                                2,
-                                "0"
-                            )
+                            .padStart(2,"0")
                         +
                         ":"
                         +
                         String(seconds)
-                            .padStart(
-                                2,
-                                "0"
-                            );
+                            .padStart(2,"0");
 
 
                     if(
-                        secondsRecorded
-                        >=
-                        60
+                        secondsRecorded >= 60
                     ){
 
                         stopRecording();
@@ -3313,9 +3091,7 @@ function stopRecording(){
     if(
         !recorder
         ||
-        recorder.state
-        ===
-        "inactive"
+        recorder.state === "inactive"
     ){
         return;
     }
@@ -3346,7 +3122,7 @@ stopRecord.addEventListener(
 
 
 /* =========================================================
-   RESTART
+   RECOMMENCER
    ========================================================= */
 
 restartRecord.addEventListener(
@@ -3427,7 +3203,7 @@ restartRecord.addEventListener(
 
 
 /* =========================================================
-   SHARE
+   PARTAGE
    ========================================================= */
 
 shareRecord.addEventListener(
@@ -3449,6 +3225,7 @@ shareRecord.addEventListener(
                 "Le partage direct n'est pas disponible sur ce navigateur."
             );
 
+
             return;
 
         }
@@ -3469,6 +3246,7 @@ shareRecord.addEventListener(
             showStatus(
                 "Cette vidéo ne peut pas être partagée directement."
             );
+
 
             return;
 
@@ -3495,9 +3273,7 @@ shareRecord.addEventListener(
         catch(error){
 
             if(
-                error.name
-                !==
-                "AbortError"
+                error.name !== "AbortError"
             ){
 
                 showStatus(
@@ -3521,9 +3297,7 @@ function resetReplyInterface(){
     if(
         recorder
         &&
-        recorder.state
-        !==
-        "inactive"
+        recorder.state !== "inactive"
     ){
 
         try{
@@ -3737,7 +3511,7 @@ videos.forEach(
 
 
 /* =========================================================
-   RETOUR HAUT
+   RETOUR EN HAUT
    ========================================================= */
 
 window.addEventListener(

@@ -29,6 +29,7 @@ html{
 body{
     min-height:100vh;
     min-height:100dvh;
+
     font-family:Arial, Helvetica, sans-serif;
 
     background:
@@ -37,12 +38,14 @@ body{
         repeat;
 
     background-size:300px;
+
     overflow-x:hidden;
 }
 
 .page{
     width:100%;
     max-width:620px;
+
     margin:0 auto;
 
     padding:
@@ -53,21 +56,28 @@ body{
 
 .header{
     width:100%;
+
     text-align:center;
+
     margin-bottom:24px;
 }
 
 .header img{
     display:block;
+
     width:100%;
     max-width:420px;
+
     height:auto;
+
     margin:0 auto;
 }
 
 .video-list{
     display:flex;
+
     flex-direction:column;
+
     gap:36px;
 }
 
@@ -77,7 +87,9 @@ body{
 
 .video-wrapper{
     position:relative;
+
     width:82%;
+
     margin:0 auto;
 }
 
@@ -87,26 +99,36 @@ body{
 
 .video-wrapper.horizontal{
     width:88%;
+
     aspect-ratio:16 / 9;
 }
 
 .main-video{
     position:absolute;
+
     inset:0;
+
     display:block;
+
     width:100%;
     height:100%;
+
     object-fit:contain;
+
     background:#000;
+
     border-radius:14px;
 }
 
 .gift-cover{
     position:absolute;
+
     inset:0;
+
     z-index:10;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
@@ -121,6 +143,7 @@ body{
 
 .gift-package{
     position:relative;
+
     width:100%;
     height:100%;
 
@@ -135,15 +158,19 @@ body{
 
 .gift-image{
     display:block;
+
     width:100%;
     height:100%;
+
     object-fit:cover;
     object-position:center;
+
     border-radius:14px;
 }
 
 .gift-hint{
     position:absolute;
+
     left:50%;
     bottom:18px;
 
@@ -155,7 +182,8 @@ body{
 
     border-radius:30px;
 
-    background:rgba(0,0,0,.58);
+    background:
+        rgba(0,0,0,.58);
 
     color:#fff;
 
@@ -164,26 +192,35 @@ body{
 
     pointer-events:none;
 
-    box-shadow:0 3px 10px rgba(0,0,0,.20);
+    box-shadow:
+        0 3px 10px rgba(0,0,0,.20);
 }
 
 .gift-cover.opening{
     opacity:0;
+
     transform:scale(1.035);
+
     pointer-events:none;
 }
 
 .gift-cover.opening .gift-package{
-    filter:drop-shadow(0 0 0 rgba(0,0,0,0));
+    filter:
+        drop-shadow(
+            0 0 0 rgba(0,0,0,0)
+        );
 }
 
 .action-zone{
     width:100%;
+
     padding-top:14px;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     flex-wrap:wrap;
 
     gap:9px;
@@ -191,6 +228,7 @@ body{
 
 .action-btn{
     display:inline-flex;
+
     align-items:center;
     justify-content:center;
 
@@ -199,19 +237,32 @@ body{
     padding:9px 17px;
 
     border:0;
+
     border-radius:22px;
 
     font-family:inherit;
+
     font-size:13px;
     font-weight:bold;
 
     text-decoration:none;
+
     cursor:pointer;
 
     color:#fff;
+
     background:#9f80a6;
 
-    box-shadow:0 4px 10px rgba(0,0,0,.20);
+    box-shadow:
+        0 4px 10px rgba(0,0,0,.20);
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+.action-btn:active{
+    transform:scale(.96);
 }
 
 .reply-btn{
@@ -228,13 +279,16 @@ body{
     width:94%;
 
     margin:20px auto 0;
+
     padding:14px;
 
-    background:rgba(9,20,31,.96);
+    background:
+        rgba(9,20,31,.96);
 
     border-radius:18px;
 
-    box-shadow:0 8px 22px rgba(0,0,0,.32);
+    box-shadow:
+        0 8px 22px rgba(0,0,0,.32);
 }
 
 .reply-panel.visible{
@@ -247,18 +301,22 @@ body{
     color:#fff;
 
     font-size:23px;
+
     line-height:1;
 
     text-align:center;
+
     letter-spacing:4px;
 }
 
 .reply-info{
     margin-bottom:13px;
 
-    color:rgba(255,255,255,.78);
+    color:
+        rgba(255,255,255,.78);
 
     font-size:12px;
+
     line-height:1.45;
 
     text-align:center;
@@ -266,63 +324,90 @@ body{
 
 .crown-zone{
     display:flex;
+
     justify-content:center;
+
     flex-wrap:wrap;
 
     gap:7px;
+
     margin-bottom:13px;
 }
 
 .crown-btn{
-    flex:1 1 calc(20% - 7px);
+    flex:
+        1 1
+        calc(20% - 7px);
 
     min-width:62px;
     max-width:88px;
+
     height:54px;
 
     padding:0;
 
-    border:1px solid rgba(255,255,255,.22);
+    border:
+        1px solid
+        rgba(255,255,255,.22);
 
     border-radius:13px;
 
-    background:rgba(255,255,255,.07);
+    background:
+        rgba(255,255,255,.07);
 
     color:#fff;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
     cursor:pointer;
+
+    transition:
+        background .2s ease,
+        transform .15s ease;
+}
+
+.crown-btn:active{
+    transform:scale(.96);
 }
 
 .crown-btn.active{
     background:#e26183;
+
     border-color:#e26183;
 }
 
 .crown-btn span{
     display:block;
+
     margin:0;
+
     font-size:24px;
+
     line-height:1;
 }
 
 .normal-cross{
     color:#fff;
+
     font-size:27px !important;
+
     font-weight:300;
 }
 
 .camera-frame{
     position:relative;
+
     width:100%;
+
     aspect-ratio:9 / 16;
 
     overflow:hidden;
 
     background:#13283b;
+
     border-radius:14px;
 }
 
@@ -332,21 +417,27 @@ body{
 
 #partyCanvas{
     display:block;
+
     width:100%;
     height:100%;
+
     background:#13283b;
 }
 
 #recordedPreview{
     display:none;
+
     width:100%;
     height:100%;
+
     object-fit:contain;
+
     background:#000;
 }
 
 .record-time{
     position:absolute;
+
     top:10px;
     left:50%;
 
@@ -360,7 +451,8 @@ body{
 
     border-radius:20px;
 
-    background:rgba(0,0,0,.72);
+    background:
+        rgba(0,0,0,.72);
 
     color:#fff;
 
@@ -374,11 +466,14 @@ body{
 
 .camera-actions{
     display:flex;
+
     justify-content:center;
     align-items:center;
+
     flex-wrap:wrap;
 
     gap:8px;
+
     margin-top:12px;
 }
 
@@ -388,32 +483,46 @@ body{
     padding:9px 15px;
 
     border:0;
+
     border-radius:22px;
 
     font-family:inherit;
+
     font-size:13px;
     font-weight:bold;
 
     cursor:pointer;
+
+    transition:
+        transform .15s ease,
+        opacity .15s ease;
+}
+
+.camera-btn:active{
+    transform:scale(.96);
 }
 
 .camera-btn.primary{
     background:#e26183;
+
     color:#fff;
 }
 
 .camera-btn.secondary{
     background:#fff;
+
     color:#253344;
 }
 
 .camera-btn.send{
     background:#6fa773;
+
     color:#fff;
 }
 
 .camera-btn:disabled{
     opacity:.45;
+
     cursor:default;
 }
 
@@ -421,15 +530,18 @@ body{
     display:none;
 
     margin-top:12px;
+
     padding:11px;
 
     border-radius:12px;
 
-    background:rgba(255,255,255,.10);
+    background:
+        rgba(255,255,255,.10);
 
     color:#fff;
 
     font-size:12px;
+
     line-height:1.45;
 
     text-align:center;
@@ -441,9 +553,14 @@ body{
 
 .back-to-top{
     position:fixed;
+
     right:16px;
 
-    bottom:calc(18px + env(safe-area-inset-bottom));
+    bottom:
+        calc(
+            18px +
+            env(safe-area-inset-bottom)
+        );
 
     z-index:100;
 
@@ -451,22 +568,28 @@ body{
     height:48px;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
     border:0;
+
     border-radius:50%;
 
-    background:rgba(80,52,84,.90);
+    background:
+        rgba(80,52,84,.90);
 
     color:#fff;
+
     font-size:24px;
 
     cursor:pointer;
 
-    box-shadow:0 5px 15px rgba(0,0,0,.30);
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.30);
 
     opacity:0;
+
     visibility:hidden;
 
     transform:translateY(10px);
@@ -479,7 +602,9 @@ body{
 
 .back-to-top.visible{
     opacity:1;
+
     visibility:visible;
+
     transform:translateY(0);
 }
 
@@ -508,12 +633,15 @@ body{
 
 </head>
 
+
 <body>
+
 
 <main
     class="page"
     id="top"
 >
+
 
 <header class="header">
 
@@ -524,10 +652,13 @@ body{
 
 </header>
 
+
 <section
     class="video-list"
     id="videoList"
 ></section>
+
+
 
 <div
     class="reply-panel"
@@ -538,9 +669,11 @@ body{
         🩷 🩷 🩷
     </div>
 
+
     <div class="reply-info">
         Choisis un filtre, enregistre ton message puis partage directement ta vidéo.
     </div>
+
 
     <div class="crown-zone">
 
@@ -552,6 +685,7 @@ body{
             <span class="normal-cross">×</span>
         </button>
 
+
         <button
             class="crown-btn active"
             data-crown="crown1"
@@ -559,6 +693,7 @@ body{
         >
             <span>🌹</span>
         </button>
+
 
         <button
             class="crown-btn"
@@ -568,6 +703,7 @@ body{
             <span>🦄</span>
         </button>
 
+
         <button
             class="crown-btn"
             data-crown="crown3"
@@ -575,6 +711,7 @@ body{
         >
             <span>💖</span>
         </button>
+
 
         <button
             class="crown-btn"
@@ -586,12 +723,14 @@ body{
 
     </div>
 
+
     <video
         id="cameraSource"
         autoplay
         muted
         playsinline
     ></video>
+
 
     <div class="camera-frame">
 
@@ -601,11 +740,13 @@ body{
             height="1280"
         ></canvas>
 
+
         <video
             id="recordedPreview"
             controls
             playsinline
         ></video>
+
 
         <div
             class="record-time"
@@ -615,6 +756,7 @@ body{
         </div>
 
     </div>
+
 
     <div class="camera-actions">
 
@@ -626,6 +768,7 @@ body{
             ● Enregistrer
         </button>
 
+
         <button
             class="camera-btn secondary"
             id="stopRecord"
@@ -635,6 +778,7 @@ body{
             Terminer
         </button>
 
+
         <button
             class="camera-btn secondary"
             id="restartRecord"
@@ -643,6 +787,7 @@ body{
         >
             Recommencer
         </button>
+
 
         <button
             class="camera-btn send"
@@ -655,6 +800,7 @@ body{
 
     </div>
 
+
     <div
         class="status-message"
         id="statusMessage"
@@ -662,15 +808,19 @@ body{
 
 </div>
 
+
 </main>
+
+
 
 <button
     class="back-to-top"
     id="backToTop"
-    aria-label="Retour en haut"
 >
     ↑
 </button>
+
+
 
 <script type="module">
 
@@ -683,7 +833,7 @@ from
 
 
 /* =========================================================
-   CONFIGURATION
+   CONFIG
    ========================================================= */
 
 const BASE =
@@ -707,13 +857,19 @@ const SUPABASE_KEY =
    ========================================================= */
 
 const VISITOR_TYPE =
-    localStorage.getItem("birthday_owner") === "cyrille"
-        ? "cyrille"
-        : "visitor";
+    localStorage.getItem(
+        "birthday_owner"
+    )
+    ===
+    "cyrille"
+    ?
+    "cyrille"
+    :
+    "visitor";
 
 
 /* =========================================================
-   CLE DE CETTE VISITE
+   VISITE UNIQUE
    ========================================================= */
 
 const VISIT_KEY =
@@ -721,7 +877,7 @@ const VISIT_KEY =
 
 
 /* =========================================================
-   CADEAUX OUVERTS PENDANT CETTE VISITE
+   CADEAUX OUVERTS
    ========================================================= */
 
 const openedGiftIndexes =
@@ -730,10 +886,6 @@ const openedGiftIndexes =
 
 /* =========================================================
    CREATION DE LA VISITE
-
-   IMPORTANT :
-   opened_list N'EST PAS envoyé ici.
-   Il sera renseigné au premier cadeau ouvert.
    ========================================================= */
 
 const visitCreationPromise =
@@ -781,7 +933,28 @@ async function createVisit(){
                                 0,
 
                             visitor_type:
-                                VISITOR_TYPE
+                                VISITOR_TYPE,
+
+                            gift_1:
+                                false,
+
+                            gift_2:
+                                false,
+
+                            gift_3:
+                                false,
+
+                            gift_4:
+                                false,
+
+                            gift_5:
+                                false,
+
+                            gift_6:
+                                false,
+
+                            gift_7:
+                                false
 
                         })
 
@@ -794,14 +967,10 @@ async function createVisit(){
             !response.ok
         ){
 
-            const message =
-                await response.text();
-
-
             console.error(
                 "Création visite impossible :",
                 response.status,
-                message
+                await response.text()
             );
 
 
@@ -810,20 +979,13 @@ async function createVisit(){
         }
 
 
-        console.log(
-            "Visite créée :",
-            VISIT_KEY,
-            VISITOR_TYPE
-        );
-
-
         return true;
 
     }
     catch(error){
 
         console.error(
-            "Suivi visite indisponible :",
+            "Erreur création visite :",
             error
         );
 
@@ -836,7 +998,7 @@ async function createVisit(){
 
 
 /* =========================================================
-   MISE A JOUR DES CADEAUX
+   MISE A JOUR SUPABASE
    ========================================================= */
 
 async function updateOpenedGifts(){
@@ -857,32 +1019,42 @@ async function updateOpenedGifts(){
 
 
     /*
-       Les index internes sont :
-       0 1 2 3 4 5 6
+       On fabrique les 7 booléens.
 
-       Dans Supabase on enregistre :
-       1 2 3 4 5 6 7
+       openedGiftIndexes utilise :
+       0 à 6
+
+       gift_1 à gift_7 utilisent :
+       1 à 7
     */
 
-    const openedList =
-        Array.from(
-            openedGiftIndexes
-        )
-        .map(
-            index =>
-                index + 1
-        )
-        .sort(
-            (a,b) =>
-                a - b
-        );
+    const payload = {
 
+        opened_gifts:
+            total,
 
-    console.log(
-        "Cadeaux ouverts :",
-        total,
-        openedList
-    );
+        gift_1:
+            openedGiftIndexes.has(0),
+
+        gift_2:
+            openedGiftIndexes.has(1),
+
+        gift_3:
+            openedGiftIndexes.has(2),
+
+        gift_4:
+            openedGiftIndexes.has(3),
+
+        gift_5:
+            openedGiftIndexes.has(4),
+
+        gift_6:
+            openedGiftIndexes.has(5),
+
+        gift_7:
+            openedGiftIndexes.has(6)
+
+    };
 
 
     try{
@@ -918,15 +1090,9 @@ async function updateOpenedGifts(){
                     },
 
                     body:
-                        JSON.stringify({
-
-                            opened_gifts:
-                                total,
-
-                            opened_list:
-                                openedList
-
-                        })
+                        JSON.stringify(
+                            payload
+                        )
 
                 }
 
@@ -937,32 +1103,19 @@ async function updateOpenedGifts(){
             !response.ok
         ){
 
-            const message =
-                await response.text();
-
-
             console.error(
                 "Mise à jour cadeaux impossible :",
                 response.status,
-                message
+                await response.text()
             );
 
-
-            return;
-
         }
-
-
-        console.log(
-            "Supabase mis à jour :",
-            openedList
-        );
 
     }
     catch(error){
 
         console.error(
-            "Suivi cadeaux indisponible :",
+            "Erreur mise à jour cadeaux :",
             error
         );
 
@@ -972,17 +1125,12 @@ async function updateOpenedGifts(){
 
 
 /* =========================================================
-   ENREGISTRER UNE OUVERTURE
+   ENREGISTRER UN CADEAU
    ========================================================= */
 
 function registerGiftOpening(
     index
 ){
-
-    /*
-       Si déjà ouvert pendant cette visite,
-       on ne recompte pas.
-    */
 
     if(
         openedGiftIndexes.has(
@@ -1069,7 +1217,7 @@ const cards = [
 
 
 /* =========================================================
-   IMAGE FRAME
+   FRAME
    ========================================================= */
 
 const frameImage =
@@ -1089,7 +1237,8 @@ frameImage.src =
    COURONNES
    ========================================================= */
 
-const crownImages = {};
+const crownImages =
+    {};
 
 
 function createCrownImage(
@@ -1118,18 +1267,21 @@ function createCrownImage(
 crownImages.crown1 =
     createCrownImage("crown1");
 
+
 crownImages.crown2 =
     createCrownImage("crown2");
 
+
 crownImages.crown3 =
     createCrownImage("crown3");
+
 
 crownImages.crown4 =
     createCrownImage("crown4");
 
 
 /* =========================================================
-   CREATION DES CARTES
+   CREATION CARTES
    ========================================================= */
 
 const videoList =
@@ -1155,10 +1307,6 @@ cards.forEach(
             index;
 
 
-        card.dataset.name =
-            item.name;
-
-
         card.dataset.reply =
             item.reply
             ?
@@ -1181,11 +1329,11 @@ cards.forEach(
                     data-src="${BASE}${item.video}"
                 ></video>
 
+
                 <div
                     class="gift-cover"
                     role="button"
                     tabindex="0"
-                    aria-label="Ouvrir le cadeau"
                 >
 
                     <div class="gift-package">
@@ -1198,6 +1346,7 @@ cards.forEach(
 
                     </div>
 
+
                     <div class="gift-hint">
                         Ouvre ton cadeau
                     </div>
@@ -1205,6 +1354,7 @@ cards.forEach(
                 </div>
 
             </div>
+
 
             <div class="action-zone">
 
@@ -1215,6 +1365,7 @@ cards.forEach(
                 >
                     ↓ Télécharger
                 </a>
+
 
                 ${
                     item.reply
@@ -1345,58 +1496,74 @@ const backToTop =
 
 
 /* =========================================================
-   VARIABLES CAMERA
+   VARIABLES
    ========================================================= */
 
 let currentCard =
     null;
 
+
 let cameraStream =
     null;
+
 
 let faceLandmarker =
     null;
 
+
 let trackingReady =
     false;
+
 
 let trackingLoading =
     false;
 
+
 let latestLandmarks =
     null;
+
 
 let selectedCrown =
     "crown1";
 
+
 let recorder =
     null;
+
 
 let recordedChunks =
     [];
 
+
 let recordedFile =
     null;
+
 
 let objectURL =
     null;
 
+
 let timer =
     null;
+
 
 let secondsRecorded =
     0;
 
+
 let animationFrame =
     null;
 
+
 let lastDetection =
     0;
+
 
 let selfieFrame = {
 
     x:0,
     y:0,
+
     width:720,
     height:1280
 
@@ -1565,10 +1732,6 @@ async function openGift(
         );
 
 
-    /*
-       ICI le cadeau est enregistré.
-    */
-
     registerGiftOpening(
         cardIndex
     );
@@ -1641,7 +1804,7 @@ async function openGift(
 
 
 /* =========================================================
-   CLIC CADEAUX
+   EVENEMENTS CADEAUX
    ========================================================= */
 
 gifts.forEach(
@@ -1720,7 +1883,7 @@ videos.forEach(
 
 
 /* =========================================================
-   REPONDRE
+   REPONDRE EN VIDEO
    ========================================================= */
 
 replyButtons.forEach(
@@ -1824,7 +1987,9 @@ replyButtons.forEach(
 
 
                     if(
-                        selectedCrown !== "none"
+                        selectedCrown
+                        !==
+                        "none"
                     ){
 
                         initFaceTracking();
@@ -1892,7 +2057,9 @@ crownButtons.forEach(
 
 
                 if(
-                    selectedCrown !== "none"
+                    selectedCrown
+                    !==
+                    "none"
                 ){
 
                     initFaceTracking();
@@ -1941,77 +2108,30 @@ async function initFaceTracking(){
                 );
 
 
-        try{
+        faceLandmarker =
+            await FaceLandmarker
+                .createFromOptions(
 
-            faceLandmarker =
-                await FaceLandmarker
-                    .createFromOptions(
+                    vision,
 
-                        vision,
+                    {
 
-                        {
+                        baseOptions:{
 
-                            baseOptions:{
+                            modelAssetPath:
+                                "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task"
 
-                                modelAssetPath:
-                                    "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+                        },
 
-                                delegate:
-                                    "GPU"
+                        runningMode:
+                            "VIDEO",
 
-                            },
+                        numFaces:
+                            1
 
-                            runningMode:
-                                "VIDEO",
+                    }
 
-                            numFaces:
-                                1,
-
-                            minFaceDetectionConfidence:
-                                .5,
-
-                            minFacePresenceConfidence:
-                                .5,
-
-                            minTrackingConfidence:
-                                .5
-
-                        }
-
-                    );
-
-        }
-        catch(error){
-
-            faceLandmarker =
-                await FaceLandmarker
-                    .createFromOptions(
-
-                        vision,
-
-                        {
-
-                            baseOptions:{
-
-                                modelAssetPath:
-                                    "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
-
-                                delegate:
-                                    "CPU"
-
-                            },
-
-                            runningMode:
-                                "VIDEO",
-
-                            numFaces:
-                                1
-
-                        }
-
-                    );
-
-        }
+                );
 
 
         trackingReady =
@@ -2237,12 +2357,8 @@ function drawSelfieScene(
         H * .92;
 
 
-    const videoRatio =
+    const ratio =
         vw / vh;
-
-
-    const targetRatio =
-        maxW / maxH;
 
 
     let drawW;
@@ -2250,7 +2366,8 @@ function drawSelfieScene(
 
 
     if(
-        videoRatio > targetRatio
+        ratio >
+        maxW / maxH
     ){
 
         drawW =
@@ -2258,7 +2375,7 @@ function drawSelfieScene(
 
 
         drawH =
-            drawW / videoRatio;
+            drawW / ratio;
 
     }
     else{
@@ -2268,7 +2385,7 @@ function drawSelfieScene(
 
 
         drawW =
-            drawH * videoRatio;
+            drawH * ratio;
 
     }
 
@@ -2283,38 +2400,13 @@ function drawSelfieScene(
 
     selfieFrame = {
 
-        x:x,
-        y:y,
+        x,
+        y,
+
         width:drawW,
         height:drawH
 
     };
-
-
-    ctx.save();
-
-
-    ctx.shadowColor =
-        "rgba(0,0,0,.26)";
-
-
-    ctx.shadowBlur =
-        8;
-
-
-    ctx.fillStyle =
-        "#000";
-
-
-    ctx.fillRect(
-        x - 2,
-        y - 2,
-        drawW + 4,
-        drawH + 4
-    );
-
-
-    ctx.restore();
 
 
     ctx.save();
@@ -2333,11 +2425,17 @@ function drawSelfieScene(
 
 
     ctx.drawImage(
+
         cameraSource,
+
         W - x - drawW,
+
         y,
+
         drawW,
+
         drawH
+
     );
 
 
@@ -2359,7 +2457,10 @@ function landmarkToCanvas(
         x:
             selfieFrame.x
             +
-            (1 - landmark.x)
+            (
+                1 -
+                landmark.x
+            )
             *
             selfieFrame.width,
 
@@ -2376,20 +2477,35 @@ function landmarkToCanvas(
 
 
 /* =========================================================
-   POSITION COURONNE
+   COURONNE
    ========================================================= */
 
-function getCrownTransform(
+function drawCrown(
     points
 ){
 
-    const leftFace =
+    const image =
+        crownImages[
+            selectedCrown
+        ];
+
+
+    if(
+        !image
+        ||
+        !image.complete
+    ){
+        return;
+    }
+
+
+    const left =
         landmarkToCanvas(
             points[234]
         );
 
 
-    const rightFace =
+    const right =
         landmarkToCanvas(
             points[454]
         );
@@ -2416,112 +2532,20 @@ function getCrownTransform(
     const faceWidth =
         Math.hypot(
 
-            rightFace.x - leftFace.x,
-            rightFace.y - leftFace.y
+            right.x - left.x,
+            right.y - left.y
 
         );
-
-
-    let angle =
-        Math.atan2(
-
-            rightEye.y - leftEye.y,
-            rightEye.x - leftEye.x
-
-        );
-
-
-    if(
-        angle > Math.PI / 2
-    ){
-
-        angle -=
-            Math.PI;
-
-    }
-
-
-    if(
-        angle < -Math.PI / 2
-    ){
-
-        angle +=
-            Math.PI;
-
-    }
-
-
-    return {
-
-        x:
-            forehead.x,
-
-        y:
-            forehead.y
-            +
-            faceWidth * .42,
-
-        width:
-            faceWidth * 1.65,
-
-        angle:
-            angle
-
-    };
-
-}
-
-
-/* =========================================================
-   COURONNE
-   ========================================================= */
-
-function drawCrown(
-    points
-){
-
-    if(
-        selectedCrown === "none"
-    ){
-        return;
-    }
-
-
-    const image =
-        crownImages[
-            selectedCrown
-        ];
-
-
-    if(
-        !image
-        ||
-        !image.complete
-        ||
-        !image.naturalWidth
-    ){
-        return;
-    }
-
-
-    const p =
-        getCrownTransform(
-            points
-        );
-
-
-    const ratio =
-        image.naturalHeight
-        /
-        image.naturalWidth;
 
 
     let width =
-        p.width;
+        faceWidth * 1.65;
 
 
     if(
-        selectedCrown === "crown3"
+        selectedCrown
+        ===
+        "crown3"
     ){
 
         width *=
@@ -2531,37 +2555,56 @@ function drawCrown(
 
 
     const height =
-        width * ratio;
+        width
+        *
+        (
+            image.naturalHeight
+            /
+            image.naturalWidth
+        );
+
+
+    const angle =
+        Math.atan2(
+
+            rightEye.y - leftEye.y,
+            rightEye.x - leftEye.x
+
+        );
+
+
+    const y =
+        forehead.y
+        +
+        faceWidth * .42;
 
 
     ctx.save();
 
 
     ctx.translate(
-        p.x,
-        p.y
+        forehead.x,
+        y
     );
 
 
     ctx.rotate(
-        p.angle
+        angle
     );
 
 
-    ctx.shadowColor =
-        "rgba(0,0,0,.20)";
-
-
-    ctx.shadowBlur =
-        9;
-
-
     ctx.drawImage(
+
         image,
+
         -width / 2,
+
         -height,
+
         width,
+
         height
+
     );
 
 
@@ -2594,12 +2637,6 @@ function drawFairyStars(){
                 star.y =
                     canvas.height + 15;
 
-
-                star.x =
-                    Math.random()
-                    *
-                    canvas.width;
-
             }
 
 
@@ -2619,140 +2656,50 @@ function drawFairyStars(){
                 2;
 
 
-            const alpha =
-                .12
-                +
-                pulse * .72;
+            ctx.save();
 
 
-            const size =
+            ctx.globalAlpha =
+                .15 +
+                pulse * .7;
+
+
+            ctx.fillStyle =
+                star.warm
+                ?
+                "#fff1b4"
+                :
+                "#fff";
+
+
+            ctx.beginPath();
+
+
+            ctx.arc(
+
+                star.x,
+                star.y,
+
                 star.radius
                 *
                 (
-                    .65
-                    +
-                    pulse * .75
-                );
+                    .7 +
+                    pulse * .6
+                ),
 
+                0,
+                Math.PI * 2
 
-            drawSingleFairyStar(
-                star.x,
-                star.y,
-                size,
-                alpha,
-                star.warm
             );
+
+
+            ctx.fill();
+
+
+            ctx.restore();
 
         }
     );
-
-}
-
-
-function drawSingleFairyStar(
-    x,
-    y,
-    r,
-    alpha,
-    warm
-){
-
-    ctx.save();
-
-
-    ctx.translate(
-        x,
-        y
-    );
-
-
-    ctx.globalAlpha =
-        alpha;
-
-
-    ctx.fillStyle =
-        warm
-        ?
-        "#fff1b4"
-        :
-        "#ffffff";
-
-
-    ctx.shadowColor =
-        warm
-        ?
-        "#ffd56d"
-        :
-        "#ffffff";
-
-
-    ctx.shadowBlur =
-        r * 3;
-
-
-    ctx.beginPath();
-
-
-    ctx.moveTo(
-        0,
-        -r * 2.4
-    );
-
-
-    ctx.quadraticCurveTo(
-        r * .12,
-        -r * .16,
-        r * 2.4,
-        0
-    );
-
-
-    ctx.quadraticCurveTo(
-        r * .12,
-        r * .16,
-        0,
-        r * 2.4
-    );
-
-
-    ctx.quadraticCurveTo(
-        -r * .12,
-        r * .16,
-        -r * 2.4,
-        0
-    );
-
-
-    ctx.quadraticCurveTo(
-        -r * .12,
-        -r * .16,
-        0,
-        -r * 2.4
-    );
-
-
-    ctx.closePath();
-
-
-    ctx.fill();
-
-
-    ctx.beginPath();
-
-
-    ctx.arc(
-        0,
-        0,
-        r * .28,
-        0,
-        Math.PI * 2
-    );
-
-
-    ctx.fill();
-
-
-    ctx.restore();
 
 }
 
@@ -2799,7 +2746,7 @@ function getSupportedMimeType(){
 
 
 /* =========================================================
-   ENREGISTREMENT
+   RECORD
    ========================================================= */
 
 startRecord.addEventListener(
@@ -2821,9 +2768,6 @@ startRecord.addEventListener(
             null;
 
 
-        hideStatus();
-
-
         const canvasStream =
             canvas.captureStream(
                 30
@@ -2837,26 +2781,20 @@ startRecord.addEventListener(
         canvasStream
             .getVideoTracks()
             .forEach(
-                track => {
-
+                track =>
                     outputStream.addTrack(
                         track
-                    );
-
-                }
+                    )
             );
 
 
         cameraStream
             .getAudioTracks()
             .forEach(
-                track => {
-
+                track =>
                     outputStream.addTrack(
                         track
-                    );
-
-                }
+                    )
             );
 
 
@@ -2864,52 +2802,31 @@ startRecord.addEventListener(
             getSupportedMimeType();
 
 
-        try{
+        recorder =
+            mimeType
+            ?
+            new MediaRecorder(
 
-            recorder =
-                mimeType
-                ?
-                new MediaRecorder(
+                outputStream,
 
-                    outputStream,
+                {
+                    mimeType
+                }
 
-                    {
-
-                        mimeType:
-                            mimeType,
-
-                        videoBitsPerSecond:
-                            2300000
-
-                    }
-
-                )
-                :
-                new MediaRecorder(
-                    outputStream
-                );
-
-        }
-        catch(error){
-
-            showStatus(
-                "Impossible d'enregistrer cette vidéo."
+            )
+            :
+            new MediaRecorder(
+                outputStream
             );
 
 
-            return;
-
-        }
-
-
-        recorder.addEventListener(
-            "dataavailable",
+        recorder.ondataavailable =
             event => {
 
                 if(
-                    event.data
-                    &&
-                    event.data.size > 0
+                    event.data.size
+                    >
+                    0
                 ){
 
                     recordedChunks.push(
@@ -2918,12 +2835,10 @@ startRecord.addEventListener(
 
                 }
 
-            }
-        );
+            };
 
 
-        recorder.addEventListener(
-            "stop",
+        recorder.onstop =
             () => {
 
                 const type =
@@ -2938,18 +2853,10 @@ startRecord.addEventListener(
                         recordedChunks,
 
                         {
-                            type:type
+                            type
                         }
 
                     );
-
-
-                const extension =
-                    type.includes("webm")
-                    ?
-                    "webm"
-                    :
-                    "mp4";
 
 
                 recordedFile =
@@ -2957,24 +2864,13 @@ startRecord.addEventListener(
 
                         [blob],
 
-                        `reponse-video.${extension}`,
+                        "reponse-video.mp4",
 
                         {
-                            type:type
+                            type
                         }
 
                     );
-
-
-                if(
-                    objectURL
-                ){
-
-                    URL.revokeObjectURL(
-                        objectURL
-                    );
-
-                }
 
 
                 objectURL =
@@ -3015,8 +2911,7 @@ startRecord.addEventListener(
                     "visible"
                 );
 
-            }
-        );
+            };
 
 
         recorder.start();
@@ -3024,10 +2919,6 @@ startRecord.addEventListener(
 
         secondsRecorded =
             0;
-
-
-        recordTime.textContent =
-            "00:00";
 
 
         recordTime.classList.add(
@@ -3050,28 +2941,22 @@ startRecord.addEventListener(
                     secondsRecorded++;
 
 
-                    const minutes =
-                        Math.floor(
-                            secondsRecorded / 60
+                    recordTime.textContent =
+                        "00:"
+                        +
+                        String(
+                            secondsRecorded
+                        )
+                        .padStart(
+                            2,
+                            "0"
                         );
 
 
-                    const seconds =
-                        secondsRecorded % 60;
-
-
-                    recordTime.textContent =
-                        String(minutes)
-                            .padStart(2,"0")
-                        +
-                        ":"
-                        +
-                        String(seconds)
-                            .padStart(2,"0");
-
-
                     if(
-                        secondsRecorded >= 60
+                        secondsRecorded
+                        >=
+                        60
                     ){
 
                         stopRecording();
@@ -3089,15 +2974,16 @@ startRecord.addEventListener(
 function stopRecording(){
 
     if(
-        !recorder
-        ||
-        recorder.state === "inactive"
+        recorder
+        &&
+        recorder.state
+        !==
+        "inactive"
     ){
-        return;
+
+        recorder.stop();
+
     }
-
-
-    recorder.stop();
 
 
     clearInterval(
@@ -3122,41 +3008,14 @@ stopRecord.addEventListener(
 
 
 /* =========================================================
-   RECOMMENCER
+   RESTART
    ========================================================= */
 
 restartRecord.addEventListener(
     "click",
     () => {
 
-        recordedFile =
-            null;
-
-
-        if(
-            objectURL
-        ){
-
-            URL.revokeObjectURL(
-                objectURL
-            );
-
-
-            objectURL =
-                null;
-
-        }
-
-
         recordedPreview.pause();
-
-
-        recordedPreview.removeAttribute(
-            "src"
-        );
-
-
-        recordedPreview.load();
 
 
         recordedPreview.style.display =
@@ -3179,21 +3038,8 @@ restartRecord.addEventListener(
             "inline-block";
 
 
-        startRecord.disabled =
-            false;
-
-
         stopRecord.style.display =
             "inline-block";
-
-
-        stopRecord.disabled =
-            true;
-
-
-        recordTime.classList.remove(
-            "visible"
-        );
 
 
         hideStatus();
@@ -3203,7 +3049,7 @@ restartRecord.addEventListener(
 
 
 /* =========================================================
-   PARTAGE
+   SHARE
    ========================================================= */
 
 shareRecord.addEventListener(
@@ -3214,42 +3060,6 @@ shareRecord.addEventListener(
             !recordedFile
         ){
             return;
-        }
-
-
-        if(
-            !navigator.share
-        ){
-
-            showStatus(
-                "Le partage direct n'est pas disponible sur ce navigateur."
-            );
-
-
-            return;
-
-        }
-
-
-        if(
-            navigator.canShare
-            &&
-            !navigator.canShare({
-
-                files:[
-                    recordedFile
-                ]
-
-            })
-        ){
-
-            showStatus(
-                "Cette vidéo ne peut pas être partagée directement."
-            );
-
-
-            return;
-
         }
 
 
@@ -3266,23 +3076,8 @@ shareRecord.addEventListener(
 
             });
 
-
-            stopCameraStream();
-
         }
-        catch(error){
-
-            if(
-                error.name !== "AbortError"
-            ){
-
-                showStatus(
-                    "Impossible de partager la vidéo."
-                );
-
-            }
-
-        }
+        catch(error){}
 
     }
 );
@@ -3294,63 +3089,12 @@ shareRecord.addEventListener(
 
 function resetReplyInterface(){
 
-    if(
-        recorder
-        &&
-        recorder.state !== "inactive"
-    ){
-
-        try{
-
-            recorder.stop();
-
-        }
-        catch(error){}
-
-    }
-
-
-    clearInterval(
-        timer
-    );
-
-
-    secondsRecorded =
-        0;
-
-
     recordedFile =
         null;
 
 
     recordedChunks =
         [];
-
-
-    if(
-        objectURL
-    ){
-
-        URL.revokeObjectURL(
-            objectURL
-        );
-
-
-        objectURL =
-            null;
-
-    }
-
-
-    recordedPreview.pause();
-
-
-    recordedPreview.removeAttribute(
-        "src"
-    );
-
-
-    recordedPreview.load();
 
 
     recordedPreview.style.display =
@@ -3365,16 +3109,8 @@ function resetReplyInterface(){
         "inline-block";
 
 
-    startRecord.disabled =
-        false;
-
-
     stopRecord.style.display =
         "inline-block";
-
-
-    stopRecord.disabled =
-        true;
 
 
     restartRecord.style.display =
@@ -3385,17 +3121,9 @@ function resetReplyInterface(){
         "none";
 
 
-    recordTime.textContent =
-        "00:00";
-
-
     recordTime.classList.remove(
         "visible"
     );
-
-
-    latestLandmarks =
-        null;
 
 }
 
@@ -3413,19 +3141,12 @@ function stopCameraStream(){
         cameraStream
             .getTracks()
             .forEach(
-                track => {
-
-                    track.stop();
-
-                }
+                track =>
+                    track.stop()
             );
 
 
         cameraStream =
-            null;
-
-
-        cameraSource.srcObject =
             null;
 
     }
@@ -3462,56 +3183,7 @@ function hideStatus(){
 
 
 /* =========================================================
-   PAUSE HORS ECRAN
-   ========================================================= */
-
-const pauseObserver =
-    new IntersectionObserver(
-
-        entries => {
-
-            entries.forEach(
-                entry => {
-
-                    const video =
-                        entry.target;
-
-
-                    if(
-                        !entry.isIntersecting
-                        &&
-                        !video.paused
-                    ){
-
-                        video.pause();
-
-                    }
-
-                }
-            );
-
-        },
-
-        {
-            threshold:.12
-        }
-
-    );
-
-
-videos.forEach(
-    video => {
-
-        pauseObserver.observe(
-            video
-        );
-
-    }
-);
-
-
-/* =========================================================
-   RETOUR EN HAUT
+   RETOUR HAUT
    ========================================================= */
 
 window.addEventListener(
@@ -3526,10 +3198,6 @@ window.addEventListener(
 
         );
 
-    },
-
-    {
-        passive:true
     }
 );
 
@@ -3545,55 +3213,6 @@ backToTop.addEventListener(
             behavior:"smooth"
 
         });
-
-    }
-);
-
-
-/* =========================================================
-   CLEANUP
-   ========================================================= */
-
-window.addEventListener(
-    "beforeunload",
-    () => {
-
-        cancelAnimationFrame(
-            animationFrame
-        );
-
-
-        clearInterval(
-            timer
-        );
-
-
-        stopCameraStream();
-
-
-        if(
-            objectURL
-        ){
-
-            URL.revokeObjectURL(
-                objectURL
-            );
-
-        }
-
-
-        if(
-            faceLandmarker
-        ){
-
-            try{
-
-                faceLandmarker.close();
-
-            }
-            catch(error){}
-
-        }
 
     }
 );

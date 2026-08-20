@@ -70,9 +70,7 @@ body{
 
 .header{
     width:100%;
-
     text-align:center;
-
     margin-bottom:24px;
 }
 
@@ -81,7 +79,6 @@ body{
 
     width:100%;
     max-width:420px;
-
     height:auto;
 
     margin:0 auto;
@@ -94,9 +91,7 @@ body{
 
 .video-list{
     display:flex;
-
     flex-direction:column;
-
     gap:36px;
 }
 
@@ -123,7 +118,6 @@ body{
 
 .video-wrapper.horizontal{
     width:88%;
-
     aspect-ratio:16 / 9;
 }
 
@@ -134,7 +128,6 @@ body{
 
 .main-video{
     position:absolute;
-
     inset:0;
 
     display:block;
@@ -156,7 +149,6 @@ body{
 
 .gift-cover{
     position:absolute;
-
     inset:0;
 
     z-index:10;
@@ -286,7 +278,6 @@ body{
     padding:9px 17px;
 
     border:0;
-
     border-radius:22px;
 
     font-family:inherit;
@@ -439,7 +430,6 @@ body{
 
 .crown-btn.active{
     background:#e26183;
-
     border-color:#e26183;
 }
 
@@ -583,19 +573,16 @@ body{
 
 .camera-btn.primary{
     background:#e26183;
-
     color:#fff;
 }
 
 .camera-btn.secondary{
     background:#fff;
-
     color:#253344;
 }
 
 .camera-btn.send{
     background:#6fa773;
-
     color:#fff;
 }
 
@@ -637,7 +624,7 @@ body{
 
 
 /* =========================================================
-   RETOUR EN HAUT
+   RETOUR HAUT
    ========================================================= */
 
 .back-to-top{
@@ -774,8 +761,7 @@ body{
 
 
 <!-- =====================================================
-     MODULE DE REPONSE
-     UNIQUEMENT POUR LES VIDEOS 1 A 4
+     REPONSE VIDEO — UNIQUEMENT VIDEOS 1 A 4
      ===================================================== -->
 
 <div
@@ -794,7 +780,6 @@ body{
 
 
     <div class="crown-zone">
-
 
         <button
             class="crown-btn"
@@ -845,7 +830,6 @@ body{
             <span>👑</span>
         </button>
 
-
     </div>
 
 
@@ -858,7 +842,6 @@ body{
 
 
     <div class="camera-frame">
-
 
         <canvas
             id="partyCanvas"
@@ -881,12 +864,10 @@ body{
             00:00
         </div>
 
-
     </div>
 
 
     <div class="camera-actions">
-
 
         <button
             class="camera-btn primary"
@@ -926,7 +907,6 @@ body{
             Envoyer ma réponse
         </button>
 
-
     </div>
 
 
@@ -934,7 +914,6 @@ body{
         class="status-message"
         id="statusMessage"
     ></div>
-
 
 </div>
 
@@ -976,7 +955,7 @@ const BASE =
 
 
 /* =========================================================
-   SUPABASE — SUIVI SIMPLE DES OUVERTURES
+   SUPABASE
    ========================================================= */
 
 const SUPABASE_URL =
@@ -988,60 +967,253 @@ const SUPABASE_KEY =
 
 
 /*
-   A chaque ouverture de la page,
-   une ligne vide est ajoutée.
+   ID de la visite actuelle.
 
-   Supabase remplit automatiquement
-   created_at.
-
-   Aucune donnée personnelle
-   n'est envoyée ici.
+   Il sera récupéré après
+   la création de la ligne.
 */
 
-fetch(
-    SUPABASE_URL +
-    "/rest/v1/birthday_visits",
-    {
+let visitId =
+    null;
 
-        method:"POST",
 
-        headers:{
+/*
+   Nombre de cadeaux uniques ouverts.
+*/
 
-            "apikey":
-                SUPABASE_KEY,
+let openedGiftsCount =
+    0;
 
-            "Authorization":
-                "Bearer " +
-                SUPABASE_KEY,
 
-            "Content-Type":
-                "application/json",
+/*
+   Liste des cadeaux déjà comptés.
 
-            "Prefer":
-                "return=minimal"
+   Ainsi un même cadeau ne peut
+   jamais compter deux fois.
+*/
 
-        },
+const openedGiftIndexes =
+    new Set();
 
-        body:
-            JSON.stringify({})
+
+/* =========================================================
+   CREER LA VISITE
+   ========================================================= */
+
+async function createVisit(){
+
+    try{
+
+        const response =
+            await fetch(
+
+                SUPABASE_URL +
+                "/rest/v1/birthday_visits",
+
+                {
+
+                    method:"POST",
+
+                    headers:{
+
+                        "apikey":
+                            SUPABASE_KEY,
+
+                        "Authorization":
+                            "Bearer " +
+                            SUPABASE_KEY,
+
+                        "Content-Type":
+                            "application/json",
+
+                        /*
+                           On demande à Supabase
+                           de nous renvoyer la ligne créée
+                           afin de récupérer son id.
+                        */
+
+                        "Prefer":
+                            "return=representation"
+
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            opened_gifts:0
+
+                        })
+
+                }
+
+            );
+
+
+        if(
+            !response.ok
+        ){
+
+            return;
+
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if(
+            data
+            &&
+            data[0]
+            &&
+            data[0].id
+            !==
+            undefined
+        ){
+
+            visitId =
+                data[0].id;
+
+        }
 
     }
-)
-.catch(
-    error => {
+    catch(error){
 
         /*
-           Une erreur de statistiques
-           ne doit jamais empêcher
-           le site de fonctionner.
+           Le suivi ne doit jamais
+           bloquer le site.
         */
 
-        console.log(
-            "Suivi visite indisponible."
+    }
+
+}
+
+
+/*
+   La visite est créée
+   dès l'ouverture du site.
+*/
+
+createVisit();
+
+
+/* =========================================================
+   METTRE A JOUR LE NOMBRE DE CADEAUX
+   ========================================================= */
+
+async function updateOpenedGifts(){
+
+    if(
+        visitId
+        ===
+        null
+    ){
+        return;
+    }
+
+
+    try{
+
+        await fetch(
+
+            SUPABASE_URL +
+            "/rest/v1/birthday_visits?id=eq." +
+            encodeURIComponent(
+                visitId
+            ),
+
+            {
+
+                method:"PATCH",
+
+                headers:{
+
+                    "apikey":
+                        SUPABASE_KEY,
+
+                    "Authorization":
+                        "Bearer " +
+                        SUPABASE_KEY,
+
+                    "Content-Type":
+                        "application/json",
+
+                    "Prefer":
+                        "return=minimal"
+
+                },
+
+                body:
+                    JSON.stringify({
+
+                        opened_gifts:
+                            openedGiftsCount
+
+                    })
+
+            }
+
         );
 
     }
-);
+    catch(error){
+
+        /*
+           Même en cas de problème
+           Supabase, le cadeau fonctionne.
+        */
+
+    }
+
+}
+
+
+/* =========================================================
+   COMPTER UN CADEAU
+   ========================================================= */
+
+function registerGiftOpening(
+    index
+){
+
+    /*
+       Déjà compté ?
+    */
+
+    if(
+        openedGiftIndexes.has(
+            index
+        )
+    ){
+        return;
+    }
+
+
+    /*
+       On mémorise ce cadeau.
+    */
+
+    openedGiftIndexes.add(
+        index
+    );
+
+
+    /*
+       Nouveau total.
+    */
+
+    openedGiftsCount =
+        openedGiftIndexes.size;
+
+
+    /*
+       Mise à jour Supabase.
+    */
+
+    updateOpenedGifts();
+
+}
 
 
 /* =========================================================
@@ -1181,7 +1353,7 @@ crownImages.crown4 =
 
 
 /* =========================================================
-   CREATION DES CARTES
+   CREATION CARTES
    ========================================================= */
 
 const videoList =
@@ -1631,6 +1803,21 @@ async function openGift(
         );
 
 
+    const cardIndex =
+        Number(
+            card.dataset.index
+        );
+
+
+    /*
+       COMPTEUR SUPABASE
+    */
+
+    registerGiftOpening(
+        cardIndex
+    );
+
+
     if(
         !video.src
         &&
@@ -1652,8 +1839,8 @@ async function openGift(
 
 
     /*
-       Réponse seulement
-       pour les vidéos 1 à 4.
+       Réponse uniquement
+       pour vidéos 1 à 4.
     */
 
     if(
@@ -1726,9 +1913,13 @@ gifts.forEach(
             event => {
 
                 if(
-                    event.key === "Enter"
+                    event.key
+                    ===
+                    "Enter"
                     ||
-                    event.key === " "
+                    event.key
+                    ===
+                    " "
                 ){
 
                     event.preventDefault();
@@ -1762,7 +1953,9 @@ videos.forEach(
                     other => {
 
                         if(
-                            other !== video
+                            other
+                            !==
+                            video
                             &&
                             !other.paused
                         ){
@@ -2111,7 +2304,7 @@ async function initFaceTracking(){
 
 
 /* =========================================================
-   BOUCLE DE DESSIN
+   BOUCLE DESSIN
    ========================================================= */
 
 function drawFrame(){
@@ -2946,7 +3139,7 @@ function drawSingleFairyStar(
 
 
 /* =========================================================
-   TYPE D'ENREGISTREMENT
+   TYPE ENREGISTREMENT
    ========================================================= */
 
 function getSupportedMimeType(){
@@ -3082,11 +3275,6 @@ startRecord.addEventListener(
 
         }
         catch(error){
-
-            console.error(
-                error
-            );
-
 
             showStatus(
                 "Impossible d'enregistrer cette vidéo."
@@ -3420,7 +3608,7 @@ restartRecord.addEventListener(
 
 
 /* =========================================================
-   PARTAGE NATIF
+   PARTAGE
    ========================================================= */
 
 shareRecord.addEventListener(
@@ -3493,11 +3681,6 @@ shareRecord.addEventListener(
                 "AbortError"
             ){
 
-                console.error(
-                    error
-                );
-
-
                 showStatus(
                     "Impossible de partager la vidéo."
                 );
@@ -3511,7 +3694,7 @@ shareRecord.addEventListener(
 
 
 /* =========================================================
-   REINITIALISATION MODULE
+   RESET REPONSE
    ========================================================= */
 
 function resetReplyInterface(){
@@ -3625,7 +3808,7 @@ function resetReplyInterface(){
 
 
 /* =========================================================
-   COUPER LA CAMERA
+   COUPER CAMERA
    ========================================================= */
 
 function stopCameraStream(){
@@ -3686,7 +3869,7 @@ function hideStatus(){
 
 
 /* =========================================================
-   PAUSE VIDEO HORS ECRAN
+   PAUSE HORS ECRAN
    ========================================================= */
 
 const pauseObserver =
@@ -3735,7 +3918,7 @@ videos.forEach(
 
 
 /* =========================================================
-   RETOUR EN HAUT
+   RETOUR HAUT
    ========================================================= */
 
 window.addEventListener(
@@ -3746,9 +3929,7 @@ window.addEventListener(
 
             "visible",
 
-            window.scrollY
-            >
-            700
+            window.scrollY > 700
 
         );
 

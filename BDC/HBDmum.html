@@ -79,6 +79,7 @@ body{
 
     width:100%;
     max-width:420px;
+
     height:auto;
 
     margin:0 auto;
@@ -130,6 +131,7 @@ body{
 
 .main-video{
     position:absolute;
+
     inset:0;
 
     display:block;
@@ -151,11 +153,13 @@ body{
 
 .gift-cover{
     position:absolute;
+
     inset:0;
 
     z-index:10;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
@@ -197,7 +201,7 @@ body{
 
 
 /* =========================================================
-   TEXTE CADEAU
+   OUVRE TON CADEAU
    ========================================================= */
 
 .gift-hint{
@@ -342,15 +346,23 @@ body{
     display:block;
 }
 
+
+/* =========================================================
+   TROIS COEURS
+   ========================================================= */
+
 .reply-title{
-    margin-bottom:6px;
+    margin-bottom:8px;
 
     color:#fff;
 
-    font-size:17px;
-    font-weight:bold;
+    font-size:23px;
+
+    line-height:1;
 
     text-align:center;
+
+    letter-spacing:4px;
 }
 
 .reply-info{
@@ -407,6 +419,7 @@ body{
     color:#fff;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
@@ -567,16 +580,19 @@ body{
 
 .camera-btn.primary{
     background:#e26183;
+
     color:#fff;
 }
 
 .camera-btn.secondary{
     background:#fff;
+
     color:#253344;
 }
 
 .camera-btn.send{
     background:#6fa773;
+
     color:#fff;
 }
 
@@ -618,7 +634,7 @@ body{
 
 
 /* =========================================================
-   RETOUR HAUT
+   RETOUR EN HAUT
    ========================================================= */
 
 .back-to-top{
@@ -704,6 +720,25 @@ body{
 
 }
 
+
+/* =========================================================
+   ACCESSIBILITE
+   ========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    html{
+        scroll-behavior:auto;
+    }
+
+    .gift-cover,
+    .gift-package,
+    .back-to-top{
+        transition:none;
+    }
+
+}
+
 </style>
 
 </head>
@@ -736,7 +771,8 @@ body{
 
 
 <!-- =====================================================
-     TEST REPONSE VIDEO 8
+     MODULE DE REPONSE
+     UNIQUEMENT POUR LES VIDEOS 1 A 4
      ===================================================== -->
 
 <div
@@ -745,7 +781,7 @@ body{
 >
 
     <div class="reply-title">
-        Ta réponse vidéo
+        🩷 🩷 🩷
     </div>
 
 
@@ -929,62 +965,76 @@ from
 
 
 /* =========================================================
-   CONFIG
+   CONFIGURATION
    ========================================================= */
 
 const BASE =
     "https://avantpost-cpu.github.io/depot-quiz/BDC/";
 
 
+/*
+   reply:true  = bouton Répondre en vidéo
+   reply:false = pas de réponse
+
+   Les 7 vidéos restent présentes.
+*/
+
 const cards = [
 
     {
+        name:"Mamie",
         video:"mamie.mp4",
         pack:"pack1.jpg",
-        format:"vertical"
-    },
-
-    {
-        video:"tata.mp4",
-        pack:"pack2.jpg",
-        format:"horizontal"
-    },
-
-    {
-        video:"raoul.mp4",
-        pack:"pack3.jpg",
-        format:"vertical"
-    },
-
-    {
-        video:"claire.mp4",
-        pack:"pack4.jpg",
-        format:"vertical"
-    },
-
-    {
-        video:"osaka.mp4",
-        pack:"pack5.jpg",
-        format:"vertical"
-    },
-
-    {
-        video:"marcel.mp4",
-        pack:"pack6.jpg",
-        format:"vertical"
-    },
-
-    {
-        video:"couple.mp4",
-        pack:"pack7.jpg",
-        format:"vertical"
-    },
-
-    {
-        video:"test.mp4",
-        pack:"pack8.jpg",
         format:"vertical",
         reply:true
+    },
+
+    {
+        name:"Tata",
+        video:"tata.mp4",
+        pack:"pack2.jpg",
+        format:"horizontal",
+        reply:true
+    },
+
+    {
+        name:"Raoul",
+        video:"raoul.mp4",
+        pack:"pack3.jpg",
+        format:"vertical",
+        reply:true
+    },
+
+    {
+        name:"Claire",
+        video:"claire.mp4",
+        pack:"pack4.jpg",
+        format:"vertical",
+        reply:true
+    },
+
+    {
+        name:"Osaka",
+        video:"osaka.mp4",
+        pack:"pack5.jpg",
+        format:"vertical",
+        reply:false
+    },
+
+    {
+        name:"Marcel",
+        video:"marcel.mp4",
+        pack:"pack6.jpg",
+        format:"vertical",
+        reply:false
+    },
+
+    {
+        name:"Couple",
+        video:"couple.mp4",
+        pack:"pack7.jpg",
+        format:"vertical",
+        reply:false
     }
 
 ];
@@ -1008,7 +1058,7 @@ frameImage.src =
 
 
 /* =========================================================
-   COURONNES PNG
+   COURONNES
    ========================================================= */
 
 const crownImages = {};
@@ -1062,7 +1112,7 @@ crownImages.crown4 =
 
 
 /* =========================================================
-   CREATION DES CARTES
+   CREATION DES 7 CARTES
    ========================================================= */
 
 const videoList =
@@ -1088,6 +1138,18 @@ cards.forEach(
             index;
 
 
+        card.dataset.name =
+            item.name;
+
+
+        card.dataset.reply =
+            item.reply
+            ?
+            "true"
+            :
+            "false";
+
+
         card.innerHTML = `
 
             <div
@@ -1103,7 +1165,12 @@ cards.forEach(
                 ></video>
 
 
-                <div class="gift-cover">
+                <div
+                    class="gift-cover"
+                    role="button"
+                    tabindex="0"
+                    aria-label="Ouvrir le cadeau"
+                >
 
                     <div class="gift-package">
 
@@ -1180,14 +1247,8 @@ const gifts =
     );
 
 
-const testCard =
-    document.querySelector(
-        '.video-card[data-index="7"]'
-    );
-
-
-const replyButton =
-    testCard.querySelector(
+const replyButtons =
+    document.querySelectorAll(
         ".reply-btn"
     );
 
@@ -1273,6 +1334,10 @@ const backToTop =
 /* =========================================================
    VARIABLES
    ========================================================= */
+
+let currentCard =
+    null;
+
 
 let cameraStream =
     null;
@@ -1403,7 +1468,7 @@ const fairyStars =
 
 
 /* =========================================================
-   LAZY LOAD
+   CHARGEMENT INTELLIGENT DES VIDEOS
    ========================================================= */
 
 const videoObserver =
@@ -1469,7 +1534,107 @@ videos.forEach(
 
 
 /* =========================================================
-   OUVERTURE CADEAUX
+   OUVERTURE D'UN CADEAU
+   ========================================================= */
+
+async function openGift(
+    gift
+){
+
+    if(
+        gift.classList.contains(
+            "opening"
+        )
+    ){
+        return;
+    }
+
+
+    const card =
+        gift.closest(
+            ".video-card"
+        );
+
+
+    const video =
+        card.querySelector(
+            ".main-video"
+        );
+
+
+    if(
+        !video.src
+        &&
+        video.dataset.src
+    ){
+
+        video.src =
+            video.dataset.src;
+
+
+        video.load();
+
+    }
+
+
+    gift.classList.add(
+        "opening"
+    );
+
+
+    /*
+       Le bouton Répondre apparaît
+       uniquement pour 1, 2, 3 et 4.
+    */
+
+    if(
+        card.dataset.reply
+        ===
+        "true"
+    ){
+
+        const replyButton =
+            card.querySelector(
+                ".reply-btn"
+            );
+
+
+        if(
+            replyButton
+        ){
+
+            replyButton.classList.remove(
+                "hidden"
+            );
+
+        }
+
+    }
+
+
+    try{
+
+        await video.play();
+
+    }
+    catch(error){}
+
+
+    setTimeout(
+        () => {
+
+            gift.style.display =
+                "none";
+
+        },
+        450
+    );
+
+}
+
+
+/* =========================================================
+   CLIC / CLAVIER SUR LES CADEAUX
    ========================================================= */
 
 gifts.forEach(
@@ -1477,79 +1642,38 @@ gifts.forEach(
 
         gift.addEventListener(
             "click",
-            async () => {
+            () => {
 
-                if(
-                    gift.classList.contains(
-                        "opening"
-                    )
-                ){
-                    return;
-                }
-
-
-                const card =
-                    gift.closest(
-                        ".video-card"
-                    );
-
-
-                const video =
-                    card.querySelector(
-                        ".main-video"
-                    );
-
-
-                if(
-                    !video.src
-                    &&
-                    video.dataset.src
-                ){
-
-                    video.src =
-                        video.dataset.src;
-
-
-                    video.load();
-
-                }
-
-
-                gift.classList.add(
-                    "opening"
+                openGift(
+                    gift
                 );
 
+            }
+        );
+
+
+        gift.addEventListener(
+            "keydown",
+            event => {
 
                 if(
-                    card.dataset.index
+                    event.key
                     ===
-                    "7"
+                    "Enter"
+                    ||
+                    event.key
+                    ===
+                    " "
                 ){
 
-                    replyButton.classList.remove(
-                        "hidden"
+                    event.preventDefault();
+
+
+                    openGift(
+                        gift
                     );
 
                 }
-
-
-                try{
-
-                    await video.play();
-
-                }
-                catch(error){}
-
-
-                setTimeout(
-                    () => {
-
-                        gift.style.display =
-                            "none";
-
-                    },
-                    450
-                );
 
             }
         );
@@ -1559,7 +1683,7 @@ gifts.forEach(
 
 
 /* =========================================================
-   UNE SEULE VIDEO
+   UNE SEULE VIDEO A LA FOIS
    ========================================================= */
 
 videos.forEach(
@@ -1573,7 +1697,9 @@ videos.forEach(
                     other => {
 
                         if(
-                            other !== video
+                            other
+                            !==
+                            video
                             &&
                             !other.paused
                         ){
@@ -1593,7 +1719,162 @@ videos.forEach(
 
 
 /* =========================================================
-   CHOIX COURONNE
+   REPONDRE EN VIDEO
+   VIDEOS 1 A 4 UNIQUEMENT
+   ========================================================= */
+
+replyButtons.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            async () => {
+
+                currentCard =
+                    button.closest(
+                        ".video-card"
+                    );
+
+
+                const video =
+                    currentCard.querySelector(
+                        ".main-video"
+                    );
+
+
+                video.pause();
+
+
+                /*
+                   Le module se place sous
+                   le cadeau concerné.
+                */
+
+                currentCard.insertAdjacentElement(
+                    "afterend",
+                    replyPanel
+                );
+
+
+                replyPanel.classList.add(
+                    "visible"
+                );
+
+
+                resetReplyInterface();
+
+
+                hideStatus();
+
+
+                /*
+                   Coupe une éventuelle caméra
+                   déjà ouverte.
+                */
+
+                stopCameraStream();
+
+
+                try{
+
+                    cameraStream =
+                        await navigator
+                            .mediaDevices
+                            .getUserMedia({
+
+                                video:{
+
+                                    facingMode:
+                                        "user",
+
+                                    width:{
+                                        ideal:1280
+                                    },
+
+                                    height:{
+                                        ideal:720
+                                    },
+
+                                    frameRate:{
+                                        ideal:30
+                                    }
+
+                                },
+
+                                audio:true
+
+                            });
+
+
+                    cameraSource.srcObject =
+                        cameraStream;
+
+
+                    await cameraSource.play();
+
+
+                    canvas.style.display =
+                        "block";
+
+
+                    recordedPreview.style.display =
+                        "none";
+
+
+                    latestLandmarks =
+                        null;
+
+
+                    cancelAnimationFrame(
+                        animationFrame
+                    );
+
+
+                    drawFrame();
+
+
+                    if(
+                        selectedCrown
+                        !==
+                        "none"
+                    ){
+
+                        initFaceTracking();
+
+                    }
+
+
+                    replyPanel.scrollIntoView({
+
+                        behavior:"smooth",
+
+                        block:"center"
+
+                    });
+
+                }
+                catch(error){
+
+                    console.error(
+                        error
+                    );
+
+
+                    showStatus(
+                        "Impossible d'accéder à la caméra ou au micro."
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   CHOIX DE LA COURONNE
    ========================================================= */
 
 crownButtons.forEach(
@@ -1641,113 +1922,6 @@ crownButtons.forEach(
 
 
 /* =========================================================
-   OUVRIR CAMERA
-   ========================================================= */
-
-replyButton.addEventListener(
-    "click",
-    async () => {
-
-        testCard
-            .querySelector(
-                ".main-video"
-            )
-            .pause();
-
-
-        testCard.insertAdjacentElement(
-            "afterend",
-            replyPanel
-        );
-
-
-        replyPanel.classList.add(
-            "visible"
-        );
-
-
-        hideStatus();
-
-
-        try{
-
-            cameraStream =
-                await navigator
-                    .mediaDevices
-                    .getUserMedia({
-
-                        video:{
-
-                            facingMode:
-                                "user",
-
-                            width:{
-                                ideal:1280
-                            },
-
-                            height:{
-                                ideal:720
-                            },
-
-                            frameRate:{
-                                ideal:30
-                            }
-
-                        },
-
-                        audio:true
-
-                    });
-
-
-            cameraSource.srcObject =
-                cameraStream;
-
-
-            await cameraSource.play();
-
-
-            canvas.style.display =
-                "block";
-
-
-            recordedPreview.style.display =
-                "none";
-
-
-            drawFrame();
-
-
-            initFaceTracking();
-
-
-            replyPanel.scrollIntoView({
-
-                behavior:"smooth",
-
-                block:"center"
-
-            });
-
-        }
-        catch(error){
-
-            console.error(
-                error
-            );
-
-
-            showStatus(
-                "Impossible d'accéder à la caméra ou au micro."
-            );
-
-        }
-
-    }
-);
-
-
-/* =========================================================
    MEDIAPIPE
    ========================================================= */
 
@@ -1767,7 +1941,7 @@ async function initFaceTracking(){
 
 
     showStatus(
-        "Chargement du suivi du visage…"
+        "Chargement du filtre…"
     );
 
 
@@ -1782,42 +1956,81 @@ async function initFaceTracking(){
                 );
 
 
-        faceLandmarker =
-            await FaceLandmarker
-                .createFromOptions(
+        try{
 
-                    vision,
+            faceLandmarker =
+                await FaceLandmarker
+                    .createFromOptions(
 
-                    {
+                        vision,
 
-                        baseOptions:{
+                        {
 
-                            modelAssetPath:
-                                "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+                            baseOptions:{
 
-                            delegate:
-                                "GPU"
+                                modelAssetPath:
+                                    "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
 
-                        },
+                                delegate:
+                                    "GPU"
 
-                        runningMode:
-                            "VIDEO",
+                            },
 
-                        numFaces:
-                            1,
+                            runningMode:
+                                "VIDEO",
 
-                        minFaceDetectionConfidence:
-                            .5,
+                            numFaces:
+                                1,
 
-                        minFacePresenceConfidence:
-                            .5,
+                            minFaceDetectionConfidence:
+                                .5,
 
-                        minTrackingConfidence:
-                            .5
+                            minFacePresenceConfidence:
+                                .5,
 
-                    }
+                            minTrackingConfidence:
+                                .5
 
-                );
+                        }
+
+                    );
+
+        }
+        catch(error){
+
+            /*
+               Repli CPU.
+            */
+
+            faceLandmarker =
+                await FaceLandmarker
+                    .createFromOptions(
+
+                        vision,
+
+                        {
+
+                            baseOptions:{
+
+                                modelAssetPath:
+                                    "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task",
+
+                                delegate:
+                                    "CPU"
+
+                            },
+
+                            runningMode:
+                                "VIDEO",
+
+                            numFaces:
+                                1
+
+                        }
+
+                    );
+
+        }
 
 
         trackingReady =
@@ -1835,7 +2048,7 @@ async function initFaceTracking(){
 
 
         showStatus(
-            "Impossible de charger le suivi du visage."
+            "Le suivi du visage n'a pas pu être chargé."
         );
 
     }
@@ -1850,7 +2063,7 @@ async function initFaceTracking(){
 
 
 /* =========================================================
-   DESSIN PRINCIPAL
+   BOUCLE DE DESSIN
    ========================================================= */
 
 function drawFrame(){
@@ -1871,11 +2084,19 @@ function drawFrame(){
     );
 
 
+    /*
+       1 — FRAME.PNG
+    */
+
     drawFrameBackground(
         W,
         H
     );
 
+
+    /*
+       2 — CAMERA
+    */
 
     if(
         cameraSource.readyState
@@ -1890,6 +2111,10 @@ function drawFrame(){
 
     }
 
+
+    /*
+       3 — DETECTION DU VISAGE
+    */
 
     if(
         trackingReady
@@ -1951,6 +2176,10 @@ function drawFrame(){
     }
 
 
+    /*
+       4 — ETOILES ET COURONNE
+    */
+
     if(
         selectedCrown
         !==
@@ -1982,7 +2211,7 @@ function drawFrame(){
 
 
 /* =========================================================
-   FRAME PNG
+   FRAME.PNG
    ========================================================= */
 
 function drawFrameBackground(
@@ -2141,6 +2370,10 @@ function drawSelfieScene(
     };
 
 
+    /*
+       Petite séparation avec frame.png.
+    */
+
     ctx.save();
 
 
@@ -2169,6 +2402,10 @@ function drawSelfieScene(
 
     ctx.restore();
 
+
+    /*
+       CAMERA MIROIR
+    */
 
     ctx.save();
 
@@ -2339,8 +2576,8 @@ function getCrownTransform(
 
 
     /*
-       Couronnes descendues
-       comme dans le dernier test.
+       Position verticale validée :
+       les couronnes sont descendues.
     */
 
     const y =
@@ -2419,7 +2656,7 @@ function drawCrown(
 
     /*
        crown3 = tiare
-       réduction de 20 %
+       réduite de 20 %.
     */
 
     if(
@@ -2691,7 +2928,7 @@ function drawSingleFairyStar(
 
 
 /* =========================================================
-   MIME
+   TYPE D'ENREGISTREMENT
    ========================================================= */
 
 function getSupportedMimeType(){
@@ -2770,6 +3007,10 @@ startRecord.addEventListener(
             new MediaStream();
 
 
+        /*
+           VIDEO DU CANVAS
+        */
+
         canvasStream
             .getVideoTracks()
             .forEach(
@@ -2782,6 +3023,10 @@ startRecord.addEventListener(
                 }
             );
 
+
+        /*
+           AUDIO DU MICRO
+        */
 
         cameraStream
             .getAudioTracks()
@@ -2827,6 +3072,11 @@ startRecord.addEventListener(
 
         }
         catch(error){
+
+            console.error(
+                error
+            );
+
 
             showStatus(
                 "Impossible d'enregistrer cette vidéo."
@@ -2896,7 +3146,7 @@ startRecord.addEventListener(
 
                         [blob],
 
-                        `ma-reponse.${extension}`,
+                        `reponse-video.${extension}`,
 
                         {
                             type:type
@@ -3019,6 +3269,10 @@ startRecord.addEventListener(
                             );
 
 
+                    /*
+                       Arrêt automatique à 60 secondes.
+                    */
+
                     if(
                         secondsRecorded
                         >=
@@ -3090,6 +3344,21 @@ restartRecord.addEventListener(
             null;
 
 
+        if(
+            objectURL
+        ){
+
+            URL.revokeObjectURL(
+                objectURL
+            );
+
+
+            objectURL =
+                null;
+
+        }
+
+
         recordedPreview.pause();
 
 
@@ -3131,6 +3400,11 @@ restartRecord.addEventListener(
 
         stopRecord.disabled =
             true;
+
+
+        recordTime.classList.remove(
+            "visible"
+        );
 
 
         hideStatus();
@@ -3197,9 +3471,12 @@ shareRecord.addEventListener(
                 ],
 
                 title:
-                    "Ma réponse vidéo"
+                    "🩷 🩷 🩷"
 
             });
+
+
+            stopCameraStream();
 
         }
         catch(error){
@@ -3209,6 +3486,11 @@ shareRecord.addEventListener(
                 !==
                 "AbortError"
             ){
+
+                console.error(
+                    error
+                );
+
 
                 showStatus(
                     "Impossible de partager la vidéo."
@@ -3220,6 +3502,153 @@ shareRecord.addEventListener(
 
     }
 );
+
+
+/* =========================================================
+   REINITIALISATION DU MODULE
+   ========================================================= */
+
+function resetReplyInterface(){
+
+    if(
+        recorder
+        &&
+        recorder.state
+        !==
+        "inactive"
+    ){
+
+        try{
+
+            recorder.stop();
+
+        }
+        catch(error){}
+
+    }
+
+
+    clearInterval(
+        timer
+    );
+
+
+    secondsRecorded =
+        0;
+
+
+    recordedFile =
+        null;
+
+
+    recordedChunks =
+        [];
+
+
+    if(
+        objectURL
+    ){
+
+        URL.revokeObjectURL(
+            objectURL
+        );
+
+
+        objectURL =
+            null;
+
+    }
+
+
+    recordedPreview.pause();
+
+
+    recordedPreview.removeAttribute(
+        "src"
+    );
+
+
+    recordedPreview.load();
+
+
+    recordedPreview.style.display =
+        "none";
+
+
+    canvas.style.display =
+        "block";
+
+
+    startRecord.style.display =
+        "inline-block";
+
+
+    startRecord.disabled =
+        false;
+
+
+    stopRecord.style.display =
+        "inline-block";
+
+
+    stopRecord.disabled =
+        true;
+
+
+    restartRecord.style.display =
+        "none";
+
+
+    shareRecord.style.display =
+        "none";
+
+
+    recordTime.textContent =
+        "00:00";
+
+
+    recordTime.classList.remove(
+        "visible"
+    );
+
+
+    latestLandmarks =
+        null;
+
+}
+
+
+/* =========================================================
+   COUPER LA CAMERA
+   ========================================================= */
+
+function stopCameraStream(){
+
+    if(
+        cameraStream
+    ){
+
+        cameraStream
+            .getTracks()
+            .forEach(
+                track => {
+
+                    track.stop();
+
+                }
+            );
+
+
+        cameraStream =
+            null;
+
+
+        cameraSource.srcObject =
+            null;
+
+    }
+
+}
 
 
 /* =========================================================
@@ -3251,7 +3680,7 @@ function hideStatus(){
 
 
 /* =========================================================
-   PAUSE HORS ECRAN
+   PAUSE AUTOMATIQUE HORS ECRAN
    ========================================================= */
 
 const pauseObserver =
@@ -3300,7 +3729,7 @@ videos.forEach(
 
 
 /* =========================================================
-   RETOUR HAUT
+   RETOUR EN HAUT
    ========================================================= */
 
 window.addEventListener(
@@ -3311,7 +3740,9 @@ window.addEventListener(
 
             "visible",
 
-            window.scrollY > 700
+            window.scrollY
+            >
+            700
 
         );
 
@@ -3352,21 +3783,12 @@ window.addEventListener(
         );
 
 
-        if(
-            cameraStream
-        ){
+        clearInterval(
+            timer
+        );
 
-            cameraStream
-                .getTracks()
-                .forEach(
-                    track => {
 
-                        track.stop();
-
-                    }
-                );
-
-        }
+        stopCameraStream();
 
 
         if(

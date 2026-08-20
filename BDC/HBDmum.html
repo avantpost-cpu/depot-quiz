@@ -70,7 +70,9 @@ body{
 
 .header{
     width:100%;
+
     text-align:center;
+
     margin-bottom:24px;
 }
 
@@ -92,6 +94,7 @@ body{
 
 .video-list{
     display:flex;
+
     flex-direction:column;
 
     gap:36px;
@@ -972,12 +975,78 @@ const BASE =
     "https://avantpost-cpu.github.io/depot-quiz/BDC/";
 
 
-/*
-   reply:true  = bouton Répondre en vidéo
-   reply:false = pas de réponse
+/* =========================================================
+   SUPABASE — SUIVI SIMPLE DES OUVERTURES
+   ========================================================= */
 
-   Les 7 vidéos restent présentes.
+const SUPABASE_URL =
+    "https://tdsrqmpfdvntybdlvejy.supabase.co";
+
+
+const SUPABASE_KEY =
+    "sb_publishable_MIYryZDKmU4cGMIGdXojnA_GQ5qmpOO";
+
+
+/*
+   A chaque ouverture de la page,
+   une ligne vide est ajoutée.
+
+   Supabase remplit automatiquement
+   created_at.
+
+   Aucune donnée personnelle
+   n'est envoyée ici.
 */
+
+fetch(
+    SUPABASE_URL +
+    "/rest/v1/birthday_visits",
+    {
+
+        method:"POST",
+
+        headers:{
+
+            "apikey":
+                SUPABASE_KEY,
+
+            "Authorization":
+                "Bearer " +
+                SUPABASE_KEY,
+
+            "Content-Type":
+                "application/json",
+
+            "Prefer":
+                "return=minimal"
+
+        },
+
+        body:
+            JSON.stringify({})
+
+    }
+)
+.catch(
+    error => {
+
+        /*
+           Une erreur de statistiques
+           ne doit jamais empêcher
+           le site de fonctionner.
+        */
+
+        console.log(
+            "Suivi visite indisponible."
+        );
+
+    }
+);
+
+
+/* =========================================================
+   LES 7 VIDEOS
+   ========================================================= */
 
 const cards = [
 
@@ -1112,7 +1181,7 @@ crownImages.crown4 =
 
 
 /* =========================================================
-   CREATION DES 7 CARTES
+   CREATION DES CARTES
    ========================================================= */
 
 const videoList =
@@ -1468,7 +1537,7 @@ const fairyStars =
 
 
 /* =========================================================
-   CHARGEMENT INTELLIGENT DES VIDEOS
+   CHARGEMENT INTELLIGENT
    ========================================================= */
 
 const videoObserver =
@@ -1583,8 +1652,8 @@ async function openGift(
 
 
     /*
-       Le bouton Répondre apparaît
-       uniquement pour 1, 2, 3 et 4.
+       Réponse seulement
+       pour les vidéos 1 à 4.
     */
 
     if(
@@ -1634,7 +1703,7 @@ async function openGift(
 
 
 /* =========================================================
-   CLIC / CLAVIER SUR LES CADEAUX
+   CLIC / CLAVIER CADEAUX
    ========================================================= */
 
 gifts.forEach(
@@ -1657,13 +1726,9 @@ gifts.forEach(
             event => {
 
                 if(
-                    event.key
-                    ===
-                    "Enter"
+                    event.key === "Enter"
                     ||
-                    event.key
-                    ===
-                    " "
+                    event.key === " "
                 ){
 
                     event.preventDefault();
@@ -1697,9 +1762,7 @@ videos.forEach(
                     other => {
 
                         if(
-                            other
-                            !==
-                            video
+                            other !== video
                             &&
                             !other.paused
                         ){
@@ -1720,7 +1783,6 @@ videos.forEach(
 
 /* =========================================================
    REPONDRE EN VIDEO
-   VIDEOS 1 A 4 UNIQUEMENT
    ========================================================= */
 
 replyButtons.forEach(
@@ -1745,11 +1807,6 @@ replyButtons.forEach(
                 video.pause();
 
 
-                /*
-                   Le module se place sous
-                   le cadeau concerné.
-                */
-
                 currentCard.insertAdjacentElement(
                     "afterend",
                     replyPanel
@@ -1766,11 +1823,6 @@ replyButtons.forEach(
 
                 hideStatus();
 
-
-                /*
-                   Coupe une éventuelle caméra
-                   déjà ouverte.
-                */
 
                 stopCameraStream();
 
@@ -1874,7 +1926,7 @@ replyButtons.forEach(
 
 
 /* =========================================================
-   CHOIX DE LA COURONNE
+   CHOIX COURONNE
    ========================================================= */
 
 crownButtons.forEach(
@@ -1998,10 +2050,6 @@ async function initFaceTracking(){
         }
         catch(error){
 
-            /*
-               Repli CPU.
-            */
-
             faceLandmarker =
                 await FaceLandmarker
                     .createFromOptions(
@@ -2084,19 +2132,11 @@ function drawFrame(){
     );
 
 
-    /*
-       1 — FRAME.PNG
-    */
-
     drawFrameBackground(
         W,
         H
     );
 
-
-    /*
-       2 — CAMERA
-    */
 
     if(
         cameraSource.readyState
@@ -2111,10 +2151,6 @@ function drawFrame(){
 
     }
 
-
-    /*
-       3 — DETECTION DU VISAGE
-    */
 
     if(
         trackingReady
@@ -2175,10 +2211,6 @@ function drawFrame(){
 
     }
 
-
-    /*
-       4 — ETOILES ET COURONNE
-    */
 
     if(
         selectedCrown
@@ -2370,10 +2402,6 @@ function drawSelfieScene(
     };
 
 
-    /*
-       Petite séparation avec frame.png.
-    */
-
     ctx.save();
 
 
@@ -2402,10 +2430,6 @@ function drawSelfieScene(
 
     ctx.restore();
 
-
-    /*
-       CAMERA MIROIR
-    */
 
     ctx.save();
 
@@ -2575,11 +2599,6 @@ function getCrownTransform(
         1.65;
 
 
-    /*
-       Position verticale validée :
-       les couronnes sont descendues.
-    */
-
     const y =
         forehead.y
         +
@@ -2605,7 +2624,7 @@ function getCrownTransform(
 
 
 /* =========================================================
-   DESSIN COURONNE
+   COURONNE
    ========================================================= */
 
 function drawCrown(
@@ -2655,8 +2674,7 @@ function drawCrown(
 
 
     /*
-       crown3 = tiare
-       réduite de 20 %.
+       Tiare réduite de 20 %.
     */
 
     if(
@@ -3007,10 +3025,6 @@ startRecord.addEventListener(
             new MediaStream();
 
 
-        /*
-           VIDEO DU CANVAS
-        */
-
         canvasStream
             .getVideoTracks()
             .forEach(
@@ -3023,10 +3037,6 @@ startRecord.addEventListener(
                 }
             );
 
-
-        /*
-           AUDIO DU MICRO
-        */
 
         cameraStream
             .getAudioTracks()
@@ -3269,10 +3279,6 @@ startRecord.addEventListener(
                             );
 
 
-                    /*
-                       Arrêt automatique à 60 secondes.
-                    */
-
                     if(
                         secondsRecorded
                         >=
@@ -3505,7 +3511,7 @@ shareRecord.addEventListener(
 
 
 /* =========================================================
-   REINITIALISATION DU MODULE
+   REINITIALISATION MODULE
    ========================================================= */
 
 function resetReplyInterface(){
@@ -3680,7 +3686,7 @@ function hideStatus(){
 
 
 /* =========================================================
-   PAUSE AUTOMATIQUE HORS ECRAN
+   PAUSE VIDEO HORS ECRAN
    ========================================================= */
 
 const pauseObserver =

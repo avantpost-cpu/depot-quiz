@@ -56,7 +56,7 @@ body{
 
 .page{
     width:100%;
-    max-width:720px;
+    max-width:760px;
 
     margin:0 auto;
 
@@ -94,7 +94,7 @@ body{
 
 
 /* =========================================================
-   RESUME
+   RESUME PRINCIPAL
    ========================================================= */
 
 .summary{
@@ -105,7 +105,7 @@ body{
 
     gap:10px;
 
-    margin-bottom:18px;
+    margin-bottom:12px;
 }
 
 .summary-card{
@@ -141,7 +141,35 @@ body{
 
 
 /* =========================================================
-   ACTUALISER
+   TES PROPRES VISITES
+   ========================================================= */
+
+.owner-summary{
+    margin-bottom:18px;
+
+    padding:11px 15px;
+
+    text-align:center;
+
+    background:
+        rgba(255,255,255,.14);
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:14px;
+
+    font-size:12px;
+}
+
+.owner-summary strong{
+    font-size:14px;
+}
+
+
+/* =========================================================
+   ACTIONS
    ========================================================= */
 
 .stats-actions{
@@ -217,9 +245,10 @@ body{
     display:grid;
 
     grid-template-columns:
-        1.4fr
-        .8fr
-        .7fr;
+        1.25fr
+        .65fr
+        .7fr
+        .75fr;
 
     gap:8px;
 
@@ -241,7 +270,8 @@ body{
         rgba(255,255,255,.08);
 }
 
-.visit-header div:last-child{
+.visit-header div:nth-child(3),
+.visit-header div:nth-child(4){
     text-align:right;
 }
 
@@ -254,9 +284,10 @@ body{
     display:grid;
 
     grid-template-columns:
-        1.4fr
-        .8fr
-        .7fr;
+        1.25fr
+        .65fr
+        .7fr
+        .75fr;
 
     align-items:center;
 
@@ -293,19 +324,42 @@ body{
     font-weight:bold;
 }
 
+.visit-type{
+    text-align:right;
+
+    font-size:11px;
+
+    opacity:.75;
+}
+
 
 /* =========================================================
-   LES 7 CADEAUX ONT ETE OUVERTS
+   TYPES
+   ========================================================= */
+
+.visit.owner{
+    background:
+        rgba(255,255,255,.045);
+}
+
+.visit.owner .visit-type{
+    color:#ffd5e1;
+
+    opacity:1;
+}
+
+.visit.visitor .visit-type{
+    color:#ffffff;
+}
+
+
+/* =========================================================
+   ETATS CADEAUX
    ========================================================= */
 
 .visit-gifts.complete{
     color:#f4bdd0;
 }
-
-
-/* =========================================================
-   AUCUN CADEAU
-   ========================================================= */
 
 .visit-gifts.zero{
     opacity:.45;
@@ -344,6 +398,8 @@ body{
     border-radius:18px;
 
     line-height:1.5;
+
+    margin-bottom:18px;
 }
 
 .error.visible{
@@ -352,7 +408,7 @@ body{
 
 
 /* =========================================================
-   AUCUNE VISITE
+   VIDE
    ========================================================= */
 
 .empty{
@@ -385,7 +441,7 @@ body{
    MOBILE
    ========================================================= */
 
-@media(max-width:520px){
+@media(max-width:560px){
 
     .page{
         padding-left:11px;
@@ -418,8 +474,9 @@ body{
     .visit-header{
 
         grid-template-columns:
-            1.25fr
-            .65fr
+            1.15fr
+            .55fr
+            .55fr
             .65fr;
 
         padding-left:12px;
@@ -429,28 +486,15 @@ body{
 
     .visit-date,
     .visit-time{
-        font-size:12px;
+        font-size:11px;
     }
 
     .visit-gifts{
-        font-size:13px;
+        font-size:12px;
     }
 
-}
-
-
-/* =========================================================
-   PETITS ECRANS
-   ========================================================= */
-
-@media(max-width:360px){
-
-    .summary-number{
-        font-size:22px;
-    }
-
-    .summary-label{
-        font-size:8px;
+    .visit-type{
+        font-size:9px;
     }
 
 }
@@ -466,165 +510,162 @@ body{
 <main class="page">
 
 
-    <!-- ===================================================
-         ENTETE
-         =================================================== -->
+<header class="header">
 
-    <header class="header">
+    <h1>
+        Statistiques anniversaire
+    </h1>
 
-        <h1>
-            Statistiques anniversaire
-        </h1>
+    <p>
+        Utilisation du site
+    </p>
 
-        <p>
-            Utilisation du site
-        </p>
-
-    </header>
+</header>
 
 
 
-    <!-- ===================================================
-         RESUME
-         =================================================== -->
+<!-- =====================================================
+     RESUME VISITEURS UNIQUEMENT
+     ===================================================== -->
 
-    <section class="summary">
-
-
-        <div class="summary-card">
-
-            <span
-                class="summary-number"
-                id="totalVisits"
-            >
-                —
-            </span>
-
-            <span class="summary-label">
-                VISITES
-            </span>
-
-        </div>
+<section class="summary">
 
 
-        <div class="summary-card">
+    <div class="summary-card">
 
-            <span
-                class="summary-number"
-                id="totalGifts"
-            >
-                —
-            </span>
-
-            <span class="summary-label">
-                CADEAUX OUVERTS
-            </span>
-
-        </div>
-
-
-        <div class="summary-card">
-
-            <span
-                class="summary-number"
-                id="averageGifts"
-            >
-                —
-            </span>
-
-            <span class="summary-label">
-                MOYENNE / 7
-            </span>
-
-        </div>
-
-
-    </section>
-
-
-
-    <!-- ===================================================
-         ACTUALISER
-         =================================================== -->
-
-    <div class="stats-actions">
-
-        <button
-            class="refresh-btn"
-            id="refreshBtn"
-            type="button"
+        <span
+            class="summary-number"
+            id="realVisits"
         >
-            ↻ Actualiser
-        </button>
+            —
+        </span>
+
+        <span class="summary-label">
+            VISITEURS
+        </span>
 
     </div>
 
 
+    <div class="summary-card">
 
-    <!-- ===================================================
-         ERREUR
-         =================================================== -->
+        <span
+            class="summary-number"
+            id="realGifts"
+        >
+            —
+        </span>
 
-    <div
-        class="error"
-        id="errorBox"
-    >
-
-        Impossible de récupérer les statistiques.
+        <span class="summary-label">
+            CADEAUX OUVERTS
+        </span>
 
     </div>
 
 
+    <div class="summary-card">
 
-    <!-- ===================================================
-         HISTORIQUE
-         =================================================== -->
+        <span
+            class="summary-number"
+            id="realAverage"
+        >
+            —
+        </span>
 
-    <section
-        class="history"
-        id="history"
+        <span class="summary-label">
+            MOYENNE / 7
+        </span>
+
+    </div>
+
+
+</section>
+
+
+
+<div class="owner-summary">
+
+    Tes visites / tests :
+    <strong id="ownerVisits">—</strong>
+
+</div>
+
+
+
+<div class="stats-actions">
+
+    <button
+        class="refresh-btn"
+        id="refreshBtn"
+        type="button"
     >
+        ↻ Actualiser
+    </button>
 
-        <div class="history-title">
+</div>
 
-            Historique des visites
 
+
+<div
+    class="error"
+    id="errorBox"
+>
+    Impossible de récupérer les statistiques.
+</div>
+
+
+
+<!-- =====================================================
+     HISTORIQUE
+     ===================================================== -->
+
+<section
+    class="history"
+    id="history"
+>
+
+    <div class="history-title">
+        Historique des visites
+    </div>
+
+
+    <div class="visit-header">
+
+        <div>
+            Date
         </div>
 
-
-        <div class="visit-header">
-
-            <div>
-                Date
-            </div>
-
-            <div>
-                Heure
-            </div>
-
-            <div>
-                Cadeaux
-            </div>
-
+        <div>
+            Heure
         </div>
 
-
-        <div id="visitsList">
-
-            <div class="loading">
-                Chargement…
-            </div>
-
+        <div>
+            Cadeaux
         </div>
 
-    </section>
+        <div>
+            Qui
+        </div>
+
+    </div>
+
+
+    <div id="visitsList">
+
+        <div class="loading">
+            Chargement…
+        </div>
+
+    </div>
+
+</section>
 
 
 
-    <div
-        class="last-update"
-        id="lastUpdate"
-    ></div>
+<div
+    class="last-update"
+    id="lastUpdate"
+></div>
 
 
 </main>
@@ -641,38 +682,35 @@ const STATS_URL =
     "https://tdsrqmpfdvntybdlvejy.supabase.co/functions/v1/birthday-stats";
 
 
-/*
-   Le token est volontairement intégré
-   directement dans cette page.
-
-   Il correspond au STATS_TOKEN créé
-   dans Supabase.
-*/
-
 const STATS_TOKEN =
     "MamanStats-2026-Cadeaux-7-PrivE-84xQ";
-
 
 
 /* =========================================================
    ELEMENTS
    ========================================================= */
 
-const totalVisitsElement =
+const realVisitsElement =
     document.getElementById(
-        "totalVisits"
+        "realVisits"
     );
 
 
-const totalGiftsElement =
+const realGiftsElement =
     document.getElementById(
-        "totalGifts"
+        "realGifts"
     );
 
 
-const averageGiftsElement =
+const realAverageElement =
     document.getElementById(
-        "averageGifts"
+        "realAverage"
+    );
+
+
+const ownerVisitsElement =
+    document.getElementById(
+        "ownerVisits"
     );
 
 
@@ -706,16 +744,11 @@ const lastUpdate =
     );
 
 
-
 /* =========================================================
-   CHARGEMENT DES STATISTIQUES
+   CHARGEMENT
    ========================================================= */
 
 async function loadStats(){
-
-    /*
-       Etat chargement
-    */
 
     refreshBtn.disabled =
         true;
@@ -755,10 +788,6 @@ async function loadStats(){
             );
 
 
-        /*
-           Erreur serveur
-        */
-
         if(
             !response.ok
         ){
@@ -771,26 +800,14 @@ async function loadStats(){
         }
 
 
-        /*
-           Données JSON
-        */
-
         const data =
             await response.json();
 
-
-        /*
-           Affichage
-        */
 
         renderStats(
             data
         );
 
-
-        /*
-           Heure de dernière actualisation
-        */
 
         const now =
             new Date();
@@ -843,9 +860,8 @@ async function loadStats(){
 }
 
 
-
 /* =========================================================
-   AFFICHER LES STATISTIQUES
+   AFFICHAGE GENERAL
    ========================================================= */
 
 function renderStats(
@@ -853,54 +869,43 @@ function renderStats(
 ){
 
     /*
-       Valeurs générales
+       Statistiques visiteurs uniquement
+       fournies par birthday-stats.
     */
 
-    const totalVisits =
+    realVisitsElement.textContent =
         Number(
-            data.totalVisits
+            data.realVisits
             ??
             0
         );
 
 
-    const totalGifts =
+    realGiftsElement.textContent =
         Number(
-            data.totalGifts
+            data.realGifts
             ??
             0
         );
 
 
-    const averageGifts =
-        Number(
-            data.averageGifts
-            ??
-            0
-        );
-
-
-    /*
-       Affichage résumé
-    */
-
-    totalVisitsElement.textContent =
-        totalVisits;
-
-
-    totalGiftsElement.textContent =
-        totalGifts;
-
-
-    averageGiftsElement.textContent =
+    realAverageElement.textContent =
         formatAverage(
-            averageGifts
+            Number(
+                data.realAverage
+                ??
+                0
+            )
         );
 
 
-    /*
-       Liste
-    */
+    ownerVisitsElement.textContent =
+        Number(
+            data.ownerVisits
+            ??
+            0
+        );
+
 
     visitsList.innerHTML =
         "";
@@ -916,10 +921,6 @@ function renderStats(
         [];
 
 
-    /*
-       Pas encore de visite
-    */
-
     if(
         visits.length
         ===
@@ -929,9 +930,7 @@ function renderStats(
         visitsList.innerHTML = `
 
             <div class="empty">
-
                 Aucune visite enregistrée.
-
             </div>
 
         `;
@@ -941,10 +940,6 @@ function renderStats(
 
     }
 
-
-    /*
-       Chaque visite
-    */
 
     visits.forEach(
         visit => {
@@ -959,9 +954,8 @@ function renderStats(
 }
 
 
-
 /* =========================================================
-   CREER UNE LIGNE
+   UNE LIGNE
    ========================================================= */
 
 function createVisitRow(
@@ -973,10 +967,6 @@ function createVisitRow(
             visit.created_at
         );
 
-
-    /*
-       Date française
-    */
 
     const dateText =
         new Intl.DateTimeFormat(
@@ -1005,10 +995,6 @@ function createVisitRow(
         );
 
 
-    /*
-       Heure française
-    */
-
     const timeText =
         new Intl.DateTimeFormat(
 
@@ -1036,10 +1022,6 @@ function createVisitRow(
         );
 
 
-    /*
-       Cadeaux ouverts
-    */
-
     const gifts =
         Number(
             visit.opened_gifts
@@ -1048,9 +1030,15 @@ function createVisitRow(
         );
 
 
-    /*
-       Ligne
-    */
+    const visitorType =
+        visit.visitor_type
+        ===
+        "cyrille"
+        ?
+        "cyrille"
+        :
+        "visitor";
+
 
     const row =
         document.createElement(
@@ -1059,13 +1047,18 @@ function createVisitRow(
 
 
     row.className =
-        "visit";
+        "visit "
+        +
+        (
+            visitorType
+            ===
+            "cyrille"
+            ?
+            "owner"
+            :
+            "visitor"
+        );
 
-
-    /*
-       Classe spéciale :
-       7 cadeaux ouverts.
-    */
 
     let giftClass =
         "";
@@ -1089,23 +1082,25 @@ function createVisitRow(
     }
 
 
+    const typeText =
+        visitorType
+        ===
+        "cyrille"
+        ?
+        "Cyrille"
+        :
+        "Visiteur";
+
+
     row.innerHTML = `
 
         <div class="visit-date">
-
-            ${escapeHTML(
-                dateText
-            )}
-
+            ${escapeHTML(dateText)}
         </div>
 
 
         <div class="visit-time">
-
-            ${escapeHTML(
-                timeText
-            )}
-
+            ${escapeHTML(timeText)}
         </div>
 
 
@@ -1115,9 +1110,12 @@ function createVisitRow(
                 ${giftClass}
             "
         >
-
             ${gifts} / 7
+        </div>
 
+
+        <div class="visit-type">
+            ${typeText}
         </div>
 
     `;
@@ -1130,22 +1128,13 @@ function createVisitRow(
 }
 
 
-
 /* =========================================================
-   MOYENNE
+   FORMAT MOYENNE
    ========================================================= */
 
 function formatAverage(
     value
 ){
-
-    /*
-       Exemple :
-
-       3      -> 3
-       3.5    -> 3,5
-       3.142  -> 3,1
-    */
 
     return value
         .toLocaleString(
@@ -1163,9 +1152,8 @@ function formatAverage(
 }
 
 
-
 /* =========================================================
-   HEURE
+   FORMAT HEURE
    ========================================================= */
 
 function formatTime(
@@ -1200,9 +1188,8 @@ function formatTime(
 }
 
 
-
 /* =========================================================
-   SECURITE TEXTE
+   TEXTE
    ========================================================= */
 
 function escapeHTML(
@@ -1236,9 +1223,8 @@ function escapeHTML(
 }
 
 
-
 /* =========================================================
-   ACTUALISATION MANUELLE
+   ACTUALISER
    ========================================================= */
 
 refreshBtn.addEventListener(
@@ -1247,15 +1233,13 @@ refreshBtn.addEventListener(
 );
 
 
-
 /* =========================================================
-   CHARGEMENT AUTOMATIQUE
+   CHARGEMENT AUTO
    ========================================================= */
 
 loadStats();
 
 </script>
-
 
 </body>
 

@@ -93,7 +93,6 @@ body{
 .video-list{
     display:flex;
     flex-direction:column;
-
     gap:36px;
 }
 
@@ -157,6 +156,7 @@ body{
     z-index:10;
 
     display:flex;
+
     align-items:center;
     justify-content:center;
 
@@ -992,24 +992,24 @@ const cards = [
 
 
 /* =========================================================
-   MOTIF
+   FRAME
    ========================================================= */
 
-const motifImage =
+const frameImage =
     new Image();
 
 
-motifImage.crossOrigin =
+frameImage.crossOrigin =
     "anonymous";
 
 
-motifImage.src =
+frameImage.src =
     BASE +
-    "motif.jpg";
+    "frame.png";
 
 
 /* =========================================================
-   COURONNES PNG
+   COURONNES
    ========================================================= */
 
 const crownImages = {};
@@ -1063,7 +1063,7 @@ crownImages.crown4 =
 
 
 /* =========================================================
-   CREATION CARTES
+   CREATION DES CARTES
    ========================================================= */
 
 const videoList =
@@ -1350,7 +1350,7 @@ const fairyStars =
     Array.from(
 
         {
-            length:36
+            length:38
         },
 
         () => ({
@@ -1366,18 +1366,18 @@ const fairyStars =
                 canvas.height,
 
             radius:
-                2
+                1.5
                 +
                 Math.random()
                 *
-                5,
+                4.2,
 
-            speed:
+            pulseSpeed:
                 .003
                 +
                 Math.random()
                 *
-                .009,
+                .008,
 
             phase:
                 Math.random()
@@ -1387,16 +1387,16 @@ const fairyStars =
                 2,
 
             drift:
-                .05
+                .025
                 +
                 Math.random()
                 *
-                .18,
+                .10,
 
             warm:
                 Math.random()
                 >
-                .65
+                .66
 
         })
 
@@ -1404,7 +1404,7 @@ const fairyStars =
 
 
 /* =========================================================
-   VIDEOS LAZY
+   LAZY LOAD
    ========================================================= */
 
 const videoObserver =
@@ -1459,10 +1459,13 @@ const videoObserver =
 
 
 videos.forEach(
-    video =>
+    video => {
+
         videoObserver.observe(
             video
-        )
+        );
+
+    }
 );
 
 
@@ -1500,6 +1503,8 @@ gifts.forEach(
 
                 if(
                     !video.src
+                    &&
+                    video.dataset.src
                 ){
 
                     video.src =
@@ -1555,7 +1560,7 @@ gifts.forEach(
 
 
 /* =========================================================
-   UNE VIDEO A LA FOIS
+   UNE SEULE VIDEO
    ========================================================= */
 
 videos.forEach(
@@ -1589,7 +1594,7 @@ videos.forEach(
 
 
 /* =========================================================
-   COURONNE
+   CHOIX COURONNE
    ========================================================= */
 
 crownButtons.forEach(
@@ -1604,10 +1609,13 @@ crownButtons.forEach(
 
 
                 crownButtons.forEach(
-                    btn =>
+                    btn => {
+
                         btn.classList.remove(
                             "active"
-                        )
+                        );
+
+                    }
                 );
 
 
@@ -1634,7 +1642,7 @@ crownButtons.forEach(
 
 
 /* =========================================================
-   CAMERA
+   OUVRIR CAMERA
    ========================================================= */
 
 replyButton.addEventListener(
@@ -1665,12 +1673,14 @@ replyButton.addEventListener(
         try{
 
             cameraStream =
-                await navigator.mediaDevices
+                await navigator
+                    .mediaDevices
                     .getUserMedia({
 
                         video:{
 
-                            facingMode:"user",
+                            facingMode:
+                                "user",
 
                             width:{
                                 ideal:1280
@@ -1863,17 +1873,17 @@ function drawFrame(){
 
 
     /*
-       FOND MOTIF
+       1 — FRAME PNG
     */
 
-    drawMotifBackground(
+    drawFrameBackground(
         W,
         H
     );
 
 
     /*
-       SELFIE
+       2 — SELFIE
     */
 
     if(
@@ -1891,7 +1901,7 @@ function drawFrame(){
 
 
     /*
-       TRACKING
+       3 — TRACKING
     */
 
     if(
@@ -1955,7 +1965,7 @@ function drawFrame(){
 
 
     /*
-       FILTRE FESTIF
+       4 — ETOILES
     */
 
     if(
@@ -1965,9 +1975,6 @@ function drawFrame(){
     ){
 
         drawFairyStars();
-
-
-        drawBottomTitle();
 
 
         if(
@@ -1992,10 +1999,10 @@ function drawFrame(){
 
 
 /* =========================================================
-   FOND MOTIF
+   FRAME PNG
    ========================================================= */
 
-function drawMotifBackground(
+function drawFrameBackground(
     W,
     H
 ){
@@ -2013,72 +2020,30 @@ function drawMotifBackground(
 
 
     if(
-        !motifImage.complete
+        !frameImage.complete
         ||
-        !motifImage.naturalWidth
+        !frameImage.naturalWidth
     ){
         return;
     }
 
 
-    const pattern =
-        ctx.createPattern(
-            motifImage,
-            "repeat"
-        );
+    /*
+       Frame.png remplit exactement
+       tout le canvas.
+    */
 
+    ctx.drawImage(
 
-    if(!pattern){
-        return;
-    }
+        frameImage,
 
-
-    ctx.save();
-
-
-    if(
-        typeof DOMMatrix
-        !==
-        "undefined"
-    ){
-
-        const matrix =
-            new DOMMatrix();
-
-
-        matrix.a =
-            .62;
-
-
-        matrix.d =
-            .62;
-
-
-        try{
-
-            pattern.setTransform(
-                matrix
-            );
-
-        }
-        catch(error){}
-
-    }
-
-
-    ctx.fillStyle =
-        pattern;
-
-
-    ctx.fillRect(
         0,
         0,
+
         W,
         H
+
     );
-
-
-    ctx.restore();
 
 }
 
@@ -2110,9 +2075,8 @@ function drawSelfieScene(
 
 
     /*
-       88 % largeur :
-       juste ce qu'il faut pour
-       conserver un bord motif.
+       Le selfie laisse visible
+       une partie de frame.png.
     */
 
     const maxW =
@@ -2124,7 +2088,7 @@ function drawSelfieScene(
     const maxH =
         H
         *
-        .94;
+        .92;
 
 
     const videoRatio =
@@ -2205,26 +2169,41 @@ function drawSelfieScene(
 
 
     /*
-       petit filet sombre
+       séparation très légère
+       entre photo et illustration
     */
 
+    ctx.save();
+
+
+    ctx.shadowColor =
+        "rgba(0,0,0,.26)";
+
+
+    ctx.shadowBlur =
+        8;
+
+
     ctx.fillStyle =
-        "rgba(0,0,0,.25)";
+        "#000";
 
 
     ctx.fillRect(
 
-        x - 4,
-        y - 4,
+        x - 2,
+        y - 2,
 
-        drawW + 8,
-        drawH + 8
+        drawW + 4,
+        drawH + 4
 
     );
 
 
+    ctx.restore();
+
+
     /*
-       SELFIE MIROIR
+       CAMERA MIROIR
     */
 
     ctx.save();
@@ -2351,6 +2330,10 @@ function getCrownTransform(
         );
 
 
+    /*
+       INCLINAISON
+    */
+
     let angle =
         Math.atan2(
 
@@ -2366,11 +2349,13 @@ function getCrownTransform(
 
 
     /*
-       empêche retournement 180°
+       Empêche la couronne
+       de se retourner.
     */
 
     if(
-        angle >
+        angle
+        >
         Math.PI / 2
     ){
 
@@ -2381,7 +2366,8 @@ function getCrownTransform(
 
 
     if(
-        angle <
+        angle
+        <
         -Math.PI / 2
     ){
 
@@ -2391,6 +2377,10 @@ function getCrownTransform(
     }
 
 
+    /*
+       TAILLE
+    */
+
     const width =
         faceWidth
         *
@@ -2398,14 +2388,19 @@ function getCrownTransform(
 
 
     /*
-       CORRECTION :
-       la couronne est maintenant
-       plus BASSE.
+       POSITION VERTICALE
 
-       Avant : environ forehead.y
+       Avant : .18 / .32.
 
-       Maintenant :
-       + 18 % largeur visage.
+       Ici : .42
+
+       La couronne descend donc
+       nettement plus bas et vient
+       réellement chevaucher le haut
+       de la tête.
+
+       Si nécessaire :
+       .48 = encore plus bas.
     */
 
     const y =
@@ -2413,7 +2408,7 @@ function getCrownTransform(
         +
         faceWidth
         *
-        .18;
+        .42;
 
 
     return {
@@ -2433,7 +2428,7 @@ function getCrownTransform(
 
 
 /* =========================================================
-   COURONNE
+   DESSIN COURONNE
    ========================================================= */
 
 function drawCrown(
@@ -2503,16 +2498,16 @@ function drawCrown(
 
 
     ctx.shadowColor =
-        "rgba(0,0,0,.22)";
+        "rgba(0,0,0,.20)";
 
 
     ctx.shadowBlur =
-        10;
+        9;
 
 
     /*
-       BAS de la couronne
-       posé sur le front.
+       Bas du PNG au niveau
+       du point calculé sur la tête.
     */
 
     ctx.drawImage(
@@ -2536,12 +2531,12 @@ function drawCrown(
 
 
 /* =========================================================
-   PETITES ETOILES FEERIQUES
+   ETOILES FEERIQUES
    ========================================================= */
 
 function drawFairyStars(){
 
-    const time =
+    const now =
         performance.now();
 
 
@@ -2549,8 +2544,7 @@ function drawFairyStars(){
         star => {
 
             /*
-               très léger déplacement
-               vertical
+               dérive extrêmement lente
             */
 
             star.y -=
@@ -2560,13 +2554,13 @@ function drawFairyStars(){
             if(
                 star.y
                 <
-                -20
+                -15
             ){
 
                 star.y =
                     canvas.height
                     +
-                    20;
+                    15;
 
 
                 star.x =
@@ -2577,12 +2571,16 @@ function drawFairyStars(){
             }
 
 
+            /*
+               scintillement
+            */
+
             const pulse =
                 (
                     Math.sin(
-                        time
+                        now
                         *
-                        star.speed
+                        star.pulseSpeed
                         +
                         star.phase
                     )
@@ -2594,31 +2592,32 @@ function drawFairyStars(){
 
 
             const alpha =
-                .15
+                .12
                 +
                 pulse
                 *
-                .75;
+                .72;
 
 
-            const radius =
+            const size =
                 star.radius
                 *
                 (
-                    .7
+                    .65
                     +
                     pulse
                     *
-                    .65
+                    .75
                 );
 
 
-            drawFairyStar(
+            drawSingleFairyStar(
 
                 star.x,
                 star.y,
 
-                radius,
+                size,
+
                 alpha,
 
                 star.warm
@@ -2632,10 +2631,10 @@ function drawFairyStars(){
 
 
 /* =========================================================
-   DESSIN UNE ETOILE
+   UNE ETOILE
    ========================================================= */
 
-function drawFairyStar(
+function drawSingleFairyStar(
     x,
     y,
     r,
@@ -2659,7 +2658,7 @@ function drawFairyStar(
     ctx.fillStyle =
         warm
         ?
-        "#fff1b8"
+        "#fff1b4"
         :
         "#ffffff";
 
@@ -2667,7 +2666,7 @@ function drawFairyStar(
     ctx.shadowColor =
         warm
         ?
-        "#ffd777"
+        "#ffd56d"
         :
         "#ffffff";
 
@@ -2675,12 +2674,11 @@ function drawFairyStar(
     ctx.shadowBlur =
         r
         *
-        2.7;
+        3;
 
 
     /*
-       étoile à 4 branches
-       fine et élégante
+       étoile 4 branches
     */
 
     ctx.beginPath();
@@ -2688,39 +2686,39 @@ function drawFairyStar(
 
     ctx.moveTo(
         0,
-        -r * 2.3
+        -r * 2.4
     );
 
 
     ctx.quadraticCurveTo(
-        r * .13,
-        -r * .18,
-        r * 2.3,
+        r * .12,
+        -r * .16,
+        r * 2.4,
         0
     );
 
 
     ctx.quadraticCurveTo(
-        r * .13,
-        r * .18,
+        r * .12,
+        r * .16,
         0,
-        r * 2.3
+        r * 2.4
     );
 
 
     ctx.quadraticCurveTo(
-        -r * .13,
-        r * .18,
-        -r * 2.3,
+        -r * .12,
+        r * .16,
+        -r * 2.4,
         0
     );
 
 
     ctx.quadraticCurveTo(
-        -r * .13,
-        -r * .18,
+        -r * .12,
+        -r * .16,
         0,
-        -r * 2.3
+        -r * 2.4
     );
 
 
@@ -2731,7 +2729,7 @@ function drawFairyStar(
 
 
     /*
-       petit cœur lumineux
+       centre lumineux
     */
 
     ctx.beginPath();
@@ -2740,110 +2738,15 @@ function drawFairyStar(
     ctx.arc(
         0,
         0,
-        r * .25,
+
+        r * .28,
+
         0,
         Math.PI * 2
     );
 
 
     ctx.fill();
-
-
-    ctx.restore();
-
-}
-
-
-/* =========================================================
-   MERCI
-   ========================================================= */
-
-function drawBottomTitle(){
-
-    const W =
-        canvas.width;
-
-
-    const H =
-        canvas.height;
-
-
-    /*
-       léger fondu seulement
-       derrière le MERCI
-    */
-
-    const gradient =
-        ctx.createLinearGradient(
-
-            0,
-            H * .78,
-
-            0,
-            H
-
-        );
-
-
-    gradient.addColorStop(
-        0,
-        "rgba(0,0,0,0)"
-    );
-
-
-    gradient.addColorStop(
-        1,
-        "rgba(5,10,25,.42)"
-    );
-
-
-    ctx.fillStyle =
-        gradient;
-
-
-    ctx.fillRect(
-
-        0,
-        H * .75,
-
-        W,
-        H * .25
-
-    );
-
-
-    ctx.save();
-
-
-    ctx.textAlign =
-        "center";
-
-
-    ctx.fillStyle =
-        "#ffffff";
-
-
-    ctx.shadowColor =
-        "rgba(0,0,0,.55)";
-
-
-    ctx.shadowBlur =
-        12;
-
-
-    ctx.font =
-        "bold 64px Arial";
-
-
-    ctx.fillText(
-
-        "MERCI ❤️",
-
-        W / 2,
-
-        H - 65
-
-    );
 
 
     ctx.restore();
@@ -2931,6 +2834,10 @@ startRecord.addEventListener(
             new MediaStream();
 
 
+        /*
+           VIDEO
+        */
+
         canvasStream
             .getVideoTracks()
             .forEach(
@@ -2943,6 +2850,10 @@ startRecord.addEventListener(
                 }
             );
 
+
+        /*
+           AUDIO
+        */
 
         cameraStream
             .getAudioTracks()
@@ -3301,7 +3212,7 @@ restartRecord.addEventListener(
 
 
 /* =========================================================
-   PARTAGE
+   PARTAGE NATIF
    ========================================================= */
 
 shareRecord.addEventListener(
@@ -3450,10 +3361,13 @@ const pauseObserver =
 
 
 videos.forEach(
-    video =>
+    video => {
+
         pauseObserver.observe(
             video
-        )
+        );
+
+    }
 );
 
 
@@ -3517,8 +3431,11 @@ window.addEventListener(
             cameraStream
                 .getTracks()
                 .forEach(
-                    track =>
-                        track.stop()
+                    track => {
+
+                        track.stop();
+
+                    }
                 );
 
         }

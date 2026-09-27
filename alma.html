@@ -34,20 +34,61 @@
 <div id="quiz"></div><div class="actions"><button class="check" onclick="checkAll()">Corriger la série</button><button class="secondary" onclick="newSet()">Nouvelle série ↻</button><button class="secondary" onclick="wrongOnly()">Revoir mes erreurs</button></div><div class="result" id="result" aria-live="polite"></div></section>
 </div></main><footer class="footer">Les nombres relatifs · Leçon d’entraînement pour Alma</footer>
 <script>
+const rand=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+const shuffled=a=>[...a].sort(()=>Math.random()-.5);
 const sets={
-"🌱 Démarrer":()=>[
- q("Complète avec <, > ou = :  −2 ___ +3","<","signe"),q("Complète : −7 ___ −4","<","signe"),q("Complète : +5 ___ 0",">","signe"),q("L’opposé de +6 est…","-6","nombre"),q("L’opposé de −9 est…","9","nombre"),q("−3 + (−2) = ?","-5","nombre"),q("+8 + (−3) = ?","5","nombre"),q("−4 + 0 = ?","-4","nombre"),q("+2 − (+5) = ?","-3","nombre"),q("−3 − (−4) = ?","1","nombre")],
-"🚀 S’entraîner":()=>[
- q("Range du plus petit au plus grand : −3, +2, −7 (sépare par des virgules)","-7,-3,2","liste"),q("−12 ___ −8","<","signe"),q("+4 ___ −4",">","signe"),q("−6 + (+10) = ?","4","nombre"),q("+7 + (−12) = ?","-5","nombre"),q("−9 + (−6) = ?","-15","nombre"),q("+14 − (+20) = ?","-6","nombre"),q("−5 − (+8) = ?","-13","nombre"),q("−11 − (−3) = ?","-8","nombre"),q("+6 − (−7) = ?","13","nombre"),q("Quel est l’opposé de l’opposé de −4 ?","-4","nombre"),q("−2 + (+9) − (+5) = ?","2","nombre")],
-"🔥 Défi":()=>[
- q("−15 + (+8) = ?","-7","nombre"),q("+12 + (−17) = ?","-5","nombre"),q("−8 + (+8) = ?","0","nombre"),q("−13 − (−19) = ?","6","nombre"),q("+5 − (−14) = ?","19","nombre"),q("−6 − (+11) + (+4) = ?","-13","nombre"),q("+18 + (−7) − (+15) = ?","-4","nombre"),q("−20 − (−9) + (−3) = ?","-14","nombre"),q("Complète : −4 + ___ = +3","7","nombre"),q("Complète : ___ − (+6) = −10","-4","nombre"),q("Ranger : +1, −5, 0, −2 (du plus petit au plus grand)","-5,-2,0,1","liste"),q("Il fait −3 °C, la température monte de 8°. Quelle est-elle ?","5","nombre")]
+"🌱 Démarrer":()=>shuffled([
+ ()=>{let a=rand(1,8),b=rand(1,8);return q(`Complète avec <, > ou = : −${a} ___ +${b}`,"<","signe")},
+ ()=>{let a=rand(2,9),b=rand(1,a-1);return q(`Complète : −${a} ___ −${b}`,"<","signe")},
+ ()=>{let a=rand(1,9);return q(`Complète : +${a} ___ 0`,">","signe")},
+ ()=>{let a=rand(1,12);return q(`L’opposé de +${a} est…`,String(-a),"nombre")},
+ ()=>{let a=rand(1,12);return q(`L’opposé de −${a} est…`,String(a),"nombre")},
+ ()=>{let a=rand(1,9),b=rand(1,9);return q(`−${a} + (−${b}) = ?`,String(-a-b),"nombre")},
+ ()=>{let a=rand(1,9),b=rand(1,Math.min(a,9));return q(`+${a} + (−${b}) = ?`,String(a-b),"nombre")},
+ ()=>{let a=rand(1,12);return q(`−${a} + 0 = ?`,String(-a),"nombre")},
+ ()=>{let a=rand(1,9),b=rand(1,9);return q(`+${a} − (+${b}) = ?`,String(a-b),"nombre")},
+ ()=>{let a=rand(1,9),b=rand(1,9);return q(`−${a} − (−${b}) = ?`,String(b-a),"nombre")},
+ ()=>{let a=rand(1,9),b=rand(1,9),c=rand(1,9);return q(`Range du plus petit au plus grand : −${a}, +${b}, −${c} (sépare par des virgules)`,[-a,-c,b].sort((x,y)=>x-y).join(','),"liste")}
+ ].map(make=>make()).slice(0,10)),
+"🚀 S’entraîner":()=>shuffled([
+ ()=>{let a=rand(5,20),b=rand(1,Math.min(a-1,10));return q(`Complète : −${a} ___ −${b}`,"<","signe")},
+ ()=>{let a=rand(1,20);return q(`Complète : +${a} ___ −${a}`,">","signe")},
+ ()=>{let a=rand(2,15),b=rand(1,15);return q(`−${a} + (+${b}) = ?`,String(b-a),"nombre")},
+ ()=>{let a=rand(1,15),b=rand(1,15);return q(`+${a} + (−${b}) = ?`,String(a-b),"nombre")},
+ ()=>{let a=rand(1,15),b=rand(1,15);return q(`−${a} + (−${b}) = ?`,String(-a-b),"nombre")},
+ ()=>{let a=rand(1,20),b=rand(1,20);return q(`+${a} − (+${b}) = ?`,String(a-b),"nombre")},
+ ()=>{let a=rand(1,20),b=rand(1,20);return q(`−${a} − (+${b}) = ?`,String(-a-b),"nombre")},
+ ()=>{let a=rand(1,20),b=rand(1,20);return q(`−${a} − (−${b}) = ?`,String(b-a),"nombre")},
+ ()=>{let a=rand(1,20),b=rand(1,20);return q(`+${a} − (−${b}) = ?`,String(a+b),"nombre")},
+ ()=>{let a=rand(1,12);return q(`L’opposé de l’opposé de −${a} est…`,String(-a),"nombre")},
+ ()=>{let a=rand(1,9),b=rand(1,9),c=rand(1,9);return q(`−${a} + (+${b}) − (+${c}) = ?`,String(-a+b-c),"nombre")},
+ ()=>{let a=rand(2,15),b=rand(1,a-1),c=rand(1,15);return q(`Range du plus petit au plus grand : −${a}, +${c}, −${b}`,[-a,-b,c].sort((x,y)=>x-y).join(','),"liste")},
+ ()=>{let a=rand(1,10),b=rand(a+1,20);return q(`Complète : −${a} + ___ = +${b}`,String(a+b),"nombre")},
+ ()=>{let a=rand(1,12),b=rand(1,12);return q(`+${a} + (−${b}) = ?`,String(a-b),"nombre")}
+ ].map(make=>make()).slice(0,12)),
+"🔥 Défi":()=>shuffled([
+ ()=>{let a=rand(10,30),b=rand(1,20);return q(`−${a} + (+${b}) = ?`,String(b-a),"nombre")},
+ ()=>{let a=rand(10,30),b=rand(1,20);return q(`+${a} + (−${b}) = ?`,String(a-b),"nombre")},
+ ()=>{let a=rand(1,25);return q(`−${a} + (+${a}) = ?`,"0","nombre")},
+ ()=>{let a=rand(10,25),b=rand(1,20);return q(`−${a} − (−${b}) = ?`,String(b-a),"nombre")},
+ ()=>{let a=rand(1,20),b=rand(1,20);return q(`+${a} − (−${b}) = ?`,String(a+b),"nombre")},
+ ()=>{let a=rand(1,15),b=rand(1,15),c=rand(1,15);return q(`−${a} − (+${b}) + (+${c}) = ?`,String(-a-b+c),"nombre")},
+ ()=>{let a=rand(1,20),b=rand(1,15),c=rand(1,20);return q(`+${a} + (−${b}) − (+${c}) = ?`,String(a-b-c),"nombre")},
+ ()=>{let a=rand(10,30),b=rand(1,15),c=rand(1,10);return q(`−${a} − (−${b}) + (−${c}) = ?`,String(-a+b-c),"nombre")},
+ ()=>{let a=rand(1,12),b=rand(1,12);return q(`Complète : −${a} + ___ = +${b}`,String(a+b),"nombre")},
+ ()=>{let a=rand(1,12),b=rand(1,12);return q(`Complète : ___ − (+${a}) = −${b}`,String(a-b),"nombre")},
+ ()=>{let a=rand(1,12),b=rand(1,12),c=rand(1,12);return q(`Range : +${a}, −${b}, 0, −${c} (du plus petit au plus grand)`,[-b,-c,0,a].sort((x,y)=>x-y).join(','),"liste")},
+ ()=>{let a=rand(1,8),b=rand(a+1,15);return q(`Il fait −${a} °C, la température monte de ${b}°. Quelle est-elle ?`,String(b-a),"nombre")},
+ ()=>{let a=rand(1,15),b=rand(1,15),c=rand(1,15);return q(`−${a} + (+${b}) − (+${c}) = ?`,String(-a+b-c),"nombre")},
+ ()=>{let a=rand(1,18),b=rand(1,18);return q(`+${a} − (+${b}) + (−${b}) = ?`,String(a-2*b),"nombre")}
+ ].map(make=>make()).slice(0,12))
 };
 function q(text,answer,type){return{text,answer,type}}
 let current=[],lastWrong=[];
 function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function normalize(v,type){v=v.trim().replace(/−/g,'-').replace(/,/g,'.').replace(/\s+/g,'');if(type==='liste')return v.split(';').join(',').split(',').map(x=>x.replace(/^\+/,'')).join(',');if(type==='signe')return v;return v.replace(/^\+/,'')}
-function render(){const host=document.getElementById('quiz');host.innerHTML='';for(const [name,make] of Object.entries(sets)){const section=document.createElement('div');section.style.marginBottom='20px';section.innerHTML=`<h3 style="font:800 17px Manrope;margin:18px 0 10px">${name} <span class="pill">${make().length} questions</span></h3><div class="questions"></div>`;let questions=current[name]||make();questions.forEach((item,i)=>{const row=document.createElement('div');row.className='qrow';row.dataset.set=name;row.dataset.index=i;row.dataset.answer=item.answer;row.dataset.type=item.type;row.innerHTML=`<div class="expr">${esc(item.text)}</div><input aria-label="Réponse à ${esc(item.text)}" autocomplete="off"><div class="feedback" aria-live="polite"></div>`;section.querySelector('.questions').append(row)});host.append(section)}}
-function newSet(){current={};for(const [name,make] of Object.entries(sets))current[name]=make();lastWrong=[];document.getElementById('result').textContent='Nouvelle série prête !';render();updateScore()}
+function render(){const host=document.getElementById('quiz');host.innerHTML='';for(const [name,make] of Object.entries(sets)){const questions=current[name]||make();const section=document.createElement('div');section.style.marginBottom='20px';section.innerHTML=`<h3 style="font:800 17px Manrope;margin:18px 0 10px">${name} <span class="pill">${questions.length} questions</span></h3><div class="questions"></div>`;questions.forEach((item,i)=>{const row=document.createElement('div');row.className='qrow';row.dataset.set=name;row.dataset.index=i;row.dataset.answer=item.answer;row.dataset.type=item.type;row.innerHTML=`<div class="expr">${esc(item.text)}</div><input aria-label="Réponse à ${esc(item.text)}" autocomplete="off"><div class="feedback" aria-live="polite"></div>`;section.querySelector('.questions').append(row)});host.append(section)}}
+function newSet(){current={};for(const [name,make] of Object.entries(sets))current[name]=make();lastWrong=[];render();document.getElementById('result').textContent='Une nouvelle série de questions est prête : les calculs ont changé !';updateScore()}
 function checkAll(){let correct=0,total=0;lastWrong=[];document.querySelectorAll('.qrow').forEach(row=>{const inp=row.querySelector('input'),fb=row.querySelector('.feedback');if(row.style.display==='none')return;total++;const ok=normalize(inp.value,row.dataset.type)===normalize(row.dataset.answer,row.dataset.type);fb.className='feedback '+(ok?'good':'bad');fb.textContent=ok?'✓ Bravo !':(inp.value.trim()?`À revoir · réponse : ${row.dataset.answer}`:'À compléter');row.classList.toggle('wrong',!ok);if(ok)correct++;else lastWrong.push(row)});document.getElementById('result').innerHTML=correct===total?`🌟 <strong>Excellent ! ${correct}/${total}</strong> — tout est juste !`: `Tu as ${correct} bonne${correct>1?'s':''} réponse${correct>1?'s':''} sur ${total}. ${total-correct} question${total-correct>1?'s':''} à revoir.`;updateScore(correct,total)}
 function updateScore(c=0,t=0){document.getElementById('score').textContent=t?`${c}/${t} juste${c>1?'s':''}`:'À toi de jouer !'}
 function wrongOnly(){const rows=[...document.querySelectorAll('.qrow')];if(!rows.some(r=>r.classList.contains('wrong'))){document.getElementById('result').textContent='Corrige d’abord une série : tes erreurs apparaîtront ici.';return}rows.forEach(r=>r.style.display=r.classList.contains('wrong')?'grid':'none');document.getElementById('result').textContent='Voici uniquement les questions à reprendre. Corrige-les puis valide à nouveau.'}

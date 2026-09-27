@@ -1,374 +1,55 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Questionnaire pour Alma – Nombres relatifs</title>
-
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Une leçon interactive pour comprendre et s'entraîner aux nombres relatifs.">
+<title>Les nombres relatifs — Leçon d'Alma</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%231c5670'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Arial' font-size='40' font-weight='bold' fill='white'%2B%2B%3C/text%3E%3C/svg%3E">
 <style>
-:root{
-  --bg-main:#ece9e4;
-  --bg-card:#f4f1ec;
-  --ink-main:#0b0f2b;
-  --ink-soft:#6b6f7a;
-  --accent-blue:#3f72f4;
-  --accent-pink:#ff9fd6;
-  --accent-coral:#ef6234;
-  --border:#ddd8cf;
-}
-
-*{box-sizing:border-box}
-
-body{
-  margin:0;
-  padding:20px;
-  background:var(--bg-main);
-  color:var(--ink-main);
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  display:flex;
-  justify-content:center;
-}
-
-.app{
-  width:min(1200px,100%);
-  background:var(--bg-card);
-  border-radius:18px;
-  padding:24px;
-  box-shadow:0 16px 36px rgba(11,15,43,.12);
-}
-
-/* ===== HEADER ===== */
-.header{
-  display:grid;
-  grid-template-columns: 1fr auto;
-  gap:20px;
-  align-items:center;
-}
-
-h1{
-  margin:0;
-  font-size:34px;
-  font-weight:800;
-  letter-spacing:-0.02em;
-}
-
-.sub{
-  margin-top:6px;
-  font-size:14px;
-  color:var(--ink-soft);
-}
-
-/* ===== SNOOPY (HEADER) ===== */
-.snoopyHeader img{
-  max-width:130px;
-  height:auto;
-  border-radius:12px;
-  /* volontairement AUCUNE ombre */
-}
-
-/* ===== MAIN LAYOUT ===== */
-.main{
-  display:grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap:22px;
-  margin-top:20px;
-}
-
-/* ===== STATS ===== */
-.stats{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin:14px 0;
-}
-.stat{
-  background:#fff;
-  padding:6px 12px;
-  border-radius:999px;
-  font-size:13px;
-  border:1px solid var(--border);
-}
-
-/* ===== CONTROLS ===== */
-.controls{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:12px;
-}
-select, input{
-  padding:8px 12px;
-  border-radius:10px;
-  border:1px solid var(--border);
-  background:#fff;
-  color:var(--ink-main);
-  font-size:14px;
-}
-button{
-  cursor:pointer;
-  border-radius:14px;
-  padding:8px 14px;
-  font-weight:700;
-  border:1px solid var(--border);
-  background:#fff;
-  color:var(--ink-main);
-}
-
-/* ===== QUIZ ===== */
-.question{
-  font-size:32px;
-  margin:14px 0;
-}
-.answers{
-  display:grid;
-  gap:10px;
-}
-.choice{
-  background:#fff;
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:12px;
-  font-size:16px;
-}
-.choice:hover{border-color:var(--accent-blue)}
-.choice.ok{background:#eef6ff;border-color:var(--accent-blue)}
-.choice.bad{background:#fff0f0;border-color:var(--accent-coral)}
-
-.feedback{
-  margin-top:10px;
-  padding:10px 12px;
-  border-radius:12px;
-  background:#fff;
-  font-size:14px;
-  border-left:4px solid var(--accent-blue);
-}
-
-/* ===== MINI LEÇON ===== */
-.lesson{
-  background:#fff;
-  border-radius:16px;
-  padding:18px;
-  border:1px solid var(--border);
-}
-.lesson h2{
-  margin:0 0 10px;
-  font-size:18px;
-}
-.lesson ul{
-  margin:0;
-  padding-left:18px;
-  color:var(--ink-soft);
-  line-height:1.45;
-}
-.lesson li{margin-bottom:8px}
-.lesson .example{
-  background:#f7f7f7;
-  border-radius:10px;
-  padding:10px 12px;
-  font-size:13px;
-  margin-top:10px;
-}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+:root{--ink:#192f42;--muted:#627486;--blue:#225e7b;--blue2:#dcecf1;--coral:#ee765f;--yellow:#f4ca65;--paper:#fffdf8;--line:#e7e2d9;--green:#27866b;--red:#c94e49}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f5f1e9;color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.55}button,input{font:inherit}.topbar{background:#1c5670;color:#fff;padding:13px max(22px,calc((100vw - 1120px)/2));display:flex;justify-content:space-between;align-items:center;font-size:14px}.brand{font-family:Manrope,sans-serif;font-weight:800;letter-spacing:.2px}.tag{opacity:.82}.hero{max-width:1120px;margin:auto;padding:54px 24px 36px;display:grid;grid-template-columns:1.25fr .75fr;gap:40px;align-items:center}.eyebrow{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.7px;color:#b95e4b}.hero h1{font:800 clamp(36px,5vw,60px)/1.05 Manrope,sans-serif;letter-spacing:-2px;margin:12px 0 16px}.hero p{font-size:18px;max-width:600px;color:#52697a;margin:0 0 22px}.cta{border:0;background:var(--coral);color:white;font-weight:800;border-radius:12px;padding:13px 20px;cursor:pointer;box-shadow:0 6px 0 #c75a48;transition:.15s}.cta:hover{transform:translateY(-2px);box-shadow:0 8px 0 #c75a48}.hero-art{height:230px;position:relative;border-radius:26px;background:#e7dfe0;overflow:hidden;display:grid;place-items:center}.thermo{position:absolute;left:20%;height:175px;width:54px;border:5px solid #1c5670;border-radius:28px 28px 16px 16px;background:#fff;bottom:26px}.thermo:before{content:'';position:absolute;bottom:8px;left:12px;width:21px;height:100px;border-radius:20px;background:var(--coral)}.thermo:after{content:'';position:absolute;bottom:-22px;left:-8px;width:62px;height:62px;border-radius:50%;background:var(--coral);border:5px solid #1c5670}.thermo-base{position:absolute;z-index:2;left:calc(20% + 18px);bottom:66px;color:white;font-size:13px;font-weight:800}.num{position:absolute;font:800 38px Manrope,sans-serif}.num.a{top:34px;left:49%;color:#1c5670}.num.b{top:95px;right:12%;color:var(--coral)}.num.c{bottom:22px;right:39%;color:#b28b2b}.orbit{position:absolute;width:180px;height:180px;border:1px dashed #a7a2a0;border-radius:50%;right:12%;top:22px}.layout{max-width:1120px;margin:auto;padding:0 24px 80px;display:grid;grid-template-columns:220px minmax(0,1fr);gap:26px;align-items:start}.side{position:sticky;top:18px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 6px 20px #324d5e0a}.side h3{font:800 13px Manrope;margin:2px 8px 12px;text-transform:uppercase;letter-spacing:1px;color:#7b8993}.side a{display:block;text-decoration:none;color:#536a7a;padding:9px 10px;border-radius:10px;font-size:14px;font-weight:600}.side a:hover{background:#eef5f6;color:#1c5670}.side .mini{background:#f8f0d9;color:#7d6020;margin-top:10px}.content{min-width:0}.card{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:28px;margin-bottom:20px;box-shadow:0 8px 28px #324d5e08;scroll-margin-top:20px}.card h2{font:800 25px Manrope;margin:0 0 8px;letter-spacing:-.4px}.lead{color:var(--muted);margin:0 0 20px}.step{display:inline-grid;place-items:center;background:#f8e5df;color:#ae5546;width:30px;height:30px;border-radius:9px;margin-right:8px;font-size:14px}.numberline{margin:20px 0 12px;background:#eef5f6;border-radius:16px;padding:18px 24px;position:relative}.line{height:3px;background:#9db9c3;margin:27px 12px 29px;position:relative}.line:before,.line:after{content:'';position:absolute;top:-6px;height:15px;width:3px;background:#9db9c3}.line:before{left:0}.line:after{right:0}.ticks{display:flex;justify-content:space-between;margin:0 2px}.tick{text-align:center;position:relative;min-width:34px;font-weight:700}.tick:before{content:'';position:absolute;top:-26px;left:50%;height:12px;width:2px;background:#7395a2}.tick small{display:block;color:#8597a0;font-size:11px;font-weight:500}.rule{padding:14px 16px;border-radius:12px;background:#fff5df;border-left:4px solid var(--yellow);margin:16px 0;color:#465d6c}.rule strong{color:var(--ink)}.example{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.example div{border:1px solid var(--line);border-radius:12px;padding:13px 15px;background:#fff}.example b{display:block;font:700 18px Manrope;margin-bottom:3px}.example span{color:var(--muted);font-size:14px}.pill{display:inline-block;background:#e5f1f3;color:#275d72;border-radius:999px;padding:4px 10px;font-weight:800;font-size:12px}.quiz-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:8px}.quiz-head h2{margin:0}.score{background:#f8f0d9;border-radius:999px;padding:7px 12px;font-weight:800;font-size:13px;white-space:nowrap}.quiz-intro{color:var(--muted);margin:0 0 20px}.questions{display:grid;gap:10px}.qrow{display:grid;grid-template-columns:minmax(0,1fr) 112px 115px;align-items:center;gap:10px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff}.expr{font:700 17px Manrope}.qrow input{width:100%;border:1.5px solid #d8e0e2;border-radius:9px;padding:8px 10px;text-align:center;font-weight:700;color:var(--ink);outline:none}.qrow input:focus{border-color:#3e8298;box-shadow:0 0 0 3px #3e829820}.feedback{font-size:12px;font-weight:700;min-height:18px}.feedback.good{color:var(--green)}.feedback.bad{color:var(--red)}.check{border:0;border-radius:10px;padding:12px 16px;background:var(--blue);color:#fff;font-weight:800;cursor:pointer}.check:hover{background:#17465d}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.secondary{border:1px solid #bfd0d5;background:white;color:#275d72;border-radius:10px;padding:11px 14px;font-weight:800;cursor:pointer}.secondary:hover{background:#eef5f6}.result{min-height:24px;color:#52697a;font-weight:700;margin-top:12px}.result strong{color:#1c5670}.tips{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tip{background:#f1f6f6;border-radius:12px;padding:14px;font-size:14px;color:#4d6574}.tip b{display:block;color:var(--ink);margin-bottom:4px}.footer{text-align:center;color:#7e8d96;font-size:12px;padding:4px 20px 32px}.mobile-nav{display:none}
+@media(max-width:760px){.hero{grid-template-columns:1fr;gap:22px;padding-top:36px}.hero-art{height:190px}.layout{grid-template-columns:1fr;padding:0 14px 50px}.side{display:none}.mobile-nav{display:flex;gap:7px;overflow:auto;padding:2px 14px 14px}.mobile-nav a{flex:0 0 auto;text-decoration:none;background:#fff;border:1px solid var(--line);padding:7px 11px;border-radius:999px;color:#426273;font-size:13px;font-weight:700}.card{padding:21px 17px}.qrow{grid-template-columns:minmax(0,1fr) 88px;gap:8px}.qrow .feedback{grid-column:1/-1;min-height:auto;padding-left:2px}.expr{font-size:15px}.example,.tips{grid-template-columns:1fr}.topbar{padding:12px 17px}.tag{font-size:12px}.ticks{font-size:13px}.hero p{font-size:16px}}
 </style>
 </head>
-
 <body>
-<div class="app">
-
-<!-- ===== HEADER ===== -->
-<div class="header">
-  <div>
-    <h1>Questionnaire pour Alma</h1>
-    <div class="sub">Additions et soustractions de nombres relatifs</div>
-  </div>
-
-  <div class="snoopyHeader">
-    <img id="snoopyImg"
-         src="https://avantpost-cpu.github.io/depot-quiz/snoopy_calm.png"
-         alt="">
-  </div>
-</div>
-
-<!-- ===== MAIN ===== -->
-<div class="main">
-
-<!-- ===== QUIZ ===== -->
-<div>
-  <div class="stats">
-    <div class="stat">Question <b id="qnum">1</b> / 20</div>
-    <div class="stat">Score <b id="score">0</b></div>
-    <div class="stat">Série <b id="streak">0</b></div>
-  </div>
-
-  <div class="controls">
-    <select id="level">
-      <option value="10">Facile (±10)</option>
-      <option value="20" selected>Moyen (±20)</option>
-      <option value="50">Plus dur (±50)</option>
-    </select>
-
-    <select id="mode">
-      <option value="qcm" selected>QCM</option>
-      <option value="input">Saisie</option>
-    </select>
-
-    <button id="restart">Recommencer</button>
-  </div>
-
-  <div class="question" id="question">—</div>
-  <div class="answers" id="answers"></div>
-  <div class="feedback" id="feedback" style="display:none"></div>
-</div>
-
-<!-- ===== MINI LEÇON ===== -->
-<div class="lesson">
-  <h2>Mini-leçon</h2>
-  <ul>
-    <li><b>Addition</b> : mêmes signes → on additionne, on garde le signe.</li>
-    <li>Signes différents → on soustrait, on garde le signe du plus grand.</li>
-    <li><b>Soustraction</b> : soustraire = ajouter l’opposé.</li>
-  </ul>
-
-  <div class="example">
-    Exemples :<br>
-    7 − (−3) = 10<br>
-    −8 + 5 = −3
-  </div>
-</div>
-
-</div>
-</div>
-
+<header class="topbar"><div class="brand">✳ Les maths d’Alma</div><div class="tag">Une petite leçon, beaucoup d’entraînement</div></header>
+<section class="hero">
+  <div><div class="eyebrow">Aujourd’hui, on apprivoise les signes</div><h1>Les nombres<br>relatifs</h1><p>Des nombres positifs, des nombres négatifs… et quelques règles simples pour les comparer et les calculer. Lis la leçon, puis entraîne-toi autant que tu veux !</p><button class="cta" onclick="document.querySelector('#entrainement').scrollIntoView({behavior:'smooth'})">Commencer les tests ↓</button></div>
+  <div class="hero-art" aria-label="Thermomètre autour de zéro"><div class="orbit"></div><div class="thermo"></div><span class="thermo-base">0°</span><span class="num a">+6</span><span class="num b">−4</span><span class="num c">0</span></div>
+</section>
+<nav class="mobile-nav"><a href="#comprendre">Comprendre</a><a href="#comparer">Comparer</a><a href="#addition">Addition</a><a href="#soustraction">Soustraire</a><a href="#entrainement">Tests</a></nav>
+<main class="layout">
+<aside class="side"><h3>La leçon</h3><a href="#comprendre">1. C’est quoi ?</a><a href="#comparer">2. Comparer</a><a href="#addition">3. Additionner</a><a href="#soustraction">4. Soustraire</a><a href="#astuces">À retenir</a><a class="mini" href="#entrainement">✦ Passer aux tests</a></aside>
+<div class="content">
+<section class="card" id="comprendre"><h2><span class="step">1</span>Un nombre relatif, c’est quoi ?</h2><p class="lead">C’est un nombre muni d’un signe : positif ou négatif. Il permet de représenter une position, une température, un gain ou une perte.</p>
+<div class="numberline"><div class="line"></div><div class="ticks"><div class="tick">−5<small>négatif</small></div><div class="tick">−3</div><div class="tick">−1</div><div class="tick">0<small>origine</small></div><div class="tick">+1</div><div class="tick">+3</div><div class="tick">+5<small>positif</small></div></div></div>
+<div class="example"><div><b>−4 °C</b><span>4 degrés sous zéro : le signe est −.</span></div><div><b>+7 points</b><span>7 points gagnés : le signe est +.</span></div></div>
+<div class="rule"><strong>À savoir :</strong> le signe + est souvent caché. Ainsi, <b>+5 = 5</b>. Le nombre <b>0</b> n’est ni positif ni négatif.</div></section>
+<section class="card" id="comparer"><h2><span class="step">2</span>Comparer et ranger</h2><p class="lead">Sur une droite graduée, plus un nombre est à droite, plus il est grand.</p><div class="rule"><strong>Attention au piège !</strong> Parmi les nombres négatifs, celui qui est le plus proche de zéro est le plus grand.<br><b>−2 &gt; −6</b> : −2 est plus près de zéro.</div><div class="example"><div><b>−3 &lt; +2</b><span>Tout nombre négatif est plus petit qu’un nombre positif.</span></div><div><b>−8 &lt; −5</b><span>−8 est plus à gauche que −5.</span></div></div></section>
+<section class="card" id="addition"><h2><span class="step">3</span>Additionner des relatifs</h2><p class="lead">Imagine que tu te déplaces sur la droite des nombres.</p><div class="tips"><div class="tip"><b>Signes identiques</b>On additionne les distances et on garde le signe.<br><strong>−3 + (−4) = −7</strong></div><div class="tip"><b>Signes différents</b>On soustrait les distances et on garde le signe du nombre le plus éloigné de zéro.<br><strong>−8 + 5 = −3</strong></div><div class="tip"><b>Le zéro ne change rien</b>Ajouter zéro laisse le nombre identique.<br><strong>−6 + 0 = −6</strong></div></div></section>
+<section class="card" id="soustraction"><h2><span class="step">4</span>Soustraire, c’est ajouter l’opposé</h2><p class="lead">L’opposé d’un nombre a la même distance à zéro, mais le signe contraire.</p><div class="rule"><b>Soustraire un nombre, c’est ajouter son opposé.</b><br>−2 − (+5) = −2 + (−5) = −7<br>−2 − (−5) = −2 + (+5) = +3</div><div class="example"><div><b>L’opposé de +9 est −9</b><span>Et l’opposé de −9 est +9.</span></div><div><b>Attention aux parenthèses</b><span>−(−4) devient +4.</span></div></div></section>
+<section class="card" id="astuces"><h2>Le pense-bête d’Alma</h2><div class="tips"><div class="tip"><b>Je compare</b>Je regarde qui est le plus à droite sur la droite graduée.</div><div class="tip"><b>J’additionne</b>Même signe : j’additionne. Signes différents : je soustrais.</div><div class="tip"><b>Je soustrais</b>Je transforme en addition de l’opposé.</div></div></section>
+<section class="card" id="entrainement"><div class="quiz-head"><h2>Le grand entraînement</h2><span class="score" id="score">0 bonne réponse</span></div><p class="quiz-intro">Complète les cases, puis appuie sur « Corriger la série ». Tu peux recommencer autant de fois que tu veux.</p>
+<div id="quiz"></div><div class="actions"><button class="check" onclick="checkAll()">Corriger la série</button><button class="secondary" onclick="newSet()">Nouvelle série ↻</button><button class="secondary" onclick="wrongOnly()">Revoir mes erreurs</button></div><div class="result" id="result" aria-live="polite"></div></section>
+</div></main><footer class="footer">Les nombres relatifs · Leçon d’entraînement pour Alma</footer>
 <script>
-const TOTAL = 20;
-
-// ✅ Base GitHub Pages (sans "images/")
-const BASE = "https://avantpost-cpu.github.io/depot-quiz/";
-
-const SNOOPY = {
-  calm: BASE + "snoopy_calm.png",
-  happy: BASE + "snoopy_happy.png",
-  encourage: BASE + "snoopy_encourage.png"
+const sets={
+"🌱 Démarrer":()=>[
+ q("Complète avec <, > ou = :  −2 ___ +3","<","signe"),q("Complète : −7 ___ −4","<","signe"),q("Complète : +5 ___ 0",">","signe"),q("L’opposé de +6 est…","-6","nombre"),q("L’opposé de −9 est…","9","nombre"),q("−3 + (−2) = ?","-5","nombre"),q("+8 + (−3) = ?","5","nombre"),q("−4 + 0 = ?","-4","nombre"),q("+2 − (+5) = ?","-3","nombre"),q("−3 − (−4) = ?","1","nombre")],
+"🚀 S’entraîner":()=>[
+ q("Range du plus petit au plus grand : −3, +2, −7 (sépare par des virgules)","-7,-3,2","liste"),q("−12 ___ −8","<","signe"),q("+4 ___ −4",">","signe"),q("−6 + (+10) = ?","4","nombre"),q("+7 + (−12) = ?","-5","nombre"),q("−9 + (−6) = ?","-15","nombre"),q("+14 − (+20) = ?","-6","nombre"),q("−5 − (+8) = ?","-13","nombre"),q("−11 − (−3) = ?","-8","nombre"),q("+6 − (−7) = ?","13","nombre"),q("Quel est l’opposé de l’opposé de −4 ?","-4","nombre"),q("−2 + (+9) − (+5) = ?","2","nombre")],
+"🔥 Défi":()=>[
+ q("−15 + (+8) = ?","-7","nombre"),q("+12 + (−17) = ?","-5","nombre"),q("−8 + (+8) = ?","0","nombre"),q("−13 − (−19) = ?","6","nombre"),q("+5 − (−14) = ?","19","nombre"),q("−6 − (+11) + (+4) = ?","-13","nombre"),q("+18 + (−7) − (+15) = ?","-4","nombre"),q("−20 − (−9) + (−3) = ?","-14","nombre"),q("Complète : −4 + ___ = +3","7","nombre"),q("Complète : ___ − (+6) = −10","-4","nombre"),q("Ranger : +1, −5, 0, −2 (du plus petit au plus grand)","-5,-2,0,1","liste"),q("Il fait −3 °C, la température monte de 8°. Quelle est-elle ?","5","nombre")]
 };
-
-let index = 1, score = 0, streak = 0;
-let answer = 0;
-
-const qnum = document.getElementById("qnum");
-const scoreEl = document.getElementById("score");
-const streakEl = document.getElementById("streak");
-const qEl = document.getElementById("question");
-const answersEl = document.getElementById("answers");
-const feedbackEl = document.getElementById("feedback");
-const snoopyImg = document.getElementById("snoopyImg");
-
-function rand(limit){
-  let n = 0;
-  while(n === 0) n = Math.floor(Math.random()*(2*limit+1)) - limit;
-  return n;
-}
-function fmt(n){ return n < 0 ? "−" + Math.abs(n) : n; }
-
-function newQuestion(){
-  feedbackEl.style.display = "none";
-  answersEl.innerHTML = "";
-  snoopyImg.src = SNOOPY.calm;
-
-  const limit = +level.value;
-  const a = rand(limit);
-  const b = rand(limit);
-  const op = Math.random() < 0.5 ? "+" : "−";
-
-  answer = (op === "+") ? (a + b) : (a - b);
-
-  qEl.textContent = `${fmt(a)} ${op} ${fmt(b)}`;
-
-  if(mode.value === "qcm"){
-    const set = new Set([answer]);
-    while(set.size < 4) set.add(answer + Math.floor(Math.random()*5) - 2);
-
-    [...set].sort(() => Math.random() - 0.5).forEach(v => {
-      const btn = document.createElement("button");
-      btn.className = "choice";
-      btn.textContent = fmt(v);
-      btn.onclick = () => check(v, btn);
-      answersEl.appendChild(btn);
-    });
-  } else {
-    const input = document.createElement("input");
-    input.placeholder = "Ta réponse (ex : -7)";
-    input.type = "text";
-    input.inputMode = "numeric";
-    input.autocomplete = "off";
-
-    const btn = document.createElement("button");
-    btn.textContent = "Valider";
-
-    function submit(){
-      const cleaned = input.value.trim().replace("−","-");
-      const val = Number(cleaned);
-      if(!Number.isFinite(val)){
-        feedbackEl.style.display = "block";
-        feedbackEl.textContent = "Écris un nombre (ex : -7).";
-        snoopyImg.src = SNOOPY.encourage;
-        return;
-      }
-      check(val, null);
-    }
-
-    btn.onclick = submit;
-    input.onkeydown = (e) => { if(e.key === "Enter") submit(); };
-
-    answersEl.append(input, btn);
-    setTimeout(() => input.focus(), 0);
-  }
-}
-
-function check(val, btn){
-  const ok = (val === answer);
-
-  if(ok){
-    score++;
-    streak++;
-    snoopyImg.src = SNOOPY.happy;
-  } else {
-    streak = 0;
-    snoopyImg.src = SNOOPY.encourage;
-  }
-
-  feedbackEl.style.display = "block";
-  feedbackEl.textContent = `Réponse correcte : ${fmt(answer)}`;
-
-  scoreEl.textContent = score;
-  streakEl.textContent = streak;
-
-  // Avancer dans la session
-  index++;
-  qnum.textContent = Math.min(index, TOTAL);
-
-  if(index <= TOTAL){
-    setTimeout(newQuestion, 900);
-  } else {
-    // Fin simple (sans écran séparé, pour rester "tout sur un écran")
-    feedbackEl.textContent = `Fin de session : ${score}/${TOTAL}. (Recommencer pour rejouer)`;
-    snoopyImg.src = SNOOPY.happy;
-  }
-}
-
-restart.onclick = () => {
-  index = 1; score = 0; streak = 0;
-  qnum.textContent = 1;
-  scoreEl.textContent = 0;
-  streakEl.textContent = 0;
-  feedbackEl.style.display = "none";
-  snoopyImg.src = SNOOPY.calm;
-  newQuestion();
-};
-
-mode.onchange = newQuestion;
-level.onchange = newQuestion;
-
-newQuestion();
-</script>
-
-</body>
-</html>
+function q(text,answer,type){return{text,answer,type}}
+let current=[],lastWrong=[];
+function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function normalize(v,type){v=v.trim().replace(/−/g,'-').replace(/,/g,'.').replace(/\s+/g,'');if(type==='liste')return v.split(';').join(',').split(',').map(x=>x.replace(/^\+/,'')).join(',');if(type==='signe')return v;return v.replace(/^\+/,'')}
+function render(){const host=document.getElementById('quiz');host.innerHTML='';for(const [name,make] of Object.entries(sets)){const section=document.createElement('div');section.style.marginBottom='20px';section.innerHTML=`<h3 style="font:800 17px Manrope;margin:18px 0 10px">${name} <span class="pill">${make().length} questions</span></h3><div class="questions"></div>`;let questions=current[name]||make();questions.forEach((item,i)=>{const row=document.createElement('div');row.className='qrow';row.dataset.set=name;row.dataset.index=i;row.dataset.answer=item.answer;row.dataset.type=item.type;row.innerHTML=`<div class="expr">${esc(item.text)}</div><input aria-label="Réponse à ${esc(item.text)}" autocomplete="off"><div class="feedback" aria-live="polite"></div>`;section.querySelector('.questions').append(row)});host.append(section)}}
+function newSet(){current={};for(const [name,make] of Object.entries(sets))current[name]=make();lastWrong=[];document.getElementById('result').textContent='Nouvelle série prête !';render();updateScore()}
+function checkAll(){let correct=0,total=0;lastWrong=[];document.querySelectorAll('.qrow').forEach(row=>{const inp=row.querySelector('input'),fb=row.querySelector('.feedback');if(row.style.display==='none')return;total++;const ok=normalize(inp.value,row.dataset.type)===normalize(row.dataset.answer,row.dataset.type);fb.className='feedback '+(ok?'good':'bad');fb.textContent=ok?'✓ Bravo !':(inp.value.trim()?`À revoir · réponse : ${row.dataset.answer}`:'À compléter');row.classList.toggle('wrong',!ok);if(ok)correct++;else lastWrong.push(row)});document.getElementById('result').innerHTML=correct===total?`🌟 <strong>Excellent ! ${correct}/${total}</strong> — tout est juste !`: `Tu as ${correct} bonne${correct>1?'s':''} réponse${correct>1?'s':''} sur ${total}. ${total-correct} question${total-correct>1?'s':''} à revoir.`;updateScore(correct,total)}
+function updateScore(c=0,t=0){document.getElementById('score').textContent=t?`${c}/${t} juste${c>1?'s':''}`:'À toi de jouer !'}
+function wrongOnly(){const rows=[...document.querySelectorAll('.qrow')];if(!rows.some(r=>r.classList.contains('wrong'))){document.getElementById('result').textContent='Corrige d’abord une série : tes erreurs apparaîtront ici.';return}rows.forEach(r=>r.style.display=r.classList.contains('wrong')?'grid':'none');document.getElementById('result').textContent='Voici uniquement les questions à reprendre. Corrige-les puis valide à nouveau.'}
+newSet();
+</script></body></html>

@@ -41,7 +41,7 @@ Deno.serve(async(req)=>{
       ${rows?.filter((x:any)=>x.improve).map((x:any)=>`<p>• ${esc(x.improve)}</p>`).join("")||"<p>—</p>"}
       <p style="margin-top:28px;font-size:12px;color:#667">Récapitulatif généré depuis l’administration Rebond.</p>
     </div>`;
-    const rr=await fetch("https://api.resend.com/emails",{method:"POST",headers:{"Authorization":`Bearer ${Deno.env.get("RESEND_API_KEY")}`,"Content-Type":"application/json"},body:JSON.stringify({
+    const rr=await fetch("https://api.resend.com/emails",{method:"POST",headers:{"Authorization":`Bearer ${Deno.env.get("RESEND_SATISFACTION_API_KEY")}`,"Content-Type":"application/json"},body:JSON.stringify({
       from:Deno.env.get("RESEND_FROM")||"Rebond <onboarding@resend.dev>",to:[to],
       subject:`Rebond — Bilan de la sensibilisation du ${date}`,html
     })});

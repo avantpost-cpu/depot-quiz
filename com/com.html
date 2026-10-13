@@ -82,6 +82,7 @@
       transform: scale(calc(100vw / 1200));
     }
   }
+.english-card{display:none;width:280px;min-height:90px;box-sizing:border-box;padding:20px 17px;border-radius:12px;text-align:center;font:600 15px/1.4 Arial,sans-serif;color:#fff;align-items:center;justify-content:center}.english-card.teal{background:#5b9e9b}.english-card.yellow{background:#e6ad00}.english-mode .image-list img{display:none}.english-mode .english-card{display:flex}.english-heading{display:none;text-align:center;font:700 19px Arial,sans-serif;margin:12px 0 0}.english-mode .english-heading{display:block}
 </style>
 </head>
 
@@ -100,10 +101,11 @@
         </video>
       </div>
 
+      <div class="english-heading">VERBAL COMMUNICATION</div>
       <div class="image-list">
         <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte1.jpg">
         <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte2.jpg">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texte3.jpg"><div class="english-card teal">Encourage open-ended questions (who, what, how many, why) to obtain complete and constructive answers.</div><div class="english-card teal">Keep questions as short as possible. Speak calmly, reassuringly, with a neutral tone.</div><div class="english-card teal">Avoid leading and closed-ended questions that could influence the answer.</div>
       </div>
     </div>
 
@@ -115,10 +117,11 @@
         </video>
       </div>
 
+      <div class="english-heading">NON-VERBAL COMMUNICATION</div>
       <div class="image-list">
         <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB1.jpg">
         <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB2.jpg">
-        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg">
+        <img src="https://avantpost-cpu.github.io/depot-quiz/com/texteB3.jpg"><div class="english-card yellow">Body language speaks as loudly as words. Children notice everything: a frown or facial expression may cause them to withdraw.</div><div class="english-card yellow">Show that you are present, available and welcoming. Avoid frowning, looking away, crossing your arms or answering the phone. Manage your emotions and avoid excessive reactions, such as bursting into tears.</div><div class="english-card yellow">Do not dramatize or minimize the situation.</div>
       </div>
     </div>
 
@@ -126,6 +129,7 @@
 
 </div>
 
+<script>if(new URLSearchParams(location.search).get('lang')==='en')document.body.classList.add('english-mode');</script>
 </body>
 </html>
     

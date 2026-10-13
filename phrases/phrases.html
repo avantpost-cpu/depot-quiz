@@ -66,6 +66,15 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.3);
       z-index: 10;
     }
+
+    /* English translations appear only below the original interactive video headings. */
+    body.en-phrases .image-sequence-container .phrase-item {position:relative;width:60%;align-self:center;min-height:46px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .3s ease,filter .3s ease;}
+    body.en-phrases .image-sequence-container .phrase-item:hover {transform:scale(1.45) rotate(-3deg);z-index:10;}
+    body.en-phrases .image-sequence-container .phrase-item img {width:100%;opacity:0;position:absolute;inset:0;height:100%;pointer-events:none;}
+    body.en-phrases .image-sequence-container .phrase-item .en-text {font-family:"Brush Script MT","Segoe Script","Apple Chancery",cursive;font-style:italic;font-size:18px;line-height:1.12;text-align:center;color:#242424;pointer-events:none;}
+    body.en-phrases #imagesA .phrase-item .en-text::before {content:"✳ ";color:#4d9f9b;font-style:normal;}
+    body.en-phrases #imagesB .phrase-item .en-text::before {content:"✳ ";color:#eab300;font-style:normal;}
+    body.en-phrases .image-sequence-container .phrase-item.grayscale {filter:grayscale(1);}
   </style>
 </head>
 <body>
@@ -105,10 +114,22 @@
   </div>
 
   <script>
+
+    if(new URLSearchParams(location.search).get('lang')==='en'){
+      document.body.classList.add('en-phrases');
+      const translations={"pA1":"I believe you.","pA2":"Nothing justifies violence.","pA3":"You are not alone.","pA4":"You did nothing wrong.","pA5":"The perpetrator is solely responsible.","pA6":"The law prohibits and punishes violence.","pA7":"I will help and support you.","pB1":"You were brave to tell me.","pB2":"This person had no right to do that to you.","pB3":"What happened is called violence.","pB4":"The violence is not your fault.","pB5":"The law prohibits and punishes violence.","pB6":"There are people who can help you.","pB7":"You were right to tell me.","pB8":"I am here to help you."};
+      document.querySelectorAll('.image-sequence-container img').forEach(img=>{
+        const key=img.alt;
+        if(!translations[key])return;
+        const wrap=document.createElement('div');wrap.className='phrase-item';
+        img.parentNode.insertBefore(wrap,img);wrap.appendChild(img);
+        const label=document.createElement('span');label.className='en-text';label.textContent='“'+translations[key]+'”';wrap.appendChild(label);
+      });
+    }
     const videoMajeur = document.getElementById('videoMajeur');
     const videoMineur = document.getElementById('videoMineur');
-    const imagesA = document.querySelectorAll('#imagesA img');
-    const imagesB = document.querySelectorAll('#imagesB img');
+    const imagesA = document.querySelectorAll('#imagesA .phrase-item, #imagesA img:not(.phrase-item img)');
+    const imagesB = document.querySelectorAll('#imagesB .phrase-item, #imagesB img:not(.phrase-item img)');
 
     // Fixer les vidéos à la fin
     videoMajeur.addEventListener('ended', () => videoMajeur.pause());

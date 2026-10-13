@@ -106,9 +106,11 @@
 <!-- ===== ZONE D'AFFICHAGE DES IMAGES a1 b1 c1 ===== -->
 <div class="hover-display">
   <img id="a1" src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/a1.jpg">
+<div id="a1-en" class="translated-panel"><h2>JUDICIAL PROCEDURE</h2><div class="translated-columns"><section><h3>WHO SHOULD YOU REPORT TO?</h3><p>Anyone may report an incident or file a complaint with the public prosecutor.</p><p>File a complaint at a police station.</p><p>Join proceedings as a civil party (victim, rights holders, sports federation).</p><p>In an emergency, call <b>17</b>. You can also file a complaint or use the online pre-reporting and chat service at <b>arretonslesviolences.fr</b>.</p></section><section><h3>WHO CAN BE SUBJECT TO A REPORT?</h3><p>Any person implicated (members of the general public included).</p></section></div></div>
   <img id="b1" src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/b1.jpg">
 <div id="b1-en" class="translated-panel"><h2>ADMINISTRATIVE PROCEDURE</h2><div class="translated-columns"><section><h3>WHO SHOULD YOU REPORT TO?</h3><p>Report to <b>Signal Sports</b>, the ministerial unit that receives and handles reports of violence in sport.</p><p><b>SIGNAL-SPORTS@sports.gouv.fr</b></p><p>Report to the local <b>SDJES</b> departmental youth, engagement and sports services.</p></section><section><h3>WHO CAN BE SUBJECT TO A REPORT?</h3><p>Professional sports educators, paid or volunteer.</p><p>Referees and judges.</p></section></div></div>
   <img id="c1" src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/c1.jpg">
+<div id="c1-en" class="translated-panel"><h2>DISCIPLINARY PROCEDURE</h2><div class="translated-columns"><section><h3>WHO SHOULD YOU REPORT TO?</h3><p>Report to the relevant sports federation or federations.</p></section><section><h3>WHO CAN BE SUBJECT TO A REPORT?</h3><p>Any person implicated who holds a licence issued by the relevant federation or federations.</p></section></div></div>
 </div>
 
 <script>
@@ -125,7 +127,7 @@
     item.addEventListener('mouseenter', () => {
       const target = item.dataset.target;
       displays.forEach(img => img.classList.remove('active'));
-      document.getElementById(englishMode && target==='b1' ? 'b1-en' : target).classList.add('active');
+      document.getElementById(englishMode ? target+'-en' : target).classList.add('active');
     });
   });
 

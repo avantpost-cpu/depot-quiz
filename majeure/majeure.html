@@ -99,7 +99,7 @@ html, body {
 .i5 { top: 72%; background-image: url("https://avantpost-cpu.github.io/depot-quiz/majeure/5.png"); }
 
 </style>
-</head>
+<style>.en-overlay{display:none;position:absolute;inset:0;background:#fff;z-index:1;font-family:Arial,sans-serif}.en-title{position:absolute;top:5%;left:3%;right:3%;text-align:center;font-size:26px;font-weight:800;color:#559b98}.en-line{position:absolute;left:7%;right:7%;font-size:17px;line-height:1.25;text-align:center;font-weight:600;color:#252525;transform:translateY(-50%)}.en-mode .en-overlay{display:block}.en-mode .icone,.en-mode .ico-m{z-index:3;background-image:none!important;opacity:0!important}.en-mode .icone:hover,.en-mode .ico-m:hover{opacity:0!important}</style></head>
 
 <body>
 
@@ -110,7 +110,7 @@ html, body {
     <div id="stage-wrapper" class="homothety-stage">
 
         <div class="scene-adulte">
-            <div class="zone-fond">
+            <div class="zone-fond"><div class="en-overlay"><div class="en-title">SPEAKING TO AN ADULT VICTIM</div><div class="en-line" style="top:38%">I believe you.</div><div class="en-line" style="top:45%">Nothing justifies violence.</div><div class="en-line" style="top:53%">You are not alone.</div><div class="en-line" style="top:64%">You did nothing wrong.</div><div class="en-line" style="top:72%">The perpetrator is solely responsible.</div><div class="en-line" style="top:80%">The law prohibits and punishes violence.</div><div class="en-line" style="top:88%">I will help and support you.</div></div>
 
                 <!-- ⭐ Icônes avec zoom individuel -->
                 <div class="icone i1" data-son="s1.wav"></div>
@@ -160,3 +160,4 @@ document.querySelectorAll(".icone").forEach(el => {
 
 </body>
 </html>
+<script>if(new URLSearchParams(location.search).get('lang')==='en')document.body.classList.add('en-mode');</script>

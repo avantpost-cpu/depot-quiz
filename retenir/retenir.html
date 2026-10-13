@@ -142,20 +142,25 @@
 </div>
 
 <div class="image-placeholder">
-  <img id="finalImage" src="https://avantpost-cpu.github.io/depot-quiz/retenir/ilest.jpg" alt="Image finale">
+  <div id="englishFinalTitle" style="display:none;text-align:center;color:#d5a400;font-size:clamp(20px,4vw,36px);font-weight:800;padding:12px">WHAT TO REMEMBER</div><img id="finalImage" src="https://avantpost-cpu.github.io/depot-quiz/retenir/ilest.jpg" alt="Image finale">
   
   <div id="textBlock" class="text-block">
-    <div>Croire la victime et lui assurer qu’il ou elle n’est pas coupable</div>
-    <div>Lui apporter son soutien et compassion</div>
-    <div>Maitriser ses émotions</div>
-    <div>Ne pas dramatiser ni minimiser la situation</div>
-    <div>Ne jamais mettre en doute la parole de la victime</div>
-    <div>Remercier la victime de sa confiance</div>
-    <div>Féliciter la victime pour ses révélations et son courage</div>
+    <div data-en="Believe the victim and reassure them that they are not to blame">Croire la victime et lui assurer qu’il ou elle n’est pas coupable</div>
+    <div data-en="Offer support and compassion">Lui apporter son soutien et compassion</div>
+    <div data-en="Manage your emotions">Maitriser ses émotions</div>
+    <div data-en="Do not dramatize or minimize the situation">Ne pas dramatiser ni minimiser la situation</div>
+    <div data-en="Never question the victim's account">Ne jamais mettre en doute la parole de la victime</div>
+    <div data-en="Thank the victim for trusting you">Remercier la victime de sa confiance</div>
+    <div data-en="Praise the victim for speaking out and for their courage">Féliciter la victime pour ses révélations et son courage</div>
   </div>
 </div>
 
 <script>
+  const englishMode = new URLSearchParams(location.search).get('lang') === 'en';
+  if(englishMode){
+    document.documentElement.lang='en';
+    document.querySelectorAll('#textBlock div').forEach(el=>el.textContent=el.dataset.en);
+  }
   const vid = document.getElementById('video');
   const img = document.getElementById('finalImage');
   const textDivs = document.querySelectorAll('.text-block div');
@@ -175,7 +180,7 @@
   vid.addEventListener('ended', () => {
     videoWrapper.classList.add('shrink');
 
-    img.classList.add('show');
+    if(englishMode){document.getElementById('englishFinalTitle').style.display='block';img.style.display='none'}else{img.classList.add('show')}
 
     textDivs.forEach((div, index) => {
       setTimeout(() => {
@@ -189,7 +194,7 @@
     if (!vid.ended && vid.currentTime > 0) return;
     if (vid.currentTime === 0) {
       videoWrapper.classList.add('shrink');
-      img.classList.add('show');
+      if(englishMode){document.getElementById('englishFinalTitle').style.display='block';img.style.display='none'}else{img.classList.add('show')}
       textDivs.forEach((div, index) => {
         setTimeout(() => {
           div.classList.add('show');

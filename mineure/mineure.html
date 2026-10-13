@@ -28,7 +28,7 @@
         position:relative;
       ">
 
-        <!-- ICONES (positions proportionnelles) -->
+        <div class="en-overlay"><div class="en-title">SPEAKING TO A CHILD VICTIM</div><div class="en-line" style="top:34%">You are brave to tell me this.</div><div class="en-line" style="top:43%">That person had no right to do that to you.</div><div class="en-line" style="top:52%">What happened to you is called violence.</div><div class="en-line" style="top:61%">Violence is never your fault.</div><div class="en-line" style="top:70%">The law prohibits and punishes violence.</div><div class="en-line" style="top:79%">There are people who can help you.</div><div class="en-line" style="top:87%">You did well to tell me.</div><div class="en-line" style="top:94%">I will do everything I can to help you.</div></div><!-- ICONES (positions proportionnelles) -->
         <div class="ico-m ico-a" data-son="a.wav" style="top:34%; left:14%;"></div>
         <div class="ico-m ico-b" data-son="b.wav" style="top:46%; left:14%;"></div>
 
@@ -44,7 +44,7 @@
   </div>
 </div>
 
-<style>
+<style>.en-overlay{display:none;position:absolute;inset:0;background:#fff;z-index:1;font-family:Arial,sans-serif}.en-title{position:absolute;top:5%;left:3%;right:3%;text-align:center;font-size:26px;font-weight:800;color:#dba800}.en-line{position:absolute;left:7%;right:7%;font-size:17px;line-height:1.25;text-align:center;font-weight:600;color:#252525;transform:translateY(-50%)}.en-mode .en-overlay{display:block}.en-mode .icone,.en-mode .ico-m{z-index:3;background-image:none!important;opacity:0!important}.en-mode .icone:hover,.en-mode .ico-m:hover{opacity:0!important}</style><style>
 /* ⭐ Style de base des icônes */
 .ico-m {
   position:absolute;
@@ -128,3 +128,4 @@ document.querySelectorAll(".ico-m").forEach(el => {
   el.addEventListener("touchstart", play);
 });
 </script>
+<script>if(new URLSearchParams(location.search).get('lang')==='en')document.body.classList.add('en-mode');</script>

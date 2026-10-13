@@ -76,6 +76,7 @@
     display: block;
   }
 
+.en-video-caption{font-weight:700;color:#d79a37;text-align:center;margin-top:-6px;font-size:17px}
 </style>
 </head>
 
@@ -89,13 +90,14 @@
     <video autoplay muted loop playsinline>
       <source src="https://raw.githubusercontent.com/avantpost-cpu/depot-quiz/main/signalement/signalement.mp4" type="video/mp4">
     </video>
+    <div class="en-video-caption" hidden>REPORTING</div>
   </div>
 
   <!-- TITRES A/B/C -->
   <div class="grid-4">
-    <div class="title-item" data-target="a1">Procédure judiciaire</div>
-    <div class="title-item" data-target="b1">Procédure administrative</div>
-    <div class="title-item" data-target="c1">Procédure disciplinaire</div>
+    <div class="title-item" data-target="a1"><span data-fr="Procédure judiciaire" data-en="Judicial procedure">Procédure judiciaire</span></div>
+    <div class="title-item" data-target="b1"><span data-fr="Procédure administrative" data-en="Administrative procedure">Procédure administrative</span></div>
+    <div class="title-item" data-target="c1"><span data-fr="Procédure disciplinaire" data-en="Disciplinary procedure">Procédure disciplinaire</span></div>
   </div>
 
 </div>
@@ -108,6 +110,12 @@
 </div>
 
 <script>
+  const englishMode = new URLSearchParams(location.search).get('lang') === 'en';
+  if (englishMode) {
+    document.documentElement.lang='en';
+    document.querySelectorAll('[data-en]').forEach(el => { el.textContent=el.dataset.en; });
+    document.querySelector('.en-video-caption').hidden=false;
+  }
   const items = document.querySelectorAll('.title-item');
   const displays = document.querySelectorAll('.hover-display img');
 

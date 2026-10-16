@@ -63,6 +63,13 @@ body {
   justify-content: center;
 }
 
+/* NAVIGATION DES LIVRES */
+.shelf-nav{position:absolute;top:44%;transform:translateY(-50%);z-index:5;width:44px;height:44px;border:0;border-radius:50%;background:#26667c;color:white;font-size:30px;line-height:1;cursor:pointer;display:grid;place-items:center;box-shadow:0 3px 10px rgba(0,0,0,.2)}
+.shelf-nav:hover{background:#16495d}.shelf-nav:disabled{opacity:.25;cursor:default}.shelf-nav.prev{left:0}.shelf-nav.next{right:0}
+.books-window{position:relative;z-index:2;width:min(800px,calc(100% - 105px));overflow:hidden}
+.books{min-height:230px;justify-content:center}
+.book[hidden]{display:none!important}
+@media(max-width:600px){.book{width:min(29vw,135px)}.books{gap:14px;min-height:190px}.books-window{width:calc(100% - 90px)}.shelf-nav{width:35px;height:35px;font-size:24px}}
 /* ÉTAGÈRE */
 .shelf {
   position: absolute;
@@ -152,14 +159,14 @@ body {
     <!-- LIVRES -->
     <div class="books-zone">
 
-      <div class="books">
+      <button class="shelf-nav prev" id="previousBooks" type="button" aria-label="Livres précédents">‹</button>\n      <div class="books-window"><div class="books">
         <img class="book" data-book="A" src="https://avantpost-cpu.github.io/depot-quiz/livresj/A.png" alt="">
         <img class="book" data-book="B" src="https://avantpost-cpu.github.io/depot-quiz/livresj/B.png" alt="">
         <img class="book" data-book="C" src="https://avantpost-cpu.github.io/depot-quiz/livresj/C.png" alt="">
         <img class="book" data-book="D" src="https://avantpost-cpu.github.io/depot-quiz/livresj/D.png" alt="">
       </div>
 
-      <div class="shelf">
+      </div>\n      <button class="shelf-nav next" id="nextBooks" type="button" aria-label="Livres suivants">›</button>\n\n      <div class="shelf">
         <img src="https://avantpost-cpu.github.io/depot-quiz/livresj/book.png" alt="">
       </div>
 
@@ -214,6 +221,21 @@ const data = {
 
 const books = document.querySelectorAll('.book');
 const fiche = document.getElementById('fiche');
+const previousBooks=document.getElementById('previousBooks');
+const nextBooks=document.getElementById('nextBooks');
+let bookPage=0;
+function renderBookPage(){
+  const perPage=window.innerWidth<=600?2:3;
+  const pages=Math.ceil(books.length/perPage);
+  bookPage=Math.min(bookPage,Math.max(0,pages-1));
+  books.forEach((book,i)=>{book.hidden=!(i>=bookPage*perPage&&i<(bookPage+1)*perPage);});
+  previousBooks.disabled=bookPage===0;
+  nextBooks.disabled=bookPage>=pages-1;
+}
+previousBooks.addEventListener('click',()=>{bookPage--;renderBookPage();fiche.classList.remove('active')});
+nextBooks.addEventListener('click',()=>{bookPage++;renderBookPage();fiche.classList.remove('active')});
+window.addEventListener('resize',renderBookPage);
+renderBookPage();
 
 books.forEach(book => {
   book.addEventListener('click', () => {

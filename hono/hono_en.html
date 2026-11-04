@@ -10,6 +10,11 @@ body{font-family:Arial,sans-serif;margin:0;padding:20px;display:flex;justify-con
 .conteneur-global{display:flex;gap:10px;align-items:flex-start}
 .col-gauche{display:flex;flex-direction:row;gap:0;height:600px;position:relative}
 #imgLeft{height:800px;width:auto;object-fit:contain;display:block;visibility:hidden;z-index:0}
+#englishPanel{position:absolute;top:115px;left:0;width:407px;min-height:685px;background:white;z-index:1;display:none;text-align:center;padding:12px 16px;font-family:Arial,sans-serif;color:#101010;font-size:18px;font-weight:700;line-height:1.32}
+#englishPanel h2{font-size:21px;line-height:1.25;color:#539892;margin:0 0 18px;font-weight:700}
+#englishPanel p{margin:0 0 14px}
+#englishPanel .small{font-size:15px;line-height:1.27}
+#englishPanel .section{color:#539892;margin:15px 0 10px}
 .col-gauche img.fleche{height:600px;width:auto;object-fit:contain;display:block;z-index:1}
 .col-droite{display:flex;flex-direction:column;height:600px;width:160px}
 .ligne{flex:1;position:relative;cursor:pointer}
@@ -25,7 +30,7 @@ body{font-family:Arial,sans-serif;margin:0;padding:20px;display:flex;justify-con
 <main>
 <div class="conteneur-global" aria-label="Interactive timeline: the development of safeguarding checks in French sport">
   <div class="col-gauche">
-    <img src="" id="imgLeft" alt="Timeline information" aria-live="polite">
+    <img src="" id="imgLeft" alt="" aria-hidden="true"><div id="englishPanel" role="status" aria-live="polite"></div>
     <img src="./fleche.jpg" class="fleche" alt="Timeline arrow">
   </div>
   <div class="col-droite">
@@ -49,18 +54,25 @@ body{font-family:Arial,sans-serif;margin:0;padding:20px;display:flex;justify-con
     </div>
   </div>
 </div>
-<p id="englishNote">The original illustrations currently contain French text. English translations of the six illustrated milestones have not yet been added.</p>
+
 </main>
 <script>
 const imgLeft=document.getElementById('imgLeft');
-document.querySelectorAll('.ligne').forEach(ligne=>{
-  const show=()=>{imgLeft.src=ligne.dataset.img;imgLeft.style.visibility='visible'};
-  const hide=()=>{imgLeft.style.visibility='hidden'};
-  ligne.addEventListener('mouseenter',show);
-  ligne.addEventListener('mouseleave',hide);
-  ligne.addEventListener('focus',show);
-  ligne.addEventListener('blur',hide);
-  ligne.addEventListener('click',show);
+const panel=document.getElementById('englishPanel');
+const translations=[
+  {heading:'Law No. 2000-627 of 6 July 2000',body:'Introduction of a ban on practising following a conviction for a serious criminal offence or certain other offences.'},
+  {heading:'Law No. 2004-204 of 9 March 2004',body:'Creation of the automated national register of perpetrators of sexual or violent offences (FIJAISV).'},
+  {heading:'Law of 27 November 2015',body:'Introduction of safeguarding background checks, initially covering only sports instructors and certain volunteers.'},
+  {heading:'Disclose investigation and testimonies',body:''},
+  {heading:'Law No. 2021-1109 of 24 August 2021 strengthening respect for the principles of the Republic',body:'<p>• Stronger safeguarding checks: systematic verification against the FIJAIS register.</p><p>• Extension of safeguarding checks to referees and judges, lifeguards and anyone working with minors in a sports establishment (EAPS), provided they hold a licence from a sports federation.</p>'},
+  {heading:'Law of 8 March 2024 strengthening the protection of minors and safeguarding in sport',body:'<p class="section">Stronger safeguarding checks</p><p>• Systematic checks against criminal record bulletin No. 2 and the FIJAIS register.</p><p>• Confirmation that safeguarding checks must be carried out annually.</p><p>• A conviction recorded in FIJAIS can lead to a ban on practising, even if it no longer appears on criminal record bulletin No. 2.</p><p>• A ban may apply following a conviction abroad for conduct that would result in a ban in France.</p><p class="section">New requirements for managers</p><p>• Duty to report risky behaviour by teachers, activity leaders, instructors or anyone in contact with children who may pose a danger.</p><p>• Temporary or permanent ban where a manager poses a danger, employs an ineligible person or fails to report (French Sports Code, Article L.322-3).</p>'}
+];
+document.querySelectorAll('.ligne').forEach((ligne,index)=>{
+ const show=()=>{imgLeft.src=ligne.dataset.img;imgLeft.style.visibility='visible';panel.innerHTML='<h2>'+translations[index].heading+'</h2><div class="'+(index===5?'small':'')+'">'+translations[index].body+'</div>';panel.style.display='block';};
+ const hide=()=>{imgLeft.style.visibility='hidden';panel.style.display='none';};
+ ligne.addEventListener('mouseenter',show);ligne.addEventListener('mouseleave',hide);
+ ligne.addEventListener('focus',show);ligne.addEventListener('blur',hide);
+ ligne.addEventListener('click',show);
 });
 </script>
 </body>

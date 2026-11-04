@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Safeguarding checks — interactive timeline</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:Arial,sans-serif;margin:0;padding:20px;display:flex;justify-content:center;background:transparent}
+.conteneur-global{display:flex;gap:10px;align-items:flex-start}
+.col-gauche{display:flex;flex-direction:row;gap:0;height:600px;position:relative}
+#imgLeft{height:800px;width:auto;object-fit:contain;display:block;visibility:hidden;z-index:0}
+.col-gauche img.fleche{height:600px;width:auto;object-fit:contain;display:block;z-index:1}
+.col-droite{display:flex;flex-direction:column;height:600px;width:160px}
+.ligne{flex:1;position:relative;cursor:pointer}
+.ligne img.base,.ligne img.hover{width:100%;height:100%;object-fit:cover}
+.ligne img.hover{position:absolute;top:0;left:0;opacity:0;transition:opacity .3s;z-index:10}
+.ligne:hover img.hover,.ligne:focus img.hover{opacity:1}
+.ligne:focus-visible{outline:3px solid #1b5f6e;outline-offset:2px}
+#englishNote{font-size:12px;color:#555;margin:8px 0 0;max-width:800px}
+@media(max-width:650px){body{padding:8px}.conteneur-global{transform:scale(.55);transform-origin:top left;width:181.8%;margin-bottom:-260px}}
+</style>
+</head>
+<body>
+<main>
+<div class="conteneur-global" aria-label="Interactive timeline: the development of safeguarding checks in French sport">
+  <div class="col-gauche">
+    <img src="" id="imgLeft" alt="Timeline information" aria-live="polite">
+    <img src="./fleche.jpg" class="fleche" alt="Timeline arrow">
+  </div>
+  <div class="col-droite">
+    <div class="ligne" tabindex="0" data-img="./A2.jpg" aria-label="Timeline milestone A">
+      <img src="./A.jpg" class="base" alt=""><img src="./A1.jpg" class="hover" alt="">
+    </div>
+    <div class="ligne" tabindex="0" data-img="./B2.jpg" aria-label="Timeline milestone B">
+      <img src="./B.jpg" class="base" alt=""><img src="./B1.jpg" class="hover" alt="">
+    </div>
+    <div class="ligne" tabindex="0" data-img="./C2.jpg" aria-label="Timeline milestone C">
+      <img src="./C.jpg" class="base" alt=""><img src="./C1.jpg" class="hover" alt="">
+    </div>
+    <div class="ligne" tabindex="0" data-img="./D2.jpg" aria-label="Timeline milestone D">
+      <img src="./D.jpg" class="base" alt=""><img src="./D1.jpg" class="hover" alt="">
+    </div>
+    <div class="ligne" tabindex="0" data-img="./E2.jpg" aria-label="Timeline milestone E">
+      <img src="./E.jpg" class="base" alt=""><img src="./E1.jpg" class="hover" alt="">
+    </div>
+    <div class="ligne" tabindex="0" data-img="./F2.jpg" aria-label="Timeline milestone F">
+      <img src="./F.jpg" class="base" alt=""><img src="./F1.jpg" class="hover" alt="">
+    </div>
+  </div>
+</div>
+<p id="englishNote">The original illustrations currently contain French text. English translations of the six illustrated milestones have not yet been added.</p>
+</main>
+<script>
+const imgLeft=document.getElementById('imgLeft');
+document.querySelectorAll('.ligne').forEach(ligne=>{
+  const show=()=>{imgLeft.src=ligne.dataset.img;imgLeft.style.visibility='visible'};
+  const hide=()=>{imgLeft.style.visibility='hidden'};
+  ligne.addEventListener('mouseenter',show);
+  ligne.addEventListener('mouseleave',hide);
+  ligne.addEventListener('focus',show);
+  ligne.addEventListener('blur',hide);
+  ligne.addEventListener('click',show);
+});
+</script>
+</body>
+</html>
